@@ -740,7 +740,7 @@
             </p> --}}
 
             <p class="mb-0"> {{ __('Copyright') }} &copy;
-                {{ env('FOOTER_TEXT') ? env('FOOTER_TEXT') : config('app.name', 'Taskly') }}
+                {{ env('FOOTER_TEXT') ? env('FOOTER_TEXT') : config('app.name', 'mchd') }}
                 {{ date('Y') }}</p>
 
         </div>

@@ -15,7 +15,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes([]); ?>  
+<?php $component->withAttributes([]); ?>
 
 <?php $__env->startSection('page-title'); ?> <?php echo e(__('Login')); ?> <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
@@ -58,7 +58,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" name="password" required autocomplete="current-password" id="password" placeholder="<?php echo e(__('Enter Your Password')); ?>">
-                                </div> 
+                                </div>
                                 <div class="form-group mb-3 text-start">
                                       <a href="<?php echo e(route('password.request', $lang)); ?>" class=""><small><b><?php echo e(__('Forgot your password?')); ?></b></small></a>
                                 </div>
@@ -90,16 +90,16 @@ unset($__errorArgs, $__bag); ?>
                                      <p class="my-4 text-center">Don't have an account? <a href="<?php echo e(route('register', $lang)); ?>" class="my-4 text-center text-primary"> Register</a></p>
                                     <?php endif; ?>
                                     </form>
- 
-                                      
+
+
                                        <!--  <div class="col-6 py-2 text-start">
                                             <button type="button" id="" class="btn btn-primary text-xs btn-block login-deafult"><a href="#" class="" style="color:#fff"><?php echo e(__('User Login')); ?></a></button>
                                         </div> -->
                                        <div class="d-grid mt-3">
                                             <button type="button" id="" class="btn btn-primary btn-block  "><a href="<?php echo e(route('client.login', $lang)); ?>" class="" style="color:#fff"> <?php echo e(__('Client Login')); ?></a></button>
-                                        </div>             
-                                  
-                                    <div class="row mt-4">   
+                                        </div>
+
+                                    <div class="row mt-4">
                                         <div class="">
                                              <?php $__env->startSection('language-bar'); ?>
                                             <a href="#" class="  btn-primary  ">
@@ -110,7 +110,7 @@ unset($__errorArgs, $__bag); ?>
                                                 </select>
                                             </a>
                                             <?php $__env->stopSection(); ?>
-                                        </div>   
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -124,7 +124,7 @@ unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
                 </div>
-    
+
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startPush('custom-scripts'); ?>
@@ -159,4 +159,5 @@ $(document).ready(function () {
     .login-deafult {
     width: 139px !important;
 }
-    </style><?php /**PATH D:\laragon\www\mchd\resources\views/auth/login.blade.php ENDPATH**/ ?>
+    </style>
+<?php /**PATH D:\laragon\www\mchd\resources\views/auth/login.blade.php ENDPATH**/ ?>
