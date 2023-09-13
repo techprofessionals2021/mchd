@@ -56,7 +56,7 @@ if (isset($currentWorkspace)) {
     <meta property="twitter:image" content="{{ asset($meta_images . $meta_setting['meta_image']) }}">
 
     <title>
-       {{ config('app.name', 'Taskly') }} - @yield('page-title')
+       {{ config('app.name', 'mchd') }} - @yield('page-title')
     </title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{$logo.'favicon.png'}}">

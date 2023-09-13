@@ -77,9 +77,9 @@
     
     <title>
         <?php if(trim($__env->yieldContent('page-title')) && Auth::user()->type == 'admin'): ?>
-            <?php echo e(config('app.name', 'Taskly')); ?> -<?php echo $__env->yieldContent('page-title'); ?> 
+            <?php echo e(config('app.name', 'mchd')); ?> -<?php echo $__env->yieldContent('page-title'); ?> 
         <?php else: ?>
-             <?php echo e(isset($currentWorkspace->company) && $currentWorkspace->company != '' ? $currentWorkspace->company : config('app.name', 'Taskly')); ?> -<?php echo $__env->yieldContent('page-title'); ?>
+             <?php echo e(isset($currentWorkspace->company) && $currentWorkspace->company != '' ? $currentWorkspace->company : config('app.name', 'mchd')); ?> -<?php echo $__env->yieldContent('page-title'); ?>
         <?php endif; ?>
     </title>
 

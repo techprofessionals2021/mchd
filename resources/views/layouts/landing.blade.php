@@ -25,7 +25,7 @@ $dark_mode = $setting['cust_darklayout'];
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{env('SITE_RTL') == 'on'?'rtl':''}}">
   <head>
 
-    <title>Taskly</title>
+    <title>mchd</title>
     <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 11]>
@@ -148,7 +148,7 @@ $dark_mode = $setting['cust_darklayout'];
               class="text-white mb-sm-4 wow animate__fadeInLeft"
               data-wow-delay="0.2s"
             >
-             Taskly
+             mchd
             </h1>
             <h2
               class="text-white mb-sm-4 wow animate__fadeInLeft"
@@ -164,7 +164,7 @@ $dark_mode = $setting['cust_darklayout'];
               <a href="{{ route('login') }}" class="btn btn-light me-2"
                 ><i class="far fa-eye me-2"></i>Live Demo</a
               >
-              <a href="https://codecanyon.net/item/taskly-project-management-tool/24264721" class="btn btn-outline-light" target="_blank"
+              <a href="https://codecanyon.net/item/mchd-project-management-tool/24264721" class="btn btn-outline-light" target="_blank"
                 ><i class="fas fa-shopping-cart me-2"></i>Buy now</a
               >
             </div>
@@ -256,7 +256,7 @@ $dark_mode = $setting['cust_darklayout'];
               class="mb-sm-4 f-w-600 wow animate__fadeInLeft"
               data-wow-delay="0.2s"
             >
-              Taskly
+              mchd
             </h1>
             <h2 class="mb-sm-4 wow animate__fadeInLeft" data-wow-delay="0.4s">
               Project Management<br/>Tool
@@ -294,7 +294,7 @@ $dark_mode = $setting['cust_darklayout'];
               class="mb-sm-4 f-w-600 wow animate__fadeInRight"
               data-wow-delay="0.2s"
             >
-              Taskly
+              mchd
             </h1>
             <h2 class="mb-sm-4 wow animate__fadeInRight" data-wow-delay="0.4s">
               Project Management<br/>Tool
@@ -439,7 +439,7 @@ $dark_mode = $setting['cust_darklayout'];
               class="mb-sm-4 f-w-600 wow animate__fadeInLeft"
               data-wow-delay="0.2s"
             >
-              Taskly
+              mchd
             </h1>
             <h2 class="mb-sm-4 wow animate__fadeInLeft" data-wow-delay="0.4s">
               Project Management<br/>Tool
@@ -477,7 +477,7 @@ $dark_mode = $setting['cust_darklayout'];
               class="mb-sm-4 f-w-600 wow animate__fadeInRight"
               data-wow-delay="0.2s"
             >
-              Taskly
+              mchd
             </h1>
             <h2 class="mb-sm-4 wow animate__fadeInRight" data-wow-delay="0.4s">
               Project Management<br/>Tool
@@ -740,7 +740,7 @@ $dark_mode = $setting['cust_darklayout'];
               class="mb-sm-4 f-w-600 wow animate__fadeInLeft"
               data-wow-delay="0.2s"
             >
-              Taskly
+              mchd
             </h1>
             <h2 class="mb-sm-4 wow animate__fadeInLeft" data-wow-delay="0.4s">
              Project Management<br/>Tool

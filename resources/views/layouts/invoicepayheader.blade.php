@@ -44,9 +44,9 @@ $logo_path = \App\Models\Utility::get_file('/logo/');
 
     <title>
         @if(trim($__env->yieldContent('page-title')))
-            {{ config('app.name', 'Taskly') }} -@yield('page-title')
+            {{ config('app.name', 'mchd') }} -@yield('page-title')
         @else
-             {{ isset($currentWorkspace->company) && $currentWorkspace->company != '' ? $currentWorkspace->company : config('app.name', 'Taskly') }} -@yield('page-title')
+             {{ isset($currentWorkspace->company) && $currentWorkspace->company != '' ? $currentWorkspace->company : config('app.name', 'mchd') }} -@yield('page-title')
         @endif
     </title>
 

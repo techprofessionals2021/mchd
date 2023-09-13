@@ -15,6 +15,7 @@ class HomeController extends Controller
 {
     public function landingPage()
     {
+        return redirect('login');
         // if (!file_exists(storage_path() . "/installed")) {
         //     header('location:install');
         //     die;
@@ -29,8 +30,6 @@ class HomeController extends Controller
         // } else {
         //     return redirect('login');
         // }
-
-        return redirect('login');
     }
 
     /**
