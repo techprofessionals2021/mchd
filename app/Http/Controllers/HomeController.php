@@ -15,20 +15,22 @@ class HomeController extends Controller
 {
     public function landingPage()
     {
-        if (!file_exists(storage_path() . "/installed")) {
-            header('location:install');
-            die;
-        }
+        // if (!file_exists(storage_path() . "/installed")) {
+        //     header('location:install');
+        //     die;
+        // }
 
-        if (env('DISPLAY_LANDING') == 'on' || env('DISPLAY_LANDING') == '' && \Schema::hasTable('landing_page_settings')) {
+        // if (env('DISPLAY_LANDING') == 'on' || env('DISPLAY_LANDING') == '' && \Schema::hasTable('landing_page_settings')) {
 
 
-            return view('landingpage::layouts.landingpage');
-            // return view('layouts.landing');
+        //     return view('landingpage::layouts.landingpage');
+        //     // return view('layouts.landing');
 
-        } else {
-            return redirect('login');
-        }
+        // } else {
+        //     return redirect('login');
+        // }
+
+        return redirect('login');
     }
 
     /**
