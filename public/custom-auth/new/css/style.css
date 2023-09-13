@@ -1,0 +1,124 @@
+/* GLOBALS */
+
+*,
+select,
+::placeholder {
+    font-family: 'Inter', sans-serif;
+}
+
+.trans__ {
+    transition: ease-in 0.2s all
+}
+
+.trans__:hover {
+    transform: translateX(4px);
+}
+
+.review-slick .slick-track {
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+}
+
+.review-slick .slick-next:before {
+    content: '' !important;
+}
+
+.review-slick .slick-prev:before {
+    content: '' !important;
+}
+
+.review-slick .slick-next {
+    right: 5px !important;
+    width: 87px !important;
+    height: 76px !important;
+    display: flex;
+    background: top;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../assets/images/next.png") !important;
+    background-repeat: no-repeat;
+    background-color: transparent !important;
+    z-index: 100;
+}
+
+.review-slick .slick-prev {
+    left: 5px !important;
+    width: 87px !important;
+    height: 76px !important;
+    display: flex;
+    background: top;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../assets/images/prev.png") !important;
+    background-repeat: no-repeat;
+    background-color: transparent !important;
+    z-index: 100;
+}
+
+.dropdown-menu {
+    margin-left: -11px !important;
+    margin-top: 8px !important
+}
+
+#notify-cookies {
+    opacity: 0;
+    animation: fadeIn 1.5s forwards;
+}
+
+.accordion-button::after {
+    margin-right: 10px;
+    scale: 0.8;
+}
+
+
+@keyframes slide-in {
+    0% {
+        left: 100%;
+    }
+
+    100% {
+        left: 0;
+    }
+}
+
+.error-msg {
+    background-color: #fff3cd;
+    color: #856404
+}
+
+.search__:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.animate-spin {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 450px) {
+    .review-slick .slick-next {
+        right: -9px !important;
+    }
+
+    .review-slick .slick-prev {
+        left: -9px !important;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+        /* start at 0 degrees */
+    }
+
+    100% {
+        transform: rotate(360deg);
+        /* end at 360 degrees (a full circle) */
+    }
+}

@@ -3,7 +3,8 @@
 /public/hot
 /public/storage
 /storage/framework
-/storage/logs/laravel.log
+
+
 
 
 #.env.backup
@@ -17,3 +18,10 @@ yarn-error.log
 .env
 vendor
 /public/uploads*
+
+
+# Laravel storage directories
+
+storage/app/public/*
+storage/app/backups/*
+storage/logs/*

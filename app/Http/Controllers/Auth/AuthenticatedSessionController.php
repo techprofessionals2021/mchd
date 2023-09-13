@@ -21,7 +21,7 @@ class AuthenticatedSessionController extends Controller
      * Display the login view.
      *
      * @return \Illuminate\View\View
-     * 
+     *
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
@@ -49,6 +49,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
+        // dd($request);
         if(env('RECAPTCHA_MODULE') == 'on')
         {
             $validation['g-recaptcha-response'] = 'required|captcha';
@@ -89,7 +90,7 @@ class AuthenticatedSessionController extends Controller
         $user = \Auth::user();
         $totalWS = $user->countWorkspace();
         $permission = UserWorkspace::where('user_id','=', $user->id)->where('permission','=' ,'Member')->count();
-        
+
         if ($user->type != 'company' && $user->type != 'admin' && ($totalWS <= 0 || $permission > 0) ) {
             $login_detail = LoginDetail::create([
                 'user_id' => $user->id,
@@ -126,7 +127,7 @@ class AuthenticatedSessionController extends Controller
 
  public function showClientLoginForm($lang = '')
     {
-        
+
         if ($lang == '') {
             $lang = env('DEFAULT_LANG') ?? 'en';
         }
@@ -198,11 +199,12 @@ class AuthenticatedSessionController extends Controller
 
         \App::setLocale($lang);
 
-        return view('auth.login', compact('lang'));
+        return view('custom-auth.login', compact('lang'));
+        // return view('auth.login', compact('lang'));
     }
 
 
- 
+
 
  public function showLinkRequestForm($lang = '')
     {
@@ -212,7 +214,7 @@ class AuthenticatedSessionController extends Controller
 
         \App::setLocale($lang);
 
-        return view('auth.forgot-password', compact('lang'));
+        return view('custom-auth.forgot-password', compact('lang'));
     }
 
 
