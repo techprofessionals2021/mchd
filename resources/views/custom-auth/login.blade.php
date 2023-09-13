@@ -8,16 +8,17 @@
                 class="w-full max-w-[500px] py-12 px-5 lg:px-7 mx-auto shadow-[0px_6px_30px_20px_rgba(0,0,0,0.03)] bg-white rounded-xl">
                 <h2 class="text-[#0A0A0A] text-2xl font-semibold">Login</h2>
                 <p class="text-[#404040] mt-7 mb-9">Sign In to your account</p>
-                <form action="" method="">
+                <form action="{{route('login')}}" method="POST">
+                    @csrf
                     <!-- this code is commented by ahmad -->
                     <!-- <input type="hidden" name="_token" value="FpHdcCilGNMjipeMcL4uJrmvKcZwPE0cjcJDsSq1"> -->
-                    <div id="my_name_2DBY8gEdmggsX74J_wrap" style="display: none" aria-hidden="true">
+                    {{-- <div id="my_name_2DBY8gEdmggsX74J_wrap" style="display: none" aria-hidden="true">
                         <input id="my_name_2DBY8gEdmggsX74J" name="my_name_2DBY8gEdmggsX74J" type="text"
                             value="" autocomplete="nope" tabindex="-1">
                         <input name="valid_from" type="text"
                             value="eyJpdiI6Ino3Z3BrUjVMNGZBQXczb3Bqd0lvVnc9PSIsInZhbHVlIjoiSzgzSGF3TmxmWmFSYU5udUNHYVNoZz09IiwibWFjIjoiYmIxOTE3ZWQwMzA3OTc5ZDAzMTQ4NGE0MDAyZGI1NGFhNTBmZDhlMjU1ZjdiOTE3YWMzODg0NGQxMzEzMTUzYyIsInRhZyI6IiJ9"
                             autocomplete="nope" tabindex="-1">
-                    </div>
+                    </div> --}}
                     <p class="text-[#616161] font-semibold mb-2 mt-5">
                         Email
                     </p>

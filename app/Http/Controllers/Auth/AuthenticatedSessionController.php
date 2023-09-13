@@ -49,6 +49,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
+        // dd($request);
         if(env('RECAPTCHA_MODULE') == 'on')
         {
             $validation['g-recaptcha-response'] = 'required|captcha';
@@ -213,7 +214,7 @@ class AuthenticatedSessionController extends Controller
 
         \App::setLocale($lang);
 
-        return view('auth.forgot-password', compact('lang'));
+        return view('custom-auth.forgot-password', compact('lang'));
     }
 
 

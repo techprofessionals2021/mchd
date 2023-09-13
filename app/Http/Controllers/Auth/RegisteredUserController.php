@@ -54,11 +54,11 @@ class RegisteredUserController extends Controller
         \App::setLocale($lang);
 
         if(env('SIGNUP_BUTTON') == 'on'){
-            return view('auth.register', compact('lang'));
+            return view('custom-auth.register', compact('lang'));
         }else{
             return abort('404', 'Page not found');
         }
-        return view('auth.register', compact('lang'));
+        return view('custom-auth.register', compact('lang'));
     }
 
     public function store(Request $request)
@@ -114,9 +114,9 @@ class RegisteredUserController extends Controller
 
             if($setting['email_verification'] == 'on'){
 
-            
+
                 try{
-                    
+
                     $user->save();
                     event(new Registered($user));
                     UserWorkspace::create(['user_id'=> $user->id,'workspace_id'=>$objWorkspace->id,'permission'=>'Owner']);
@@ -125,20 +125,20 @@ class RegisteredUserController extends Controller
                         $lang = env('default_language');
                     }
                     \App::setLocale($lang);
-    
-                    
+
+
                 }catch(\Exception $e){
-                    
+
                     $user->delete();
                     $userWorkspace->delete();
-                    
+
                     // dd($user);
                     return redirect('/register/lang?')->with('statuss', __('Email SMTP settings does not configure so please contact to your site admin.'));
                 }
-                
+
                 return view('auth.verify-email', compact('lang'));
             }else{
-    
+
                 $user->email_verified_at = date('h:i:s');
 
                 $user->save();

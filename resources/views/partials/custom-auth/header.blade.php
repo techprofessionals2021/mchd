@@ -55,7 +55,7 @@
                             Ticket</a>
                     </li>
                     <li class="relative">
-                        <a href="register.html"
+                        <a href="{{route('register')}}"
                             class="text-pri text-sm xl:text-base font-medium pl-3 border-l py-3">Register</a>
                     </li>
                     <li class="relative">
@@ -125,7 +125,7 @@
                                 </div>
                             </li>
                             <li>
-                                <a href="register.html"
+                                <a href="{{route('register')}}"
                                     class="text-pri text-sm xl:text-base font-medium py-3">Register</a>
                             </li>
                             <li>
