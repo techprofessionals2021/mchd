@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <x-auth-card>  
+    <x-auth-card>
 
 @section('page-title') {{__('Login')}} @endsection
 @section('content')
@@ -28,7 +28,7 @@
                                 <div class="form-group mb-3">
                                     <label for="password" class="form-label">{{ __('Password') }}</label>
                                     <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" id="password" placeholder="{{ __('Enter Your Password') }}">
-                                </div> 
+                                </div>
                                 <div class="form-group mb-3 text-start">
                                       <a href="{{ route('password.request', $lang) }}" class=""><small><b>{{ __('Forgot your password?') }}</b></small></a>
                                 </div>
@@ -52,16 +52,16 @@
                                      <p class="my-4 text-center">Don't have an account? <a href="{{ route('register', $lang) }}" class="my-4 text-center text-primary"> Register</a></p>
                                     @endif
                                     </form>
- 
-                                      
+
+
                                        <!--  <div class="col-6 py-2 text-start">
                                             <button type="button" id="" class="btn btn-primary text-xs btn-block login-deafult"><a href="#" class="" style="color:#fff">{{ __('User Login') }}</a></button>
                                         </div> -->
                                        <div class="d-grid mt-3">
                                             <button type="button" id="" class="btn btn-primary btn-block  "><a href="{{route('client.login', $lang)}}" class="" style="color:#fff"> {{ __('Client Login') }}</a></button>
-                                        </div>             
-                                  
-                                    <div class="row mt-4">   
+                                        </div>
+
+                                    <div class="row mt-4">
                                         <div class="">
                                              @section('language-bar')
                                             <a href="#" class="  btn-primary  ">
@@ -72,7 +72,7 @@
                                                 </select>
                                             </a>
                                             @endsection
-                                        </div>   
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                         </div>
                     </div>
                 </div>
-    
+
 
 @endsection
 @push('custom-scripts')

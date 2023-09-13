@@ -2,8 +2,9 @@
 /node_modules
 /public/hot
 /public/storage
-/storage/*.key
-/storage/app
+/storage/framework
+/storage/logs/laravel.log
+
 
 #.env.backup
 .phpunit.result.cache
