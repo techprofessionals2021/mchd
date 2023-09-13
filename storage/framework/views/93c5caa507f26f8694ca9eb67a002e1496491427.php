@@ -56,7 +56,7 @@ if (isset($currentWorkspace)) {
     <meta property="twitter:image" content="<?php echo e(asset($meta_images . $meta_setting['meta_image'])); ?>">
 
     <title>
-       <?php echo e(config('app.name', 'Taskly')); ?> - <?php echo $__env->yieldContent('page-title'); ?>
+       <?php echo e(config('app.name', 'mchd')); ?> - <?php echo $__env->yieldContent('page-title'); ?>
     </title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="<?php echo e($logo.'favicon.png'); ?>">

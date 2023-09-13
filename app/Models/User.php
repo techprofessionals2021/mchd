@@ -747,7 +747,7 @@ class User extends Authenticatable implements MustVerifyEmail
                                                 'lang' => $lang,
                                                 'subject' => $defaultTemplate[$e->name]['subject'],
                                                 'content' => $content,
-                                                'from' => (env('APP_NAME')) ? env('APP_NAME') : 'Taskly',
+                                                'from' => (env('APP_NAME')) ? env('APP_NAME') : 'mchd',
                                         ]
                                 );
                         }
