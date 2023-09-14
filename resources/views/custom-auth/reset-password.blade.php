@@ -8,36 +8,26 @@
                 class="w-full max-w-[500px] py-12 px-5 lg:px-7 mx-auto shadow-[0px_6px_30px_20px_rgba(0,0,0,0.03)] bg-white rounded-xl">
                 <h2 class="text-[#0A0A0A] text-2xl font-semibold">Reset Password</h2>
                 <p class="text-[#404040] mt-7 mb-9">Create your new Password</p>
-                <form method="" action="">
-                    <!-- this code is commented by ahmed -->
-                    <!-- <input type="hidden" name="_token" value="FpHdcCilGNMjipeMcL4uJrmvKcZwPE0cjcJDsSq1"> <input
-                        type="hidden" name="_method" value="post"> -->
-                    <div id="my_name_6aC5S9cvisqrP6j7_wrap" style="display: none" aria-hidden="true">
-                        <input id="my_name_6aC5S9cvisqrP6j7" name="" type="text" value="" autocomplete="nope"
-                            tabindex="-1">
-                        <input name="valid_from" type="text" value="" autocomplete="nope" tabindex="-1">
-                    </div>
-                    <!-- <p class="text-[#616161] font-semibold mb-2 mt-5">First Name
-                    </p>
-                    <input placeholder="Enter your First Name" name="firstname" value=""
-                        class="py-2 px-3 rounded-xl border border-gray-200 w-full placeholder:text-[#9E9E9E]"
-                        type="text" />
-                    <p class="text-[#616161] font-semibold mb-2 mt-5">Last Name
-                    </p>
-                    <input placeholder="Enter your Last Name" name="lastname" value=""
-                        class="py-2 px-3 rounded-xl border border-gray-200 w-full placeholder:text-[#9E9E9E]"
-                        type="text" /> -->
+                <form method="POST" action="{{route('password.update')}}">
+                    @csrf
+                    <input type="hidden" name="token" value="{{$request->route('token')}}">
+
                     <p class="text-[#616161] font-semibold mb-2 mt-5">
                         Email
                     </p>
-                    <input placeholder="Enter your Email Address" name="email" value=""
+                    <input placeholder="Enter your Email Address" name="email" value="{{$request->email ?? old('email') }}"
                         class="py-2 px-3 rounded-xl border border-gray-200 w-full placeholder:text-[#9E9E9E]"
                         type="Email" />
+                        @error('email')
+                        <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     <!-- VALIDATION ERROR -->
                     <p class="text-[#616161] font-semibold mb-2 mt-5">Password
                     </p>
                     <div class="relative">
-                        <input id="password" placeholder="Enter password" name="password"
+                        <input id="password" placeholder="Enter password" name="password" value="{{ old('password') }}"
                             class="py-2 password px-3 rounded-xl border border-gray-200 w-full placeholder:text-[#9E9E9E]"
                             type="Password" />
                         <span class="absolute toggle-pw right-5 top-[50%] translate-y-[-50%] cursor-pointer">
@@ -49,6 +39,11 @@
                             </svg>
                         </span>
                     </div>
+                    @error('password')
+                    <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                     <!-- VALIDATION ERROR -->
                     <p class="text-[#616161] font-semibold mb-2 mt-5">
                         Confirm Password
@@ -84,7 +79,7 @@
                         Password?</a> -->
                     <p class="text-gray-500 text-center pt-5 border-t mt-9">
                         Remember your password?
-                        <a href="login.html" class="text-pri font-bold inline">Login</a>
+                        <a href="{{route('login')}}" class="text-pri font-bold inline">Login</a>
                     </p>
                 </form>
             </div>

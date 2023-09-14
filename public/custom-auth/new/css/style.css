@@ -70,6 +70,21 @@ select,
     scale: 0.8;
 }
 
+.alert {
+    position: relative;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+  }
+
+
+.alert-success {
+    color: #1d643b;
+    background-color: #d7f3e3;
+    border-color: #c7eed8;
+  }
+
 
 @keyframes slide-in {
     0% {
