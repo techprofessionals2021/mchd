@@ -59,7 +59,7 @@
                             class="text-pri text-sm xl:text-base font-medium pl-3 border-l py-3">Register</a>
                     </li>
                     <li class="relative">
-                        <a href="login.html" class="text-pri text-sm xl:text-base font-medium">Login</a>
+                        <a href="{{route('login')}}" class="text-pri text-sm xl:text-base font-medium">Login</a>
                     </li>
                 </ul>
             </div>

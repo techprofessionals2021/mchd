@@ -52,7 +52,7 @@
 
     @yield('content')
 
-    <div style="z-index: 1000" id="notify-cookies"
+    {{-- <div style="z-index: 1000" id="notify-cookies"
         class="w-full max-w-[330px] fixed bottom-0 bg-white mb-3 right-3 sm:right-7 sm:mb-8 sm:max-w-[370px] py-7 px-8 shadow-[0px_6px_30px_20px_rgba(0,0,0,0.03)] rounded-xl ltr">
         <h2 class="text-[#404040] font-semibold mb-5">
             We Care About Your Privacy
@@ -64,7 +64,7 @@
             data-mdb-ripple-duration="800ms" class="px-5 py-2 text-white bg-pri rounded-md text-sm">
             Accept
         </button>
-    </div>
+    </div> --}}
 
     @include('partials.custom-auth.footer')
 

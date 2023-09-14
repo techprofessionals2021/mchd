@@ -52,12 +52,12 @@
                         Login
                     </button>
                     <a data-mdb-ripple="true" data-mdb-ripple-color="#cdcdcd" data-mdb-ripple-duration="1000ms"
-                        href="forgotpassword.html"
+                        href="{{route('password.request')}}"
                         class="text-pri relative hover:bg-gray-100 transition-all block justify-center mx-auto mt-1 font-medium text-center py-3 rounded-xl">Forgot
                         Password?</a>
                     <p class="text-gray-500 text-center pt-5 border-t mt-9">
                         Don’t have account?
-                        <a href="register.html" class="text-pri font-medium inline">Register</a>
+                        <a href="{{route('register')}}" class="text-pri font-medium inline">Register</a>
                     </p>
                 </form>
             </div>
