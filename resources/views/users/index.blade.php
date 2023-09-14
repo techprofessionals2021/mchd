@@ -32,7 +32,7 @@
                 title="{{ __('Create') }}">
                 <i class="ti ti-plus"></i>
             </a>
-        {{-- @elseif(isset($currentWorkspace) && $currentWorkspace->creater->id == Auth::id())
+        @elseif(isset($currentWorkspace) && $currentWorkspace->creater->id == Auth::id())
             <a href="{{route('users_logs.index',$currentWorkspace->slug)}}" class="btn btn-sm btn-primary" data-title="{{ __('User Logs') }}" data-toggle="tooltip" title="{{ __('User Logs') }}">
                 <i class="ti ti-user-check"></i>
             </a>
@@ -40,7 +40,7 @@
                 data-title="{{ __('Invite') }}" data-url="{{ route('users.invite', $currentWorkspace->slug) }}"
                 data-toggle="tooltip" title="{{ __('Invite') }}">
                 <i class="ti ti-plus"></i>
-            </a> --}}
+            </a>
         @endif
     @endauth
 @endsection

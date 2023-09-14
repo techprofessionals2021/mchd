@@ -52,8 +52,11 @@ else {
         <a href="{{ route('home') }}" class="b-brand">
           <!-- ========   change your logo hear   ============ -->
 
-           <img
-            src="{{$logo.$company_logo.'?timestamp='.strtotime(isset($currentWorkspace) ? $currentWorkspace->updated_at : '')}}" alt="logo" class="sidebar_logo_size" />
+           {{-- <img
+            src="{{$logo.$company_logo.'?timestamp='.strtotime(isset($currentWorkspace) ? $currentWorkspace->updated_at : '')}}" alt="logo" class="sidebar_logo_size" /> --}}
+
+            <img
+            src="{{asset("custom-auth/uploads/logo/logo/20230320172321.png")}}" alt="logo" class="sidebar_logo_size" />
         </a>
       </div>
       <div class="navbar-content">
