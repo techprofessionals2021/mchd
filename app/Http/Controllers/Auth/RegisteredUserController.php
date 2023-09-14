@@ -63,14 +63,15 @@ class RegisteredUserController extends Controller
 
     public function store(Request $request)
     {
-
-        if(env('RECAPTCHA_MODULE') == 'on')
-        {
-            $validation['g-recaptcha-response'] = 'required|captcha';
-        }else{
-            $validation = [];
-        }
-        $this->validate($request, $validation);
+        // dd($request->all());
+        // if(env('RECAPTCHA_MODULE') == 'on')
+        // {
+        //     $validation['g-recaptcha-response'] = 'required|captcha';
+        // }else{
+        //     $validation = [];
+        // }
+        // $this->validate($request, $validation);
+        // try {
         $request->validate([
             'name' => 'required|string|max:255',
             'workspace' => 'required', 'string', 'max:255',
@@ -84,7 +85,7 @@ class RegisteredUserController extends Controller
              'workspace'=>$request->workspace,
             'password' => Hash::make($request->password),
             'plan'=>1,
-            'lang'      => env('DEFAULT_ADMIN_LANG'),
+            'lang'      => env('DEFAULT_ADMIN_LANG') ?? 'en',
         ]);
 
 
@@ -112,38 +113,44 @@ class RegisteredUserController extends Controller
 
             Auth::login($user);
 
-            if($setting['email_verification'] == 'on'){
+            // if($setting['email_verification'] == 'on'){
 
 
-                try{
+            //     try{
 
-                    $user->save();
-                    event(new Registered($user));
-                    UserWorkspace::create(['user_id'=> $user->id,'workspace_id'=>$objWorkspace->id,'permission'=>'Owner']);
-                    if(empty($lang))
-                    {
-                        $lang = env('default_language');
-                    }
-                    \App::setLocale($lang);
+            //         $user->save();
+            //         event(new Registered($user));
+            //         UserWorkspace::create(['user_id'=> $user->id,'workspace_id'=>$objWorkspace->id,'permission'=>'Owner']);
+            //         if(empty($lang))
+            //         {
+            //             $lang = env('default_language');
+            //         }
+            //         \App::setLocale($lang);
 
 
-                }catch(\Exception $e){
+            //     }catch(\Exception $e){
 
-                    $user->delete();
-                    $userWorkspace->delete();
+            //         $user->delete();
+            //         $userWorkspace->delete();
 
-                    // dd($user);
-                    return redirect('/register/lang?')->with('statuss', __('Email SMTP settings does not configure so please contact to your site admin.'));
-                }
+            //         // dd($user);
+            //         return redirect('/register/lang?')->with('statuss', __('Email SMTP settings does not configure so please contact to your site admin.'));
+            //     }
 
-                return view('auth.verify-email', compact('lang'));
-            }else{
+            //     return view('auth.verify-email', compact('lang'));
+            // }else{
 
                 $user->email_verified_at = date('h:i:s');
 
                 $user->save();
                 return redirect(RouteServiceProvider::HOME);
-            }
+            // }
+
+        // } catch (\Exception $e) {
+        //     dd($e->getMessage());
+        //     return redirect()->back('error','Some thing went wrong');
+        //     //throw $th;
+        // }
     }
 }
 

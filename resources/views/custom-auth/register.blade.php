@@ -8,7 +8,8 @@
                     class="w-full max-w-[500px] py-12 px-5 lg:px-7 mx-auto shadow-[0px_6px_30px_20px_rgba(0,0,0,0.03)] bg-white rounded-xl">
                     <h2 class="text-[#0A0A0A] text-2xl font-semibold">Register</h2>
                     <p class="text-[#404040] mt-7 mb-9">Create new account</p>
-                    <form method="" action="">
+                    <form method="POST" action="{{route('register')}}">
+                        @csrf
                         <!-- this code is commented by ahmed -->
                         <!-- <input type="hidden" name="_token" value="FpHdcCilGNMjipeMcL4uJrmvKcZwPE0cjcJDsSq1"> <input
                             type="hidden" name="_method" value="post"> -->
@@ -17,28 +18,45 @@
                                 autocomplete="nope" tabindex="-1">
                             <input name="valid_from" type="text" value="" autocomplete="nope" tabindex="-1">
                         </div>
-                        <p class="text-[#616161] font-semibold mb-2 mt-5">First Name
+                        <p class="text-[#616161] font-semibold mb-2 mt-5">Name
                         </p>
-                        <input placeholder="Enter your First Name" name="firstname" value=""
-                            class="py-2 px-3 rounded-xl border border-gray-200 w-full placeholder:text-[#9E9E9E]"
+                        <input placeholder="Enter your  Name" name="name" value=""
+                            class="py-2 px-3 rounded-xl border border-gray-200 w-full placeholder:text-[#9E9E9E] @error('name') is-invalid @enderror"
                             type="text" />
-                        <p class="text-[#616161] font-semibold mb-2 mt-5">Last Name
+                        @error('name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                        {{-- <p class="text-[#616161] font-semibold mb-2 mt-5">Last Name
                         </p>
                         <input placeholder="Enter your Last Name" name="lastname" value=""
                             class="py-2 px-3 rounded-xl border border-gray-200 w-full placeholder:text-[#9E9E9E]"
-                            type="text" />
+                            type="text" /> --}}
                         <p class="text-[#616161] font-semibold mb-2 mt-5">
                             Email
                         </p>
                         <input placeholder="Enter your Email Address" name="email" value=""
-                            class="py-2 px-3 rounded-xl border border-gray-200 w-full placeholder:text-[#9E9E9E]"
+                            class="py-2 px-3 rounded-xl border border-gray-200 w-full placeholder:text-[#9E9E9E] @error('email') is-invalid @enderror"
                             type="Email" />
+
+                            @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        {{-- <p class="text-[#616161] font-semibold mb-2 mt-5">
+                            Workspace
+                        </p> --}}
+                        <input placeholder="Enter Workspace" name="workspace" value="design"
+                            class="py-2 px-3 rounded-xl border border-gray-200 w-full placeholder:text-[#9E9E9E] @error('workspace') is-invalid @enderror"
+                            type="text" hidden />
                         <!-- VALIDATION ERROR -->
                         <p class="text-[#616161] font-semibold mb-2 mt-5">Password
                         </p>
                         <div class="relative">
                             <input id="password" placeholder="Enter password" name="password"
-                                class="py-2 password px-3 rounded-xl border border-gray-200 w-full placeholder:text-[#9E9E9E]"
+                                class="py-2 password px-3 rounded-xl border border-gray-200 w-full placeholder:text-[#9E9E9E] @error('password') is-invalid @enderror"
                                 type="Password" />
                             <span class="absolute toggle-pw right-5 top-[50%] translate-y-[-50%] cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="10" viewBox="0 0 16 10"
@@ -49,13 +67,18 @@
                                 </svg>
                             </span>
                         </div>
+                        @error('password')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                         <!-- VALIDATION ERROR -->
                         <p class="text-[#616161] font-semibold mb-2 mt-5">
                             Confirm Password
                         </p>
                         <div class="relative">
                             <input id="password" placeholder="Confirm password" name="password_confirmation"
-                                class="py-2 password px-3 rounded-xl border border-gray-200 w-full placeholder:text-[#9E9E9E]"
+                                class="py-2 password px-3 rounded-xl border border-gray-200 w-full placeholder:text-[#9E9E9E] @error('password_confirmation') is-invalid @enderror"
                                 type="Password" />
                             <span class="absolute toggle-pw right-5 top-[50%] translate-y-[-50%] cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="10" viewBox="0 0 16 10"
@@ -66,6 +89,8 @@
                                 </svg>
                             </span>
                         </div>
+
+
                         <!-- VALIDATION ERROR -->
 
                         <label data-mdb-ripple="true" data-mdb-ripple-color="#a8a8a8" data-mdb-ripple-duration="1000ms"
@@ -84,7 +109,7 @@
                             Password?</a>
                         <p class="text-gray-500 text-center pt-5 border-t mt-9">
                             Already have an account?
-                            <a href="login.html" class="text-pri font-medium inline">Login</a>
+                            <a href="{{route('login')}}" class="text-pri font-medium inline">Login</a>
                         </p>
                     </form>
                 </div>

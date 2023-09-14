@@ -8,6 +8,11 @@
                 class="w-full max-w-[500px] py-12 px-5 lg:px-7 mx-auto shadow-[0px_6px_30px_20px_rgba(0,0,0,0.03)] bg-white rounded-xl">
                 <h2 class="text-[#0A0A0A] text-2xl font-semibold">Login</h2>
                 <p class="text-[#404040] mt-7 mb-9">Sign In to your account</p>
+                @if ($errors->any())
+                  @foreach ($errors->all() as $error)
+                      <span style="color: red">{{$error}}</strong></span>
+                  @endforeach
+                 @endif
                 <form action="{{route('login')}}" method="POST">
                     @csrf
                     <!-- this code is commented by ahmad -->
@@ -23,14 +28,14 @@
                         Email
                     </p>
                     <input placeholder="Enter your Email Address" value="" name="email"
-                        class="py-2 px-3 rounded-xl border border-200 w-full placeholder:text-[#9E9E9E]"
+                        class="py-2 px-3 rounded-xl border border-200 w-full placeholder:text-[#9E9E9E]  @error('email') is-invalid @enderror"
                         type="Email" />
                     <!-- VALIDATION ERROR -->
                     <p class="text-[#616161] font-semibold mb-2 mt-5">Password
                     </p>
                     <div class="relative">
                         <input id="password" placeholder="Enter password" name="password"
-                            class="py-2 px-3 rounded-xl border border-200 w-full placeholder:text-[#9E9E9E]"
+                            class="py-2 px-3 rounded-xl border border-200 w-full placeholder:text-[#9E9E9E]  @error('password') is-invalid @enderror"
                             type="Password" />
                         <span class="absolute toggle-pw right-5 top-[50%] translate-y-[-50%] cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="10"
@@ -52,12 +57,12 @@
                         Login
                     </button>
                     <a data-mdb-ripple="true" data-mdb-ripple-color="#cdcdcd" data-mdb-ripple-duration="1000ms"
-                        href="forgotpassword.html"
+                        href="{{route('password.request')}}"
                         class="text-pri relative hover:bg-gray-100 transition-all block justify-center mx-auto mt-1 font-medium text-center py-3 rounded-xl">Forgot
                         Password?</a>
                     <p class="text-gray-500 text-center pt-5 border-t mt-9">
                         Don’t have account?
-                        <a href="register.html" class="text-pri font-medium inline">Register</a>
+                        <a href="{{route('register')}}" class="text-pri font-medium inline">Register</a>
                     </p>
                 </form>
             </div>
