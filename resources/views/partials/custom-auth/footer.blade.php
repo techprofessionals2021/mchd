@@ -16,7 +16,7 @@
                         <a class="mt-5 text-sm block text-ltgray font-light" href="#">FAQ’s</a>
                     </li>
                     <li>
-                        <a class="mt-5 text-sm block text-ltgray font-light" href="contact-us.html">Contact Us</a>
+                        <a class="mt-5 text-sm block text-ltgray font-light" href="#">Contact Us</a>
                     </li>
 
                 </ul>
@@ -51,10 +51,10 @@
                 <p class="text-white font-semibold tracking-wide">Action</p>
                 <ul>
                     <li>
-                        <a class="mt-5 text-sm block text-ltgray font-light" href="login.html">Login</a>
+                        <a class="mt-5 text-sm block text-ltgray font-light" href="{{route('login')}}">Login</a>
                     </li>
                     <li>
-                        <a class="mt-5 text-sm block text-ltgray font-light" href="register.html">Register</a>
+                        <a class="mt-5 text-sm block text-ltgray font-light" href="{{route('register')}}">Register</a>
                     </li>
                     <li>
                         <a class="mt-5 text-sm block text-ltgray font-light" href="#">Submit Ticket</a>
