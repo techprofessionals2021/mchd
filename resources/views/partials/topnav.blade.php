@@ -69,10 +69,10 @@
                 </li>
                 @if (Auth::user()->type != 'admin')
                     <li class="dropdown dash-h-item">
-                        <a class="dash-head-link dropdown-toggle arrow-none ms-0" data-bs-toggle="dropdown"
+                        {{-- <a class="dash-head-link dropdown-toggle arrow-none ms-0" data-bs-toggle="dropdown"
                             href="#" role="button" aria-haspopup="false" aria-expanded="false">
                             <i class="ti ti-search"></i>
-                        </a>
+                        </a> --}}
                         <div class="dropdown-menu dash-h-dropdown drp-search drp-search-custom">
                             <form class="form-inline mr-auto mb-0">
                                 <div class="search-element">

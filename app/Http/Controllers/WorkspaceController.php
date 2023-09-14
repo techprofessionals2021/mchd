@@ -178,12 +178,15 @@ class WorkspaceController extends Controller
 
     public function changeCurrentWorkspace($workspaceID)
     {
+        // dd(Auth::user()->getGuard());
         $objWorkspace = Workspace::find($workspaceID);
         if ($objWorkspace && $objWorkspace->is_active) {
             $currentWorkspace           = Utility::getWorkspaceBySlug($objWorkspace->slug);
             $objUser                    = Auth::user();
             $objUser->currant_workspace = $workspaceID;
             $objUser->save();
+
+         
 
             if(Auth::user()->getGuard() == 'client'){
 
