@@ -104,7 +104,7 @@
                             Create Account
                         </button>
                         <a data-mdb-ripple="true" data-mdb-ripple-color="#cdcdcd" data-mdb-ripple-duration="1000ms"
-                            href="forgotpassword.html"
+                            href="{{route('password.request')}}"
                             class="text-pri block justify-center relative mx-auto text-sm font-medium hover:bg-gray-100 mt-1 transition-all rounded-xl text-center pt-3 py-3">Forgot
                             Password?</a>
                         <p class="text-gray-500 text-center pt-5 border-t mt-9">

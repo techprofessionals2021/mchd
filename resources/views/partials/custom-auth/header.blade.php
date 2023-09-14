@@ -15,7 +15,7 @@
                         <a href="#" class="text-sm xl:text-base font-medium px-1  text-sec ">FAQ’s</a>
                     </li>
                     <li class="relative">
-                        <a href="contact-us.html" class="text-sm xl:text-base font-medium px-1  text-sec ">Contact Us</a>
+                        <a href="#" class="text-sm xl:text-base font-medium px-1  text-sec ">Contact Us</a>
                     </li>
                     <li class="relative">
                         <div class="dropdown relative w-full rounded-xl">
@@ -91,7 +91,7 @@
                                 <a href="#" class="text-sm xl:text-base font-medium  text-sec ">FAQ’s</a>
                             </li>
                             <li>
-                                <a href="contact-us.html" class="text-sm xl:text-base font-medium  text-sec ">Contact Us</a>
+                                <a href="#" class="text-sm xl:text-base font-medium  text-sec ">Contact Us</a>
                             </li>
                             <li>
                                 <div class="dropdown max-w-[70px] relative w-full rounded-xl">
@@ -129,7 +129,7 @@
                                     class="text-pri text-sm xl:text-base font-medium py-3">Register</a>
                             </li>
                             <li>
-                                <a href="login.html" class="text-pri text-sm xl:text-base font-medium">Login</a>
+                                <a href="{{route('login')}}" class="text-pri text-sm xl:text-base font-medium">Login</a>
                             </li>
                             <li>
                                 <a href="#"
