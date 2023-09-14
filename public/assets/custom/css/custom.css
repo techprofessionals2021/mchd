@@ -751,7 +751,7 @@ span.invite-warning {
     margin: 0;
 }
 .last_notification_link a {
-    background: #6FD943;
+    background: #004AAB;
     border-radius: 50%;
     width: 20px;
     height: 20px;
@@ -793,7 +793,7 @@ span.invite-warning {
     color: #162C4E;
 }
 .border-primary {
-    border-color: #6fd943 !important;
+    border-color: #004AAB !important;
 }
 
 .last_notification_text p span {
@@ -832,7 +832,7 @@ padding: 25px 0px 10px 2px;
     /* border-radius: 4.64339px; */
     font-size: 14px;
     letter-spacing: 0.38695px;
-  /*  color: #6FD943;*/
+  /*  color: #004AAB;*/
     padding: 6px 15px;
     /* margin-bottom: 18px; */
 }
@@ -1019,7 +1019,7 @@ body.theme-3 .btn_tab.bg-primary {
     background: #bdbdbd !important;
 }
 body.theme-3 .btn_tab.bg-primary.checked {
-  background: #6fd943 !important;
+  background: #004AAB !important;
 }
 
 body.theme-4 .btn_tab.bg-primary {
@@ -1091,7 +1091,7 @@ body.theme-3 .btn_tab.bg-primary {
     background: #bdbdbd !important;
 }
 body.theme-3 .btn_tab.bg-primary.active {
-   background: #6fd943 !important;
+   background: #004AAB !important;
 }
 
 body.theme-4 .btn_tab.bg-primary {
@@ -1439,7 +1439,7 @@ a.b-brand {
 }
 
 .circular-progressbar .circular-chart.green .circle {
-    stroke: #6fd943;
+    stroke: #004AAB;
 }
 
 .circular-progressbar .circular-chart.blue .circle {
@@ -1494,9 +1494,9 @@ a.b-brand {
 
 
 
-.sidebar_logo_size{
+.sidebar_logo_size {
     height: 150px !important;
-    width: 150px !important;
+    width: 200px!important;
 }
 
 .notification_icon_size {
