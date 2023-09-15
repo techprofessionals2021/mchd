@@ -97,12 +97,12 @@
                         </li>
 
                         @if ($currentWorkspace->creater->id == Auth::user()->id)
-                            <li class="dash-item dash-hasmenu">
+                            {{-- <li class="dash-item dash-hasmenu">
                                 <a href="{{ route('clients.index', $currentWorkspace->slug) }}"
                                     class="dash-link {{ Request::route()->getName() == 'clients.index' ? ' active' : '' }}"><span
                                         class="dash-micon"> <i class="ti ti-brand-python"></i></span><span
                                         class="dash-mtext"> {{ __('Clients') }}</span></a>
-                            </li>
+                            </li> --}}
                         @endif
 
                         <li class="dash-item {{ Request::route()->getName() == 'tasks.index' ? ' active' : '' }}">
@@ -117,11 +117,11 @@
                                     class="dash-mtext">{{ __('Timesheet') }}</span></a>
                         </li>
                         @if (Auth::user()->type == 'user' && $currentWorkspace->creater->id == Auth::user()->id)
-                            <li class="dash-item {{ \Request::route()->getName() == 'time.tracker' ? 'active' : '' }}">
+                            {{-- <li class="dash-item {{ \Request::route()->getName() == 'time.tracker' ? 'active' : '' }}">
                                 <a href="{{ route('time.tracker', $currentWorkspace->slug) }}" class="dash-link "><span
                                         class="dash-micon"><i data-feather="watch"></i></span><span
                                         class="dash-mtext">{{ __('Tracker') }}</span></a>
-                            </li>
+                            </li> --}}
                         @endif
                         @if ($currentWorkspace->creater->id == Auth::user()->id)
                             {{-- <li

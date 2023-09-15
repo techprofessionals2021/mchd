@@ -22,20 +22,20 @@
         $SITE_RTL = $setting->site_rtl;
         $cust_theme_bg = $setting->cust_theme_bg;
     }
-    
+
     if ($color == '' || $color == null) {
         $settings = App\Models\Utility::getAdminPaymentSettings();
         $color = $settings['color'];
     }
-    
+
     if ($dark_mode == '' || $dark_mode == null) {
         $dark_mode = $settings['cust_darklayout'];
     }
-    
+
     if ($cust_theme_bg == '' || $dark_mode == null) {
         $cust_theme_bg = $settings['cust_theme_bg'];
     }
-    
+
     if ($SITE_RTL == '' || $SITE_RTL == null) {
         $SITE_RTL = env('SITE_RTL');
     }
@@ -145,7 +145,7 @@
                         @if (isset($currentWorkspace) && $currentWorkspace)
                             @auth('web')
                                 @if (Auth::user()->id == $currentWorkspace->created_by)
-                                    <a href="#" class="dropdown-item bs-pass-para"
+                                    {{-- <a href="#" class="dropdown-item bs-pass-para"
                                         data-confirm="{{ __('Are You Sure?') }}"
                                         data-text="{{ __('This action can not be undone. Do you want to continue?') }}"
                                         data-confirm-yes="remove-workspace-form">
@@ -157,7 +157,7 @@
                                         method="POST" style="display: none;">
                                         @csrf
                                         @method('DELETE')
-                                    </form>
+                                    </form> --}}
                                 @else
                                     <a href="#" class="dropdown-item bs-pass-para"
                                         data-confirm="{{ __('Are You Sure?') }}"
@@ -283,7 +283,7 @@
                 @endif
 
 
-                
+
                 {{-- @dd($currantLang) --}}
                 {{-- <li class="dropdown dash-h-item drp-language">
                     <a class="dash-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown"
@@ -311,7 +311,7 @@
                             <div class="dropdown-divider m-0"></div>
 								<a href="{{ route('lang_workspace') }}" class="dropdown-item text-primary"><span
                                 class="dash-mtext">{{ __('Manage Language') }}</span></a>
-                        @elseif(isset($currentWorkspace) && $currentWorkspace && (\Auth::guard('web')->check())) 
+                        @elseif(isset($currentWorkspace) && $currentWorkspace && (\Auth::guard('web')->check()))
                             @foreach (\App\Models\Utility::languages() as $lang)
                                 <a href="{{ route('change_lang_workspace', [$currentWorkspace->id, $lang]) }}"
                                     class="dropdown-item {{ $currantLang == $lang ? 'text-danger' : '' }}">
