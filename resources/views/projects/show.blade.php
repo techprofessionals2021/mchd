@@ -75,10 +75,10 @@
     @if (
         (isset($permissions) && in_array('show bug report', $permissions)) ||
             (isset($currentWorkspace) && $currentWorkspace->permission == 'Owner'))
-        <div class="col-md-auto col-sm-6 pb-3">
+        {{-- <div class="col-md-auto col-sm-6 pb-3">
             <a href="{{ route($client_keyword . 'projects.bug.report', [$currentWorkspace->slug, $project->id]) }}"
                 class="btn btn-xs btn-primary btn-icon-only col-12">{{ __('Bug Report') }}</a>
-        </div>
+        </div> --}}
     @endif
     <div class="col-md-auto col-sm-6 pb-3">
         <a href="{{ route($client_keyword . 'projecttime.tracker', [$currentWorkspace->slug, $project->id]) }}"
@@ -506,7 +506,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-8">
+                {{-- <div class="col-lg-8">
                     @if ((isset($permissions) && in_array('show milestone', $permissions)) || $currentWorkspace->permission == 'Owner')
                         <div class="card">
                             <div class="card-header">
@@ -642,7 +642,7 @@
 
                         </div>
                     @endif
-                </div>
+                </div> --}}
                 @if (
                     (isset($permissions) && in_array('show uploading', $permissions)) ||
                         $currentWorkspace->permission == 'Owner' ||

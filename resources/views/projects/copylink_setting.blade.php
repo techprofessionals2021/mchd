@@ -34,7 +34,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <td>{{ __('Client') }}</td>
                     <td class="action text-right">
                         <div class="form-check form-switch">
@@ -44,8 +44,8 @@
                             <label class="custom-control-label" for="copy_link_21"></label>
                         </div>
                     </td>
-                </tr>
-                <tr>
+                </tr> --}}
+                {{-- <tr>
                     <td>{{ __('Milestone') }}</td>
                     <td class="action text-right">
                         <div class="form-check form-switch">
@@ -55,7 +55,7 @@
                             <label class="custom-control-label" for="copy_link_3"></label>
                         </div>
                     </td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <td>{{ __('Activity') }}</td>
                     <td class="action text-right">
@@ -78,7 +78,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
+                {{-- <tr>
                     <td>{{ __('Bug Report') }}</td>
                     <td class="action text-right">
                         <div class="form-check form-switch">
@@ -88,7 +88,7 @@
                             <label class="custom-control-label" for="copy_link_6"></label>
                         </div>
                     </td>
-                </tr>
+                </tr> --}}
                 <tr>
                     <td>{{ __('Task') }}</td>
                     <td class="action text-right">
@@ -146,7 +146,7 @@
                     <td>
                         {{-- @php
                             if((isset($request->password)) && (Hash::check($project->password, $project->password))){
-                                
+
                                 $password = \Illuminate\Support\Facades\Crypt::decrypt($project->password)
                             }
                             @endphp --}}
@@ -223,7 +223,7 @@
         // toggle the type attribute
         const type = password.getAttribute("type") === "password" ? "text" : "password";
         password.setAttribute("type", type);
-        
+
         // toggle the icon
         // $('#togglePassword').removeClass('fa-eye-slash');
         // $('#togglePassword').removeClass('fa-eye-slash');

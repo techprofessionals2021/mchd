@@ -8,7 +8,7 @@
                 <i class="fas fa-robot px-1"></i>{{ __('Generate with AI') }}</a>
         </div>
         @endif
-        
+
         <div class="form-group col-md-12">
             <label for="projectname" class="form-label">{{ __('Name') }}</label>
             <input class="form-control" type="text" id="projectname" name="name" required="" placeholder="{{ __('Project Name') }}" value="{{$project->name}}">
@@ -17,7 +17,7 @@
             <label for="description" class="form-label">{{ __('Description') }}</label>
             <textarea rows="3" class="form-control" id="description" name="description" required="" placeholder="{{ __('Add Description') }}">{{$project->description}}</textarea>
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-12">
             <label for="status" class="form-label">{{ __('Status') }}</label>
             <select id="status" name="status" class="form-control select2">
                 <option value="Ongoing">{{ __('Ongoing') }}</option>
@@ -26,17 +26,17 @@
             </select>
         </div>
 
-        <div class="form-group col-md-6">
+        {{-- <div class="form-group col-md-6">
             <label for="budget" class="form-label">{{ __('Budget') }}</label>
             <div class="form-icon-user ">
                 <span class="currency-icon bg-primary ">{{ (!empty($currentWorkspace->currency)) ? $currentWorkspace->currency : '$'}}</span>
                 <input class="form-control currency_input" type="number" min="0" id="budget" name="budget" value="{{$project->budget}}" placeholder="{{ __('Project Budget') }}">
             </div>
-        </div>
+        </div> --}}
              <div class="form-group col-md-6">
                <label class="form-label">{{ __('Start Date') }}</label>
-       
-             
+
+
             <div class="input-group date ">
             <input class="form-control datepicker2" type="text" id="start_date" name="start_date" value="{{$project->start_date}}" autocomplete="off" required="required">
              <span class="input-group-text">
@@ -45,7 +45,7 @@
         </div>
       </div>
               <div class="form-group col-md-6">
-               <label class="form-label">{{ __('End Date') }}</label>   
+               <label class="form-label">{{ __('End Date') }}</label>
             <div class="input-group date ">
            <input class="form-control datepicker3" type="text" id="end_date" name="end_date" value="{{$project->end_date}}" autocomplete="off" required="required">
              <span class="input-group-text">

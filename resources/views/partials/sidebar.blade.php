@@ -160,11 +160,11 @@
 
 
 
-                        {{-- <li class="dash-item {{ Request::route()->getName() == 'calender.index' ? ' active' : '' }}">
+                        <li class="dash-item {{ Request::route()->getName() == 'calender.index' ? ' active' : '' }}">
                             <a href="{{ route('calender.google.calendar', $currentWorkspace->slug) }}"
                                 class="dash-link "><span class="dash-micon"><i data-feather="calendar"></i></span><span
                                     class="dash-mtext">{{ __('Calendar') }}</span></a>
-                        </li> --}}
+                        </li>
                         <li class="dash-item {{ Request::route()->getName() == 'notes.index' ? ' active' : '' }}">
                             <a href="{{ route('notes.index', $currentWorkspace->slug) }}" class="dash-link "><span
                                     class="dash-micon"><i data-feather="clipboard"></i></span><span
@@ -216,12 +216,12 @@
                         </li>
 
 
-                        {{-- <li
+                        <li
                             class="dash-item {{ Request::route()->getName() == 'client.calender.index' ? ' active' : '' }}">
                             <a href="{{ route('client.calender.index', $currentWorkspace->slug) }}"
                                 class="dash-link "><span class="dash-micon"><i data-feather="calendar"></i></span><span
                                     class="dash-mtext">{{ __('Calendar') }}</span></a>
-                        </li> --}}
+                        </li>
 
                         {{-- <li
                             class="dash-item {{ Request::route()->getName() == 'client.zoom-meeting.index' ? ' active' : '' }}">

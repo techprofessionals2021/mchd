@@ -10,15 +10,15 @@
             </div>
             @endif
 
-            <div class="form-group col-md-8">
+            <div class="form-group col-md-12">
                 <label class="col-form-label">{{ __('Project')}}</label>
                 <select class="form-control form-control-light select2" name="project_id" required>
-                   
+
                         <option value="{{$project->id}}">{{$project->name}}</option>
-                  
+
                 </select>
             </div>
-            <div class="form-group col-md-4">
+            {{-- <div class="form-group col-md-4">
                 <label class="col-form-label">{{ __('Milestone')}}</label>
                 <select class="form-control form-control-light select2" name="milestone_id" id="task-milestone">
                     <option value="">{{__('Select Milestone')}}</option>
@@ -26,7 +26,7 @@
                         <option value="{{$milestone->id}}">{{$milestone->title}}</option>
                     @endforeach
                 </select>
-            </div>
+            </div> --}}
             <div class="form-group col-md-8">
                 <label class="col-form-label">{{ __('Title')}}</label>
                 <input type="text" class="form-control form-control-light" id="task-title" placeholder="{{ __('Enter Title')}}" name="title" required>
@@ -41,7 +41,7 @@
             </div>
             <div class="form-group col-md-12">
                 <label class="col-form-label">{{ __('Assign To')}}</label>
-               
+
                       <select class=" multi-select" id="assign_to" name="assign_to[]" data-toggle="select2" multiple="multiple" data-placeholder="{{ __('Select Users ...') }}" required>
                     @foreach($users as $u)
                         <option value="{{$u->id}}">{{$u->name}} - {{$u->email}}</option>
@@ -56,7 +56,7 @@
             </div> -->
 
               <div class="col-md-12">
-              
+
                     <label class="col-form-label">{{ __('Duration')}}</label>
                       <div class='input-group form-group'>
                             <input type='text' class=" form-control form-control-light" id="duration" name="duration" required autocomplete="off"
@@ -65,7 +65,7 @@
                 <input type="hidden" name="due_date">
                                    <span class="input-group-text"><i
                                     class="feather icon-calendar"></i></span>
-                        </div>              
+                        </div>
                 </div>
 
 
@@ -96,7 +96,7 @@
      <link rel="stylesheet" href="{{ asset('assets/custom/libs/bootstrap-daterangepicker/daterangepicker.css') }}">
      <script src="{{ asset('assets/custom/libs/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
     <script>
-        
+
     if ($(".multi-select").length > 0) {
             $( $(".multi-select") ).each(function( index,element ) {
                 var id = $(element).attr('id');
@@ -132,7 +132,7 @@
                 autoclose: true,
                 autoUpdateInput: false,*/
                 locale: {
-                    format: 'MMMM D, YYYY hh:mm A', 
+                    format: 'MMMM D, YYYY hh:mm A',
                     applyLabel: "{{__('Apply')}}",
                     cancelLabel: "{{__('Cancel')}}",
                     fromLabel: "{{__('From')}}",

@@ -48,7 +48,7 @@
                         {{-- <p class="text-[#616161] font-semibold mb-2 mt-5">
                             Workspace
                         </p> --}}
-                        <input placeholder="Enter Workspace" name="workspace" value="design"
+                        <input placeholder="Enter Workspace" name="workspace" value="default"
                             class="py-2 px-3 rounded-xl border border-gray-200 w-full placeholder:text-[#9E9E9E] @error('workspace') is-invalid @enderror"
                             type="text" hidden />
                         <!-- VALIDATION ERROR -->
