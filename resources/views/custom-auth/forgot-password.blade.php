@@ -41,10 +41,10 @@
                                    href="forgotpassword.html"
                                    class="text-pri relative hover:bg-gray-100 transition-all block justify-center mx-auto mt-1 font-medium text-center py-3 rounded-xl">Forgot
                                    Password?</a> -->
-                            <p class="text-gray-500 text-center pt-5 border-t mt-9">
-                                Nor recieving otp?
+                            {{-- <p class="text-gray-500 text-center pt-5 border-t mt-9">
+                                Not recieving otp?
                                 <a href="#" class="text-pri font-bold inline">Send Me Back</a>
-                            </p>
+                            </p> --}}
 
 
                     </form>
