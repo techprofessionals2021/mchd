@@ -311,8 +311,10 @@ class UserController extends Controller
 
         $objUser->name = $request->name;
         $objUser->email = $request->email;
-        $dir = 'avatars/';
-        $logo = Utility::get_file('avatars/');
+        // $dir = 'avatars/';
+        $dir = 'app/public/users-avatar/';
+        // $logo = Utility::get_file('avatars/');
+        $logo = Utility::get_file('app/public/users-avatar/');
         if ($request->has('avatar')) {
             // if(asset(\Storage::exists('avatars/'.$objUser->avatar)))
             // {
