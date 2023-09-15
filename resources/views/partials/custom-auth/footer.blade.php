@@ -68,7 +68,7 @@
             <div class="sm:flex text-center items-center justify-between">
 
                 <p class="mb-0">
-                    <font color="#ffffff">Copyright © 2023 Helpdesk</font>
+                    <font color="#ffffff">Copyright © 2023 MCHD</font>
                 </p>
                 <div class="flex items-center justify-center mt-3 sm:mt-0 gap-5">
                     <a href="#" class="bg-[#195cb3] block p-3 rounded-full">
