@@ -139,7 +139,7 @@
                             $mile_percentage = trim($mile_percentage, '%');
                         @endphp
 
-                        <div class="col-xl-6">
+                        {{-- <div class="col-xl-6">
                             <div class="card">
                                 <div class="card-header" style="padding: 25px 35px !important;">
                                     <div class="d-flex justify-content-between align-items-center">
@@ -156,7 +156,7 @@
                                     <div id="milestone-chart"></div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-xl-3">
                             <div class="card">
                                 <div class="card-header">
@@ -245,23 +245,23 @@
                                                         $hourdiff_late = 0;
                                                         $esti_late_hour = 0;
                                                         $esti_late_hour_chart = 0;
-                                                        
+
                                                         $total_user_task = App\Models\Task::where('project_id', $project->id)
                                                             ->whereRaw('FIND_IN_SET(?,  assign_to) > 0', [$user->id])
                                                             ->get()
                                                             ->count();
-                                                        
+
                                                         $all_task = App\Models\Task::where('project_id', $project->id)
                                                             ->whereRaw('FIND_IN_SET(?,  assign_to) > 0', [$user->id])
                                                             ->get();
-                                                        
+
                                                         $total_complete_task = App\Models\Task::join('stages', 'stages.id', '=', 'tasks.status')
                                                             ->where('project_id', '=', $project->id)
                                                             ->where('assign_to', '=', $user->id)
                                                             ->where('stages.complete', '=', '1')
                                                             ->get()
                                                             ->count();
-                                                        
+
                                                         $logged_hours = 0;
                                                         $timesheets = App\Models\Timesheet::where('project_id', $project->id)
                                                             ->where('created_by', $user->id)
@@ -294,7 +294,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-7">
+                        {{-- <div class="col-xl-7">
                             <div class="card">
                                 <div class="card-header">
                                     <h5>{{ __('Milestones') }}</h5>
@@ -355,10 +355,10 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
-                    <div class="mt-3 mb-1 row d-sm-flex align-items-center justify-content-end" id="show_filter">
+                    {{-- <div class="mt-3 mb-1 row d-sm-flex align-items-center justify-content-end" id="show_filter">
                         @if ($currentWorkspace->permission == 'Owner' || Auth::user()->getGuard() == 'client')
                             <div class="col-sm-6 col-md-3 pb-3">
                                 <select class="select2 form-select" name="all_users" id="all_users">
@@ -436,7 +436,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <!-- [ sample-page ] end -->
@@ -703,12 +703,12 @@
                 data: [{!! json_encode($esti_logged_hour_chart) !!}, {!! json_encode($logged_hour_chart) !!}],
 
             }],
-            
+
             chart: {
                 height: 210,
                 type: 'bar',
             },
-            
+
             colors: ['#963aff', '#ffa21d'],
             plotOptions: {
                 bar: {
@@ -727,7 +727,7 @@
                 categories: ["Estimated Hours", "Logged Hours "],
 
             }
-            
+
         };
 
         var chart = new ApexCharts(document.querySelector("#chart-hours"), options);
