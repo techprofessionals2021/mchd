@@ -12,7 +12,7 @@
     <meta content="My Desk" name="author">
     <meta name="keywords" content="Why Choose US ?" />
     <meta name="csrf-token" content="FpHdcCilGNMjipeMcL4uJrmvKcZwPE0cjcJDsSq1">
-    <title>HelpDesk - Login</title>
+    <title>MCHD</title>
     <!--Favicon -->
     <link rel="icon" href="../uploads/logo/favicons/20230307105941.png" type="image/x-icon" />
 

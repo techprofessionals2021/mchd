@@ -8,11 +8,11 @@
                 class="w-full max-w-[500px] py-12 px-5 lg:px-7 mx-auto shadow-[0px_6px_30px_20px_rgba(0,0,0,0.03)] bg-white rounded-xl">
                 <h2 class="text-[#0A0A0A] text-2xl font-semibold">Login</h2>
                 <p class="text-[#404040] mt-7 mb-9">Sign In to your account</p>
-                @if ($errors->any())
+                {{-- @if ($errors->any())
                   @foreach ($errors->all() as $error)
                       <span style="color: red">{{$error}}</strong></span>
                   @endforeach
-                 @endif
+                 @endif --}}
                 <form action="{{route('login')}}" method="POST">
                     @csrf
                     <!-- this code is commented by ahmad -->
@@ -30,6 +30,11 @@
                     <input placeholder="Enter your Email Address" value="" name="email"
                         class="py-2 px-3 rounded-xl border border-200 w-full placeholder:text-[#9E9E9E]  @error('email') is-invalid @enderror"
                         type="Email" />
+                        @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     <!-- VALIDATION ERROR -->
                     <p class="text-[#616161] font-semibold mb-2 mt-5">Password
                     </p>
@@ -46,6 +51,11 @@
                             </svg>
                         </span>
                     </div>
+                    @error('password')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
                     <!-- VALIDATION ERROR -->
                     <label data-mdb-ripple="true" data-mdb-ripple-color="#a8a8a8" data-mdb-ripple-duration="1100ms"
                         class="block relative text-[#616161] mt-1 pt-0 pb-3 text-sm">

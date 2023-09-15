@@ -25,7 +25,7 @@
     $client_keyword = Auth::user()->getGuard() == 'client' ? 'client.' : '';
     $logo = \App\Models\Utility::get_file('users-avatar/');
     $logo_project_files = \App\Models\Utility::get_file('project_files/');
-    
+
 @endphp
 
 @section('multiple-action-button')
@@ -210,7 +210,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-sm-6">
+                        {{-- <div class="col-lg-3 col-sm-6">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
@@ -225,7 +225,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-lg-3 col-sm-6">
                             <div class="card">
                                 <div class="card-body">
@@ -336,7 +336,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <div class="card">
 
                                 <div class="card-header">
@@ -411,7 +411,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
                 </div>
@@ -717,7 +717,7 @@
                     @foreach ($chartData['stages'] as $id => $name)
                         {
                             name: "{{ __($name) }}",
-                            // data: 
+                            // data:
                             data: {!! json_encode($chartData[$id]) !!},
                         },
                     @endforeach
