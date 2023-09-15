@@ -97,12 +97,12 @@
                         </li>
 
                         @if ($currentWorkspace->creater->id == Auth::user()->id)
-                            <li class="dash-item dash-hasmenu">
+                            {{-- <li class="dash-item dash-hasmenu">
                                 <a href="{{ route('clients.index', $currentWorkspace->slug) }}"
                                     class="dash-link {{ Request::route()->getName() == 'clients.index' ? ' active' : '' }}"><span
                                         class="dash-micon"> <i class="ti ti-brand-python"></i></span><span
                                         class="dash-mtext"> {{ __('Clients') }}</span></a>
-                            </li>
+                            </li> --}}
                         @endif
 
                         <li class="dash-item {{ Request::route()->getName() == 'tasks.index' ? ' active' : '' }}">
