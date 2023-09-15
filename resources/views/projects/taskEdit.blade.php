@@ -9,8 +9,8 @@
                     <i class="fas fa-robot px-1"></i>{{ __('Generate with AI') }}</a>
             </div>
             @endif
-            
-            <div class="form-group col-md-8">
+
+            <div class="form-group col-md-12">
                 <label class="col-form-label">{{ __('Project')}}</label>
                 <select class="form-control form-control-light select2" name="project_id" required>
                     @foreach($projects as $p)
@@ -18,7 +18,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="form-group col-md-4">
+            {{-- <div class="form-group col-md-4">
                 <label class="col-form-label">{{ __('Milestone')}}</label>
                 <select class="form-control form-control-light select2" name="milestone_id" id="task-milestone">
                     <option value="">{{__('Select Milestone')}}</option>
@@ -26,7 +26,7 @@
                         <option value="{{$milestone->id}}" @if($task->milestone_id == $milestone->id) selected @endif>{{$milestone->title}}</option>
                     @endforeach
                 </select>
-            </div>
+            </div> --}}
             <div class="form-group col-md-8">
                 <label class="col-form-label">{{ __('Title')}}</label>
                 <input type="text" class="form-control form-control-light" id="task-title" placeholder="{{ __('Enter Title')}}" name="title" required value="{{$task->title}}">
@@ -48,16 +48,16 @@
                 </select>
             </div>
             <div class="col-md-12">
-              
+
                     <label class="col-form-label">{{ __('Duration')}}</label>
                       <div class='input-group form-group'>
-                            <input type='text' class=" form-control pc-daterangepicker-3" id="duration" name="duration" value="{{__('Select Date Range')}}" 
+                            <input type='text' class=" form-control pc-daterangepicker-3" id="duration" name="duration" value="{{__('Select Date Range')}}"
                                  placeholder="Select date range" />
                                 <input type="hidden" name="start_date"  id="start_date1">
                                 <input type="hidden" name="due_date" id="end_date1">
                                    <span class="input-group-text"><i
                                     class="feather icon-calendar"></i></span>
-                        </div>              
+                        </div>
                 </div>
 
             <div class="form-group">
