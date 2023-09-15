@@ -16,13 +16,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <div class="form-group">
-                    {{ Form::label('Buy Now Link', __('Buy Now Link'), ['class' => 'form-label']) }}
-                    {{ Form::text('other_feature_buy_now_link', null, ['class' => 'form-control', 'placeholder' => __('Enter Link'),'required'=>'required']) }}
-                </div>
-            </div>
-
+          
             <div class="col-md-12">
                 <div class="form-group">
                     {{ Form::label('Image', __('Image'), ['class' => 'form-label']) }}

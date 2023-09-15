@@ -84,7 +84,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        {{-- <div class="col-md-6">
                                             <div class="form-group">
                                                 {{ Form::label('Live Demo Link', __('Live Demo Link'), ['class' => 'form-label']) }}
                                                 {{ Form::text('discover_live_demo_link', $settings['discover_live_demo_link'], ['class' => 'form-control', 'placeholder' => __('Enter Link')]) }}
@@ -94,19 +94,9 @@
                                                     </span>
                                                 @enderror
                                             </div>
-                                        </div>
+                                        </div> --}}
 
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                {{ Form::label('Buy Now Link', __('Buy Now Link'), ['class' => 'form-label']) }}
-                                                {{ Form::text('discover_buy_now_link', $settings['discover_buy_now_link'], ['class' => 'form-control', 'placeholder' => __('Enter Link')]) }}
-                                                @error('discover_buy_now_link')
-                                                <span class="invalid-mail_port" role="alert">
-                                                        <strong class="text-danger">{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                   
 
                                     </div>
                                 </div>
