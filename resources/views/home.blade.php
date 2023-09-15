@@ -125,7 +125,7 @@
                                 </div>
                             </div>
                         </div>
-
+{{-- 
                         <div class="col-xl-3 col-md-6 col-sm-6">
                             <div class="card">
                                 <div class="card-body">
@@ -138,7 +138,7 @@
                                             class="text-success text-sm"></span></h3>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="col-xl-3 col-md-6 col-sm-6">
                             <div class="card">
