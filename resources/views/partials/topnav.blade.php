@@ -111,7 +111,7 @@
                                         @method('DELETE')
                                     </form> --}}
                                 @else
-                                    <a href="#" class="dropdown-item bs-pass-para"
+                                    {{-- <a href="#" class="dropdown-item bs-pass-para"
                                         data-confirm="{{ __('Are You Sure?') }}"
                                         data-text="{{ __('This action can not be undone. Do you want to continue?') }}"
                                         data-confirm-yes="remove-workspace-form">
@@ -123,7 +123,7 @@
                                         method="POST" style="display: none;">
                                         @csrf
                                         @method('DELETE')
-                                    </form>
+                                    </form> --}}
                                 @endif
                             @endauth
                         @endif
@@ -226,7 +226,7 @@
                                         @method('DELETE')
                                     </form> --}}
                                 @else
-                                    <a href="#" class="dropdown-item bs-pass-para"
+                                    {{-- <a href="#" class="dropdown-item bs-pass-para"
                                         data-confirm="{{ __('Are You Sure?') }}"
                                         data-text="{{ __('This action can not be undone. Do you want to continue?') }}"
                                         data-confirm-yes="remove-workspace-form">
@@ -238,7 +238,7 @@
                                         method="POST" style="display: none;">
                                         @csrf
                                         @method('DELETE')
-                                    </form>
+                                    </form> --}}
                                 @endif
                             @endauth
                         @endif
