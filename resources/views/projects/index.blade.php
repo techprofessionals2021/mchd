@@ -49,6 +49,21 @@
 
             <div class="filters-content">
                 <div class="row grid">
+
+                    @auth('web')
+                    @if(isset($currentWorkspace) && $currentWorkspace->creater->id == Auth::id())
+                     <div class="col-xl-3 col-lg-4 col-sm-6 All add_projects">
+                        <a href="#" class="btn-addnew-project " style="padding: 90px 10px;" data-ajax-popup="true" data-size="md" data-title="{{ __('Create New Project') }}" data-url="{{route('projects.create',$currentWorkspace->slug)}}">
+                        <div class="bg-primary proj-add-icon">
+                        <i class="ti ti-plus"></i>
+                        </div>
+                        <h6 class="mt-4 mb-2">Add Project</h6>
+                        <p class="text-muted text-center">Click here to add New Project</p>
+                        </a>
+                        </div>
+                    @endif
+                   @endauth
+                   
                     @foreach ($projects as $project)
                       <div class="col-xl-3 col-lg-4 col-sm-6 All {{ $project->status }}">
                                 <div class="card">
@@ -177,19 +192,7 @@
                             </div>
                     @endforeach
 
-                          @auth('web')
-                            @if(isset($currentWorkspace) && $currentWorkspace->creater->id == Auth::id())
-                             <div class="col-xl-3 col-lg-4 col-sm-6 All add_projects">
-                                <a href="#" class="btn-addnew-project " style="padding: 90px 10px;" data-ajax-popup="true" data-size="md" data-title="{{ __('Create New Project') }}" data-url="{{route('projects.create',$currentWorkspace->slug)}}">
-                                <div class="bg-primary proj-add-icon">
-                                <i class="ti ti-plus"></i>
-                                </div>
-                                <h6 class="mt-4 mb-2">Add Project</h6>
-                                <p class="text-muted text-center">Click here to add New Project</p>
-                                </a>
-                                </div>
-                            @endif
-                           @endauth
+
 
                 </div>
             </div>

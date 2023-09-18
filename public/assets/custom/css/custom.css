@@ -1486,11 +1486,11 @@ a.b-brand {
     font-weight: 500;
     border-radius: 12px;
     border: 1px solid rgba(206, 206, 206, 0.2);
-}  
+}
 
 .dropdown .drp-text i {
     font-style: normal;
-} 
+}
 
 
 
@@ -1521,7 +1521,7 @@ a.b-brand {
         max-width:100%;
         right: 0;
         left: 0;
-    }   
+    }
 }
 
 @media (max-width: 700px) {
@@ -1535,9 +1535,9 @@ a.b-brand {
 
 
 .accordion-button{
-    padding: 0px !important; 
-    padding-right: 1.25rem !important; 
-    padding-left: 1.25rem !important; 
+    padding: 0px !important;
+    padding-right: 1.25rem !important;
+    padding-left: 1.25rem !important;
 }
 
 .setting-accordion .accordion-item {
@@ -1607,20 +1607,20 @@ a.b-brand {
     transform: scale(0);
     transition: 0.2s ease-in-out;
   }
-  
+
   .custom-tooltip[data-tooltip]:hover::after {
     transform: scale(1);
     bottom: -150%;
   }
-  
+
   /* Additional Styling */
-  
+
   .custom-tooltip {
     position: relative;
     display: inline-block;
   }
 
-  
+
   /*date:19-jun-2023*/
   body.no-scroll{
     overflow: hidden;
@@ -1658,3 +1658,28 @@ a.b-brand {
         flex: unset;
     }
 }
+
+
+.loader {
+    border: 8px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 8px solid #3498db;
+    width: 60px;
+    height: 60px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+    position: fixed;
+    right: 50%;
+    top: 50%;
+  }
+
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

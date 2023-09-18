@@ -79,7 +79,7 @@
                                                 $currentWorkspace &&
                                                 $currentWorkspace->permission == 'Owner' &&
                                                 Auth::user()->id != $user->id)
-                                                <a href="#" class="dropdown-item" data-ajax-popup="true"
+                                                {{-- <a href="#" class="dropdown-item" data-ajax-popup="true"
                                                     data-size="md" data-title="{{ __('Edit') }}"
                                                     data-url="{{ route('users.edit', [$currentWorkspace->slug, $user->id]) }}"><i
                                                         class="ti ti-edit"></i> <span>{{ __('Edit') }}</span></a>
@@ -88,7 +88,7 @@
                                                     data-size="md" data-title="{{ __('Reset Password') }}"
                                                     data-url="{{ route('users.reset.password', $user->id) }}"><i
                                                         class="ti ti-pencil"></i>
-                                                    <span>{{ __('Reset Password') }}</span></a>
+                                                    <span>{{ __('Reset Password') }}</span></a> --}}
 
                                                 <a href="#" class="dropdown-item text-danger bs-pass-para"
                                                     data-confirm="{{ __('Are You Sure?') }}"
