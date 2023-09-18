@@ -8,8 +8,8 @@
              {{ Form::text('username', null, ['class' => 'form-control', 'placeholder' => __('Please enter name')]) }}
          </div>
          <div class="col-md-12 form-group">
-             {{ Form::label('invite_email', __('Email'), ['class' => 'col-form-label']) }}
-             {{ Form::text('invite_email', null, ['class' => 'form-control', 'placeholder' => __('Enter email address')]) }}
+             {{ Form::label('invite_email', __('Email Or Name'), ['class' => 'col-form-label']) }}
+             {{ Form::text('invite_email', null, ['class' => 'form-control', 'placeholder' => __('Enter email address or name')]) }}
          </div>
          <div class="col-md-12 form-group invite_user_div">
              <label for="userpassword" class="form-label">{{ __('Password') }}</label>
@@ -23,6 +23,7 @@
      <button type="button" class="btn  btn-primary check-invite-members">{{ __('Invite') }}</button>
  </div>
 
+ <div class="loader" style="display: none"></div>
 
 
  <script type="text/javascript">
@@ -43,15 +44,7 @@
                  return false;
              }
 
-             if (!isEmail(email)) {
-
-                 emailele.focus().after(
-                     '<span class="email-error-message error-message">{{ __('Please enter valid email address.') }}</span>'
-                     );
-                 return false;
-
-             } else {
-
+             $('.loader').show();
                  $.ajax({
                      url: '{{ route('user.exists', '__slug') }}'.replace('__slug',
                          '{{ $currentWorkspace->slug }}'),
@@ -60,6 +53,7 @@
                          'email': email
                      },
                      success: function(data) {
+                        $('.loader').hide();
 
                          if (data.code == '202') {
                              $('#commonModel').modal('hide');
@@ -68,15 +62,18 @@
                              $('#commonModel').modal('hide');
                              show_toastr(data.status, data.success, 'success');
                              location.reload();
-                         } else if (data.code == '404') {
-                             $('.invite_user_div').show();
-                             $('.invite-warning').text(data.error).show();
                          }
-                         ele.removeClass('check-invite-members').off('click').addClass(
-                             'invite-members');
+                          else if (data.code == '404') {
+                            //  $('.invite_user_div').show();
+                            $('#commonModel').modal('hide');
+                            show_toastr(data.status, data.error, 'error');
+                            //  $('.invite-warning').text(data.error).show();
+                         }
+                        //  ele.removeClass('check-invite-members').off('click').addClass(
+                        //      'invite-members');
                      }
                  });
-             }
+
          });
 
          $(document).on('click', '.invite-members', function() {

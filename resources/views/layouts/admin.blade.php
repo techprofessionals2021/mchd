@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   @php
   $logo=\App\Models\Utility::get_file('logo/');
-  
+
         if(Auth::user()->type == 'admin')
         {
             $setting = App\Models\Utility::getAdminPaymentSettings();
@@ -16,11 +16,11 @@
             $cust_theme_bg =$setting['cust_theme_bg'];
             $SITE_RTL = env('SITE_RTL');
         }
-        else { 
+        else {
             $setting = App\Models\Utility::getcompanySettings($currentWorkspace->id);
 
             $color = $setting->theme_color;
-            $dark_mode = $setting->cust_darklayout; 
+            $dark_mode = $setting->cust_darklayout;
             $SITE_RTL = $setting->site_rtl;
             $cust_theme_bg = $setting->cust_theme_bg;
         }
@@ -30,7 +30,7 @@
 
         if($color == '' || $color == null){
             $settings = App\Models\Utility::getAdminPaymentSettings();
-            $color = $settings['color'];           
+            $color = $settings['color'];
         }
 
         if($dark_mode == '' || $dark_mode == null){
@@ -47,14 +47,14 @@
         if(\App::getLocale() == 'ar' ||  \App::getLocale() == 'he'){
             $SITE_RTL ='on';
         }
-        
+
       @endphp
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ $SITE_RTL == 'on'?'rtl':''}}">
 <head>
-   
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -74,20 +74,22 @@
     <meta property="twitter:title" content="{{ $meta_setting['meta_keywords'] }}">
     <meta property="twitter:description" content="{{ $meta_setting['meta_description'] }}">
     <meta property="twitter:image" content="{{ asset($meta_images . $meta_setting['meta_image']) }}">
-    
+
     <title>
         @if(trim($__env->yieldContent('page-title')) && Auth::user()->type == 'admin')
-            {{ config('app.name', 'mchd') }} -@yield('page-title') 
+            {{ config('app.name', 'mchd') }} -@yield('page-title')
         @else
              {{ isset($currentWorkspace->company) && $currentWorkspace->company != '' ? $currentWorkspace->company : config('app.name', 'mchd') }} -@yield('page-title')
         @endif
     </title>
 
 
+
+
 @if(Auth::user()->type == 'admin')
- <link rel="shortcut icon" href="{{asset($logo.'favicon.png')}}"> 
+ <link rel="shortcut icon" href="{{asset($logo.'favicon.png')}}">
 @else
- <link rel="shortcut icon" href="@if($currentWorkspace->favicon){{asset($logo.$currentWorkspace->favicon)}}@else{{asset($logo.'favicon.png')}}@endif"> 
+ <link rel="shortcut icon" href="@if($currentWorkspace->favicon){{asset($logo.$currentWorkspace->favicon)}}@else{{asset($logo.'favicon.png')}}@endif">
 @endif
     <link rel="stylesheet" href="{{asset('assets/css/plugins/style.css')}}">
      <link rel="stylesheet" href="{{asset('assets/css/plugins/flatpickr.min.css')}}">
@@ -112,7 +114,7 @@
 <!--     @if($SITE_RTL =='on')
         <link rel="stylesheet" href="{{ asset('assets/css/style-rtl.css')}}">
        @else
-         
+
          @if($dark_mode =='on')
           <link rel="stylesheet" href="{{ asset('assets/css/style-dark.css')}}">
          @else
@@ -132,7 +134,8 @@
 
     <meta name="url" content="{{ url('').'/'.config('chatify.routes.prefix') }}" data-user="{{ Auth::user()->id }}">
     <script src='https://unpkg.com/nprogress@0.2.0/nprogress.js'></script>
-     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js">
+
 </head>
 
 @if($dark_mode == 'on')
@@ -195,7 +198,7 @@
 </div>
 
 <!-- <div class="container-fluid container-application"> -->
-    @if (Auth::user()->getGuard() == 'client') 
+    @if (Auth::user()->getGuard() == 'client')
         <input type="hidden" id="path_admin" value="{{url(isset($currentWorkspace) ? 'client/' . $currentWorkspace->slug : '')}}">
     @else
         <input type="hidden" id="path_admin" value="{{url(isset($currentWorkspace) ? $currentWorkspace->slug : '')}}">
@@ -296,7 +299,7 @@
                                         <!-- <button type="button" class="btn  btn-light" data-bs-dismiss="modal">{{ __('Close')}}</button> -->
                                             <input type="submit" value="{{ __('Create')}}" class="btn  btn-primary">
                                     </div>
-                                
+
                             </form>
                         </div>
                 </div>
@@ -309,11 +312,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>    
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
                 <div class="body">
                 </div>
-            
+
         </div>
     </div>
 </div>
@@ -329,7 +332,7 @@
 
         </div>
     </div>
-</div>  
+</div>
 
 
 @php
@@ -345,7 +348,7 @@
 <script src="{{asset('assets/custom/js/main.min.js')}}"></script>
 <script src="{{ asset('assets/custom/libs/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 
- <script src="{{ asset('assets/custom/js/custom.js') }}"></script> 
+ <script src="{{ asset('assets/custom/js/custom.js') }}"></script>
  <script src="{{ asset('assets/js/plugins/bootstrap-switch-button.min.js') }}"></script>
 <script src="{{asset('assets/js/plugins/choices.min.js')}}"></script>
 <script src="{{ asset('assets/js/plugins/simplebar.min.js') }}"></script>
@@ -389,7 +392,7 @@
                 $(".limited").hide();
                   $(".all_notification").show();
                   $(".view_less").show();
-                   $(".view_all_notification").hide(); 
+                   $(".view_all_notification").hide();
             });
 
 
@@ -399,15 +402,15 @@
                   $(".limited").show();
                   $(".view_all_notification").show();
                    $(".view_less").hide();
-                  
+
             });
 
             </script>
 
-            
+
 <script>
         $(document).on("click", ".clear_all_notifications", function () {
-          
+
             var chbox = $(this);
             $.ajax({
                 url: chbox.attr('data-url'),
@@ -416,6 +419,7 @@
                 success: function (response) {
                     if (response.is_success) {
                         show_toastr('success', response.success, 'success');
+                        $('.notification_menu_all').css('display','');
 
 
                         $('.noti-body').hide();
@@ -570,7 +574,7 @@
   var custdarklayout = document.querySelector("#cust-darklayout");
   custdarklayout.addEventListener("click", function () {
     if (custdarklayout.checked) {
-     
+
         document
           .querySelector("#main-style-link")
           .setAttribute("href", "{{ asset('assets/css/style-dark.css')}}");
@@ -578,7 +582,7 @@
           .querySelector(".m-header > .b-brand > .sidebar_logo_size")
           .setAttribute("src", "{{url('storage/logo/logo-dark.png')}}");
       } else {
-       
+
         document
           .querySelector("#main-style-link")
           .setAttribute("href", "{{ asset('assets/css/style.css')}}");
@@ -648,13 +652,13 @@
 </script>
 
 
-@if($meta_setting['enable_cookie']=='on') 
+@if($meta_setting['enable_cookie']=='on')
     @include('layouts.cookie_consent')
-@endif 
+@endif
  {{-- @if(env('gdpr_cookie')=='on')
 
 <script type="text/javascript">
-    
+
     var defaults = {
     'messageLocales': {
         /*'en': 'We use cookies to make sure you can have the best experience on our website. If you continue to use this site we assume that you will be happy with it.'*/
@@ -751,9 +755,9 @@
     </script>
 @endif
 <script>
-     
+
     </script>
      @include('partials.footer')
-    @include('Chatify::layouts.footerLinks') 
+    @include('Chatify::layouts.footerLinks')
 </body>
 </html>

@@ -708,8 +708,8 @@ class UserController extends Controller
 
         if ($request->has('email')) {
 
-            $email = $request->email;
-            $registerUsers = User::where('email', '=', $email)->first(); //->where('is_active', '=', 1)
+            $inputValue = $request->email;
+            $registerUsers = User::where('email', '=', $inputValue)->orWhere('name', $inputValue)->first(); //->where('is_active', '=', 1)
         } else if ($request->has('user_id')) {
 
             $user_id = $request->user_id;
@@ -719,7 +719,7 @@ class UserController extends Controller
         $response = [
             'code' => 404,
             'status' => 'Error',
-            'error' => __('This User is not connected with our system. Please fill out the below details to invite.'),
+            'error' => __('User Not Found'),
         ];
 
         if (!empty($registerUsers)) {

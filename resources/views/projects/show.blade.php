@@ -108,7 +108,7 @@
         <!-- [ sample-page ] start -->
         <div class="col-sm-12">
             <div class="row">
-                <div class="col-xxl-8">
+                <div class="col-xxl-12">
                     <div class="card bg-primary">
                         <div class="card-body">
                             <div class="d-block d-sm-flex align-items-center justify-content-between">
@@ -259,7 +259,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="card ">
                                 <div class="card-header">
                                     <div class="d-flex justify-content-between align-items-center">
@@ -416,7 +416,7 @@
 
                 </div>
 
-                <div class="col-xxl-4">
+                <div class="col-xxl-12">
                     <div class="row">
 
                         <div class="col-md-12">
@@ -647,7 +647,7 @@
                     (isset($permissions) && in_array('show uploading', $permissions)) ||
                         $currentWorkspace->permission == 'Owner' ||
                         $currentWorkspace->permission == 'Member')
-                    <div class="col-lg-4">
+                    <div class="col-lg-12">
                         <div class="card ">
                             <div class="card-header">
                                 <div class="d-flex justify-content-between align-items-center">
