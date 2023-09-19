@@ -326,6 +326,7 @@ class ProjectController extends Controller
 
     public function invite(Request $request, $slug, $projectID)
     {
+    
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         $post = $request->all();
         $userList = $post['users_list'];

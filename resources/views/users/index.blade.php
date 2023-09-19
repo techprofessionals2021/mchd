@@ -58,6 +58,8 @@
                                     @if (Auth::user()->type != 'admin')
                                         @if ($user->permission == 'Owner')
                                             <div class="badge p-2 px-3 rounded bg-success">{{ __('Owner') }}</div>
+                                         @elseif($user->permission == 'TeamLead') 
+                                         <div class="badge p-2 px-3 rounded bg-primary">{{ __('TeamLead') }}</div>
                                         @else
                                             <div class="badge p-2 px-3 rounded bg-warning">{{ __('Member') }}</div>
                                         @endif
