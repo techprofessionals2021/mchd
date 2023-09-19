@@ -11,6 +11,15 @@
              {{ Form::label('invite_email', __('Email Or Name'), ['class' => 'col-form-label']) }}
              {{ Form::text('invite_email', null, ['class' => 'form-control', 'placeholder' => __('Enter email address or name')]) }}
          </div>
+
+         <div class="col-md-12 form-group">
+            {{ Form::label('invite_email', __('Invite as a'), ['class' => 'col-form-label']) }}
+            <select id="permission" name="permission" class="form-control">
+                <option value="Member">Member</option>
+                <option value="TeamLead">TeamLead</option>
+            
+            </select>
+        </div>
          <div class="col-md-12 form-group invite_user_div">
              <label for="userpassword" class="form-label">{{ __('Password') }}</label>
              <input class="form-control" name="userpassword" type="password" required autocomplete="new-password"
@@ -33,6 +42,8 @@
 
              var ele = $(this);
              var emailele = $('#invite_email');
+             var permission = $('#permission').find(":selected").val();
+
 
              var email = emailele.val();
 
@@ -50,7 +61,8 @@
                          '{{ $currentWorkspace->slug }}'),
                      dataType: 'json',
                      data: {
-                         'email': email
+                         'email': email,
+                         'permission': permission
                      },
                      success: function(data) {
                         $('.loader').hide();
@@ -77,6 +89,7 @@
          });
 
          $(document).on('click', '.invite-members', function() {
+            
 
              var useremail = $('#invite_email').val();
              var username = $('#username').val();
@@ -126,7 +139,7 @@
                          'userpassword': userpassword,
                      },
                      success: function(data) {
-                        console.log(data);
+                        console.log(useremail);
                          $('#commonModel').modal('hide');
                          if (data.code == '200') {
                              show_toastr(data.status, data.success, 'success');
