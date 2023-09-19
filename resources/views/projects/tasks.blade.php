@@ -111,7 +111,7 @@
                             <thead>
                                 <th>{{ __('Task') }}</th>
                                 <th>{{ __('Project') }}</th>
-                                <th>{{ __('Milestone') }}</th>
+                                {{-- <th>{{ __('Milestone') }}</th> --}}
                                 <th>{{ __('Due Date') }}</th>
                                 @if ($currentWorkspace->permission == 'Owner' || Auth::user()->getGuard() == 'client')
                                     <th>{{ __('Assigned to') }}</th>
