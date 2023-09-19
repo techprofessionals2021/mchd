@@ -14,6 +14,7 @@ class Project extends Model
         'description',
         'start_date',
         'end_date',
+        'tags',
         'budget',
         'workspace',
         'created_by',
@@ -34,14 +35,14 @@ class Project extends Model
     {
         return $this->belongsToMany('App\Models\User', 'user_projects', 'project_id', 'user_id')->withPivot('is_active')->orderBy('id', 'ASC');
     }
-    
+
          public function task()
     {
-     
+
             return $this->hasMany('App\Models\Task', 'project_id', 'id');
-     
+
     }
-    
+
     public function clientids()
     {
         return $this->belongsToMany('App\Models\Client', 'client_projects', 'project_id', 'client_id')->withPivot('is_active')->pluck('client_id');
@@ -261,17 +262,17 @@ class Project extends Model
 
                             $time    = Carbon::parse($timesheet[$key[0]]['time'])->format('H:i');
                             $times[] = $time;
-                          
+
                             foreach($timesheet as $timesheets){
-                               
+
                                 if(($date == $timesheets['date']) && ($timesheets['project_id'] == $project_id) && ($timesheets['task_id'] == $task_id) ){
                                     $total_task_time    = Carbon::parse($timesheets['time'])->format('H:i');
                                     $total_task_times[] = $total_task_time;
                                 }
                             }
-                            
+
                             $total_task_time              = Utility::calculateTimesheetHours($total_task_times);
-                          
+
                             $timesheetArray[$i]['dateArray'][$j]['total_task_time'] = $total_task_time;
                             $timesheetArray[$i]['dateArray'][$j]['time'] = $time;
                             $timesheetArray[$i]['dateArray'][$j]['type'] = 'edit';
@@ -374,23 +375,23 @@ class Project extends Model
 
 
     public function project_progress()
-    {       
+    {
           $total_task     = Task::where('project_id', '=', $this->id)->count();
             $completed_task =  Task::where('project_id', '=', $this->id)->where('status', '=', 4)->count();
 
             if($total_task > 0)
             {
                 $percentage = intval(($completed_task/$total_task) * 100);
-          
-             
+
+
             return [
-           
+
             'percentage' => $percentage . '%',
                    ];
           }
           else{
              return [
-           
+
             'percentage' => 0,
                    ];
 
@@ -400,23 +401,23 @@ class Project extends Model
 
 
        public function project_milestone_progress()
-    {       
+    {
             $total_milestone     = Milestone::where('project_id', '=', $this->id)->count();
             $total_progress_sum  = Milestone::where('project_id', '=', $this->id)->sum('progress');
 
             if($total_milestone > 0)
             {
                 $percentage = intval(($total_progress_sum /$total_milestone));
-          
-             
+
+
             return [
-           
+
             'percentage' => $percentage . '%',
                    ];
           }
           else{
              return [
-           
+
             'percentage' => 0,
                    ];
 

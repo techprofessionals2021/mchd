@@ -30,22 +30,28 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
                 @endif
             </div>
             <div class="col-md-3">
+                <div class="form-control-label">{{ __('Task Progress')}}</div>
+                <div class="progress mt-1" style="height: 20px">
+                    <div class="progress-bar" role="progressbar" style="width: {{$completedSubTaskPercentage}}%;" aria-valuenow="{{$completedSubTaskPercentage}}" aria-valuemin="0" aria-valuemax="100">{{$completedSubTaskPercentage}}%</div>
+                </div>
+            </div>
+            {{-- <div class="col-md-3">
                 <div class="form-control-label">{{ __('Milestone')}}</div>
                 @php($milestone = $task->milestone())
                 <p class="mt-1">@if($milestone) {{$milestone->title}} @endif</p>
-            </div>
+            </div> --}}
         </div>
     </div>
 
     <ul class="nav nav-tabs  bordar_styless mb-3" id="myTab" role="tablist">
+        <li class="annual-billing">
+            <a id="sub-task-tab" data-toggle="tab" href="#sub-task-data" role="tab" aria-controls="contact" aria-selected="true"> {{ __('Sub Task') }} </a>
+        </li>
         <li>
             <a class=" active" id="comments-tab" data-toggle="tab" href="#comments-data" role="tab" aria-controls="home" aria-selected="false"> {{ __('Comments') }} </a>
         </li>
         <li class="annual-billing">
             <a id="file-tab" data-toggle="tab" href="#file-data" role="tab" aria-controls="profile" aria-selected="false"> {{ __('Files') }} </a>
-        </li>
-        <li class="annual-billing">
-            <a id="sub-task-tab" data-toggle="tab" href="#sub-task-data" role="tab" aria-controls="contact" aria-selected="true"> {{ __('Sub Task') }} </a>
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -74,7 +80,7 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
             <ul class="list-unstyled list-unstyled-border mt-3" id="task-comments">
                 @foreach($task->comments as $comment)
                     <li class="media border-bottom mb-3">
-                        <img class="mr-3 avatar-sm rounded-circle img-thumbnail" width="" style="max-width: 30px; max-height: 30px;" 
+                        <img class="mr-3 avatar-sm rounded-circle img-thumbnail" width="" style="max-width: 30px; max-height: 30px;"
                              @if($comment->user_type != 'Client') @if($comment->user->avatar) src="{{asset($logo.$comment->user->avatar)}}" @else avatar="{{ $comment->user->name }}" @endif alt="{{ $comment->user->name }}"
                              @else avatar="{{ $comment->client->name }}" alt="{{ $comment->client->name }}" @endif />
                         <div class="media-body mb-2">
@@ -97,7 +103,7 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
         <div class="tab-pane fade" id="file-data" role="tabpanel" aria-labelledby="profile-tab">
             <div class="form-group m-0">
                 <form method="post" id="form-file" enctype="multipart/form-data" data-url="{{ route('comment.store.file',[$currentWorkspace->slug,$task->project_id,$task->id,$clientID]) }}">
-                 
+
                      @csrf
 
                     <div class="choose-file mt-3">
@@ -113,7 +119,7 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
                         </label>
                        <!--  <p class="file_create"></p> -->
                     </div>
-                
+
                     <div class="text-end">
                         <div class="">
                             <button type="submit" class="btn btn-primary">{{ __('Upload') }}</button>
@@ -246,12 +252,12 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
 
 <script type="text/javascript">
 $('#file').change(function(){
-   
+
 let reader = new FileReader();
-reader.onload = (e) => { 
-  $('#task_file').attr('src', e.target.result); 
+reader.onload = (e) => {
+  $('#task_file').attr('src', e.target.result);
 }
-reader.readAsDataURL(this.files[0]); 
+reader.readAsDataURL(this.files[0]);
 
 });
 </script>

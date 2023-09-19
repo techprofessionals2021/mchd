@@ -125,7 +125,7 @@
                                 </div>
                             </div>
                         </div>
-{{-- 
+{{--
                         <div class="col-xl-3 col-md-6 col-sm-6">
                             <div class="card">
                                 <div class="card-body">
@@ -244,7 +244,7 @@
                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Refferals"><i
                                         class=""></i></a>
                             </div>
-                           
+
                             <h5>{{ __('Project Status') }}</h5>
                         </div>
                         <div class="card-body">
@@ -274,7 +274,7 @@
                                 </div>
 
                                 <div class="row text-center">
-                                
+
                                     {{-- @foreach ($arrProcessPer as $index => $value)
                                         <div class="col-4">
                                             <i class="fas fa-chart {{ $arrProcessClass[$index] }}  h3"></i>
