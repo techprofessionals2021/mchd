@@ -153,7 +153,7 @@
                         </form>
                     </div>
                 </li>
-                <li class="dropdown dash-h-item drp-company">
+                {{-- <li class="dropdown dash-h-item drp-company">
                     <a class="dash-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
                         role="button" aria-haspopup="false" aria-expanded="false">
                         <span class="hide-mob ms-2 py-2" id="selected-item"></span>
@@ -197,7 +197,6 @@
                             @endif
                         @endforeach
 
-                        <!--   <hr class="dropdown-divider" /> -->
                         @auth('web')
                             @if (Auth::user()->type == 'user')
                                 <a href="#!" class="dropdown-item" data-toggle="modal"
@@ -212,7 +211,7 @@
                         @if (isset($currentWorkspace) && $currentWorkspace)
                             @auth('web')
                                 @if (Auth::user()->id == $currentWorkspace->created_by)
-                                    {{-- <a href="#" class="dropdown-item bs-pass-para"
+                                    <a href="#" class="dropdown-item bs-pass-para"
                                         data-confirm="{{ __('Are You Sure?') }}"
                                         data-text="{{ __('This action can not be undone. Do you want to continue?') }}"
                                         data-confirm-yes="remove-workspace-form">
@@ -224,9 +223,9 @@
                                         method="POST" style="display: none;">
                                         @csrf
                                         @method('DELETE')
-                                    </form> --}}
+                                    </form>
                                 @else
-                                    {{-- <a href="#" class="dropdown-item bs-pass-para"
+                                    <a href="#" class="dropdown-item bs-pass-para"
                                         data-confirm="{{ __('Are You Sure?') }}"
                                         data-text="{{ __('This action can not be undone. Do you want to continue?') }}"
                                         data-confirm-yes="remove-workspace-form">
@@ -238,14 +237,14 @@
                                         method="POST" style="display: none;">
                                         @csrf
                                         @method('DELETE')
-                                    </form> --}}
+                                    </form>
                                 @endif
                             @endauth
                         @endif
 
 
                     </div>
-                </li>
+                </li> --}}
 
 
             </ul>
