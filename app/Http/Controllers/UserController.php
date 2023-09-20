@@ -28,6 +28,7 @@ use App\Models\UserEmailTemplate;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Mail\SendWorkspaceInvication;
 use App\Models\Workspace;
+use App\Models\WorkspacePermission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -444,6 +445,7 @@ class UserController extends Controller
 
     public function inviteUser($slug, Request $request)
     {
+
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
 
         $post             = $request->all();
@@ -700,8 +702,12 @@ class UserController extends Controller
 
     public function checkUserExists(Request $request, $slug)
     {
-        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+        // dd($request->all());
 
+        $getuserworkspacepermission = WorkspacePermission::where('role',$request->permission)->first();
+
+
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
 
         $authuser = Auth::user();
         $authusername  = User::where('id', '=', $authuser->id)->first();
@@ -738,7 +744,9 @@ class UserController extends Controller
                     [
                         'user_id' => $registerUsers->id,
                         'workspace_id' => $currentWorkspace->id,
-                        'permission' => 'Member',
+                        // 'permission' => 'Member',
+                        'permission' => $request->permission,
+                        'workspace_permission' => $getuserworkspacepermission->permission ?? null,
                     ]
                 );
 
@@ -788,7 +796,6 @@ class UserController extends Controller
                         'success' => __('Notifications successfully deleted!'),
                     ], 200
                 );
-
 
     }
 }

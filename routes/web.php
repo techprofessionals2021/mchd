@@ -669,7 +669,12 @@ Route::get('/{slug}/timesheet/{timesheet_id}/edit/{project_id}',[ProjectControll
 
 Route::post('/{slug}/timesheet/{timesheet_id}/update/{project_id}',[ProjectController::class, 'projectTimesheetUpdate'])->name('project.timesheet.update')->middleware(['auth','XSS']);
 
-Route::get('/{slug}/checkuserexists', [UserController::class, 'checkUserExists'])->name('user.exists')->middleware(['auth', 'XSS']);
+// Route::middleware(['can:invite-user'])->group(function () {
+  // Your routes here
+
+  Route::get('/{slug}/checkuserexists', [UserController::class, 'checkUserExists'])->name('user.exists')->middleware(['auth', 'XSS']);
+// });
+
 
 Route::delete('/lang/{lang}',[WorkspaceController::class, 'destroyLang'])->name('lang.destroy')->middleware(['auth','XSS']);
 
