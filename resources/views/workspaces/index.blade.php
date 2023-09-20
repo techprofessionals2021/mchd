@@ -11,11 +11,6 @@
     @endif
     <li class="breadcrumb-item"> {{ __('Workspaces') }}</li>
 @endsection
-@section('action-button')
-    <a href="#" class="btn btn-sm btn-primary filter" data-toggle="tooltip" title="{{ __('Filter') }}">
-        <i class="ti ti-filter"></i>
-    </a>
-@endsection
 @push('css-page')
     <style>
         .page-content .select2-container {
