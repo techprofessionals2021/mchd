@@ -265,11 +265,13 @@
                                             <h6 class="text-muted mb-1">{{ __('Tags') }}</h6>
                                         </div>
                                         <div class="col-9">
+                                            @isset($tags)
                                             @foreach ($tags as $tag)
                                             {{-- <h6 class="text-muted mb-1"> --}}
                                                 <span class="badge bg-primary p-2 mb-1 rounded">{{ __($tag) }}</span>
                                                 {{-- </h6> --}}
                                             @endforeach
+                                            @endisset
                                         </div>
                                     </div>
                                 </div>
