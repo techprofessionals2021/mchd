@@ -1687,3 +1687,7 @@ a.b-brand {
   .text-red{
     color: #ff0043;
   }
+
+.bg-lightGrey{
+    background-color: lightgray !important;
+}

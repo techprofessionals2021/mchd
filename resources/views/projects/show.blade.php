@@ -257,6 +257,24 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col text-left">
+                                            <h6 class="text-muted mb-1">{{ __('Tags') }}</h6>
+                                        </div>
+                                        <div class="col-9">
+                                            @foreach ($tags as $tag)
+                                            {{-- <h6 class="text-muted mb-1"> --}}
+                                                <span class="badge bg-primary p-2 mb-1 rounded">{{ __($tag) }}</span>
+                                                {{-- </h6> --}}
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">

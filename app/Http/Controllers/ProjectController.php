@@ -416,7 +416,9 @@ class ProjectController extends Controller
 
                 $permissions = Auth::user()->getPermission($project->id);
 
-                return view('projects.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions'));
+                $tags = json_decode($project->tags);
+
+                return view('projects.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags'));
             } else {
                 return redirect()->back()->with('error', __("Project Not Found."));
             }
