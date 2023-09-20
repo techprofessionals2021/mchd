@@ -8,30 +8,7 @@
     </tr>
     </thead>
     <tbody> 
-    <tr>
-        <td>{{__('Milestone')}}</td>
-        <td>
-            <div class="row ">
-                <div class="form-check form-switch d-inline-block col">
-                    <input class="form-check-input" id="permission3" @if(in_array('create milestone',$permissions)) checked="checked" @endif name="permissions[]" type="checkbox" value="create milestone">
-                    <label for="permission3" class="custom-control-label">{{__('Create')}}</label><br>
-                </div>
-               <div class="form-check form-switch d-inline-block col">
-                    <input class="form-check-input" id="permission4" @if(in_array('edit milestone',$permissions)) checked="checked" @endif name="permissions[]" type="checkbox" value="edit milestone">
-                    <label for="permission4" class="custom-control-label">{{__('Edit')}}</label><br>
-                </div>
-                <div class="form-check form-switch d-inline-block col">
-                    <input class="form-check-input" id="permission5" @if(in_array('delete milestone',$permissions)) checked="checked" @endif name="permissions[]" type="checkbox" value="delete milestone">
-                    <label for="permission5" class="custom-control-label">{{__('Delete')}}</label><br>
-                </div>
-                <div class="form-check form-switch d-inline-block col">
-                    <input class="form-check-input" id="permission2" @if(in_array('show milestone',$permissions)) checked="checked" @endif name="permissions[]" type="checkbox" value="show milestone">
-                    <label for="permission2" class="custom-control-label">{{__('Show')}}</label><br>
-                </div>
-                <div class="col"></div>
-            </div>
-        </td>
-    </tr>
+
     <tr>
         <td>{{__('Task')}}</td>
         <td>

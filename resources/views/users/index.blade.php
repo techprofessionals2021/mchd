@@ -98,6 +98,32 @@
                                                     data-confirm-yes="remove_user_{{ $user->id }}"><i
                                                         class="ti ti-trash"></i>
                                                     <span>{{ __('Remove User From Workspace') }}</span></a>
+
+
+                                                    {{-- <a href="{{ route('work-space-permission', [
+                                                        'workspace_id' => $currentWorkspace->id,
+                                                        'slug' => $currentWorkspace->slug,
+                                                        'user_id' => $user->id
+                                                    ]) }}"
+                                                    class="action-btn btn-primary mx-1  btn btn-sm d-inline-flex align-items-center"
+                                                   
+                                                    title="{{ __('Permission') }}"
+                                                    data-title="{{ __('Edit Permission') }}"
+                                                    ><i
+                                                        class="ti ti-lock"></i></a> --}}
+                                                       
+                                                        <a href="d-inline-flex align-items-center"
+                                                        class="align-items-center"
+                                                        data-ajax-popup="true" data-size="lg"
+                                                        data-toggle="popover" title="{{ __('Permission') }}"
+                                                        data-title="{{ __('Edit Permission') }}"
+                                                        data-url="{{ route('work-space-permission', [
+                                                            'workspace_id' => $currentWorkspace->id,
+                                                            'slug' => $currentWorkspace->slug,
+                                                            'user_id' => $user->id
+                                                        ]) }}"><i
+                                                            class="ti ti-lock"></i> <span>{{ __('Manage User Permission Workspace') }}</span></a>       
+                                                        
                                                 <form
                                                     action="{{ route('users.remove', [$currentWorkspace->slug, $user->id]) }}"
                                                     method="post" id="remove_user_{{ $user->id }}"

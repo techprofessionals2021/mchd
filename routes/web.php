@@ -523,6 +523,11 @@ Route::delete('/workspace/leave/{id}',[WorkspaceController::class, 'leave'])->na
 Route::get('/workspace/{id}',[WorkspaceController::class, 'changeCurrentWorkspace'])->name('change-workspace')->middleware(['auth','XSS']);
 Route::post('/workspace/settings/seo',[SettingsController::class, 'seosetting'])->name('settings.seo.store')->middleware(['auth','XSS']);
 
+//made by own routes
+Route::get('/workspace/permission/{workspace_id}/{slug}/{user_id}',[WorkspaceController::class, 'changeCurrentWorkspacePermission'])->name('work-space-permission')->middleware(['auth','XSS']);
+
+Route::post('/workspace/permission/{workspace_id}/{slug}/{user_id}',[WorkspaceController::class, 'workspacePermissionStore'])->name('work-space-permission.store')->middleware(['auth','XSS']);
+
 
 // project
 Route::get('/{slug}/projects',[ProjectController::class, 'index'])->name('projects.index')->middleware(['auth','XSS']);

@@ -39,17 +39,13 @@ class Workspacepermissionseeder extends Seeder
             [
                 'role' => 'Member',
                 'permission' => json_encode([
-                    "edit bug report",
-                    "delete bug report",
-                    "move bug report",
-                    "show gantt"
+                    "invite user"
                 ]),
             ],
             [
                 'role' => 'Teamlead',
                 'permission' => json_encode([
-                    "edit bug report",
-                    "delete bug report",
+                    "invite user"
            
                 ]),
             ],

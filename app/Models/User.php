@@ -144,6 +144,14 @@ class User extends Authenticatable implements MustVerifyEmail
                 return json_decode($data->permission, true);
         }
 
+        public function getPermissionWorkspace($workspace_id)
+        {
+                $data = UserWorkspace::where('user_id', '=', $this->id)->where('workspace_id', '=', $workspace_id)->first();
+                return json_decode($data->workspace_permission, true);
+        }
+
+        
+
         public static function userDefaultDataRegister($user_id)
         {
                 //   $user           = User::find($user_id);
