@@ -6,11 +6,30 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
 @if($currentWorkspace && $task)
 
     <div class="p-2">
-        <div class="form-control-label">{{ __('Description')}}:</div>
 
-        <p class="text-muted mb-4">
-            {{ $task->description }}
-        </p>
+
+        <div class="row mb-4">
+
+            <div class="col-md-3">
+                <div class="form-control-label">{{ __('Description')}}:</div>
+
+                <p class="text-muted mb-4">
+                    {{ $task->description }}
+                </p>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-control-label ">{{ __('Tags')}}:</div>
+
+                <p class="text-muted mt-1 mb-4">
+                    @isset($tags)
+                    @foreach ($tags as $tag)
+                        <span class="badge bg-primary p-2 mb-1 rounded">{{ __($tag) }}</span>
+                    @endforeach
+                    @endisset
+                </p>
+            </div>
+        </div>
 
         <div class="row mb-4">
             <div class="col-md-3">
@@ -45,17 +64,17 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
 
     <ul class="nav nav-tabs  bordar_styless mb-3" id="myTab" role="tablist">
         <li class="annual-billing">
-            <a id="sub-task-tab" data-toggle="tab" href="#sub-task-data" role="tab" aria-controls="contact" aria-selected="true"> {{ __('Sub Task') }} </a>
+            <a id="sub-task-tab" class=" active" data-toggle="tab" href="#sub-task-data" role="tab" aria-controls="contact" aria-selected="true"> {{ __('Sub Task') }} </a>
         </li>
         <li>
-            <a class=" active" id="comments-tab" data-toggle="tab" href="#comments-data" role="tab" aria-controls="home" aria-selected="false"> {{ __('Comments') }} </a>
+            <a  id="comments-tab" data-toggle="tab" href="#comments-data" role="tab" aria-controls="home" aria-selected="false"> {{ __('Comments') }} </a>
         </li>
         <li class="annual-billing">
             <a id="file-tab" data-toggle="tab" href="#file-data" role="tab" aria-controls="profile" aria-selected="false"> {{ __('Files') }} </a>
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade active show" id="comments-data" role="tabpanel" aria-labelledby="home-tab">
+        <div class="tab-pane fade " id="comments-data" role="tabpanel" aria-labelledby="home-tab">
             <form method="post" id="form-comment" data-action="{{route('comment.store',[$currentWorkspace->slug,$task->project_id,$task->id,$clientID])}}">
                 @if ($currentWorkspace->is_chagpt_enable())
                     <div class="row text-end pb-3">
@@ -167,7 +186,7 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
                 @endforeach
             </div>
         </div>
-        <div class="tab-pane fade mt-3" id="sub-task-data" role="tabpanel" aria-labelledby="contact-tab">
+        <div class="tab-pane fade active show mt-3" id="sub-task-data" role="tabpanel" aria-labelledby="contact-tab">
 
             <div class="text-end mb-3">
                 <a href="#" class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#form-subtask"> <i class="ti ti-plus"></i></a>

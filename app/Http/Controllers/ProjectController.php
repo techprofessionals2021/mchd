@@ -757,6 +757,7 @@ class ProjectController extends Controller
                 $post['milestone_id'] = !empty($request->milestone_id) ? $request->milestone_id : 0;
                 $post['status'] = $stage->id;
                 $post['assign_to'] = implode(",", $request->assign_to);
+                $post['tags'] = json_encode(explode(',',$request->tags));
                 $task = Task::create($post);
 
                 if ($request->get('synchronize_type') == 'google_calender') {
@@ -1019,7 +1020,9 @@ class ProjectController extends Controller
             $clientID = $objUser->id;
         }
 
-        return view('projects.taskShow', compact('currentWorkspace', 'task', 'clientID','completedSubTaskPercentage'));
+        $tags = json_decode($project->tags);
+
+        return view('projects.taskShow', compact('tags','currentWorkspace', 'task', 'clientID','completedSubTaskPercentage'));
     }
 
     public function taskDrag(Request $request, $slug, $projectID, $taskID)

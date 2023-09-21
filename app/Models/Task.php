@@ -17,6 +17,7 @@ class Task extends Model
         'milestone_id',
         'status',
         'order',
+        'tags'
     ];
 
     public function project()
