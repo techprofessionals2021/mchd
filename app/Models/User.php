@@ -151,7 +151,6 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         
-
         public static function userDefaultDataRegister($user_id)
         {
                 //   $user           = User::find($user_id);

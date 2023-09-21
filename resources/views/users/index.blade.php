@@ -231,6 +231,18 @@
                             <h6 class="mt-4 mb-2">Invite New User</h6>
                             <p class="text-muted text-center">Click here to Invite New User</p>
                         </a>
+
+                        @elseif((in_array('invite user',$permissions)))
+                        <a href="#" class="btn-addnew-project" data-ajax-popup="true" data-size="md"
+                            data-title="{{ __('Invite New User') }}"
+                            data-url="{{ route('users.invite', $currentWorkspace->slug) }}">
+                            <div class="bg-primary proj-add-icon">
+                                <i class="ti ti-plus"></i>
+                            </div>
+                            <h6 class="mt-4 mb-2">Invite New User</h6>
+                            <p class="text-muted text-center">Click here to Invite New User</p>
+                        </a>
+
                     @endif
                 @endauth
             </div>
