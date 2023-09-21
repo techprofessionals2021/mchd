@@ -528,7 +528,8 @@ Route::get('all-workspaces-ajax',[WorkspaceController::class,'getAllWorkSpacesAj
 
 
 // project
-Route::get('/{slug}/projects',[ProjectController::class, 'index'])->name('projects.index')->middleware(['auth','XSS']);
+Route::get('/{slug}/projects/',[ProjectController::class, 'index'])->name('projects.index')->middleware(['auth','XSS']);
+Route::post('/{slug}/projects/filter',[ProjectController::class, 'filterProducts'])->name('projects.filter')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/create',[ProjectController::class, 'create'])->name('projects.create')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/{id}',[ProjectController::class, 'show'])->name('projects.show')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects',[ProjectController::class, 'store'])->name('projects.store')->middleware(['auth','XSS']);

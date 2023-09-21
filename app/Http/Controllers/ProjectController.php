@@ -47,13 +47,52 @@ class ProjectController extends Controller
     {
         $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+        // dd($objUser->id);
         if ($objUser->getGuard() == 'client') {
             $projects = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
         } else {
             $projects = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
         }
 
+        // dd($projects);
+
         return view('projects.index', compact('currentWorkspace', 'projects'));
+    }
+
+    public function filterProducts(Request $request,$slug)
+    {
+        $tags =   explode(',',$request->tags);
+        $objUser = Auth::user();
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+        if ($objUser->getGuard() == 'client') {
+            $projects = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
+        } else {
+            if(is_null($request->tags)){
+
+                $projects = Project::select('projects.*')
+                ->join('user_projects', 'projects.id', '=', 'user_projects.project_id')
+                ->where('user_projects.user_id', '=', $objUser->id)
+                ->where('projects.workspace', '=', $currentWorkspace->id)
+                ->get();
+
+            }else{
+
+                $projects = Project::select('projects.*')
+                ->join('user_projects', 'projects.id', '=', 'user_projects.project_id')
+                ->where('user_projects.user_id', '=', $objUser->id)
+                ->where('projects.workspace', '=', $currentWorkspace->id)
+                ->where(function ($query) use ($tags) {
+                    foreach ($tags as $tag) {
+                        $query->orWhereJsonContains('tags', $tag);
+                    }
+                })
+                ->get();
+
+            }
+        }
+
+        return view('projects.index', compact('currentWorkspace', 'projects'));
+
     }
 
     public function tracker($slug, $id)
@@ -319,7 +358,7 @@ class ProjectController extends Controller
                 } catch (\Exception $e) {
                     $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
                 }
-                Utility::sendNotification('project_assign', $project->workspaceData, $user->id, $project);
+                // Utility::sendNotification('project_assign', $project->workspaceData, $user->id, $project);
             }
         }
     }

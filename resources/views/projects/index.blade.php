@@ -28,10 +28,28 @@
             </a>
           @endif
 
+          <a href="#" class="btn btn-sm btn-primary filter" data-toggle="tooltip" title="{{ __('Filter') }}">
+            <i class="ti ti-filter"></i>
+        </a>
+
     @endauth
 @endsection
 
 @section('content')
+
+<form action="{{route('projects.filter', $currentWorkspace->slug)}}" method="POST">
+    @csrf
+    <div class="row justify-content-end display-none" id="show_filter">
+        <div class="col-sm-6 col-xl-2 pb-2">
+            <input type="text" name="tags" class="form-control" value="{{ old('tags') }}"
+            data-role="tagsinput" placeholder="Enter Tag Names" />
+        </div>
+        <div class="d-flex col-1 justify-content-xl-center">
+            {{-- <button class=" btn btn-primary  btn-filter apply">{{ __('Apply') }}</button> --}}
+            <button type="submit" class="btn btn-light bg-primary text-white apply">{{ __('Apply')}}</button>
+        </div>
+    </div>
+    </form>
     <section class="section">
         @if($projects && $currentWorkspace)
             <div class="row mb-2">
@@ -222,6 +240,26 @@
 @endsection
 
 @push('css-page')
+<link rel='stylesheet'
+   href='https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.css'>
+<style>
+    .page-content .select2-container {
+        z-index: 0 !important;
+    }
+
+    .display-none {
+        display: none !important;
+    }
+
+    .bootstrap-tagsinput {
+    padding: 6px 10px !important;
+    line-height: 28px !important;
+    background: white !important;
+    border: 1px solid #f1f1f1 !important;
+    border-radius: 6px !important;
+    width: 100% !important;
+}
+</style>
 @endpush
 
 @push('scripts')
@@ -248,5 +286,35 @@
             })
         });
     </script>
+    <script type="text/javascript">
+        $(".filter").click(function() {
+            $("#show_filter").toggleClass('display-none');
+        });
+    </script>
+
+<script src='https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js'></script>
+
+<script>
+   $(function () {
+      $('input').on('change', function (event) {
+
+         var $element = $(event.target);
+         var $container = $element.closest('.example');
+
+         if (!$element.data('tagsinput'))
+            return;
+
+         var val = $element.val();
+         if (val === null)
+            val = "null";
+         var items = $element.tagsinput('items');
+
+         $('code', $('pre.val', $container)).html(($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\""));
+         $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
+
+
+      }).trigger('change');
+   });
+</script>
 
 @endpush
