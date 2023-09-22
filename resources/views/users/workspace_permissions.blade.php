@@ -12,13 +12,13 @@
         </thead>
         <tbody> 
     
-            <td>{{__('Invite User')}}</td>
+            <td>{{__('User')}}</td>
             <td>
                 {{-- {{dd(in_array('invite user',$permissions))}} --}}
                 <div class="row">
                     <div class="form-check form-switch d-inline-block col">
                         <input class="form-check-input" id="permission1" @if(in_array('invite user',$permissions)) checked="checked" @endif name="permissions[]" type="checkbox" value="invite user">
-                        <label for="permission1" class="custom-control-label">{{__('Show')}}</label><br>
+                        <label for="permission1" class="custom-control-label">{{__('Invite')}}</label><br>
                     </div>
                     {{-- <div class="form-check form-switch d-inline-block col">
                         <input class="form-check-input" id="permission8" @if(in_array('edit task',$permissions)) checked="checked" @endif name="permissions[]" type="checkbox" value="edit task">
@@ -38,7 +38,79 @@
                     </div> --}}
                 </div>
             </td>
+            
         </tr>
+
+
+        <td>{{__('Project')}}</td>
+        <td>
+            {{-- {{dd(in_array('invite user',$permissions))}} --}}
+            <div class="row">
+                <div class="form-check form-switch d-inline-block col">
+                    <input class="form-check-input" id="permission1" @if(in_array('create project',$permissions)) checked="checked" @endif name="permissions[]" type="checkbox" value="create project">
+                    <label for="permission1" class="custom-control-label">{{__('Create')}}</label><br>
+                </div>
+
+                
+            
+            </div>
+        </td>
+        
+    </tr>
+
+
+
+
+    
+    <td>{{__('Calendar')}}</td>
+    <td>
+        {{-- {{dd(in_array('invite user',$permissions))}} --}}
+        <div class="row">
+            <div class="form-check form-switch d-inline-block col">
+                <input class="form-check-input" id="permission1" @if(in_array('show calendar',$permissions)) checked="checked" @endif name="permissions[]" type="checkbox" value="show calendar">
+                <label for="permission1" class="custom-control-label">{{__('Show')}}</label><br>
+            </div>
+
+    
+        </div>
+    </td>
+    
+</tr>
+
+
+<td>{{__('Timesheet')}}</td>
+<td>
+    {{-- {{dd(in_array('invite user',$permissions))}} --}}
+    <div class="row">
+        <div class="form-check form-switch d-inline-block col">
+            <input class="form-check-input" id="permission1" @if(in_array('show timesheet',$permissions)) checked="checked" @endif name="permissions[]" type="checkbox" value="show timesheet">
+            <label for="permission1" class="custom-control-label">{{__('Show')}}</label><br>
+        </div>
+
+
+    </div>
+</td>
+
+</tr>
+
+
+<td>{{__('Project Report')}}</td>
+<td>
+    {{-- {{dd(in_array('invite user',$permissions))}} --}}
+    <div class="row">
+
+
+        <div class="form-check form-switch d-inline-block col">
+            <input class="form-check-input" id="permission1" @if(in_array('project report',$permissions)) checked="checked" @endif name="permissions[]" type="checkbox" value="project report">
+            <label for="permission1" class="custom-control-label">{{__('Show')}}</label><br>
+        </div>
+    
+    </div>
+</td>
+
+</tr>
+
+  
       
     
   
