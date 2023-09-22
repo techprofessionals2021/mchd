@@ -97,7 +97,7 @@
             </div>
             @elseif($currentWorkspace)
             <div class="row">
-                <div class="col-lg-7 col-md-7 ">
+                <div class="col-lg-12 col-md-12 ">
                     <div class="row mt-3">
                         <div class="col-xl-3 col-md-6 col-sm-6">
                             <div class="card">
@@ -125,8 +125,8 @@
                                 </div>
                             </div>
                         </div>
-{{--
-                        <div class="col-xl-3 col-md-6 col-sm-6">
+
+                        {{-- <div class="col-xl-3 col-md-6 col-sm-6">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="theme-avtar bg-danger">
@@ -149,6 +149,58 @@
                                     <p class="text-muted text-sm"></p>
                                     <h6 class="">{{ __('Total User') }}</h6>
                                     <h3 class="mb-0">{{ $totalMembers }} <span
+                                            class="text-success text-sm"></span></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="theme-avtar bg-primary">
+                                        <i class="fas fa-tasks bg-primary text-white"></i>
+                                    </div>
+                                    <p class="text-muted text-sm"></p>
+                                    <h6 class="">{{ __('In Progress Project') }}</h6>
+                                    <h3 class="mb-0">{{ $inProgressProjects }} <span
+                                            class="text-success text-sm"></span></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="theme-avtar bg-primary">
+                                        <i class="fas fa-tasks bg-primary text-white"></i>
+                                    </div>
+                                    <p class="text-muted text-sm"></p>
+                                    <h6 class="">{{ __('Due Date Project') }}</h6>
+                                    <h3 class="mb-0">{{ $dueDateProjects }} <span
+                                            class="text-success text-sm"></span></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="theme-avtar bg-info">
+                                        <i class="fas fa-tag bg-info text-white"></i>
+                                    </div>
+                                    <p class="text-muted text-sm"></p>
+                                    <h6 class="">{{ __('In Progress Tasks') }}</h6>
+                                    <h3 class="mb-0">{{ $inProgressTask }} <span
+                                            class="text-success text-sm"></span></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="theme-avtar bg-info">
+                                        <i class="fas fa-tag bg-info text-white"></i>
+                                    </div>
+                                    <p class="text-muted text-sm"></p>
+                                    <h6 class="">{{ __('Due Date Tasks') }}</h6>
+                                    <h3 class="mb-0">{{ $dueDateTask }} <span
                                             class="text-success text-sm"></span></h3>
                                 </div>
                             </div>
@@ -225,7 +277,7 @@
                 </div>
 
 
-                <div class="col-lg-5 col-md-5 ">
+                <div class="col-lg-12 col-md-12 ">
                     <div class="card">
                         <div class="card-header">
                             <h5>{{ __('Tasks Overview') }}</h5>

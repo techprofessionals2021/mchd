@@ -58,15 +58,28 @@ class UserController extends Controller
     public function index($slug = '')
     {
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+
+
+        $user = User::find(Auth::id());
+        $permissions = $user->getPermissionWorkspace($currentWorkspace->id);
+        // dd($permissions);
+        if (!$permissions) {
+            $permissions = [];
+        }
+     
+
         if ($currentWorkspace) {
             $users = User::select('users.*', 'user_workspaces.permission', 'user_workspaces.is_active')->join('user_workspaces', 'user_workspaces.user_id', '=', 'users.id');
             $users->where('user_workspaces.workspace_id', '=', $currentWorkspace->id);
             $users = $users->get();
+
+            
+            // dd($users);
         } else {
             $users = User::where('type', '!=', 'admin')->get();
         }
 
-        return view('users.index', compact('currentWorkspace', 'users'));
+        return view('users.index', compact('currentWorkspace', 'users','permissions'));
     }
 
     public function create(Request $request)

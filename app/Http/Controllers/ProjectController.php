@@ -47,13 +47,57 @@ class ProjectController extends Controller
     {
         $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+
+
+        $user = User::find($objUser->id);
+        $permissions = $user->getPermissionWorkspace($currentWorkspace->id);
+        // dd($permissions);
+        if (!$permissions) {
+            $permissions = [];
+        }
         if ($objUser->getGuard() == 'client') {
             $projects = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
         } else {
             $projects = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
         }
 
+        return view('projects.index', compact('currentWorkspace', 'projects','permissions'));
+    }
+
+    public function filterProducts(Request $request,$slug)
+    {
+        $tags =   explode(',',$request->tags);
+        $objUser = Auth::user();
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+        if ($objUser->getGuard() == 'client') {
+            $projects = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
+        } else {
+            if(is_null($request->tags)){
+
+                $projects = Project::select('projects.*')
+                ->join('user_projects', 'projects.id', '=', 'user_projects.project_id')
+                ->where('user_projects.user_id', '=', $objUser->id)
+                ->where('projects.workspace', '=', $currentWorkspace->id)
+                ->get();
+
+            }else{
+
+                $projects = Project::select('projects.*')
+                ->join('user_projects', 'projects.id', '=', 'user_projects.project_id')
+                ->where('user_projects.user_id', '=', $objUser->id)
+                ->where('projects.workspace', '=', $currentWorkspace->id)
+                ->where(function ($query) use ($tags) {
+                    foreach ($tags as $tag) {
+                        $query->orWhereJsonContains('tags', $tag);
+                    }
+                })
+                ->get();
+
+            }
+        }
+
         return view('projects.index', compact('currentWorkspace', 'projects'));
+
     }
 
     public function tracker($slug, $id)
@@ -319,14 +363,14 @@ class ProjectController extends Controller
                 } catch (\Exception $e) {
                     $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
                 }
-                Utility::sendNotification('project_assign', $project->workspaceData, $user->id, $project);
+                // Utility::sendNotification('project_assign', $project->workspaceData, $user->id, $project);
             }
         }
     }
 
     public function invite(Request $request, $slug, $projectID)
     {
-    
+
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         $post = $request->all();
         $userList = $post['users_list'];
@@ -678,7 +722,8 @@ class ProjectController extends Controller
         if ($objUser->getGuard() == 'client') {
             $project = Project::select('projects.*')->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
             $projects = Project::select('projects.*')->join('client_projects', 'client_projects.project_id', '=', 'projects.id')->where('client_projects.client_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
-        } else {
+        } else
+        {
             $project = Project::select('projects.*')->join('user_projects', 'user_projects.project_id', '=', 'projects.id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
             $projects = Project::select('projects.*')->join('user_projects', 'user_projects.project_id', '=', 'projects.id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
         }
@@ -718,6 +763,7 @@ class ProjectController extends Controller
                 $post['milestone_id'] = !empty($request->milestone_id) ? $request->milestone_id : 0;
                 $post['status'] = $stage->id;
                 $post['assign_to'] = implode(",", $request->assign_to);
+                $post['tags'] = json_encode(explode(',',$request->tags));
                 $task = Task::create($post);
 
                 if ($request->get('synchronize_type') == 'google_calender') {
@@ -980,7 +1026,9 @@ class ProjectController extends Controller
             $clientID = $objUser->id;
         }
 
-        return view('projects.taskShow', compact('currentWorkspace', 'task', 'clientID','completedSubTaskPercentage'));
+        $tags = json_decode($project->tags);
+
+        return view('projects.taskShow', compact('tags','currentWorkspace', 'task', 'clientID','completedSubTaskPercentage'));
     }
 
     public function taskDrag(Request $request, $slug, $projectID, $taskID)

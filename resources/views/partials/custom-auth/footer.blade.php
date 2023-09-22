@@ -6,7 +6,7 @@
                     <img src={{asset("custom-auth/uploads/logo/whitelogo/white-logo.png")}} alt="" />
                 </a>
             </div>
-            <div class="w-6/12 lg:w-2/12 mt-5 lg:mt-0">
+            {{-- <div class="w-6/12 lg:w-2/12 mt-5 lg:mt-0">
                 <p class="text-white font-semibold tracking-wide">Pages</p>
                 <ul>
                     <li>
@@ -60,7 +60,7 @@
                         <a class="mt-5 text-sm block text-ltgray font-light" href="#">Submit Ticket</a>
                     </li>
                 </ul>
-            </div>
+            </div> --}}
         </div>
     </div>
     <div class="border-t container mt-10 border-[#306cba]">
