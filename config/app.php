@@ -185,8 +185,9 @@ return [
         Anand\LaravelPaytmWallet\PaytmWalletServiceProvider::class,
         Obydul\LaraSkrill\LaraSkrillServiceProvider::class,
         Paytabscom\Laravel_paytabs\PaypageServiceProvider::class,
-        
-        
+        Yajra\DataTables\DataTablesServiceProvider::class,
+
+
 
         /*
          * Package Service Providers...

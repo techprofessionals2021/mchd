@@ -88,6 +88,43 @@
                         </a>
                     </li>
                 @endif
+
+                {{-- <li class="dash-item dash-hasmenu">
+                    <a href="{{ route('getWorkSpaces', $currentWorkspace->slug) }}"
+                        class="dash-link {{ Request::route()->getName() == 'getWorkSpaces' ? ' active' : '' }}">
+                        <span class="dash-micon"><i class="ti ti-home"></i></span>
+                        <span class="dash-mtext">{{ __('Workspaces') }}</span>
+
+
+                    </a>
+                </li> --}}
+
+
+                <li class="dash-item dash-hasmenu {{ Request::route()->getName() == 'getWorkSpaces' ? ' active' : '' }}">
+                <a href="#" class="dash-link"><span class="dash-micon"><i
+                            class="ti ti-device-floppy"></i></span><span
+                        class="dash-mtext">{{ __('Workspaces') }}</span><span class="dash-arrow"><i
+                            data-feather="chevron-right"></i></span></a>
+                <ul
+                    class="dash-submenu collapse  {{ Request::route()->getName() == 'contracts.index' ? ' active' : '' }}">
+                    <li
+                        class="openAddWorkSpace dash-item {{ Request::route()->getName() == 'contracts.index' || Request::route()->getName() == 'contracts.show' ? 'active' : '' }}">
+                        {{-- <a class="dash-link"
+                            href="{{ route('contracts.index', $currentWorkspace->slug) }}">{{ __('Contracts') }}</a> --}}
+                            <a href="#!" class="dash-link" data-toggle="modal"
+                            data-target="#modelCreateWorkspace">
+                            <i class="ti ti-circle-plus"></i>
+                            <span>{{ __('Create Workspace') }}</span>
+                        </a>
+                    </li>
+                    <li class="dash-item ">
+                        <a class="dash-link"
+                            href="{{ route('getWorkSpaces', $currentWorkspace->slug) }}">{{ __('Workspaces') }}</a>
+                    </li>
+                </ul>
+            </li>
+
+
                 @if (isset($currentWorkspace) && $currentWorkspace)
                     @auth('web')
                         <li class="dash-item dash-hasmenu">
@@ -339,6 +376,21 @@
                 @if (Auth::user()->type == 'admin')
                 @endif
 
+
+
+
         </div>
     </div>
 </nav>
+
+
+<script>
+    $(function(){
+        $('.openAddWorkSpace').on('click', function() {
+            $('#modelCreateWorkspace').modal('show')
+            });
+        $('.btn-close').on('click', function() {
+            $('#modelCreateWorkspace').modal('hide')
+            });
+    })
+</script>

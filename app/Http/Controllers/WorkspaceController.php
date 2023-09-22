@@ -17,10 +17,12 @@ use App\Models\Workspace;
 use App\Models\USer;
 use App\Models\EmailTemplate;
 use App\Models\Mail\EmailTest;
+use App\Models\User;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\DataTables;
 
 class WorkspaceController extends Controller
 {
@@ -38,7 +40,7 @@ class WorkspaceController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->with('error', $validator->errors()->first());
         }
-        
+
         $objWorkspace = Workspace::create(
             [
                 'created_by' => $objUser->id,
@@ -64,7 +66,7 @@ class WorkspaceController extends Controller
 
 
     //    public function destroy($workspaceID)
-    // { 
+    // {
     //     $objUser   = Auth::user();
     //     $workspace = Workspace::find($workspaceID);
     //     $all_workspaces = Workspace::get();
@@ -76,7 +78,7 @@ class WorkspaceController extends Controller
     //       if(count($all_workspaces) > 1)
     //        {
     //         UserWorkspace::where('workspace_id', '=', $workspaceID)->delete();
-    //         Stage::where('workspace_id', '=', $workspaceID)->delete(); 
+    //         Stage::where('workspace_id', '=', $workspaceID)->delete();
     //         $workspace->delete();
     //         $work_space = Workspace::first();
 
@@ -139,7 +141,7 @@ class WorkspaceController extends Controller
 
 
         if (count($all_workspaces) > 1) {
-            
+
             $work_space = Workspace::first();
 
             $user_Project = Project::where('workspace', '=', $work_space->id)->get();
@@ -187,14 +189,14 @@ class WorkspaceController extends Controller
             $objUser->currant_workspace = $workspaceID;
             $objUser->save();
 
-         
 
-            if(Auth::user()->getGuard() == 'client'){
+
+            if (Auth::user()->getGuard() == 'client') {
 
                 return redirect()->route('client.home')->with('success', __('Workspace Change Successfully!'));
-            }else{
+            } else {
 
-                return redirect()->route('home')->with('success', __('Workspace Change Successfully!'));
+                return redirect()->route('getWorkSpaces', $objWorkspace->slug)->with('success', __('Workspace Change Successfully!'));
             }
         } else {
             return redirect()->back()->with('error', __('Workspace is locked'));
@@ -207,7 +209,7 @@ class WorkspaceController extends Controller
 
             Artisan::call('config:cache');
             Artisan::call('config:clear');
-            
+
             return redirect()->back()->with('success', __('Language Change Successfully!'));
         } else {
             return redirect()->back()->with('error', __('Something is wrong'));
@@ -217,7 +219,7 @@ class WorkspaceController extends Controller
     public function changeLangcopylink($lang)
     {
         \Cookie::queue('LANGUAGE', $lang, 120);
-        
+
         return redirect()->back()->with('success', __('Language Change Successfully!'));
     }
 
@@ -225,7 +227,7 @@ class WorkspaceController extends Controller
     {
 
         $user = \Auth::user();
-        $user->lang = $lang; 
+        $user->lang = $lang;
         $user->save();
         return redirect()->back()->with('success', __('Language Change Successfully!'));
     }
@@ -233,7 +235,7 @@ class WorkspaceController extends Controller
     {
 
         $user = \Auth::user();
-        $user->lang = $lang; 
+        $user->lang = $lang;
         $user->save();
 
         return redirect()->back()->with('success', __('Language Change Successfully!'));
@@ -244,12 +246,11 @@ class WorkspaceController extends Controller
         $objUser = Auth::user();
         if ($objUser->type == 'admin') {
 
-            $languages = \App\Models\Languages::pluck('lang_fullname','lang_code');
+            $languages = \App\Models\Languages::pluck('lang_fullname', 'lang_code');
             $settings = \App\Models\Utility::getAdminPaymentSettings();
-            if(!empty($settings['disable_lang'])){
-                $disabledLang = explode(',',$settings['disable_lang']);
-            }
-            else{
+            if (!empty($settings['disable_lang'])) {
+                $disabledLang = explode(',', $settings['disable_lang']);
+            } else {
                 $disabledLang = [];
             }
             $dir = base_path() . '/resources/lang/' . $currantLang;
@@ -282,7 +283,7 @@ class WorkspaceController extends Controller
             }
             $workspace = new Workspace();
 
-            return view('lang.index', compact('workspace', 'currantLang', 'arrLabel', 'arrMessage','disabledLang','languages'));
+            return view('lang.index', compact('workspace', 'currantLang', 'arrLabel', 'arrMessage', 'disabledLang', 'languages'));
         } else {
             redirect()->route('home');
         }
@@ -300,7 +301,7 @@ class WorkspaceController extends Controller
 
             $langFolder = $dir . "/" . $currantLang;
 
-            if($request->message){
+            if ($request->message) {
                 foreach ($request->message as $fileName => $fileData) {
                     $content = "<?php return [";
                     $content .= $this->buildArray($fileData);
@@ -346,11 +347,11 @@ class WorkspaceController extends Controller
             [
                 'lang_code' => 'required|unique:languages',
                 'lang_fullname' => 'required|unique:languages',
-                ]
-            );
+            ]
+        );
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
-            
+
             return redirect()->back()->with('error', $messages->first());
         }
 
@@ -550,7 +551,7 @@ class WorkspaceController extends Controller
                 $validate['payfast_signature'] = 'required|string';
                 $validate['payfast_mode'] = 'required|string';
             }
-            
+
             if (isset($request->is_iyzipay_enabled) && $request->is_iyzipay_enabled == 'on') {
                 $validate['iyzipay_api_key'] = 'required|string';
                 $validate['iyzipay_secret_key'] = 'required|string';
@@ -593,7 +594,7 @@ class WorkspaceController extends Controller
             if ($request->has('interval_time')) {
                 $validate['interval_time'] = 'required';
             }
-            
+
             if ($request->has('zoom_api_key')) {
                 $validate['zoom_api_key']       = 'required';
             }
@@ -662,7 +663,6 @@ class WorkspaceController extends Controller
 
                 $currentWorkspace->name = $request->name;
                 $currentWorkspace->lang = $request->default_language;
-
             } elseif ($request->has('interval_time')) {
                 $currentWorkspace->interval_time = $request->interval_time;
             } elseif ($request->has('zoom_api_key')) {
@@ -782,8 +782,8 @@ class WorkspaceController extends Controller
                     $post['is_paymentwall_enabled'] = 'off';
                 }
 
-                 // Save Toyyibpay Detail
-                 if (isset($request->is_toyyibpay_enabled) && $request->is_toyyibpay_enabled == 'on') {
+                // Save Toyyibpay Detail
+                if (isset($request->is_toyyibpay_enabled) && $request->is_toyyibpay_enabled == 'on') {
 
                     $post['is_toyyibpay_enabled'] = $request->is_toyyibpay_enabled;
                     $post['toyyibpay_secret_key'] = $request->toyyibpay_secret_key;
@@ -803,7 +803,7 @@ class WorkspaceController extends Controller
                     $post['is_payfast_enabled'] = 'off';
                 }
 
-                 // Save iyzipay Detail
+                // Save iyzipay Detail
                 if (isset($request->is_iyzipay_enabled) && $request->is_iyzipay_enabled == 'on') {
                     $post['is_iyzipay_enabled'] = $request->is_iyzipay_enabled;
                     $post['iyzipay_api_key'] = $request->iyzipay_api_key;
@@ -1253,17 +1253,15 @@ class WorkspaceController extends Controller
                 \File::makeDirectory($dir, $mode = 0777, true, true);
             }
             $file_name = $request->google_calender_json_file->getClientOriginalName();
-            $file_path =  md5(time()) . "/" .md5(time()) . "." . $request->google_calender_json_file->getClientOriginalExtension();
+            $file_path =  md5(time()) . "/" . md5(time()) . "." . $request->google_calender_json_file->getClientOriginalExtension();
             $file = $request->file('google_calender_json_file');
             $file->move($dir, $file_path);
             $currentWorkspace->google_calender_json_file = $file_path;
-
         }
 
         if ($request->google_calender_id) {
 
             $currentWorkspace->google_calender_id = $request->google_calender_id;
-
         }
 
         $currentWorkspace->save();
@@ -1305,4 +1303,61 @@ class WorkspaceController extends Controller
         return redirect()->back()->with('success', __('Permission Updated Successfully!'));
     }
 
+    public function getAllWorkSpaces($slug)
+    {
+        $userObj = Auth::user();
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+
+        if ($userObj->getGuard() == 'client') {
+            $projects = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
+        } else {
+            $projects = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
+        }
+        $stages = Stage::where('workspace_id', '=', $currentWorkspace->id)->orderBy('order')->get();
+        $users = User::select('users.*')->join('user_workspaces', 'user_workspaces.user_id', '=', 'users.id')->where('user_workspaces.workspace_id', '=', $currentWorkspace->id)->get();
+
+        return view('workspaces.index', compact('currentWorkspace', 'projects', 'users', 'stages'));
+        //  return view('workspaces.index');
+    }
+
+    public function getAllWorkSpacesAjax(Request $request)
+    {
+        // dd(auth()->user()->currentWorkspace->id);
+        if ($request->ajax()) {
+            $data = auth()->user()->workspace;
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('relation', function ($row) {
+                    // dd($row);
+                    if ($row->pivot->permission == 'Owner'){
+                        $badge =   "<span  class='badge badge-primary'>".$row->pivot->permission."</span>";
+                    }else{
+                        $badge =  "<span class='badge bg-dark'>Shared</span>";
+                    }
+
+                    // $badge = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
+
+                    return $badge;
+                })
+                ->addColumn('action', function ($row) {
+
+                    if(auth()->user()->currentWorkspace->id == $row->id){
+                        $btn ="<a href='#' class='edit btn btn-gradient-secondary btn-sm'>Selected</a>";
+                    }else{
+                        $btn = "<a href=".route('change-workspace', $row->id)." class='edit btn btn-primary btn-sm'>Select</a>";
+                    }
+
+                    // $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
+
+                    return $btn;
+                })
+                ->rawColumns(['relation','action'])
+                ->setRowClass(function ($workspace) {
+                    if(auth()->user()->currentWorkspace->id == $workspace->id){
+                        return 'bg-lightGrey';
+                    }
+                })
+                ->make(true);
+        }
+    }
 }

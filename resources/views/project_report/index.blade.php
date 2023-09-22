@@ -1,28 +1,28 @@
 @extends('layouts.admin')
 @section('page-title')
     {{__('Project Report')}}
-@endsection    
+@endsection
 @section('links')
-@if(\Auth::guard('client')->check())   
+@if(\Auth::guard('client')->check())
 <li class="breadcrumb-item"><a href="{{route('client.home')}}">{{__('Home')}}</a></li>
  @else
  <li class="breadcrumb-item"><a href="{{route('home')}}">{{__('Home')}}</a></li>
  @endif
 <li class="breadcrumb-item"> {{ __('Project Report') }}</li>
-@endsection 
+@endsection
 @section('action-button')
     <a href="#" class="btn btn-sm btn-primary filter" data-toggle="tooltip" title="{{ __('Filter') }}">
         <i class="ti ti-filter"></i>
     </a>
 @endsection
 @php
-  
+
     $client_keyword = Auth::user()->getGuard() == 'client' ? 'client.' : '';
 @endphp
 
 @section('content')
 
-<!--  <div class="col-lg-12 projectreportdata p-0">  
+<!--  <div class="col-lg-12 projectreportdata p-0">
  </div> -->
 
   <div class="row  display-none" id="show_filter">
@@ -44,7 +44,7 @@
                 </select>
             </div>
             @endif
-     
+
         <div class="col-md-2 col-sm-6 pb-3">
             <select class="select2 form-select" name="status" id="status">
                 <option value="" class="px-4">{{ __('All Status') }}</option>
@@ -52,12 +52,12 @@
                     <option value="Ongoing">{{ __('Ongoing')}}</option>
                     <option value="Finished">{{ __('Finished')}}</option>
                        <option value="OnHold">{{ __('OnHold')}}</option>
-              
+
             </select>
         </div>
-         
 
-        <div class="form-group col-md-3 col-sm-6">  
+
+        <div class="form-group col-md-3 col-sm-6">
             <div class="input-group date ">
             <input class="form-control datepicker5" type="text" id="start_date" name="start_date" value="" autocomplete="off" required="required"  placeholder="{{ __('Start Date') }}">
              <span class="input-group-text">
@@ -96,7 +96,7 @@
                                         </tr>
                                     </thead>
                                      <tbody>
-                                        
+
                                     </tbody>
                                 </table>
                             </div>
@@ -111,10 +111,10 @@
 @endsection
 @push('css-page')
 <link rel="stylesheet" href="{{ asset('assets/custom/css/datatables.min.css') }}">
-    <style>   
+    <style>
     table.dataTable.no-footer {
     border-bottom: none !important;
-} 
+}
  .display-none {
             display: none !important;
         }
@@ -187,7 +187,8 @@
                     url: '{{ route($client_keyword.'projects.ajax', [$currentWorkspace->slug]) }}',
                     type: 'POST',
                     data: data,
-                    success: function(data) {  
+                    success: function(data) {
+                        console.log(data);
                       table.rows.add(data.data).draw(true);
                         loadConfirm();
                     },

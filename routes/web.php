@@ -164,7 +164,7 @@ Route::any('/{slug}/invoice-benefit-success/', [BenefitPaymentController::class,
 
 Route::post('/{slug}/invoice-pay-with-cashfree/{invoice_id}', [CashfreeController::class, 'invoicePayWithcashfree'])->name('invoice.pay.with.cashfree');
 Route::any('/{slug}/invoice-cashfree-success/', [CashfreeController::class, 'getInvoicePaymentStatus'])->name('invoice.cashfree.success');
-   
+
 ///aamarpay route
 Route::post('/{slug}/aamarpay/payment/{invoice_id}', [AamarpayController::class, 'invoicePayWithAamarpay'])->name('invoice.pay.with.aamarpay');
 Route::any('/{slug}/aamarpay/success/{data}', [AamarpayController::class, 'getInvoicePaymentStatus'])->name('invoice.aamarpay.success');
@@ -234,8 +234,8 @@ Route::prefix('client')->as('client.')->group(function () {
      Route::post('{slug}/invoice-pay-with-paymentwall/{invoice_id}', [PaymentWallPaymentController::class, 'invoicePayWithPaymentwall'])->name('invoice.pay.with.paymentwall')->middleware(['auth:client','XSS']);
      Route::any('{slug}/invoice/error/{flag}/{invoice_id}', [PaymentWallPaymentController::class, 'orderpaymenterror'])->name('invoice.callback.error')->middleware(['auth:client','XSS']);
 
-     
-     
+
+
 
 });
 
@@ -381,13 +381,13 @@ Route::prefix('client')->as('client.')->group(function() {
 
     Route::post('/{slug}/invoice-pay-with-payfast/{invoice_id}',[PayfastController::class, 'invoicePayWithpayfast'])->name('invoice.pay.with.payfast')->middleware(['auth:client']);
     Route::get('/invoice/payfast/{status}', [PayfastController::class, 'getInvoicePaymentStatus'])->name('invoice.payfast')->middleware(['auth:client']);
-  
+
     Route::post('/{slug}/invoice-pay-with-iyzipay/{invoice_id}',[IyziPayController::class, 'invoicepaywithiyzipay'])->name('invoice.pay.with.iyzipay')->middleware(['auth:client','XSS']);
     Route::any('/{slug}/invoice/iyzipay/{invoice}/{amt}', [IyziPayController::class, 'getInvoicePaymentStatus'])->name('invoice.iyzipay')->middleware(['auth:client']);
 
     Route::post('/{slug}/invoice-pay-with-sspay/{invoice_id}',[SspayController::class, 'invoicepaywithsspay'])->name('invoice.pay.with.sspay')->middleware(['auth:client','XSS']);
     Route::any('/{slug}/invoice/sspay/{invoice}/{amt}', [SspayController::class, 'getInvoicePaymentStatus'])->name('invoice.sspay')->middleware(['auth:client','XSS']);
-    
+
     Route::post('/{slug}/invoice-pay-with-paytab/{invoice_id}', [PaytabController::class, 'invoicePayWithpaytab'])->name('invoice.pay.with.paytab')->middleware(['auth:client','XSS']);
     Route::any('/{slug}/invoice-paytab-success/', [PaytabController::class, 'getInvoicePaymentStatus'])->name('invoice.paytab.success')->middleware(['auth:client','XSS']);
 
@@ -396,11 +396,11 @@ Route::prefix('client')->as('client.')->group(function() {
 
     Route::post('/{slug}/invoice-pay-with-cashfree/{invoice_id}', [CashfreeController::class, 'invoicePayWithcashfree'])->name('invoice.pay.with.cashfree')->middleware(['auth:client','XSS']);
     Route::any('/{slug}/invoice-cashfree-success/', [CashfreeController::class, 'getInvoicePaymentStatus'])->name('invoice.cashfree.success')->middleware(['auth:client','XSS']);
-      
+
     //aamarpay route
     Route::post('/{slug}/aamarpay/payment/{invoice_id}', [AamarpayController::class, 'invoicePayWithAamarpay'])->name('invoice.pay.with.aamarpay')->middleware(['auth:client','XSS']);
     Route::any('/{slug}/aamarpay/success/{data}', [AamarpayController::class, 'getInvoicePaymentStatus'])->name('invoice.aamarpay.success')->middleware(['auth:client','XSS']);
-    
+
     //paytr route
     Route::post('/{slug}/paytr/payment/{invoice_id}', [PaytrController::class, 'invoicePayWithPaytr'])->name('invoice.pay.with.paytr')->middleware(['auth:client']);
     Route::get('/{slug}/paytr/success/', [PaytrController::class, 'getInvoicePaymentStatus'])->name('invoice.paytr.success')->middleware(['auth:client']);
@@ -409,7 +409,7 @@ Route::prefix('client')->as('client.')->group(function() {
 
     Route::get('/{slug}/zoom-meeting',[ZoomMeetingController::class, 'index'])->name('zoom-meeting.index')->middleware(['auth:client']);
 
-    
+
 
 });
 
@@ -436,7 +436,7 @@ Route::get('/settings',[SettingsController::class, 'index'])->name('settings.ind
 Route::post('/settings',[SettingsController::class, 'store'])->name('settings.store')->middleware(['XSS']);
 
 Route::post('cookie-setting', [SettingsController::class, 'saveCookieSettings'])->name('cookie.setting');
-Route::any('/cookie-consent', [SettingsController::class,'CookieConsent'])->name('cookie-consent'); 
+Route::any('/cookie-consent', [SettingsController::class,'CookieConsent'])->name('cookie-consent');
 
 Route::post('/email-settings',[SettingsController::class, 'emailSettingStore'])->name('email.settings.store')->middleware(['auth','XSS']);
 Route::post('/payment-settings',[SettingsController::class, 'paymentSettingStore'])->name('payment.settings.store')->middleware(['auth','XSS']);
@@ -463,7 +463,7 @@ Route::get('/users/{id}',[UserController::class, 'changePlan'])->name('users.cha
 Route::get('/resetpassword/{id}',[UserController::class, 'resetPassword'])->name('users.reset.password')->middleware(['auth','XSS']);
 Route::post('/changepassword/{id}',[UserController::class, 'changePassword'])->name('users.change.password')->middleware(['auth','XSS']);
 
-//user logs 
+//user logs
 Route::get('/{slug}/userlogs/',[LoginDetailController::class, 'index'])->name('users_logs.index')->middleware(['auth','XSS']);
 Route::delete('/{slug}/userlogs/{id}',[LoginDetailController::class, 'destroy'])->name('users_logs.destroy')->middleware(['auth','XSS']);
 Route::get('/{slug}/userlogs/{id}',[LoginDetailController::class, 'show'])->name('users_logs.show')->middleware(['auth','XSS']);
@@ -522,6 +522,9 @@ Route::delete('/workspace/{id}',[WorkspaceController::class, 'destroy'])->name('
 Route::delete('/workspace/leave/{id}',[WorkspaceController::class, 'leave'])->name('leave-workspace')->middleware(['auth','XSS']);
 Route::get('/workspace/{id}',[WorkspaceController::class, 'changeCurrentWorkspace'])->name('change-workspace')->middleware(['auth','XSS']);
 Route::post('/workspace/settings/seo',[SettingsController::class, 'seosetting'])->name('settings.seo.store')->middleware(['auth','XSS']);
+
+Route::get('/{slug}/all-workspaces',[WorkspaceController::class,'getAllWorkSpaces'])->name('getWorkSpaces');
+Route::get('all-workspaces-ajax',[WorkspaceController::class,'getAllWorkSpacesAjax'])->name('getWorkSpaces.ajax');
 
 //made by own routes
 Route::get('/workspace/permission/{workspace_id}/{slug}/{user_id}',[WorkspaceController::class, 'changeCurrentWorkspacePermission'])->name('work-space-permission')->middleware(['auth','XSS']);
