@@ -48,13 +48,13 @@
                 <div class="card-header">
                     <h5 style="width: 150px;">{{ __('Calendar') }}</h5>
                     <div id="google_cal">
-                        @if ($currentWorkspace->is_googlecalendar_enabled == 'on')
+                        {{-- @if ($currentWorkspace->is_googlecalendar_enabled == 'on') --}}
                             <select class="form-control " name="calender_type" id="calender_type"
-                                style="float: right;width: 180px;margin-top: -30px;" onchange="get_data()">
+                                style="float: right;width: 180px;margin-top: -30px; display:none;" onchange="get_data()">
                                 <option value="google_calendar">{{ __('Google Calendar') }}</option>
                                 <option value="local_calendar" selected="true">{{ __('Local Calendar') }}</option>
                             </select>
-                        @endif
+                        {{-- @endif --}}
                     </div>
                 </div>
                 <div class="card-body">
@@ -129,7 +129,7 @@
                         document.getElementById("google_cal").style.display = "block";
                     }
                     $.ajax({
-                        url: "{!! route('calender.google.calendar','my-work-space')!!}",
+                        url: "{!! route('calender.google.calendar',$currentWorkspace->slug)!!}",
                         method: "POST",
                         data: {
                             "_token": "{{ csrf_token() }}",
@@ -163,12 +163,12 @@
                                     themeSystem: 'bootstrap',
                                     slotDuration: '00:10:00',
                                     navLinks: true,
-                                    droppable: true,
-                                    selectable: true,
-                                    selectMirror: true,
-                                    editable: true,
+                                    // droppable: true,
+                                    // selectable: true,
+                                    // selectMirror: true,
+                                    // editable: true,
                                     dayMaxEvents: true,
-                                    handleWindowResize: true,
+                                    // handleWindowResize: true,
                                     height: 'auto',
                                     timeFormat: 'H(:mm)',
                                     events: data,
