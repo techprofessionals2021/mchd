@@ -526,6 +526,11 @@ Route::post('/workspace/settings/seo',[SettingsController::class, 'seosetting'])
 Route::get('/{slug}/all-workspaces',[WorkspaceController::class,'getAllWorkSpaces'])->name('getWorkSpaces');
 Route::get('all-workspaces-ajax',[WorkspaceController::class,'getAllWorkSpacesAjax'])->name('getWorkSpaces.ajax');
 
+//made by own routes
+Route::get('/workspace/permission/{workspace_id}/{slug}/{user_id}',[WorkspaceController::class, 'changeCurrentWorkspacePermission'])->name('work-space-permission')->middleware(['auth','XSS']);
+
+Route::post('/workspace/permission/{workspace_id}/{slug}/{user_id}',[WorkspaceController::class, 'workspacePermissionStore'])->name('work-space-permission.store')->middleware(['auth','XSS']);
+
 
 // project
 Route::get('/{slug}/projects/',[ProjectController::class, 'index'])->name('projects.index')->middleware(['auth','XSS']);

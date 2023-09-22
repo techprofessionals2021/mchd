@@ -22,6 +22,14 @@
         if ($company_logo == '' || $company_logo == null) {
             $company_logo = App\Models\Utility::get_logo();
         }
+
+
+        $user = \App\Models\User::find(Auth::id());
+        $permissions = $user->getPermissionWorkspace($currentWorkspace->id);
+        // dd($permissions);
+        if (!$permissions) {
+            $permissions = [];
+        }
     }
 
     if ($color == '' || $color == null) {
@@ -148,11 +156,23 @@
                                     class="dash-mtext">{{ __('Tasks') }}</span></a>
                         </li>
 
+
+                        @if (in_array('show timesheet',$permissions))
                         <li class="dash-item {{ Request::route()->getName() == 'timesheet.index' ? ' active' : '' }}">
                             <a href="{{ route('timesheet.index', $currentWorkspace->slug) }}" class="dash-link "><span
                                     class="dash-micon"><i data-feather="clock"></i></span><span
                                     class="dash-mtext">{{ __('Timesheet') }}</span></a>
                         </li>
+                        @elseif (Auth::user()->type == 'user' && $currentWorkspace->creater->id == Auth::user()->id)
+                        <li class="dash-item {{ Request::route()->getName() == 'timesheet.index' ? ' active' : '' }}">
+                            <a href="{{ route('timesheet.index', $currentWorkspace->slug) }}" class="dash-link "><span
+                                    class="dash-micon"><i data-feather="clock"></i></span><span
+                                    class="dash-mtext">{{ __('Timesheet') }}</span></a>
+                        </li>
+                        @endif
+
+
+                      
                         @if (Auth::user()->type == 'user' && $currentWorkspace->creater->id == Auth::user()->id)
                             {{-- <li class="dash-item {{ \Request::route()->getName() == 'time.tracker' ? 'active' : '' }}">
                                 <a href="{{ route('time.tracker', $currentWorkspace->slug) }}" class="dash-link "><span
@@ -196,12 +216,22 @@
 
 
 
-
+                        @if (in_array('show calendar',$permissions))
                         <li class="dash-item {{ Request::route()->getName() == 'calender.index' ? ' active' : '' }}">
                             <a href="{{ route('calender.google.calendar', $currentWorkspace->slug) }}"
                                 class="dash-link "><span class="dash-micon"><i data-feather="calendar"></i></span><span
                                     class="dash-mtext">{{ __('Calendar') }}</span></a>
                         </li>
+                        @elseif (Auth::user()->type == 'user' && $currentWorkspace->creater->id == Auth::user()->id)
+                        <li class="dash-item {{ Request::route()->getName() == 'calender.index' ? ' active' : '' }}">
+                            <a href="{{ route('calender.google.calendar', $currentWorkspace->slug) }}"
+                                class="dash-link "><span class="dash-micon"><i data-feather="calendar"></i></span><span
+                                    class="dash-mtext">{{ __('Calendar') }}</span></a>
+                        </li>
+                        @endif
+
+
+                      
                         <li class="dash-item {{ Request::route()->getName() == 'notes.index' ? ' active' : '' }}">
                             <a href="{{ route('notes.index', $currentWorkspace->slug) }}" class="dash-link "><span
                                     class="dash-micon"><i data-feather="clipboard"></i></span><span
@@ -271,12 +301,25 @@
                 @endif
                 @if (isset($currentWorkspace) && $currentWorkspace)
                     @auth('web')
-                        <li
-                            class="dash-item {{ Request::route()->getName() == 'project_report.index' || Request::segment(2) == 'project_report' ? ' active' : '' }}">
-                            <a href="{{ route('project_report.index', $currentWorkspace->slug) }}"
-                                class="dash-link "><span class="dash-micon"><i class="ti ti-chart-line"></i></span><span
-                                    class="dash-mtext">{{ __('Project Report') }}</span></a>
-                        </li>
+
+                       @if (in_array('project report',$permissions))
+                       <li
+                       class="dash-item {{ Request::route()->getName() == 'project_report.index' || Request::segment(2) == 'project_report' ? ' active' : '' }}">
+                       <a href="{{ route('project_report.index', $currentWorkspace->slug) }}"
+                           class="dash-link "><span class="dash-micon"><i class="ti ti-chart-line"></i></span><span
+                               class="dash-mtext">{{ __('Project Report') }}</span></a>
+                       </li>
+
+                       @elseif (Auth::user()->type == 'user' && $currentWorkspace->creater->id == Auth::user()->id)
+                       <li
+                       class="dash-item {{ Request::route()->getName() == 'project_report.index' || Request::segment(2) == 'project_report' ? ' active' : '' }}">
+                       <a href="{{ route('project_report.index', $currentWorkspace->slug) }}"
+                           class="dash-link "><span class="dash-micon"><i class="ti ti-chart-line"></i></span><span
+                               class="dash-mtext">{{ __('Project Report') }}</span></a>
+                       </li>
+             
+                       @endif
+                       
 
                         {{-- <li
                             class="dash-item {{ Request::route()->getName() == 'zoom-meeting.index' ? ' active' : '' }}">

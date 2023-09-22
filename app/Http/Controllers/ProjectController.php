@@ -47,16 +47,21 @@ class ProjectController extends Controller
     {
         $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
-        // dd($objUser->id);
+
+
+        $user = User::find($objUser->id);
+        $permissions = $user->getPermissionWorkspace($currentWorkspace->id);
+        // dd($permissions);
+        if (!$permissions) {
+            $permissions = [];
+        }
         if ($objUser->getGuard() == 'client') {
             $projects = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
         } else {
             $projects = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
         }
 
-        // dd($projects);
-
-        return view('projects.index', compact('currentWorkspace', 'projects'));
+        return view('projects.index', compact('currentWorkspace', 'projects','permissions'));
     }
 
     public function filterProducts(Request $request,$slug)
@@ -365,7 +370,7 @@ class ProjectController extends Controller
 
     public function invite(Request $request, $slug, $projectID)
     {
-    
+
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         $post = $request->all();
         $userList = $post['users_list'];
@@ -717,7 +722,8 @@ class ProjectController extends Controller
         if ($objUser->getGuard() == 'client') {
             $project = Project::select('projects.*')->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
             $projects = Project::select('projects.*')->join('client_projects', 'client_projects.project_id', '=', 'projects.id')->where('client_projects.client_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
-        } else {
+        } else
+        {
             $project = Project::select('projects.*')->join('user_projects', 'user_projects.project_id', '=', 'projects.id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
             $projects = Project::select('projects.*')->join('user_projects', 'user_projects.project_id', '=', 'projects.id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
         }

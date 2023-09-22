@@ -14,6 +14,7 @@ use App\Models\UserProject;
 use App\Models\UserWorkspace;
 use App\Models\Utility;
 use App\Models\Workspace;
+// use App\Models\USer;
 use App\Models\EmailTemplate;
 use App\Models\Mail\EmailTest;
 use App\Models\User;
@@ -1268,6 +1269,39 @@ class WorkspaceController extends Controller
         return redirect()->back()->with('success', 'Google Calendar Settings updated successfully.');
     }
 
+
+    
+    public function changeCurrentWorkspacePermission($workspace_id, $slug, $user_id)
+    {
+
+       
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+        // dd('sad');
+        $workspace = Workspace::find($workspace_id);
+        $user = User::find($user_id);
+        $permissions = $user->getPermissionWorkspace($workspace_id);
+        // dd($permissions);
+        if (!$permissions) {
+            $permissions = [];
+        }
+
+        return view('users.workspace_permissions', compact('currentWorkspace', 'workspace', 'user', 'permissions'));
+    }
+
+
+    public function workspacePermissionStore($workspace_id, $slug, $user_id, Request $request)
+    {
+    
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+        // dd($currentWorkspace);
+        $userProject = UserWorkspace::where('user_id', '=', $user_id)->where('workspace_id', '=', $workspace_id)->first();
+        // dd($workspace_id , $slug ,$user_id);
+        $userProject->workspace_permission = json_encode($request->permissions);
+       
+        $userProject->save();
+
+        return redirect()->back()->with('success', __('Permission Updated Successfully!'));
+    }
 
     public function getAllWorkSpaces($slug)
     {
