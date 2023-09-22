@@ -99,7 +99,7 @@
             <div class="row">
                 <div class="col-lg-7 col-md-7 ">
                     <div class="row mt-3">
-                        <div class="col-xl-3 col-md-6 col-sm-6">
+                        <div class="col-xl-4 col-md-6 col-sm-6">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="theme-avtar bg-primary">
@@ -112,7 +112,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-md-6 col-sm-6">
+                        <div class="col-xl-4 col-md-6 col-sm-6">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="theme-avtar bg-info">
@@ -140,7 +140,7 @@
                             </div>
                         </div> --}}
 
-                        <div class="col-xl-3 col-md-6 col-sm-6">
+                        <div class="col-xl-4 col-md-6 col-sm-6">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="theme-avtar bg-success">
