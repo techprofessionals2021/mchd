@@ -1026,7 +1026,7 @@ class ProjectController extends Controller
             $clientID = $objUser->id;
         }
 
-        $tags = json_decode($project->tags);
+        $tags = json_decode($task->tags);
 
         return view('projects.taskShow', compact('tags','currentWorkspace', 'task', 'clientID','completedSubTaskPercentage'));
     }
