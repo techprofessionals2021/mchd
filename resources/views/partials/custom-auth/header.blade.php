@@ -8,7 +8,7 @@
             </div>
             <div class="hidden lg:block">
                 <ul class="p-0 m-0 w-full items-center flex gap-4">
-                    <li class="relative">
+                    {{-- <li class="relative">
                         <a href="#" class="text-sm xl:text-base font-medium px-1  text-sec ">Home</a>
                     </li>
                     <li class="relative">
@@ -53,7 +53,7 @@
                             <img class="inline px-1"
                                 src={{asset("custom-auth/assets/images/ticket.svg")}} alt="" />Submit
                             Ticket</a>
-                    </li>
+                    </li> --}}
                     <li class="relative">
                         <a href="{{route('register')}}"
                             class="text-pri text-sm xl:text-base font-medium pl-3 border-l py-3">Register</a>
