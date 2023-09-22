@@ -129,7 +129,7 @@
                         document.getElementById("google_cal").style.display = "block";
                     }
                     $.ajax({
-                        url: $("#path_admin").val() + "/calendarr",
+                        url: "{!! route('calender.google.calendar','my-work-space')!!}",
                         method: "POST",
                         data: {
                             "_token": "{{ csrf_token() }}",
