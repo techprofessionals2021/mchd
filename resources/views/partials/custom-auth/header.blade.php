@@ -84,7 +84,7 @@
                 <div class="offcanvas-body flex-grow p-4 overflow-y-auto">
                     <div>
                         <ul class="p-0 m-0 flex flex-col gap-5">
-                            <li>
+                            {{-- <li>
                                 <a href="#" class="text-sm xl:text-base font-medium  text-sec ">Home</a>
                             </li>
                             <li>
@@ -123,7 +123,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                            </li>
+                            </li> --}}
                             <li>
                                 <a href="{{route('register')}}"
                                     class="text-pri text-sm xl:text-base font-medium py-3">Register</a>
@@ -131,13 +131,13 @@
                             <li>
                                 <a href="{{route('login')}}" class="text-pri text-sm xl:text-base font-medium">Login</a>
                             </li>
-                            <li>
+                            {{-- <li>
                                 <a href="#"
                                     class="bg-pri py-3 px-4 rounded-xl text-xs xl:text-base text-white font-medium">
                                     <img class="inline px-1"
                                         src="../assets/images/ticket.svg"
                                         alt="" />Submit Ticket</a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </div>
                 </div>

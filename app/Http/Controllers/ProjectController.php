@@ -363,7 +363,7 @@ class ProjectController extends Controller
                 } catch (\Exception $e) {
                     $smtp_error = __('E-Mail has been not sent due to SMTP configuration');
                 }
-                // Utility::sendNotification('project_assign', $project->workspaceData, $user->id, $project);
+                Utility::sendNotification('project_assign', $project->workspaceData, $user->id, $project);
             }
         }
     }
