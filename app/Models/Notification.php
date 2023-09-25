@@ -41,7 +41,7 @@ class Notification extends Model
         }
         elseif($this->type == 'project_assign'){
             $link = route('projects.show',[$this->workspace_id,$data->id]);
-            $text = __('You have been assigned new project ')." <b>".$data->name."</b>";
+            $text = __('You have been assigned a new project ')." <b>".$data->name."</b>";
             $icon = "fa fa-suitcase";
         }
         elseif($this->type == 'bug_assign'){
