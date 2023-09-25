@@ -28,7 +28,7 @@ class Notification extends Model
             $project = Project::find($data->project_id);
             if($project){
                 $link = route('projects.task.board',[$this->workspace_id,$data->project_id]);
-                $text = __('New task assign')." <b>".$data->title."</b> ".__('in project')." <b>".$project->name."</b>";
+                $text = __('You have been assigned New task')." <b>".$data->title."</b> ".__('in project')." <b>".$project->name."</b>";
                 $icon = "fa fa-clock-o";
                 if($data->priority == 'Low'){
                     $icon_color = 'bg-success';
@@ -41,7 +41,7 @@ class Notification extends Model
         }
         elseif($this->type == 'project_assign'){
             $link = route('projects.show',[$this->workspace_id,$data->id]);
-            $text = __('New project assign')." <b>".$data->name."</b>";
+            $text = __('You have been assigned a new project ')." <b>".$data->name."</b>";
             $icon = "fa fa-suitcase";
         }
         elseif($this->type == 'bug_assign'){

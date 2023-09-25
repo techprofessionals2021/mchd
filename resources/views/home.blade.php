@@ -156,8 +156,8 @@
                         <div class="col-xl-3 col-md-6 col-sm-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="theme-avtar bg-primary">
-                                        <i class="fas fa-tasks bg-primary text-white"></i>
+                                    <div class="theme-avtar bg-cyan-800">
+                                        <i class="fas fa-adjust  text-white"></i>
                                     </div>
                                     <p class="text-muted text-sm"></p>
                                     <h6 class="">{{ __('In Progress Project') }}</h6>
@@ -169,8 +169,8 @@
                         <div class="col-xl-3 col-md-6 col-sm-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="theme-avtar bg-primary">
-                                        <i class="fas fa-tasks bg-primary text-white"></i>
+                                    <div class="theme-avtar bg-pink-600">
+                                        <i class="fas fa-calendar-alt bg-primary text-white"></i>
                                     </div>
                                     <p class="text-muted text-sm"></p>
                                     <h6 class="">{{ __('Due Date Project') }}</h6>
@@ -182,8 +182,8 @@
                         <div class="col-xl-3 col-md-6 col-sm-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="theme-avtar bg-info">
-                                        <i class="fas fa-tag bg-info text-white"></i>
+                                    <div class="theme-avtar bg-yellow-600">
+                                        <i class="fas fa-yin-yang bg-yellow-600 text-white"></i>
                                     </div>
                                     <p class="text-muted text-sm"></p>
                                     <h6 class="">{{ __('In Progress Tasks') }}</h6>
@@ -195,8 +195,8 @@
                         <div class="col-xl-3 col-md-6 col-sm-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="theme-avtar bg-info">
-                                        <i class="fas fa-tag bg-info text-white"></i>
+                                    <div class="theme-avtar bg-gray-700">
+                                        <i class="fas fa-calendar text-white"></i>
                                     </div>
                                     <p class="text-muted text-sm"></p>
                                     <h6 class="">{{ __('Due Date Tasks') }}</h6>
