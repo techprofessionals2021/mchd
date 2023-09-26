@@ -66,7 +66,8 @@ class ProjectController extends Controller
 
     public function filterProducts(Request $request,$slug)
     {
-        $tags =   explode(',',$request->tags);
+        // dd(json_decode(Utility::convertTagsToJsonArray($request->tags)));
+        $tags =  json_decode(Utility::convertTagsToJsonArray($request->tags));
         $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         if ($objUser->getGuard() == 'client') {
@@ -88,10 +89,15 @@ class ProjectController extends Controller
                 ->where('projects.workspace', '=', $currentWorkspace->id)
                 ->where(function ($query) use ($tags) {
                     foreach ($tags as $tag) {
+                        // dd($tag);
                         $query->orWhereJsonContains('tags', $tag);
+                        // $query->whereIn('tags', $tags);
                     }
                 })
                 ->get();
+
+                // dd($tags);
+
 
             }
         }
