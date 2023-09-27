@@ -60,9 +60,13 @@
                                             <div class="badge p-2 px-3 rounded bg-success">{{ __('Owner') }}</div>
                                          @elseif($user->permission == 'TeamLead') 
                                          <div class="badge p-2 px-3 rounded bg-primary">{{ __('TeamLead') }}</div>
-                                        @else
+                                         @elseif($user->permission == 'Follower') 
+                                         <div class="badge p-2 px-3 rounded bg-secondary">{{ __('Follower') }}</div>
+                                         @elseif($user->permission == 'Hod') 
+                                         <div class="badge p-2 px-3 rounded bg-dark">{{ __('Hod') }}</div>
+                                         @else
                                             <div class="badge p-2 px-3 rounded bg-warning">{{ __('Member') }}</div>
-                                        @endif
+                                         @endif
                                     @endif
                                 </h6>
                             </div>

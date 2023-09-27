@@ -20,32 +20,50 @@ class Workspacepermissionseeder extends Seeder
                 'role' => 'Owner',
                 'permission' => json_encode([
 
-                    "create task",
-                    "edit task",
-                    "delete task",
-                    "show task",
-                    "move task",
-                    "show activity",
-                    "show uploading",
+                    "invite user",
+                    "create project",
+                    "show calendar",
                     "show timesheet",
-                    "show bug report",
-                    "create bug report",
-                    "edit bug report",
-                    "delete bug report",
-                    "move bug report",
-                    "show gantt"
+                    "project report"
+                
                 ]),
             ],
             [
                 'role' => 'Member',
                 'permission' => json_encode([
-                    "invite user"
+                    "invite user",
+                    "create project",
+                    "show calendar"
+            
                 ]),
             ],
             [
                 'role' => 'Teamlead',
                 'permission' => json_encode([
-                    "invite user"
+                    "show calendar",
+                    "show timesheet",
+           
+                ]),
+            ],
+
+            [
+                'role' => 'Follower',
+                'permission' => json_encode([
+                    "show calendar",
+                    "show timesheet",
+           
+           
+                ]),
+            ],
+
+            [
+                'role' => 'Hod',
+                'permission' => json_encode([
+                    "invite user",
+                    "create project",
+                    "show calendar",
+                    "show timesheet",
+                    "project report"
            
                 ]),
             ],

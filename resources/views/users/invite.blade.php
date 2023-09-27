@@ -17,6 +17,8 @@
             <select id="permission" name="permission" class="form-control">
                 <option value="Member">Member</option>
                 <option value="TeamLead">TeamLead</option>
+                <option value="Follower">Follower</option>
+                <option value="Hod">Hod</option>
             
             </select>
         </div>

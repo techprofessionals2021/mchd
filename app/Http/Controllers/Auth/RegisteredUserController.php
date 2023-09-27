@@ -53,11 +53,11 @@ class RegisteredUserController extends Controller
 
         \App::setLocale($lang);
 
-        if(env('SIGNUP_BUTTON') == 'on'){
-            return view('custom-auth.register', compact('lang'));
-        }else{
-            return abort('404', 'Page not found');
-        }
+        // if(env('SIGNUP_BUTTON') == 'on'){
+        //     return view('custom-auth.register', compact('lang'));
+        // }else{
+        //     return abort('404', 'Page not found');
+        // }
         return view('custom-auth.register', compact('lang'));
     }
 
@@ -82,7 +82,7 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-             'workspace'=>$request->workspace,
+            'workspace'=>$request->workspace,
             'password' => Hash::make($request->password),
             'plan'=>1,
             'lang'      => env('DEFAULT_ADMIN_LANG') ?? 'en',
