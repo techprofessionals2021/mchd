@@ -66,7 +66,8 @@ class ProjectController extends Controller
 
     public function filterProducts(Request $request,$slug)
     {
-        $tags =   explode(',',$request->tags);
+        // dd(json_decode(Utility::convertTagsToJsonArray($request->tags)));
+        $tags =  json_decode(Utility::convertTagsToJsonArray($request->tags)) ?? [];
         $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         if ($objUser->getGuard() == 'client') {
@@ -88,10 +89,15 @@ class ProjectController extends Controller
                 ->where('projects.workspace', '=', $currentWorkspace->id)
                 ->where(function ($query) use ($tags) {
                     foreach ($tags as $tag) {
+                        // dd($tag);
                         $query->orWhereJsonContains('tags', $tag);
+                        // $query->whereIn('tags', $tags);
                     }
                 })
                 ->get();
+
+                // dd($tags);
+
 
             }
         }
@@ -114,15 +120,16 @@ class ProjectController extends Controller
     }
     public function store($slug, Request $request)
     {
-        // dd($request->all());
+
+
+
         $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         $user = $currentWorkspace->id;
         $request->validate(['name' => 'required']);
 
         $post = $request->all();
-        // dd($request->tags);
-        $post['tags'] = json_encode(explode(',',$request->tags));
+        $post['tags'] = Utility::convertTagsToJsonArray($request->tags);
         $post['workspace'] = $currentWorkspace->id;
         $post['created_by'] = $objUser->id;
         $userList = [];
@@ -763,7 +770,7 @@ class ProjectController extends Controller
                 $post['milestone_id'] = !empty($request->milestone_id) ? $request->milestone_id : 0;
                 $post['status'] = $stage->id;
                 $post['assign_to'] = implode(",", $request->assign_to);
-                $post['tags'] = json_encode(explode(',',$request->tags));
+                $post['tags'] = Utility::convertTagsToJsonArray($request->tags);
                 $task = Task::create($post);
 
                 if ($request->get('synchronize_type') == 'google_calender') {
@@ -984,6 +991,7 @@ class ProjectController extends Controller
         if ($project) {
             $post = $request->all();
             $post['assign_to'] = implode(",", $request->assign_to);
+            $post['tags'] = Utility::convertTagsToJsonArray($request->tags);
             $task = Task::find($taskID);
             $task->update($post);
 

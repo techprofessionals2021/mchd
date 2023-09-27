@@ -64,6 +64,15 @@
                 <label class="col-form-label">{{ __('Description')}}</label>
                 <textarea class="form-control form-control-light" id="task-description" rows="3" name="description">{{$task->description}}</textarea>
             </div>
+
+            <div class="col-md-12">
+                <label for="tags" class="col-form-label">{{ __('Tags') }}</label>
+                <input type="text" name="tags" class="tags form-control" value="{{ old('tags',$task->tags) }}"
+                   data-role="tagsinput" />
+                @if($errors->has('tags'))
+                <strong class="text-danger">{{ $errors->first('tags') }}</strong>
+                @endif
+             </div>
         </div>
     </div>
          <div class="modal-footer">
@@ -168,6 +177,11 @@
             });
         })
     </script>
+
+<script>
+    var inputElement = document.querySelector('.tags')
+    new Tagify(inputElement)
+</script>
 
 @else
     <div class="container mt-5">

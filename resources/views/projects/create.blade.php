@@ -1,4 +1,4 @@
-<form class="" method="post" action="{{ route('projects.store',$currentWorkspace->slug) }}">
+<form class="" method="post" action="{{ route('projects.store',$currentWorkspace->slug) }}" onkeydown="return event.key != 'Enter';">
     @csrf
      <div class="modal-body">
     <div class="row">
@@ -39,12 +39,12 @@
 
         <div class="col-md-12">
             <label for="tags" class="col-form-label">{{ __('Tags') }}</label>
-            <input type="text" name="tags" class="form-control" value="{{ old('tags') }}"
+            <input type="text" name="tags" class="tags form-control" value="{{ old('tags') }}"
                data-role="tagsinput" />
             @if($errors->has('tags'))
             <strong class="text-danger">{{ $errors->first('tags') }}</strong>
             @endif
-         </div>
+        </div>
 
     </div>
 </div>
@@ -59,15 +59,15 @@
 {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
 {{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> --}}
 <!-- Bootstrap Tags Input CDN -->
-<link rel='stylesheet'
-   href='https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.css'>
+{{-- <link rel='stylesheet'
+   href='https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.css'> --}}
 
 
 
    {{--  --}}
 
 
-   <script src='https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js'></script>
+   {{-- <script src='https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js'></script>
 
    <script>
       $(function () {
@@ -90,13 +90,13 @@
 
          }).trigger('change');
       });
-   </script>
+   </script> --}}
 
 
 {{-- tagsInput --}}
 
 <link rel="stylesheet" href="{{ asset('assets/custom/libs/bootstrap-daterangepicker/daterangepicker.css') }}">
-<style>
+{{-- <style>
     .bootstrap-tagsinput {
     background-color: #fff;
     border: 1px solid #ccc;
@@ -110,7 +110,7 @@
     line-height: 22px;
     cursor: text;
 }
-</style>
+</style> --}}
 <script src="{{ asset('assets/custom/libs/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 <script>
 
@@ -198,4 +198,10 @@ if ($(".multi-select").length > 0) {
            });
        })
    })
+</script>
+
+
+<script>
+    var inputElement = document.querySelector('.tags')
+    new Tagify(inputElement)
 </script>

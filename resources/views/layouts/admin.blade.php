@@ -84,6 +84,7 @@
     </title>
 
 
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 
 
 @if(Auth::user()->type == 'admin')
@@ -135,6 +136,8 @@
     <meta name="url" content="{{ url('').'/'.config('chatify.routes.prefix') }}" data-user="{{ Auth::user()->id }}">
     <script src='https://unpkg.com/nprogress@0.2.0/nprogress.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js">
+
+
 
 </head>
 
@@ -340,6 +343,9 @@
     $currantLang = 'en'
 @endphp
 
+
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
 
 <script src="{{ asset('assets/custom/js/site.core.js') }}"></script>
 <script src="{{ asset('assets/custom/libs/moment/min/moment.min.js') }}"></script>

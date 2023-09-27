@@ -494,7 +494,7 @@ Route::post('/{slug}/users/invite',[UserController::class, 'inviteUser'])->name(
 Route::get('/{slug}/users/edit/{id}',[UserController::class, 'edit'])->name('users.edit')->middleware(['auth','XSS']);
 Route::post('/{slug}/users/update/{id}',[UserController::class, 'update'])->name('users.update')->middleware(['auth','XSS']);
 Route::delete('/{slug}/users/{id}',[UserController::class, 'removeUser'])->name('users.remove')->middleware(['auth','XSS']);
-
+Route::post('/{slug}/users/filter',[UserController::class, 'filterUsers'])->name('users.filter')->middleware(['auth','XSS']);
 
 
 Route::get('/my-account',[UserController::class, 'account'])->name('users.my.account')->middleware(['auth','XSS']);

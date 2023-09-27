@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('tasks', function (Blueprint $table) {
-            $table->string('tags')->nullable()->after('due_date');
+        Schema::table('user_workspaces', function (Blueprint $table) {
+            $table->string('tags')->nullable()->after('workspace_permission');
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('tasks', function (Blueprint $table) {
-            $table->string('tags')->after('due_date')->nullable();
+        Schema::table('user_workspaces', function (Blueprint $table) {
+            $table->string('tags')->nullable()->after('workspace_permission');
         });
     }
 };
