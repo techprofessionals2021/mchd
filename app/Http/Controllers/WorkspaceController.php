@@ -1300,7 +1300,7 @@ class WorkspaceController extends Controller
        
         $userProject->save();
 
-        return redirect()->back()->with('success', __('Permission Updated Successfully!'));
+        return redirect()->route('users.index',$slug)->with('success', __('Permission Updated Successfully!'));
     }
 
     public function getAllWorkSpaces($slug)
