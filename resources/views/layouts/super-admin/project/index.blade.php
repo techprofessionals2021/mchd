@@ -33,8 +33,7 @@
                                     <th>Name</th>
                                     <th>Status</th>
                                     <th>Description</th>
-                                    <th>Budget</th>
-
+                                  
                                 
                                 </tr>
                             </thead>
@@ -46,8 +45,6 @@
                                 <td>{{$item->name}} </td>   
                                 <td>{{$item->status}} </td>   
                                 <td>{{$item->description}} </td>   
-                                <td>{{$item->budget}} </td>   
-
                                
                                 </tr>
                                 @endforeach 

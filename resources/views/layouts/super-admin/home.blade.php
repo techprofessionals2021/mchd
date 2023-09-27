@@ -62,7 +62,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="theme-avtar bg-dark">
-                                        <i class="fas fa-cash-register"></i>
+                                        <i class="fas fa-calendar-alt bg-primary text-white"></i>
                                     </div>
                                     <p class="text-muted text-sm mt-4 mb-2">
 
@@ -78,7 +78,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="theme-avtar bg-yellow-600">
-                                        <i class="fas fa-cash-register"></i>
+                                        <i class="fas fa-tasks "></i>
                                     </div>
                                     <p class="text-muted text-sm mt-4 mb-2">
 
