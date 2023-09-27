@@ -39,15 +39,15 @@
 
 <form action="{{route('projects.filter', $currentWorkspace->slug)}}" method="POST">
     @csrf
-    <div class="row justify-content-end display-none" id="show_filter">
+    <div class="row justify-content-end align-items-baseline display-none" id="show_filter">
         {{-- <div class="col-sm-6 col-xl-2 pb-2">
             <input type="text" name="tags" class="form-control" value="{{ old('tags') }}"
             data-role="tagsinput" placeholder="Enter Tag Names" />
         </div> --}}
 
-        <div class="col-sm-6 col-xl-3 pb-2">
+        <div class="col-sm-6 col-xl-11 pb-2 ">
             <input type="text" name="tags" class="tags form-control" value="{{ old('tags') }}"
-               data-role="tagsinput" />
+               data-role="tagsinput" placeholder="Filter Product By Tag" />
          </div>
         <div class="d-flex col-1 justify-content-xl-center">
             {{-- <button class=" btn btn-primary  btn-filter apply">{{ __('Apply') }}</button> --}}

@@ -67,7 +67,7 @@ class ProjectController extends Controller
     public function filterProducts(Request $request,$slug)
     {
         // dd(json_decode(Utility::convertTagsToJsonArray($request->tags)));
-        $tags =  json_decode(Utility::convertTagsToJsonArray($request->tags));
+        $tags =  json_decode(Utility::convertTagsToJsonArray($request->tags)) ?? [];
         $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         if ($objUser->getGuard() == 'client') {

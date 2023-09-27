@@ -44,7 +44,7 @@
             @if($errors->has('tags'))
             <strong class="text-danger">{{ $errors->first('tags') }}</strong>
             @endif
-         </div>
+        </div>
 
     </div>
 </div>

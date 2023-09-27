@@ -66,20 +66,92 @@ class UserController extends Controller
         if (!$permissions) {
             $permissions = [];
         }
-     
+
 
         if ($currentWorkspace) {
             $users = User::select('users.*', 'user_workspaces.permission', 'user_workspaces.is_active')->join('user_workspaces', 'user_workspaces.user_id', '=', 'users.id');
             $users->where('user_workspaces.workspace_id', '=', $currentWorkspace->id);
             $users = $users->get();
 
-            
+
             // dd($users);
         } else {
             $users = User::where('type', '!=', 'admin')->get();
         }
 
         return view('users.index', compact('currentWorkspace', 'users','permissions'));
+    }
+
+    public function filterUsers(Request $request,$slug)
+    {
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+
+        $tags =  json_decode(Utility::convertTagsToJsonArray($request->tags)) ?? [];
+        $user = User::find(Auth::id());
+        $permissions = $user->getPermissionWorkspace($currentWorkspace->id);
+        // dd($permissions);
+        if (!$permissions) {
+            $permissions = [];
+        }
+
+
+        if ($currentWorkspace) {
+            $users = User::select('users.*', 'user_workspaces.permission', 'user_workspaces.is_active')->join('user_workspaces', 'user_workspaces.user_id', '=', 'users.id');
+            $users->where('user_workspaces.workspace_id', '=', $currentWorkspace->id);
+            $users->where(function ($query) use ($tags) {
+                foreach ($tags as $tag) {
+                    $query->orWhereJsonContains('user_workspaces.tags', $tag);
+                }
+            });
+            $users = $users->get();
+
+
+            // dd($users);
+        } else {
+            $users = User::where('type', '!=', 'admin')->get();
+        }
+
+        return view('users.index', compact('currentWorkspace', 'users','permissions'));
+
+        dd($request->all());
+        // dd(json_decode(Utility::convertTagsToJsonArray($request->tags)));
+        // $tags =  json_decode(Utility::convertTagsToJsonArray($request->tags));
+        // $objUser = Auth::user();
+        // $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+        // if ($objUser->getGuard() == 'client') {
+        //     $projects = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
+        // } else {
+        //     if(is_null($request->tags)){
+
+        //         $projects = Project::select('projects.*')
+        //         ->join('user_projects', 'projects.id', '=', 'user_projects.project_id')
+        //         ->where('user_projects.user_id', '=', $objUser->id)
+        //         ->where('projects.workspace', '=', $currentWorkspace->id)
+        //         ->get();
+
+        //     }else{
+
+        //         $projects = Project::select('projects.*')
+        //         ->join('user_projects', 'projects.id', '=', 'user_projects.project_id')
+        //         ->where('user_projects.user_id', '=', $objUser->id)
+        //         ->where('projects.workspace', '=', $currentWorkspace->id)
+        //         ->where(function ($query) use ($tags) {
+        //             foreach ($tags as $tag) {
+        //                 // dd($tag);
+        //                 $query->orWhereJsonContains('tags', $tag);
+        //                 // $query->whereIn('tags', $tags);
+        //             }
+        //         })
+        //         ->get();
+
+        //         // dd($tags);
+
+
+        //     }
+        // }
+
+        // return view('projects.index', compact('currentWorkspace', 'projects'));
+
     }
 
     public function create(Request $request)
@@ -451,6 +523,8 @@ class UserController extends Controller
 
     public function invite($slug)
     {
+        // dd($slug);
+
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
 
         return view('users.invite', compact('currentWorkspace'));
@@ -458,7 +532,7 @@ class UserController extends Controller
 
     public function inviteUser($slug, Request $request)
     {
-
+    
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
 
         $post             = $request->all();
@@ -715,7 +789,6 @@ class UserController extends Controller
 
     public function checkUserExists(Request $request, $slug)
     {
-        // dd($request->all());
 
         $getuserworkspacepermission = WorkspacePermission::where('role',$request->permission)->first();
 
@@ -760,6 +833,7 @@ class UserController extends Controller
                         // 'permission' => 'Member',
                         'permission' => $request->permission,
                         'workspace_permission' => $getuserworkspacepermission->permission ?? null,
+                        'tags' => Utility::convertTagsToJsonArray($request->tags) ?? null,
                     ]
                 );
 
