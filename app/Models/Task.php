@@ -30,6 +30,12 @@ class Task extends Model
         return User::whereIn('id',explode(',',$this->assign_to))->get();
     }
 
+    
+    public function user()
+    {
+        return $this->hasOne('App\Models\User', 'id', 'assign_to');
+    }
+
     public function comments()
     {
         return $this->hasMany('App\Models\Comment', 'task_id', 'id')->orderBy('id', 'DESC');

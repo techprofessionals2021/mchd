@@ -50,6 +50,7 @@ use App\Http\Controllers\BenefitPaymentController;
 use App\Http\Controllers\CashfreeController;
 use App\Http\Controllers\AamarpayController;
 use App\Http\Controllers\PaytrController;
+use App\Http\Controllers\SuperAdminController;
 
 
 /*
@@ -244,6 +245,22 @@ Route::group(['middleware' => ['verified']], function (){
 Route::get('/check',[HomeController::class, 'check'])->middleware(['auth','XSS']);
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware(['auth','XSS']);
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard')->middleware(['auth','XSS']);
+
+
+
+
+//start routes for superadmin
+Route::prefix('superadmin')->as('superadmin.')->group(function() {
+Route::get('/', [SuperAdminController::class, 'index'])->name('home')->middleware(['auth']);
+Route::get('/workspace', [SuperAdminController::class, 'workspace'])->name('workspace')->middleware(['auth']);
+Route::get('/user', [SuperAdminController::class, 'user'])->name('user')->middleware(['auth']);
+Route::get('/project', [SuperAdminController::class, 'project'])->name('project')->middleware(['auth']);
+Route::get('/task', [SuperAdminController::class, 'task'])->name('task')->middleware(['auth']);
+
+
+
+});
+//end routes for superadmin
 
 
 Route::prefix('client')->as('client.')->group(function() {
@@ -477,7 +494,7 @@ Route::post('/{slug}/users/invite',[UserController::class, 'inviteUser'])->name(
 Route::get('/{slug}/users/edit/{id}',[UserController::class, 'edit'])->name('users.edit')->middleware(['auth','XSS']);
 Route::post('/{slug}/users/update/{id}',[UserController::class, 'update'])->name('users.update')->middleware(['auth','XSS']);
 Route::delete('/{slug}/users/{id}',[UserController::class, 'removeUser'])->name('users.remove')->middleware(['auth','XSS']);
-
+Route::post('/{slug}/users/filter',[UserController::class, 'filterUsers'])->name('users.filter')->middleware(['auth','XSS']);
 
 
 Route::get('/my-account',[UserController::class, 'account'])->name('users.my.account')->middleware(['auth','XSS']);

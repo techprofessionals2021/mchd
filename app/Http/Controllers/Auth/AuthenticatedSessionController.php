@@ -102,7 +102,20 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
+
+     
+
+        if (Auth::user()->type == 'super-admin') {
+        
+            // dd('super-admin');
+            return redirect()->route('superadmin.home');
+
+        }
+
+        else{
+            // dd('for users');
         return redirect()->intended(RouteServiceProvider::HOME);
+        }
     }
 
     /**

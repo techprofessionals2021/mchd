@@ -33,7 +33,8 @@
                 <i class="ti ti-plus"></i>
             </a>
         @elseif(isset($currentWorkspace) && $currentWorkspace->creater->id == Auth::id())
-            <a href="{{route('users_logs.index',$currentWorkspace->slug)}}" class="btn btn-sm btn-primary" data-title="{{ __('User Logs') }}" data-toggle="tooltip" title="{{ __('User Logs') }}">
+            <a href="{{ route('users_logs.index', $currentWorkspace->slug) }}" class="btn btn-sm btn-primary"
+                data-title="{{ __('User Logs') }}" data-toggle="tooltip" title="{{ __('User Logs') }}">
                 <i class="ti ti-user-check"></i>
             </a>
             <a href="#" class="btn btn-sm btn-primary" data-ajax-popup="true" data-size="md"
@@ -41,11 +42,27 @@
                 data-toggle="tooltip" title="{{ __('Invite') }}">
                 <i class="ti ti-plus"></i>
             </a>
+            <a href="#" class="btn btn-sm btn-primary filter" data-toggle="tooltip" title="{{ __('Filter') }}">
+                <i class="ti ti-filter"></i>
+            </a>
         @endif
     @endauth
 @endsection
 
 @section('content')
+    <form action="{{ route('users.filter', $currentWorkspace->slug) }}" method="POST">
+        @csrf
+        <div class="row justify-content-end align-items-baseline d-none"  id="show_filter">
+            <div class="col-sm-6 col-xl-11 pb-2 ">
+                <input type="text" name="tags" class="tags form-control" value="{{ old('tags') }}"
+                    data-role="tagsinput" placeholder="Filter User By Tag" />
+            </div>
+            <div class="d-flex col-1 justify-content-xl-center">
+                {{-- <button class=" btn btn-primary  btn-filter apply">{{ __('Apply') }}</button> --}}
+                <button type="submit" class="btn btn-light bg-primary text-white apply">{{ __('Apply') }}</button>
+            </div>
+        </div>
+    </form>
     @if ((isset($currentWorkspace) && $currentWorkspace) || Auth::user()->type == 'admin')
         <div class="row">
             @foreach ($users as $user)
@@ -60,16 +77,20 @@
                                             <div class="badge p-2 px-3 rounded bg-success">{{ __('Owner') }}</div>
                                          @elseif($user->permission == 'TeamLead') 
                                          <div class="badge p-2 px-3 rounded bg-primary">{{ __('TeamLead') }}</div>
-                                        @else
+                                         @elseif($user->permission == 'Follower') 
+                                         <div class="badge p-2 px-3 rounded bg-secondary">{{ __('Follower') }}</div>
+                                         @elseif($user->permission == 'Hod') 
+                                         <div class="badge p-2 px-3 rounded bg-dark">{{ __('Hod') }}</div>
+                                         @else
                                             <div class="badge p-2 px-3 rounded bg-warning">{{ __('Member') }}</div>
-                                        @endif
+                                         @endif
                                     @endif
                                 </h6>
                             </div>
                             @if (isset($currentWorkspace) &&
-                                $currentWorkspace &&
-                                $currentWorkspace->permission == 'Owner' &&
-                                Auth::user()->id != $user->id)
+                                    $currentWorkspace &&
+                                    $currentWorkspace->permission == 'Owner' &&
+                                    Auth::user()->id != $user->id)
                                 <div class="card-header-right">
                                     <div class="btn-group card-option">
                                         <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
@@ -78,9 +99,9 @@
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-end">
                                             @if (isset($currentWorkspace) &&
-                                                $currentWorkspace &&
-                                                $currentWorkspace->permission == 'Owner' &&
-                                                Auth::user()->id != $user->id)
+                                                    $currentWorkspace &&
+                                                    $currentWorkspace->permission == 'Owner' &&
+                                                    Auth::user()->id != $user->id)
                                                 {{-- <a href="#" class="dropdown-item" data-ajax-popup="true"
                                                     data-size="md" data-title="{{ __('Edit') }}"
                                                     data-url="{{ route('users.edit', [$currentWorkspace->slug, $user->id]) }}"><i
@@ -100,30 +121,30 @@
                                                     <span>{{ __('Remove User From Workspace') }}</span></a>
 
 
-                                                    {{-- <a href="{{ route('work-space-permission', [
+                                                {{-- <a href="{{ route('work-space-permission', [
                                                         'workspace_id' => $currentWorkspace->id,
                                                         'slug' => $currentWorkspace->slug,
                                                         'user_id' => $user->id
                                                     ]) }}"
                                                     class="action-btn btn-primary mx-1  btn btn-sm d-inline-flex align-items-center"
-                                                   
+
                                                     title="{{ __('Permission') }}"
                                                     data-title="{{ __('Edit Permission') }}"
                                                     ><i
                                                         class="ti ti-lock"></i></a> --}}
-                                                       
-                                                        <a href="d-inline-flex align-items-center"
-                                                        class="align-items-center"
-                                                        data-ajax-popup="true" data-size="lg"
-                                                        data-toggle="popover" title="{{ __('Permission') }}"
-                                                        data-title="{{ __('Edit Permission') }}"
-                                                        data-url="{{ route('work-space-permission', [
-                                                            'workspace_id' => $currentWorkspace->id,
-                                                            'slug' => $currentWorkspace->slug,
-                                                            'user_id' => $user->id
-                                                        ]) }}"><i
-                                                            class="ti ti-lock"></i> <span>{{ __('Manage User Permission Workspace') }}</span></a>       
-                                                        
+
+                                                <a href="d-inline-flex align-items-center" class="align-items-center"
+                                                    data-ajax-popup="true" data-size="lg" data-toggle="popover"
+                                                    title="{{ __('Permission') }}"
+                                                    data-title="{{ __('Edit Permission') }}"
+                                                    data-url="{{ route('work-space-permission', [
+                                                        'workspace_id' => $currentWorkspace->id,
+                                                        'slug' => $currentWorkspace->slug,
+                                                        'user_id' => $user->id,
+                                                    ]) }}"><i
+                                                        class="ti ti-lock"></i>
+                                                    <span>{{ __('Manage User Permission Workspace') }}</span></a>
+
                                                 <form
                                                     action="{{ route('users.remove', [$currentWorkspace->slug, $user->id]) }}"
                                                     method="post" id="remove_user_{{ $user->id }}"
@@ -231,8 +252,7 @@
                             <h6 class="mt-4 mb-2">Invite New User</h6>
                             <p class="text-muted text-center">Click here to Invite New User</p>
                         </a>
-
-                        @elseif((in_array('invite user',$permissions)))
+                    @elseif(in_array('invite user', $permissions))
                         <a href="#" class="btn-addnew-project" data-ajax-popup="true" data-size="md"
                             data-title="{{ __('Invite New User') }}"
                             data-url="{{ route('users.invite', $currentWorkspace->slug) }}">
@@ -242,7 +262,6 @@
                             <h6 class="mt-4 mb-2">Invite New User</h6>
                             <p class="text-muted text-center">Click here to Invite New User</p>
                         </a>
-
                     @endif
                 @endauth
             </div>
@@ -286,4 +305,16 @@
                 alert("Handler for .click() called.");
             });
     </script>
+
+
+    <script type="text/javascript">
+        $(".filter").click(function() {
+            $("#show_filter").toggleClass('d-none');
+        });
+    </script>
+
+<script>
+    var inputElement = document.querySelector('.tags')
+    new Tagify(inputElement)
+</script>
 @endpush

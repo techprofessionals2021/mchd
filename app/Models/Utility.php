@@ -323,7 +323,7 @@ class Utility
                  if(!empty(env('PUSHER_APP_KEY')) && !empty(env('PUSHER_APP_SECRET')) && !empty(env('PUSHER_APP_ID'))){
                     $pusher->trigger($currentWorkspace->slug, 'notification', $data);
                    }
-               
+
 
                 // End Push Notification
             }
@@ -501,9 +501,9 @@ class Utility
             $messengerMigration = str_replace('.php', '', $messengerPath);
             $totalMigration     = count($messengerMigration);
         }
-    
+
         return $totalMigration;
-    
+
     }
 
     public static function getAllPermission()
@@ -534,7 +534,7 @@ class Utility
 public static function getAdminPaymentSettings()
     {
         $data          = DB::table('settings');
-      
+
         $adminSettings = [
             'cust_theme_bg' => 'on',
             'cust_darklayout'=>'off',
@@ -575,12 +575,12 @@ public static function getAdminPaymentSettings()
             'enable_chatgpt'=>'',
             'disable_lang'=>'',
 
-        
+
         ];
 
 
         $data = $data->get();
-      
+
         foreach($data as $row)
         {
             $adminSettings[$row->name] = $row->value;
@@ -592,9 +592,9 @@ public static function getAdminPaymentSettings()
 
 
 public static function get_logo(){
-   
+
         $setting = Utility::getAdminPaymentSettings();
-    
+
         if($setting['cust_darklayout'] == 'on'){
             return 'logo-dark.png';
         }else{
@@ -658,7 +658,7 @@ public static function get_logo(){
             'enable_chatgpt'=>'',
             'disable_lang'=>'',
 
-            
+
         ];
 
         if(!empty($workspace_id))
@@ -674,7 +674,7 @@ public static function get_logo(){
         return $settings;
     }
 
- 
+
 
      public static function project_nm($project_name)
     {
@@ -722,21 +722,21 @@ public static function get_logo(){
 
 
     // public static function send_slack_msg($msg, $user) {
-      
+
     //     $settings  = Utility::getPaymentSetting($user);
-      
+
     //     if(isset($settings['slack_webhook']) && !empty($settings['slack_webhook'])){
     //         $ch = curl_init();
-    
+
     //         curl_setopt($ch, CURLOPT_URL, $settings['slack_webhook']);
     //         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     //         curl_setopt($ch, CURLOPT_POST, 1);
     //         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['text' => $msg]));
-        
+
     //         $headers = array();
     //         $headers[] = 'Content-Type: application/json';
     //         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        
+
     //         $result = curl_exec($ch);
     //         if (curl_errno($ch)) {
     //             echo 'Error:' . curl_error($ch);
@@ -744,10 +744,10 @@ public static function get_logo(){
     //         curl_close($ch);
     //     }
 
-       
+
     // }
 
-    // public static function send_telegram_msg($resp,$user) 
+    // public static function send_telegram_msg($resp,$user)
     // {
     //     $settings  = Utility::getPaymentSetting($user);
 
@@ -867,9 +867,9 @@ public static function get_logo(){
         $user = Auth::user();
 
         $setting = DB::table('payment_settings')->pluck('value','name')->toArray();
-           
+
         return $setting;
-          
+
     }
 
     public static function setEnvironmentValue(array $values)
@@ -910,10 +910,10 @@ public static function get_logo(){
       public static function getcompanylogo($slug)
     {
         $data          = Workspace::where('id' ,$slug)->first();
-    
+
              if($data->cust_darklayout == 'on')
         {
-            
+
 
                     if($data->logo_white && \File::exists(storage_path('logo/' . $data->logo_white)))
                     {
@@ -927,7 +927,7 @@ public static function get_logo(){
         }
         else
         {
-          
+
           if($data->logo && \File::exists(storage_path('logo/' . $data->logo)))
                     {
                         return $data->logo ;
@@ -937,7 +937,7 @@ public static function get_logo(){
                     {
                         return 'logo-light.png';
                     }
-          
+
         }
     }
 
@@ -953,7 +953,7 @@ public static function get_logo(){
  // Email Template Modules Function START
     // Common Function That used to send mail with check all cases
     public static function sendEmailTemplate($emailTemplate, $user_id, $obj)
-    {  
+    {
 
         $usr = Auth::user();
         if($user_id != $usr->id)
@@ -978,15 +978,15 @@ public static function get_logo(){
                         // get email content language base
 
                         $user_lang = Workspace::where('id',$usr->currant_workspace)->first();
-                         
-                       
+
+
                         $content       = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', $user_lang->lang)->first();
 
                         $content->from = $template->from;
                         if(!empty($content->content))
                         {
                             $content->content = self::replaceVariable($emailTemplate, $content->content, $obj);
-                            
+
                             // send email
                             try
                             {
@@ -1051,7 +1051,7 @@ public static function get_logo(){
      public static function sendclientEmailTemplate($emailTemplate, $user_id, $obj)
     {
         $usr = Auth::user();
-        
+
         if($user_id != $usr->id)
         {
             $mailTo = Client::find($user_id)->email;
@@ -1076,7 +1076,7 @@ public static function get_logo(){
                         if(!empty($content->content))
                         {
                             $content->content = self::replaceVariable($emailTemplate, $content->content, $obj);
-                            
+
                             // send email
                             try
                             {
@@ -1194,7 +1194,7 @@ public static function get_logo(){
         foreach ($obj as $key => $val) {
             $arrValue[$key] = $val;
         }
-        
+
         $arrValue['app_name'] = env('APP_NAME');
         // $arrValue['company_name'] = self::settings()['company_name'];
         $arrValue['app_url'] = '<a href="' . env('APP_URL') . '" target="_blank">' . env('APP_URL') . '</a>';
@@ -1233,11 +1233,11 @@ public static function get_logo(){
         try{
             $settings = Utility::getAdminPaymentSettings();
         //    dd($settings);
-            
+
             if(!empty($settings['storage_setting'])){
-               
+
                 if($settings['storage_setting'] == 'wasabi'){
-                    
+
                     config(
                         [
                             'filesystems.disks.wasabi.key' => $settings['wasabi_key'],
@@ -1247,7 +1247,7 @@ public static function get_logo(){
                             'filesystems.disks.wasabi.endpoint' => 'https://s3.'.$settings['wasabi_region'].'.wasabisys.com'
                         ]
                     );
-                    
+
                     $max_size = !empty($settings['wasabi_max_upload_size'])? $settings['wasabi_max_upload_size']:'2048';
                     $mimes =  !empty($settings['wasabi_storage_validation'])? $settings['wasabi_storage_validation']:'';
 
@@ -1263,27 +1263,27 @@ public static function get_logo(){
                     );
                     $max_size = !empty($settings['s3_max_upload_size'])? $settings['s3_max_upload_size']:'2048';
                     $mimes =  !empty($settings['s3_storage_validation'])? $settings['s3_storage_validation']:'';
-                  
+
 
                 }else{
                     $max_size = !empty($settings['local_storage_max_upload_size'])? $settings['local_storage_max_upload_size']:'2048';
-                    
+
                     $mimes =  !empty($settings['local_storage_validation'])? $settings['local_storage_validation']:'';
                 }
 
-                
+
                 $file = $request->$key_name;
-                
-               
+
+
                 if(count($custom_validation) > 0){
                     $validation =$custom_validation;
                 }else{
-                    
+
                     $validation =[
                         'mimes:'.$mimes,
                         'max:'.$max_size,
                     ];
-                   
+
                 }
                 $validator = \Validator::make($request->all(), [
                     $key_name =>$validation
@@ -1298,7 +1298,7 @@ public static function get_logo(){
                 } else {
 
                     $name = $name;
-                   
+
                     if($settings['storage_setting']=='local'){
 
                         // \Storage::disk()->putFileAs(
@@ -1309,17 +1309,17 @@ public static function get_logo(){
                         $request->$key_name->move(storage_path($path), $name);
                         $path = $path.$name;
                     }else if($settings['storage_setting'] == 'wasabi'){
-                        
+
                         $path = \Storage::disk('wasabi')->putFileAs(
                             $path,
                             $file,
                             $name
                         );
-                        
+
                         // $path = $path.$name;
 
                     }else if($settings['storage_setting'] == 's3'){
-                        
+
                         $path = \Storage::disk('s3')->putFileAs(
                             $path,
                             $file,
@@ -1328,8 +1328,8 @@ public static function get_logo(){
                         // $path = $path.$name;
                         // dd($path);
                     }
-                  
-                 
+
+
                     $res = [
                         'flag' => 1,
                         'msg'  =>'success',
@@ -1345,7 +1345,7 @@ public static function get_logo(){
                 ];
                 return $res;
             }
-        
+
         }catch(\Exception $e){
             $res = [
                 'flag' => 0,
@@ -1354,11 +1354,11 @@ public static function get_logo(){
             return $res;
         }
     }
-     
+
 
     public static function get_file($path){
         $settings = Utility::getAdminPaymentSettings();
-        
+
         try {
             if($settings['storage_setting'] == 'wasabi'){
                 config(
@@ -1381,7 +1381,7 @@ public static function get_logo(){
                     ]
                 );
             }
-            
+
             return \Storage::disk($settings['storage_setting'])->url($path);
         } catch (\Throwable $th) {
             return '';
@@ -1444,8 +1444,8 @@ public static function get_logo(){
         // $setting = Utility::settings();
         // $path = storage_path('storage/googlecalender/' . $currentWorkspace['google_calender_json_file']);
         $path = storage_path() . '/' . $currentWorkspace['google_calender_json_file'];
-        
-        
+
+
         $arrayJson = config([
             'google-calendar.default_auth_profile' => 'service_account',
             'google-calendar.auth_profiles.service_account.credentials_json' => $path,
@@ -1461,7 +1461,7 @@ public static function get_logo(){
 
     public static function getCalendarData($slug, $type)
     {
-        
+
         $a = Self::googleCalendarConfig($slug);
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
 
@@ -1502,7 +1502,7 @@ public static function get_logo(){
             return 'google calender task not created';
         }
     }
- 
+
     public static function webhookSetting($module , $user_id = null)
     {
         if(\Auth::check()){
@@ -1512,7 +1512,7 @@ public static function get_logo(){
             $webhook = Webhook::where('module',$module)->where('created_by', '=', $user_id)->first();
 
         }
-        
+
         if(!empty($webhook)){
             $url = $webhook->url;
             $method = $webhook->method;
@@ -1564,17 +1564,17 @@ public static function get_logo(){
     static function get_device_type($user_agent) {
         $mobile_regex = '/(?:phone|windows\s+phone|ipod|blackberry|(?:android|bb\d+|meego|silk|googlebot) .+? mobile|palm|windows\s+ce|opera mini|avantgo|mobilesafari|docomo)/i';
         $tablet_regex = '/(?:ipad|playbook|(?:android|bb\d+|meego|silk)(?! .+? mobile))/i';
-    
+
         if(preg_match_all($mobile_regex, $user_agent)) {
             return 'mobile';
         } else {
-    
+
             if(preg_match_all($tablet_regex, $user_agent)) {
                 return 'tablet';
             } else {
                 return 'desktop';
             }
-    
+
         }
     }
 
@@ -1582,7 +1582,7 @@ public static function get_logo(){
         $keyArr=[
             __('Sun'),
             __('Mon'),
-           
+
         ];
     }
 
@@ -1662,6 +1662,23 @@ public static function get_logo(){
             $setting[$key] = '';
         }
         return $setting[$key];
+    }
+
+
+    public static function convertTagsToJsonArray($tags)
+    {
+        if(!is_null($tags) ){
+            $jsonArray = json_decode($tags);
+            // Extract "value" property from each object using array_map
+            $resultArray = array_map(function($item) {
+                return "$item->value";
+            }, $jsonArray);
+
+            return json_encode($resultArray);
+        }
+
+        return null;
+
     }
 
 

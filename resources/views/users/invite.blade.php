@@ -17,9 +17,25 @@
             <select id="permission" name="permission" class="form-control">
                 <option value="Member">Member</option>
                 <option value="TeamLead">TeamLead</option>
+                <option value="Follower">Follower</option>
+                <option value="Hod">Hod</option>
             
             </select>
         </div>
+
+        
+        <div class="col-md-12">
+            <label for="tags" class="col-form-label">{{ __('Tags') }}</label>
+            <input type="text" name="tags" id="tags" class="tags form-control" value="{{ old('tags') }}"
+               data-role="tagsinput" />
+            @if($errors->has('tags'))
+            <strong class="text-danger">{{ $errors->first('tags') }}</strong>
+            @endif
+
+        </div>
+
+        
+
          <div class="col-md-12 form-group invite_user_div">
              <label for="userpassword" class="form-label">{{ __('Password') }}</label>
              <input class="form-control" name="userpassword" type="password" required autocomplete="new-password"
@@ -40,6 +56,8 @@
 
          $('.check-invite-members').on('click', function(e) {
 
+
+
              var ele = $(this);
              var emailele = $('#invite_email');
              var permission = $('#permission').find(":selected").val();
@@ -51,45 +69,50 @@
              if (email == '') {
                  emailele.focus().after(
                      '<span class="email-error-message error-message">{{ __('This field is required.') }}</span>'
-                     );
+                 );
                  return false;
              }
 
-             $('.loader').show();
-                 $.ajax({
-                     url: '{{ route('user.exists', '__slug') }}'.replace('__slug',
-                         '{{ $currentWorkspace->slug }}'),
-                     dataType: 'json',
-                     data: {
-                         'email': email,
-                         'permission': permission
-                     },
-                     success: function(data) {
-                        $('.loader').hide();
+             //  tags
+              let tags = $('#tags').val();
+             //
 
-                         if (data.code == '202') {
-                             $('#commonModel').modal('hide');
-                             show_toastr(data.status, data.success, 'success');
-                         } else if (data.code == '200') {
-                             $('#commonModel').modal('hide');
-                             show_toastr(data.status, data.success, 'success');
-                             location.reload();
-                         }
-                          else if (data.code == '404') {
-                            //  $('.invite_user_div').show();
-                            $('#commonModel').modal('hide');
-                            show_toastr(data.status, data.error, 'error');
-                            //  $('.invite-warning').text(data.error).show();
-                         }
-                        //  ele.removeClass('check-invite-members').off('click').addClass(
-                        //      'invite-members');
+
+             $('.loader').show();
+             $.ajax({
+                 url: '{{ route('user.exists', '__slug') }}'.replace('__slug',
+                     '{{ $currentWorkspace->slug }}'),
+                 dataType: 'json',
+                 data: {
+                     'email': email,
+                     'permission': permission,
+                     'tags':tags,
+                 },
+                 success: function(data) {
+                     $('.loader').hide();
+
+                     if (data.code == '202') {
+                         $('#commonModel').modal('hide');
+                         show_toastr(data.status, data.success, 'success');
+                     } else if (data.code == '200') {
+                         $('#commonModel').modal('hide');
+                         show_toastr(data.status, data.success, 'success');
+                         location.reload();
+                     } else if (data.code == '404') {
+                         //  $('.invite_user_div').show();
+                         $('#commonModel').modal('hide');
+                         show_toastr(data.status, data.error, 'error');
+                         //  $('.invite-warning').text(data.error).show();
                      }
-                 });
+                     //  ele.removeClass('check-invite-members').off('click').addClass(
+                     //      'invite-members');
+                 }
+             });
 
          });
 
          $(document).on('click', '.invite-members', function() {
-            
+
 
              var useremail = $('#invite_email').val();
              var username = $('#username').val();
@@ -99,7 +122,7 @@
              if (username == '') {
                  $('#username').focus().after(
                      '<span class="username-error-message error-message">{{ __('This field is required.') }}</span>'
-                     );
+                 );
                  return false;
              }
 
@@ -107,7 +130,7 @@
              if (userpassword == '') {
                  $('#userpassword').focus().after(
                      '<span class="userpassword-error-message error-message">{{ __('This field is required.') }}</span>'
-                     );
+                 );
                  return false;
              }
 
@@ -115,7 +138,7 @@
              if (useremail == '') {
                  $('#invite_email').focus().after(
                      '<span class="email-error-message error-message">{{ __('This field is required.') }}</span>'
-                     );
+                 );
                  return false;
              }
 
@@ -123,7 +146,7 @@
 
                  $('#invite_email').focus().after(
                      '<span class="email-error-message error-message">{{ __('Please enter valid email address.') }}</span>'
-                     );
+                 );
                  return false;
 
              } else {
@@ -139,7 +162,7 @@
                          'userpassword': userpassword,
                      },
                      success: function(data) {
-                        console.log(useremail);
+                         console.log(useremail);
                          $('#commonModel').modal('hide');
                          if (data.code == '200') {
                              show_toastr(data.status, data.success, 'success');
@@ -154,4 +177,9 @@
          });
 
      });
+ </script>
+
+ <script>
+     var inputElement = document.querySelector('#tags')
+     new Tagify(inputElement)
  </script>

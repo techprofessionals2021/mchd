@@ -1,5 +1,5 @@
 @if($project && $currentWorkspace)
-    <form class="" method="post" action="@auth('web'){{ route('tasks.store',[$currentWorkspace->slug,$project->id]) }}@elseauth{{ route('client.tasks.store',[$currentWorkspace->slug,$project->id]) }}@endauth">
+    <form class="" method="post" action="@auth('web'){{ route('tasks.store',[$currentWorkspace->slug,$project->id]) }}@elseauth{{ route('client.tasks.store',[$currentWorkspace->slug,$project->id]) }}@endauth" onkeydown="return event.key != 'Enter';">
         @csrf
          <div class="modal-body">
         <div class="row">
@@ -89,12 +89,12 @@
 
             <div class="col-md-12">
                 <label for="tags" class="col-form-label">{{ __('Tags') }}</label>
-                <input type="text" name="tags" class="form-control" value="{{ old('tags') }}"
+                <input type="text" name="tags" class="tags form-control" value="{{ old('tags') }}"
                    data-role="tagsinput" />
                 @if($errors->has('tags'))
                 <strong class="text-danger">{{ $errors->first('tags') }}</strong>
                 @endif
-            </div>
+             </div>
         </div>
     </div>
         <div class="modal-footer">
@@ -103,50 +103,11 @@
         </div>
 
     </form>
-    {{--  --}}
-    <link rel='stylesheet'
-   href='https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.css'>
-   {{--  --}}
-   <script src='https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js'></script>
-
-   <script>
-      $(function () {
-         $('input').on('change', function (event) {
-
-            var $element = $(event.target);
-            var $container = $element.closest('.example');
-
-            if (!$element.data('tagsinput'))
-               return;
-
-            var val = $element.val();
-            if (val === null)
-               val = "null";
-            var items = $element.tagsinput('items');
-
-            $('code', $('pre.val', $container)).html(($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\""));
-            $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
 
 
-         }).trigger('change');
-      });
-   </script>
 
-<style>
-    .bootstrap-tagsinput {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    display: inline-block;
-    padding: 10px 6px;
-    color: #555;
-    vertical-align: middle;
-    border-radius: 9px;
-    max-width: 100%;
-    line-height: 22px;
-    cursor: text;
-}
-</style>
+
+
 
 {{-- tagsInput --}}
      <link rel="stylesheet" href="{{ asset('assets/custom/libs/bootstrap-daterangepicker/daterangepicker.css') }}">
@@ -238,6 +199,12 @@
             })
         })
     </script>
+
+
+<script>
+    var inputElement = document.querySelector('.tags')
+    new Tagify(inputElement)
+</script>
 
 @else
     <div class="container mt-5">

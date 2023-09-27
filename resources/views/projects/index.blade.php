@@ -39,11 +39,16 @@
 
 <form action="{{route('projects.filter', $currentWorkspace->slug)}}" method="POST">
     @csrf
-    <div class="row justify-content-end display-none" id="show_filter">
-        <div class="col-sm-6 col-xl-2 pb-2">
+    <div class="row justify-content-end align-items-baseline display-none" id="show_filter">
+        {{-- <div class="col-sm-6 col-xl-2 pb-2">
             <input type="text" name="tags" class="form-control" value="{{ old('tags') }}"
             data-role="tagsinput" placeholder="Enter Tag Names" />
-        </div>
+        </div> --}}
+
+        <div class="col-sm-6 col-xl-11 pb-2 ">
+            <input type="text" name="tags" class="tags form-control" value="{{ old('tags') }}"
+               data-role="tagsinput" placeholder="Filter Product By Tag" />
+         </div>
         <div class="d-flex col-1 justify-content-xl-center">
             {{-- <button class=" btn btn-primary  btn-filter apply">{{ __('Apply') }}</button> --}}
             <button type="submit" class="btn btn-light bg-primary text-white apply">{{ __('Apply')}}</button>
@@ -91,9 +96,9 @@
                            </a>
                            </div>
                         @endif
-                    
+
                    @endauth
-                   
+
                     @foreach ($projects as $project)
                       <div class="col-xl-3 col-lg-4 col-sm-6 All {{ $project->status }}">
                                 <div class="card">
@@ -252,8 +257,8 @@
 @endsection
 
 @push('css-page')
-<link rel='stylesheet'
-   href='https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.css'>
+{{-- <link rel='stylesheet'
+   href='https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.css'> --}}
 <style>
     .page-content .select2-container {
         z-index: 0 !important;
@@ -263,14 +268,14 @@
         display: none !important;
     }
 
-    .bootstrap-tagsinput {
+    /* .bootstrap-tagsinput {
     padding: 6px 10px !important;
     line-height: 28px !important;
     background: white !important;
     border: 1px solid #f1f1f1 !important;
     border-radius: 6px !important;
     width: 100% !important;
-}
+} */
 </style>
 @endpush
 
@@ -304,7 +309,7 @@
         });
     </script>
 
-<script src='https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js'></script>
+{{-- <script src='https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js'></script>
 
 <script>
    $(function () {
@@ -327,6 +332,10 @@
 
       }).trigger('change');
    });
-</script>
+</script> --}}
 
+<script>
+    var inputElement = document.querySelector('.tags')
+    new Tagify(inputElement)
+</script>
 @endpush

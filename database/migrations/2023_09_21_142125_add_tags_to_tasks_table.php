@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->string('tags');
+            $table->string('tags')->nullable()->after('due_date');
         });
     }
 
