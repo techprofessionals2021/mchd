@@ -23,6 +23,16 @@
             </select>
         </div>
 
+        
+        <div class="col-md-12">
+            <label for="tags" class="col-form-label">{{ __('Tags') }}</label>
+            <input type="text" name="tags" id="tags" class="tags form-control" value="{{ old('tags') }}"
+               data-role="tagsinput" />
+            @if($errors->has('tags'))
+            <strong class="text-danger">{{ $errors->first('tags') }}</strong>
+            @endif
+
+        </div>
 
         
 
