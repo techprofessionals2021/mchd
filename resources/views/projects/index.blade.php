@@ -85,7 +85,7 @@
                         </a>
                         </div>
 
-                        @elseif(in_array('create project',$permissions=[]))
+                        @elseif(in_array('create project',$permissions))
                         <div class="col-xl-3 col-lg-4 col-sm-6 All add_projects">
                            <a href="#" class="btn-addnew-project " style="padding: 90px 10px;" data-ajax-popup="true" data-size="md" data-title="{{ __('Create New Project') }}" data-url="{{route('projects.create',$currentWorkspace->slug)}}">
                            <div class="bg-primary proj-add-icon">
