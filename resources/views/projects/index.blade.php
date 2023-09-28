@@ -46,7 +46,7 @@
         </div> --}}
 
         <div class="col-sm-6 col-xl-11 pb-2 ">
-            <input type="text" name="tags" class="tags form-control" value="{{ old('tags') }}"
+            <input type="text" name="tags" id="tag-project" class="tags form-control" value="{{ old('tags') }}"
                data-role="tagsinput" placeholder="Filter Product By Tag" />
          </div>
         <div class="d-flex col-1 justify-content-xl-center">
@@ -85,7 +85,7 @@
                         </a>
                         </div>
 
-                        @elseif(in_array('create project',$permissions))
+                        @elseif(in_array('create project',$permissions=[]))
                         <div class="col-xl-3 col-lg-4 col-sm-6 All add_projects">
                            <a href="#" class="btn-addnew-project " style="padding: 90px 10px;" data-ajax-popup="true" data-size="md" data-title="{{ __('Create New Project') }}" data-url="{{route('projects.create',$currentWorkspace->slug)}}">
                            <div class="bg-primary proj-add-icon">
@@ -335,7 +335,7 @@
 </script> --}}
 
 <script>
-    var inputElement = document.querySelector('.tags')
+    var inputElement = document.querySelector("#tag-project")
     new Tagify(inputElement)
 </script>
 @endpush

@@ -16,7 +16,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements MustVerifyEmail
 {
 
-        use Notifiable, HasApiTokens; 
+        use Notifiable, HasApiTokens;
         use HasRoles;
 
 
@@ -53,6 +53,11 @@ class User extends Authenticatable implements MustVerifyEmail
         public function getGuard()
         {
                 return $this->guard;
+        }
+
+        public function projects()
+        {
+            return $this->belongsToMany(Project::class,'user_projects','user_id','project_id')->withPivot('is_active','permission')->withTimestamps();
         }
 
         public function workspace()
@@ -150,7 +155,7 @@ class User extends Authenticatable implements MustVerifyEmail
                 return json_decode($data->workspace_permission, true);
         }
 
-        
+
         public static function userDefaultDataRegister($user_id)
         {
                 //   $user           = User::find($user_id);
@@ -296,24 +301,24 @@ class User extends Authenticatable implements MustVerifyEmail
                                         <p>{ app_name }</p>',
 
                                         'zh' => '<p>您好，<b> {user_name} </b>!</p>
-                                        <p><b> {app_name}</b> 的登录详细信息是 <br></p> 
-                                        <p><b>用户名 : </b>{email}</p> 
+                                        <p><b> {app_name}</b> 的登录详细信息是 <br></p>
+                                        <p><b>用户名 : </b>{email}</p>
                                         <p><b>密码 : </b>{password}</p>
                                         <p><b>应用程序 URL : </b>{app_url}</p>
                                         <p>谢谢，</p> <p>{app_name}</p>',
 
-                                        'he' => '<p>שלום,<b> {user_name} </b></p> 
-                                        <p>פרטי ההתחברות שלכם עבור<b> {app_name}</b> הוא <br></p> 
-                                        <p><b>שם משתמש: </b>{email}</p> 
-                                        <p><b>סיסמה: </b>{password}</p> 
-                                        <p><b>יישום Url: </b>{app_url}</p> 
+                                        'he' => '<p>שלום,<b> {user_name} </b></p>
+                                        <p>פרטי ההתחברות שלכם עבור<b> {app_name}</b> הוא <br></p>
+                                        <p><b>שם משתמש: </b>{email}</p>
+                                        <p><b>סיסמה: </b>{password}</p>
+                                        <p><b>יישום Url: </b>{app_url}</p>
                                         <p>תודה,</p> <p>{app_name}</p>',
 
-                                        'pt-br' => '<p>שלום,<b> {user_name} </b></p> 
-                                        <p>פרטי ההתחברות שלכם עבור<b> {app_name}</b> הוא <br></p> 
-                                        <p><b>שם משתמש: </b>{email}</p> 
-                                        <p><b>סיסמה: </b>{password}</p> 
-                                        <p><b>יישום Url: </b>{app_url}</p> 
+                                        'pt-br' => '<p>שלום,<b> {user_name} </b></p>
+                                        <p>פרטי ההתחברות שלכם עבור<b> {app_name}</b> הוא <br></p>
+                                        <p><b>שם משתמש: </b>{email}</p>
+                                        <p><b>סיסמה: </b>{password}</p>
+                                        <p><b>יישום Url: </b>{app_url}</p>
                                         <p>תודה,</p> <p>{app_name}</p>',
                                 ],
                         ],
@@ -410,16 +415,16 @@ class User extends Authenticatable implements MustVerifyEmail
                                         <p style="">Teşekkürler,</p>
                                         <p style="">{ uyg_adı }</p>',
 
-                                        'zh' => '<p>您好，{user_name} !<br>欢迎使用 {app_name}。</p> 
+                                        'zh' => '<p>您好，{user_name} !<br>欢迎使用 {app_name}。</p>
                                         <p>您被 <strong>，<br>进入新的工作空间 <strong>{workspace_name}</strong></p>
                                         <p> <strong>{owner_name}.<strong></strong></strong></p>
                                         <p style=""><b style="font-weight: bold;">应用程序 URL : </b>{app_url}</p>
                                         <p style="">谢谢，</p> <p style="">{app_name}</p>',
 
-                                        'he' => '<p>שלום, {user_name}! &nbsp;<br>ברוכים הבאים אל {app_name}.</p> 
-                                        <p>אתם מוזמנים,<br>לתוך סביבת עבודה חדשה <strong>{workspace_name}</strong></p> 
-                                        <p>על ידי <strong>{owner_name}.</strong><strong></strong></strong></p> 
-                                        <p style=""><b style="font-weight: bold;">App Url: </b>{app_url}</p> 
+                                        'he' => '<p>שלום, {user_name}! &nbsp;<br>ברוכים הבאים אל {app_name}.</p>
+                                        <p>אתם מוזמנים,<br>לתוך סביבת עבודה חדשה <strong>{workspace_name}</strong></p>
+                                        <p>על ידי <strong>{owner_name}.</strong><strong></strong></strong></p>
+                                        <p style=""><b style="font-weight: bold;">App Url: </b>{app_url}</p>
                                         <p style="">תודה,</p> <p style="">{app_name}</p>',
 
                                         'pt-br' => '<p>Olá,{user_name} !&nbsp;<br>Bem-vindo ao {app_name}.</p>
@@ -535,21 +540,21 @@ class User extends Authenticatable implements MustVerifyEmail
                                         <p><b>Uygulama Url si: </b>{ app_url }by<p>Teşekkürler,</p>
                                         <p>{ uyg_adı }</p>',
 
-                                        'zh' => '<p>您好，<b>{user_name}</b> !</p><p>欢迎访问 {app_name}。</p> 
-                                        <p>您被邀请进入新项目 <strong>{owner_name}.</strong> <br/></p> 
-                                        <p><b>项目名称 : </b>{project_name }</p> 
-                                        <p><b>项目状态 : </b>{project_status}</p> 
+                                        'zh' => '<p>您好，<b>{user_name}</b> !</p><p>欢迎访问 {app_name}。</p>
+                                        <p>您被邀请进入新项目 <strong>{owner_name}.</strong> <br/></p>
+                                        <p><b>项目名称 : </b>{project_name }</p>
+                                        <p><b>项目状态 : </b>{project_status}</p>
                                         <p><b>应用程序 URL : </b>{app_url}</p>
                                         <p>谢谢，</p>
                                         <p>{app_name}</p>',
 
                                         'he' => '<p>שלום,<b>{user_name}</b> ! &nbsp; &nbsp;</p>
-                                        <p>ברוכים הבאים אל {app_name}.</p> 
-                                        <p>אתם מוזמנים, לתוך פרויקט חדש על-ידי <strong>{owner_name}.</strong> <br/></p> 
-                                        <p><b>שם הפרויקט: </b>{project_name}</p> 
-                                        <p><b>מצב הפרויקט: </b>{project_status}</p> 
-                                        <p><b>יישום Url: </b>{app_url}</p> 
-                                        <p>תודה,</p> 
+                                        <p>ברוכים הבאים אל {app_name}.</p>
+                                        <p>אתם מוזמנים, לתוך פרויקט חדש על-ידי <strong>{owner_name}.</strong> <br/></p>
+                                        <p><b>שם הפרויקט: </b>{project_name}</p>
+                                        <p><b>מצב הפרויקט: </b>{project_status}</p>
+                                        <p><b>יישום Url: </b>{app_url}</p>
+                                        <p>תודה,</p>
                                         <p>{app_name}</p>',
 
                                         'pt-br' => '<p>Olá,<b>{user_name}</b> !&nbsp;&nbsp;</p><p>Bem-vindo ao {app_name}.</p>
@@ -708,23 +713,23 @@ class User extends Authenticatable implements MustVerifyEmail
                                         <b>Başlangıç tarihi</b> : { start_date }<br>
                                         <b>Bitiş tarihi</b> : { end_date }</span></p><p><br></p>',
 
-                                        'zh' => '<p><span style="font-size: 14px; font-family: sans-serif;">您好， <b>{client_name}!</b></span> 
-                                        <br style="font-size: 14px; font-family: sans-serif;"> 
+                                        'zh' => '<p><span style="font-size: 14px; font-family: sans-serif;">您好， <b>{client_name}!</b></span>
+                                        <br style="font-size: 14px; font-family: sans-serif;">
                                         <span style="font-size: 14px; font-family: sans-serif;">新合同已分配给您。</span> </p>
-                                        <p><span style="font-size: 14px; font-family: sans-serif;"> <b> 
-                                        <b>合同主题</b> : {contract_subject}<br> <b>项目名称</b> : {project_name}<br> 
-                                        <b>合同类型</b> : {contract_type}<br> <b>value</b> : {value}<br> 
-                                        <b>开始日期</b> : {start_date}<br> 
+                                        <p><span style="font-size: 14px; font-family: sans-serif;"> <b>
+                                        <b>合同主题</b> : {contract_subject}<br> <b>项目名称</b> : {project_name}<br>
+                                        <b>合同类型</b> : {contract_type}<br> <b>value</b> : {value}<br>
+                                        <b>开始日期</b> : {start_date}<br>
                                         <b>结束日期</b> : {end_date}</span></p>
                                         <p><br></p>',
 
-                                        'he' => '<p><span style="font-size: 14px; font-family: sans-serif;">שלום, <b>{client_name}!</b></span> 
-                                        <br style="font-size: 14px; font-family: sans-serif;"> 
+                                        'he' => '<p><span style="font-size: 14px; font-family: sans-serif;">שלום, <b>{client_name}!</b></span>
+                                        <br style="font-size: 14px; font-family: sans-serif;">
                                         <span style="font-size: 14px; font-family: sans-serif;">חוזה חדש הוקצה לכם.</span> </p>
-                                        <p><span style="font-size: 14px; font-family: sans-serif;"> <b> 
-                                        <b>חוזה</b> : {contract_subject}<br> <b>פרוייקט שם</b> : {project_name}<br> 
-                                        <b>סוג חוזה</b> : {contract_type}<br> <b>value</b> : {value}<br> 
-                                        <b>תאריך התחלה</b> : {start_date}<br> 
+                                        <p><span style="font-size: 14px; font-family: sans-serif;"> <b>
+                                        <b>חוזה</b> : {contract_subject}<br> <b>פרוייקט שם</b> : {project_name}<br>
+                                        <b>סוג חוזה</b> : {contract_type}<br> <b>value</b> : {value}<br>
+                                        <b>תאריך התחלה</b> : {start_date}<br>
                                         <b>תאריך סיום</b> : {end_date}</span></p>
                                         <p><br></p>',
 

@@ -4,7 +4,7 @@
     {{ __('Tasks') }}
 @endsection
 @section('links')
-   
+
     <li class="breadcrumb-item"> {{ __('Tasks') }}</li>
 @endsection
 @push('css-page')
@@ -33,21 +33,21 @@
                                     <th>Title</th>
                                     <th>Description</th>
                                     <th>Assign To</th>
-                                
+
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($task as $item)
                                 <tr>
-                                    
-                                <td>{{$item->id}} </td>   
-                                <td>{{$item->title}} </td>   
-                                <td>{{$item->description}} </td>  
-                                <td>{{$item->user->name}} </td>   
- 
-                                
+
+                                <td>{{@$item->id}} </td>
+                                <td>{{@$item->title}} </td>
+                                <td>{{@$item->description}} </td>
+                                <td>{{@$item->user->name}} </td>
+
+
                                 </tr>
-                                @endforeach 
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

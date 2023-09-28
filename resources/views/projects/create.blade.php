@@ -39,7 +39,7 @@
 
         <div class="col-md-12">
             <label for="tags" class="col-form-label">{{ __('Tags') }}</label>
-            <input type="text" name="tags" class="tags form-control" value="{{ old('tags') }}"
+            <input type="text" name="tags" class="tags form-control" id="tag-project-create" value="{{ old('tags') }}"
                data-role="tagsinput" />
             @if($errors->has('tags'))
             <strong class="text-danger">{{ $errors->first('tags') }}</strong>
@@ -202,6 +202,6 @@ if ($(".multi-select").length > 0) {
 
 
 <script>
-    var inputElement = document.querySelector('.tags')
+    var inputElement = document.querySelector('#tag-project-create')
     new Tagify(inputElement)
 </script>

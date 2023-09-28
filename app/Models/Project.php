@@ -33,7 +33,7 @@ class Project extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\Models\User', 'user_projects', 'project_id', 'user_id')->withPivot('is_active')->orderBy('id', 'ASC');
+        return $this->belongsToMany('App\Models\User', 'user_projects', 'project_id', 'user_id')->withPivot('is_active','permission')->orderBy('id', 'ASC')->withTimestamps();
     }
 
          public function task()
