@@ -102,7 +102,10 @@ class ProjectController extends Controller
             }
         }
 
-        return view('projects.index', compact('currentWorkspace', 'projects'));
+        $user = User::find($objUser->id);
+        $permissions = $user->getPermissionWorkspace($currentWorkspace->id);
+
+        return view('projects.index', compact('currentWorkspace', 'projects','permissions'));
 
     }
 
