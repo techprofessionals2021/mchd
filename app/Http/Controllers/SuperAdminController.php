@@ -33,10 +33,38 @@ class SuperAdminController extends Controller
 
     public function workspace()
     {
-        $workspace = Workspace::get();
+        $workspace = Workspace::where('is_active','1')->get();
 
         return view('layouts.super-admin.workspace.index',compact('workspace'));
     }
+
+
+    public function delete_workspace($id)
+    {
+        $workspace = Workspace::find($id);
+        
+        $workspace->is_active = 0;
+        $workspace->save();
+
+        return redirect()->route('superadmin.workspace');
+
+    }
+
+
+    public function delete_user($id)
+    {
+        $user = User::find($id);
+
+        // dd($user);
+        
+        $user->delete();
+
+
+        return redirect()->route('superadmin.workspace');
+
+    }
+
+
 
 
 
