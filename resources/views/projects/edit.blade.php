@@ -50,7 +50,9 @@
                 <label class="col-form-label">{{ __('Assign To')}}</label>
                 <select class="multi-select" multiple="multiple" id="assign_to" name="users_list[]" required>
                     @foreach($currentWorkspace->users as $u)
+                      @if (auth()->id() != $u->id)
                         <option @if(in_array($u->id,$project->users->pluck('id')->toArray())) selected @endif value="{{$u->id}}">{{$u->name}} - {{$u->email}}</option>
+                      @endif
                     @endforeach
                 </select>
             </div>

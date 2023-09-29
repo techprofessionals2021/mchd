@@ -654,10 +654,11 @@ class ProjectController extends Controller
         $users = $request->users_list;
         $data = $request->all();
         $data['tags'] = Utility::convertTagsToJsonArray($request->tags);
-
+        array_push($users,auth()->id());
+        // dd($users);
         $project->update($data);
 
-        $project->users()->syncWithPivotValues($project->users_list,['permission' => json_encode(Utility::getAllPermission())]);
+        $project->users()->syncWithPivotValues($users,['permission' => json_encode(Utility::getAllPermission())]);
 
 
         return redirect()->back()->with('success', __('Project Updated Successfully!'));
