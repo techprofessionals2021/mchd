@@ -261,6 +261,12 @@ Route::delete('/user/delete/{id}',[SuperAdminController::class, 'delete_user'])-
 Route::get('/project', [SuperAdminController::class, 'project'])->name('project')->middleware(['auth']);
 Route::get('/task', [SuperAdminController::class, 'task'])->name('task')->middleware(['auth']);
 
+Route::get('/roles', [SuperAdminController::class, 'role'])->name('role')->middleware(['auth']);
+
+Route::post('/role/store', [SuperAdminController::class, 'role_store'])->name('role_store')->middleware(['auth']);
+
+
+
 
 
 });

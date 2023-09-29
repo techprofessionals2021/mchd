@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\UserProject;
 use App\Models\UserWorkspace;
 use App\Models\Workspace;
+use App\Models\WorkspacePermission;
 use App\Models\Utility;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
@@ -65,6 +66,48 @@ class SuperAdminController extends Controller
     }
 
 
+    public function role()
+    {
+
+        $role = WorkspacePermission::get();
+
+
+        return view('layouts.super-admin.role.index',compact('role'));
+
+    }
+
+    
+    public function role_store(Request $request)
+    {
+
+        $check_workspace_permission = WorkspacePermission::where('role',$request->role)->first();
+
+        if(isset($check_workspace_permission)){
+            return redirect()->back()->withErrors(['error' => 'Role Already Exists']);
+        }
+
+        $default_permission = json_encode([
+
+            "invite user",
+            "create project",
+            "show calendar",
+            "show timesheet",
+            "project report"
+        
+        ]);
+
+        $role = New WorkspacePermission;
+
+        $role->role = $request->role;
+        $role->permission = $default_permission;
+        $role->save();
+
+
+        return redirect()->route('superadmin.role');
+
+    }
+
+    
 
 
 
@@ -86,7 +129,6 @@ class SuperAdminController extends Controller
     {
         $task = Task::with('user')->get();
 
-    
         return view('layouts.super-admin.task.index',compact('task'));
     }
 

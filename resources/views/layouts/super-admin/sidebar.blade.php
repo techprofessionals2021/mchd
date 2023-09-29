@@ -95,7 +95,36 @@
                                     class="dash-mtext">{{ __('Tasks') }}</span></a>
                         </li>
 
-                     
+
+                        {{-- <li class="dash-item {{ Request::route()->getName() == 'role.index' ? ' active' : '' }}">
+                            <a href="{{route('superadmin.role')}}" class="dash-link "><span
+                                    class="dash-micon"><i data-feather="list"></i></span><span
+                                    class="dash-mtext">{{ __('Roles') }}</span></a>
+                        </li> --}}
+
+                        <li class="dash-item dash-hasmenu {{ Request::route()->getName() == 'role.index' ? ' active' : '' }}">
+                            <a href="#" class="dash-link"><span class="dash-micon"><i
+                                        class="ti ti-key"></i></span><span
+                                    class="dash-mtext">{{ __('Roles') }}</span><span class="dash-arrow"><i
+                                        data-feather="chevron-right"></i></span></a>
+                            <ul
+                                class="dash-submenu collapse  {{ Request::route()->getName() == 'contracts.index' ? ' active' : '' }}">
+                                <li class="dash-item {{ Request::route()->getName() == 'role.index' ? ' active' : '' }}">
+                                    <a href="{{route('superadmin.role')}}" class="dash-link "><span
+                                            class="dash-mtext">{{ __('Roles') }}</span></a>
+                                </li>
+
+                                {{-- <li class="dash-item {{ Request::route()->getName() == 'role.index' ? ' active' : '' }}">
+                                    <a href="#" class="dash-link "><span
+                                            class="dash-mtext">{{ __('Create Role') }}</span></a>
+                                </li> --}}
+
+                            </ul>
+
+                            
+                           </li>
+
+                    
                             {{-- <li class="dash-item dash-hasmenu">
                                 <a href="{{ route('clients.index', $currentWorkspace->slug) }}"
                                     class="dash-link {{ Request::route()->getName() == 'clients.index' ? ' active' : '' }}"><span
