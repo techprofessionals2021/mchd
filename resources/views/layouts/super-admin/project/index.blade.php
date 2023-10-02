@@ -4,7 +4,7 @@
     {{ __('Projects') }}
 @endsection
 @section('links')
-   
+
     <li class="breadcrumb-item"> {{ __('Projects') }}</li>
 @endsection
 @push('css-page')
@@ -33,21 +33,40 @@
                                     <th>Name</th>
                                     <th>Status</th>
                                     <th>Description</th>
-                                  
-                                
+                                    <th>Actions</th>
+
+
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($project as $item)
                                 <tr>
-                                    
-                                <td>{{$item->id}} </td>   
-                                <td>{{$item->name}} </td>   
-                                <td>{{$item->status}} </td>   
-                                <td>{{$item->description}} </td>   
-                               
+
+                                <td>{{$item->id}} </td>
+                                <td>{{$item->name}} </td>
+                                <td>{{$item->status}} </td>
+                                <td>{{$item->description}} </td>
+                                <td>
+                                    {{-- <a href="#" class="action-btn btn-info  btn btn-sm d-inline-flex align-items-center"  data-toggle="popover"  title="' . __('Edit Task') . '"  data-ajax-popup="true" data-size="lg" data-title="' . __('Edit Task') . '" data-url="' . route(
+                                        'tasks.edit',
+                                        [
+                                            $currentWorkspace->slug,
+                                            $task->project_id,
+                                            $task->id,
+                                        ]
+                                    ) . '"><i class="ti ti-pencil"></i></a> --}}
+
+                                    <a href="#" class="action-btn btn-info  btn btn-sm d-inline-flex align-items-center" data-ajax-popup="true" data-size="lg" data-title="{{ __('Edit Project') }}" data-url="{{route('projects.edit',[@$item->workspaceData->slug ?? 0 ,$item->id])}}">
+                                        <i class="ti ti-pencil"></i>
+                                     </a>
+
+                                    <a href="#" class="action-btn btn-danger  btn btn-sm d-inline-flex align-items-center bs-pass-para" data-toggle="popover" title="' . __('Delete') . '" data-confirm="' . __('Are You Sure?') . '" data-confirm-yes="delete-form-' . $task->id . '">
+                                        <i class="ti ti-trash"></i></a>
+                                </td>
+
+
                                 </tr>
-                                @endforeach 
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

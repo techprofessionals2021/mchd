@@ -523,12 +523,28 @@ class ProjectController extends Controller
 
     public function edit($slug, $projectID)
     {
-        $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
-        $project = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
+        // dd($currentWorkspace);
+        $objUser = Auth::user();
+
+
+
+    //    dd($currentWorkspace->users);
+        if(auth()->user()->type != 'super-admin'){
+            $project = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
+        }else{
+
+            $project = Project::select('projects.*')
+            // ->where('projects.workspace', '=', $currentWorkspace->id)
+            ->where('projects.id', '=', $projectID)
+            ->first();
+            // dd($project);
+        }
+        // dd(auth()->user()->type);
+        // dd($project);
         $users = User::select('users.*')->join('user_projects', 'user_projects.user_id', '=', 'users.id')->where('project_id', '=', $project->id)->get();
 
-
+        // dd($currentWorkspace->users);
         // dd($project->users->pluck('id'));
         return view('projects.edit', compact('currentWorkspace', 'project','users'));
     }

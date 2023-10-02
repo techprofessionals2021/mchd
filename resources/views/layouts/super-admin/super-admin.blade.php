@@ -16,7 +16,7 @@
             $cust_theme_bg =$setting['cust_theme_bg'];
             $SITE_RTL = env('SITE_RTL');
         }
-       
+
 
         $meta_setting = App\Models\Utility::getAdminPaymentSettings();
         $meta_images = \App\Models\Utility::get_file('uploads/logo/');
@@ -84,6 +84,9 @@
 @else
  {{-- <link rel="shortcut icon" href="@if($currentWorkspace->favicon){{asset($logo.$currentWorkspace->favicon)}}@else{{asset($logo.'favicon.png')}}@endif"> --}}
 @endif
+
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+
     <link rel="stylesheet" href="{{asset('assets/css/plugins/style.css')}}">
      <link rel="stylesheet" href="{{asset('assets/css/plugins/flatpickr.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/plugins/main.css')}}">
@@ -191,7 +194,7 @@
 </div>
 
 <!-- <div class="container-fluid container-application"> -->
- 
+
     <div class="bg-primary" id="color_chart"></div>
     <script>
         var element = document.querySelector('#color_chart');
@@ -328,7 +331,9 @@
     $currantLang = 'en'
 @endphp
 
-
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    
 <script src="{{ asset('assets/custom/js/site.core.js') }}"></script>
 <script src="{{ asset('assets/custom/libs/moment/min/moment.min.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/popper.min.js')}}"></script>
