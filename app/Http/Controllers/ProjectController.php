@@ -102,7 +102,10 @@ class ProjectController extends Controller
             }
         }
 
-        return view('projects.index', compact('currentWorkspace', 'projects'));
+        $user = User::find($objUser->id);
+        $permissions = $user->getPermissionWorkspace($currentWorkspace->id);
+
+        return view('projects.index', compact('currentWorkspace', 'projects','permissions'));
 
     }
 
@@ -120,8 +123,6 @@ class ProjectController extends Controller
     }
     public function store($slug, Request $request)
     {
-
-
 
         $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
@@ -525,8 +526,11 @@ class ProjectController extends Controller
         $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         $project = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
+        $users = User::select('users.*')->join('user_projects', 'user_projects.user_id', '=', 'users.id')->where('project_id', '=', $project->id)->get();
 
-        return view('projects.edit', compact('currentWorkspace', 'project'));
+
+        // dd($project->users->pluck('id'));
+        return view('projects.edit', compact('currentWorkspace', 'project','users'));
     }
 
     public function create($slug)
@@ -647,7 +651,14 @@ class ProjectController extends Controller
         $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         $project = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
-        $project->update($request->all());
+        $users = $request->users_list;
+        $data = $request->all();
+        $data['tags'] = Utility::convertTagsToJsonArray($request->tags);
+
+        $project->update($data);
+
+        $project->users()->syncWithPivotValues($project->users_list,['permission' => json_encode(Utility::getAllPermission())]);
+
 
         return redirect()->back()->with('success', __('Project Updated Successfully!'));
     }
@@ -963,7 +974,7 @@ class ProjectController extends Controller
         $users = User::select('users.*')->join('user_projects', 'user_projects.user_id', '=', 'users.id')->where('project_id', '=', $projectID)->get();
         $task = Task::find($taskId);
         $task->assign_to = explode(",", $task->assign_to);
-
+        // dd( $project);
         return view('projects.taskEdit', compact('currentWorkspace', 'project', 'projects', 'users', 'task'));
     }
 
