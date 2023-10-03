@@ -23,6 +23,7 @@ use App\Models\Stage;
 use App\Models\SubTask;
 use App\Models\Task;
 use App\Models\TaskFile;
+use App\Models\ModelHasRole;
 use App\Models\Timesheet;
 use App\Models\TimeTracker;
 use App\Models\User;
@@ -33,6 +34,7 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -57,7 +59,50 @@ class ProjectController extends Controller
         }
         if ($objUser->getGuard() == 'client') {
             $projects = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
-        } else {
+        }
+        
+        else if(auth()->user()->hasRole('HOD')){
+
+            // Get the 'HOD' role
+        $hodRole = Role::where('name', 'HOD')->first();
+
+            if ($hodRole) {
+                // Find the 'HOD' role for the authenticated user
+                $tags = ModelHasRole::where('model_id', Auth::id())
+                    ->where('role_id', $hodRole->id)
+                    ->first();
+               
+
+                    if ($tags) {
+                        $tagsArray = json_decode($tags->tag, true);
+
+
+                    
+                        if (isset($tagsArray)) {
+                            $projects = Project::where(function ($query) use ($tagsArray) {
+                                foreach ($tagsArray as $tag) {
+                                    $query->orWhereJsonContains('tags', $tag);
+                                }
+                            })->get();
+    
+                        }
+
+                        else{
+                            $projects = Project::where('is_active','0')->get(); 
+                        }
+                 
+                        // dd($projects);
+                    } else {
+                    // Handle the case where no tags are found for the 'HOD' role
+                    $projects = [];
+                }
+            } else {
+                // Handle the case where the 'HOD' role does not exist
+                $projects = [];
+            }
+
+        }
+        else {
             $projects = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
         }
 
@@ -2141,12 +2186,16 @@ class ProjectController extends Controller
 
     public function allTasks($slug)
     {
+        // dd('asd');
         $userObj = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
 
         if ($userObj->getGuard() == 'client') {
             $projects = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
-        } else {
+        }
+    
+        
+        else {
             $projects = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
         }
         $stages = Stage::where('workspace_id', '=', $currentWorkspace->id)->orderBy('order')->get();
@@ -2157,8 +2206,77 @@ class ProjectController extends Controller
 
     public function ajax_tasks($slug, Request $request)
     {
+
+
+
+
         $userObj = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+
+
+        if (auth()->user()->hasRole('HOD')) {
+
+            $hodRole = Role::where('name', 'HOD')->first();
+            if ($hodRole) {
+                // Find the 'HOD' role for the authenticated user
+                $tags = ModelHasRole::where('model_id', Auth::id())
+                    ->where('role_id', $hodRole->id)
+                    ->first();
+
+           
+                    if ($tags) {
+                        $tagsArray = json_decode($tags->tag, true);
+
+                        // dd($tagsArray);
+
+
+                
+                        if (isset($tagsArray)) {
+
+                            
+                            // $tasks = Task::where(function ($query) use ($tagsArray) {
+                            //     if (!empty($tagsArray)) {
+                            //         foreach ($tagsArray as $tag) {
+                            //             $query->orWhereJsonContains('tags', $tag);
+                            //         }
+                            //     }
+                            // })->get();
+
+                            $tasks = Task::where(function ($query) use ($tagsArray) {
+                                if (!empty($tagsArray)) {
+                                    foreach ($tagsArray as $tag) {
+                                        $query->orWhere(function ($subQuery) use ($tag) {
+                                            $subQuery->whereNotNull('tags') // Ensure 'tags' is not NULL
+                                                ->where('tags', '!=', '')    // Ensure 'tags' is not empty
+                                                ->whereJsonContains('tags', $tag);
+                                        });
+                                    }
+                                }
+                            })->get();
+                            
+                        
+
+                            // dd($tasks);
+
+    
+                        }
+
+                        else{
+                            $tasks = Task::get(); 
+                        }
+                 
+                        // dd($projects);
+                    } else {
+                    // Handle the case where no tags are found for the 'HOD' role
+                    $tasks = [];
+                }
+            } else {
+                // Handle the case where the 'HOD' role does not exist
+                $tasks = [];
+            }
+        }
+
+
         if ($currentWorkspace->permission == 'Owner') {
             $tasks = Task::select(
                 [
@@ -2167,7 +2285,11 @@ class ProjectController extends Controller
                     'stages.complete',
                 ]
             )->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->join("stages", "stages.id", "=", "tasks.status")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id);
-        } else {
+        } 
+        
+   
+        
+        else {
             $tasks = Task::select(
                 [
                     'tasks.*',

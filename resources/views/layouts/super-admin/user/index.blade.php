@@ -21,7 +21,65 @@
 @section('content')
     <div class="card">
 
+
+    
+
         <div class="card-body mt-3 mx-2">
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Update User</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form method="POST" action="{{route('superadmin.update_user')}}">
+                        @csrf
+                        <div class="form-group">
+                          <label for="recipient-name" class="col-form-label">Name:</label>
+                          <input type="text" required class="form-control" name="name" id="name">
+                        </div>
+                      
+
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Email:</label>
+                            <input type="text" required class="form-control" name="email" id="email">
+                          </div>
+
+                          <input type="hidden" name="user_id" id="user_id">
+
+                          <div class="form-group">
+                            <label for="permission">Role</label>
+                            <select name="role" id="role" class="form-control">
+                                <!-- Populate the dropdown with available permissions -->
+                                @foreach ($role as $roles)
+                                    <option value="{{ $roles->name }}">{{ $roles->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tags" class="col-form-label">{{ __('Tags') }}</label>
+                            <input type="text" name="tags" class="tags form-control" id="tag-assign-user"  value="{{ old('tags') }}"
+                               data-role="tagsinput" />
+                            {{-- @if($errors->has('tags'))
+                            <strong class="text-danger">{{ $errors->first('tags') }}</strong>
+                            @endif --}}
+                        </div>
+                        
+                     
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                 </form>
+                  </div>
+                </div>
+              </div>
             <div class="row">
                 <div class="col-md-12 mt-2">
 
@@ -44,14 +102,23 @@
                                 <td>{{$item->name}} </td>   
                                 <td>{{$item->email}} </td>   
 
-                                <td> 
-                                    <form method="POST" action="{{ route('superadmin.delete-user-superadmin', ['id' => $item->id]) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="fas fa-trash"></i> Delete
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="submenuDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Actions
                                         </button>
-                                    </form>
+                                        <div class="dropdown-menu" aria-labelledby="submenuDropdown">
+                                            <form method="POST" action="{{ route('superadmin.delete-user-superadmin', ['id' => $item->id]) }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="dropdown-item btn btn-danger">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </button>
+                                            </form>
+                                            <a class="dropdown-item modal-id" href="#"  data-toggle="modal" data-target="#exampleModal" data-name="{{$item->name}}" data-id="{{$item->id}}" data-email="{{$item->email}}" >  <i class="fas fa-edit"></i> Edit User</a>
+                                            <!-- Add more submenu items here -->
+                                        </div>
+                                    </div>
                                 </td>
                                
                                 </tr>
@@ -89,5 +156,31 @@
       var table = $('.data-table').DataTable();
 
     });
+
+    $('.modal-id').on('click', function () {
+            // Get the data attributes
+            const name = $(this).data('name');
+            const email = $(this).data('email');
+            const user_id = $(this).data('id');
+
+
+            // Update the modal content with the data
+            $('#exampleModal').find('.modal-title').text('Edit User');
+            $('#exampleModal').find('#name').val(name);
+            $('#exampleModal').find('#email').val(email);
+            $('#exampleModal').find('#user_id').val(user_id);
+            
+        });
   </script>
+
+
+
+<script>
+    var inputElement = document.querySelector('#tag-assign-user');
+
+    new Tagify(inputElement)
+</script>
+
 @endpush
+
+
