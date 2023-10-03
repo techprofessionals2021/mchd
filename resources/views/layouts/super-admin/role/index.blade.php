@@ -1,11 +1,11 @@
 @extends('layouts.super-admin.super-admin')
 
 @section('page-title')
-    {{ __('Workspaces') }}
+    {{ __('Roles') }}
 @endsection
 @section('links')
    
-    <li class="breadcrumb-item"> {{ __('Workspaces') }}</li>
+    <li class="breadcrumb-item"> {{ __('Roles') }}</li>
 @endsection
 @push('css-page')
     <style>
@@ -18,40 +18,73 @@
         }
     </style>
 @endpush
-@section('content')
-    <div class="card">
 
+@section('content')
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add New Role</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="{{route('superadmin.role_store')}}">
+            @csrf
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Role Name:</label>
+              <input type="text" required class="form-control" name="role" id="recipient-name">
+            </div>
+          
+         
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+     </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-10 text-left mb-4">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Role</button>
+</div>
+    <div class="card">
+        @if($errors->has('error'))
+        <div class="alert alert-danger">
+            {{ $errors->first('error') }}
+        </div>
+      @endif
         <div class="card-body mt-3 mx-2">
+        
             <div class="row">
+             
                 <div class="col-md-12 mt-2">
 
                     <div class="table-responsive">
+                     
                         <table class="table table-bordered data-table" style="width: 100%">
+                          
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Workspace Name</th>
-                                    <th>Action</th>
+                                    <th>Role</th>
+                               
                                 
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($workspace as $item)
+                                @foreach ($role as $item)
                                 <tr>
                                     
                                 <td>{{$item->id}} </td>   
-                                <td>{{$item->name}} </td>   
-                                <td> 
-                                    <form method="POST" action="{{ route('superadmin.delete-workspace-superadmin', ['id' => $item->id]) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="fas fa-trash"></i> Delete
-                                        </button>
-                                    </form>
-                                </td>
-
-                               
+                                <td>{{$item->role}} </td>   
+                              
+ 
                                 </tr>
                                 @endforeach 
                             </tbody>
