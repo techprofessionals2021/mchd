@@ -31,6 +31,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Workspace Name</th>
+                                    <th>Action</th>
                                 
                                 </tr>
                             </thead>
@@ -40,6 +41,16 @@
                                     
                                 <td>{{$item->id}} </td>   
                                 <td>{{$item->name}} </td>   
+                                <td> 
+                                    <form method="POST" action="{{ route('superadmin.delete-workspace-superadmin', ['id' => $item->id]) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                </td>
+
                                
                                 </tr>
                                 @endforeach 

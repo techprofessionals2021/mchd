@@ -16,7 +16,7 @@
             $cust_theme_bg =$setting['cust_theme_bg'];
             $SITE_RTL = env('SITE_RTL');
         }
-       
+
 
         $meta_setting = App\Models\Utility::getAdminPaymentSettings();
         $meta_images = \App\Models\Utility::get_file('uploads/logo/');
@@ -77,13 +77,16 @@
     </title>
 
 
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 
 
 @if(Auth::user()->type == 'admin')
  <link rel="shortcut icon" href="{{asset($logo.'favicon.png')}}">
 @else
- {{-- <link rel="shortcut icon" href="@if($currentWorkspace->favicon){{asset($logo.$currentWorkspace->favicon)}}@else{{asset($logo.'favicon.png')}}@endif"> --}}
 @endif
+
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+
     <link rel="stylesheet" href="{{asset('assets/css/plugins/style.css')}}">
      <link rel="stylesheet" href="{{asset('assets/css/plugins/flatpickr.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/plugins/main.css')}}">
@@ -92,9 +95,10 @@
     <link rel="stylesheet" href="{{ asset('assets/css/customizer.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/custom/css/custom.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/dragula.min.css')}}">
-    {{-- <link rel="stylesheet" href="{{asset('assets/css/landing.css')}}" /> --}}
+
     <link rel="stylesheet" href="{{asset('assets/css/plugins/animate.min.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/custom/libs/summernote/summernote-bs4.css')}}">
+
 
     <!-- vendor css -->
     @stack('css-page')
@@ -104,17 +108,7 @@
     <link rel="stylesheet" href="{{ asset('assets/fonts/fontawesome.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/material.css')}}">
 
-<!--     @if($SITE_RTL =='on')
-        <link rel="stylesheet" href="{{ asset('assets/css/style-rtl.css')}}">
-       @else
 
-         @if($dark_mode =='on')
-          <link rel="stylesheet" href="{{ asset('assets/css/style-dark.css')}}">
-         @else
-         <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}" id="main-style-link">
-         @endif
-    @endif
- -->
 
     @if ($SITE_RTL == 'on')
         <link rel="stylesheet" href="{{ asset('assets/css/style-rtl.css') }}">
@@ -126,8 +120,13 @@
     @endif
 
     <meta name="url" content="{{ url('').'/'.config('chatify.routes.prefix') }}" data-user="{{ Auth::user()->id }}">
+
+
+
     <script src='https://unpkg.com/nprogress@0.2.0/nprogress.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 
 </head>
 
@@ -191,7 +190,7 @@
 </div>
 
 <!-- <div class="container-fluid container-application"> -->
- 
+
     <div class="bg-primary" id="color_chart"></div>
     <script>
         var element = document.querySelector('#color_chart');
@@ -328,6 +327,8 @@
     $currantLang = 'en'
 @endphp
 
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
 
 <script src="{{ asset('assets/custom/js/site.core.js') }}"></script>
 <script src="{{ asset('assets/custom/libs/moment/min/moment.min.js') }}"></script>

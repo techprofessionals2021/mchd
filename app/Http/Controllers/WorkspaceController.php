@@ -1324,7 +1324,8 @@ class WorkspaceController extends Controller
     {
         // dd(auth()->user()->currentWorkspace->id);
         if ($request->ajax()) {
-            $data = auth()->user()->workspace;
+            $data = auth()->user()->workspace->where('is_active', 1);
+
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('relation', function ($row) {

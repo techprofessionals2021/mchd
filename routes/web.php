@@ -51,6 +51,7 @@ use App\Http\Controllers\CashfreeController;
 use App\Http\Controllers\AamarpayController;
 use App\Http\Controllers\PaytrController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\SuperAdminPermissionController;
 
 
 /*
@@ -253,9 +254,25 @@ Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard')->m
 Route::prefix('superadmin')->as('superadmin.')->group(function() {
 Route::get('/', [SuperAdminController::class, 'index'])->name('home')->middleware(['auth']);
 Route::get('/workspace', [SuperAdminController::class, 'workspace'])->name('workspace')->middleware(['auth']);
+Route::delete('/workspace/delete/{id}',[SuperAdminController::class, 'delete_workspace'])->name('delete-workspace-superadmin')->middleware(['auth']);
+
 Route::get('/user', [SuperAdminController::class, 'user'])->name('user')->middleware(['auth']);
+Route::delete('/user/delete/{id}',[SuperAdminController::class, 'delete_user'])->name('delete-user-superadmin')->middleware(['auth']);
+
+Route::post('/user/update', [SuperAdminController::class, 'update_user'])->name('update_user')->middleware(['auth']);
+
 Route::get('/project', [SuperAdminController::class, 'project'])->name('project')->middleware(['auth']);
 Route::get('/task', [SuperAdminController::class, 'task'])->name('task')->middleware(['auth']);
+
+Route::get('/roles', [SuperAdminController::class, 'role'])->name('role')->middleware(['auth']);
+
+Route::post('/role/store', [SuperAdminController::class, 'role_store'])->name('role_store')->middleware(['auth']);
+
+
+
+Route::get('/permissions', [SuperAdminPermissionController::class, 'index'])->name('permission.index');
+
+Route::post('/store', [SuperAdminPermissionController::class, 'store'])->name('permission.store');
 
 
 
