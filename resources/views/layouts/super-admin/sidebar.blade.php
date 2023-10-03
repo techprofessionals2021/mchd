@@ -105,13 +105,18 @@
                         <li class="dash-item dash-hasmenu {{ Request::route()->getName() == 'role.index' ? ' active' : '' }}">
                             <a href="#" class="dash-link"><span class="dash-micon"><i
                                         class="ti ti-key"></i></span><span
-                                    class="dash-mtext">{{ __('Roles') }}</span><span class="dash-arrow"><i
+                                    class="dash-mtext">{{ __('Permission') }}</span><span class="dash-arrow"><i
                                         data-feather="chevron-right"></i></span></a>
                             <ul
                                 class="dash-submenu collapse  {{ Request::route()->getName() == 'contracts.index' ? ' active' : '' }}">
-                                <li class="dash-item {{ Request::route()->getName() == 'role.index' ? ' active' : '' }}">
+                                {{-- <li class="dash-item {{ Request::route()->getName() == 'role.index' ? ' active' : '' }}">
                                     <a href="{{route('superadmin.role')}}" class="dash-link "><span
                                             class="dash-mtext">{{ __('Roles') }}</span></a>
+                                </li> --}}
+
+                                <li class="dash-item {{ Request::route()->getName() == 'superadmin.permission.index' ? ' active' : '' }}">
+                                    <a href="{{route('superadmin.permission.index')}}" class="dash-link "><span
+                                            class="dash-mtext">{{ __('Permission') }}</span></a>
                                 </li>
 
                                 {{-- <li class="dash-item {{ Request::route()->getName() == 'role.index' ? ' active' : '' }}">

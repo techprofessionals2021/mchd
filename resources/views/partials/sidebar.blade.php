@@ -50,6 +50,8 @@
         $SITE_RTL = env('SITE_RTL');
     }
 @endphp
+{{-- {{dd(auth()->user()->hasRole(('HOD')))}} --}}
+{{-- {{dd(auth()->user()->hasPermissionTo('invite-user'))}} --}}
 <nav class="dash-sidebar light-sidebar {{ isset($cust_theme_bg) && $cust_theme_bg == 'on' ? 'transprent-bg' : '' }}">
     <div class="navbar-wrapper">
         <div class="m-header main-logo">
