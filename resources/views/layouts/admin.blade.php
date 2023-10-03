@@ -227,6 +227,7 @@
         }
 
     </script>
+<div id="app">
 @include('partials.sidebar')
 
 @include('partials.topnav')
@@ -336,7 +337,7 @@
         </div>
     </div>
 </div>
-
+</div>
 
 @php
     \App::setLocale(env('DEFAULT_LANG'));
@@ -344,6 +345,7 @@
 @endphp
 
 
+<script src="{{ mix('/js/app.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
 

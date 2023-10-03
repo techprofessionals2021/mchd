@@ -344,7 +344,7 @@
                             '        <label class="custom-control-label form-control-label" for="option' + data.id + '">' + data.name +'</label>' +
                             '    </div>' +
                             '    <div class="text-end">' +
-                            '        <a href="#" class=" action-btn btn-danger  btn btn-sm d-inline-flex align-items-center delete-comment delete-icon delete-subtask" data-url="' + data.deleteUrl + '">' +
+                            '        <a href="#" class=" action-btn btn-danger  btn btn-sm d-inline-flex align-items-center  delete-icon delete-subtask" data-url="' + data.deleteUrl + '">' +
                             '            <i class="ti ti-trash"></i>' +
                             '        </a>' +
                             '    </div>' +
@@ -455,7 +455,7 @@
                             "                                        <i class='ti ti-download'></i>" +
                             "                                    </a>" +
 
-                                                               
+
                             "                                   <a  href='{{$logo_tasks}}/" + data.file + "' class='edit-icon action-btn btn-secondary  btn btn-sm d-inline-flex align-items-center mx-1'>" +
                             "                                        <i class='ti ti-crosshair text-white'></i>" +
                             "                                    </a>" +

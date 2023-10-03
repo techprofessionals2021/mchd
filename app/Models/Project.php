@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Http\Resources\TaskCollection;
+use App\Http\Resources\TaskResource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -36,7 +38,7 @@ class Project extends Model
         return $this->belongsToMany('App\Models\User', 'user_projects', 'project_id', 'user_id')->withPivot('is_active','permission')->orderBy('id', 'ASC')->withTimestamps();
     }
 
-         public function task()
+    public function task()
     {
 
             return $this->hasMany('App\Models\Task', 'project_id', 'id');
@@ -424,6 +426,12 @@ class Project extends Model
           }
     }
 
+
+    public function getTasksWithSubTasks(){
+      $tasks = Task::with('sub_tasks')->where('project_id', '=', $this->id)->get();
+
+      return TaskResource::collection($tasks);
+    }
 
 
 
