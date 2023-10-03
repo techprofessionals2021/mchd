@@ -61,13 +61,13 @@
                             </select>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="form-group">
                             <label for="tags" class="col-form-label">{{ __('Tags') }}</label>
-                            <input type="text" name="tags" class="tags form-control" id="assign-user-tag" value="{{ old('tags') }}"
+                            <input type="text" name="tags" class="tags form-control" id="tag-assign-user"  value="{{ old('tags') }}"
                                data-role="tagsinput" />
-                            @if($errors->has('tags'))
+                            {{-- @if($errors->has('tags'))
                             <strong class="text-danger">{{ $errors->first('tags') }}</strong>
-                            @endif
+                            @endif --}}
                         </div>
                         
                      
@@ -175,11 +175,12 @@
 
 
 
+<script>
+    var inputElement = document.querySelector('#tag-assign-user');
+
+    new Tagify(inputElement)
+</script>
+
 @endpush
 
 
-
-<script>
-    var inputElement = document.querySelector('#assign-user-tag')
-    new Tagify(inputElement)
-</script>

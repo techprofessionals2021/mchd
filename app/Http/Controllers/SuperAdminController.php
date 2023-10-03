@@ -147,6 +147,9 @@ class SuperAdminController extends Controller
     public function update_user(Request $request)
     {
 
+        $tags = Utility::convertTagsToJsonArray($request->tags);
+ 
+
        
         $user = User::find($request->user_id);
        
@@ -174,6 +177,9 @@ class SuperAdminController extends Controller
               
                 // The role exists; assign it to the user.
                 $user->assignRole($role);
+
+                $user->roles()->updateExistingPivot($role->id, ['tag' => $tags]);
+                
             } else {
                 // The role doesn't exist; create it and then assign it to the user.
                 $role = Role::create(['name' => $roleName]);
