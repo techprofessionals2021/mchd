@@ -92,7 +92,7 @@ class SuperAdminController extends Controller
     public function role()
     {
 
-        $role = WorkspacePermission::get();
+        $role = Role::get();
 
 
         return view('layouts.super-admin.role.index',compact('role'));
@@ -103,26 +103,17 @@ class SuperAdminController extends Controller
     public function role_store(Request $request)
     {
 
-        $check_workspace_permission = WorkspacePermission::where('role',$request->role)->first();
+        $role = Role::where('name',$request->name)->first();
 
-        if(isset($check_workspace_permission)){
+        if(isset($role)){
             return redirect()->back()->withErrors(['error' => 'Role Already Exists']);
         }
 
-        $default_permission = json_encode([
-
-            "invite user",
-            "create project",
-            "show calendar",
-            "show timesheet",
-            "project report"
         
-        ]);
+        $role = New Role;
 
-        $role = New WorkspacePermission;
-
-        $role->role = $request->role;
-        $role->permission = $default_permission;
+        $role->name = $request->name;
+        $role->guard_name = 'web';
         $role->save();
 
 

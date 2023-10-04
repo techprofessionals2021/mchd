@@ -36,7 +36,7 @@
             @csrf
             <div class="form-group">
               <label for="recipient-name" class="col-form-label">Role Name:</label>
-              <input type="text" required class="form-control" name="role" id="recipient-name">
+              <input type="text" required class="form-control" name="name" id="recipient-name">
             </div>
           
          
@@ -50,9 +50,9 @@
     </div>
   </div>
 
-  {{-- <div class="col-md-10 text-left mb-4">
+  <div class="col-md-10 text-left mb-4">
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Role</button>
-</div> --}}
+</div>
     <div class="card">
         @if($errors->has('error'))
         <div class="alert alert-danger">
@@ -82,7 +82,7 @@
                                 <tr>
                                     
                                 <td>{{$item->id}} </td>   
-                                <td>{{$item->role}} </td>   
+                                <td>{{$item->name}} </td>   
                               
  
                                 </tr>

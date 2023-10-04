@@ -1,11 +1,11 @@
 @extends('layouts.super-admin.super-admin')
 
 @section('page-title')
-    {{ __('Roles') }}
+    {{ __('Permissions') }}
 @endsection
 @section('links')
    
-    <li class="breadcrumb-item"> {{ __('Roles') }}</li>
+    <li class="breadcrumb-item"> {{ __('Permissions') }}</li>
 @endsection
 @push('css-page')
     <style>
