@@ -14,6 +14,8 @@ use App\Models\Workspace;
 use App\Models\WorkspacePermission;
 use App\Models\Utility;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use App\Models\RolehasPermission;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -94,8 +96,14 @@ class SuperAdminController extends Controller
 
         $role = Role::get();
 
+        $permission = Permission::get();
 
-        return view('layouts.super-admin.role.index',compact('role'));
+        $role_has_permission = RolehasPermission::get();
+
+        // dd($role_has_permission);
+
+
+        return view('layouts.super-admin.role.index',compact('role','permission'));
 
     }
 
@@ -120,6 +128,28 @@ class SuperAdminController extends Controller
         return redirect()->route('superadmin.role');
 
     }
+
+
+       
+    public function assign_permission(Request $request)
+    {
+
+        $roleId = $request->input('role_id');
+        $permissionIds = $request->input('permissions');
+
+        // Get the role and permissions models
+        $role = Role::find($roleId);
+        $permissions = Permission::find($permissionIds);
+    
+        // Attach permissions to the role
+        $role->permissions()->sync($permissions);
+    
+
+
+        return redirect()->route('superadmin.role')->with('success', 'Permission Assigned Successfully.');
+
+    }
+
 
     
 

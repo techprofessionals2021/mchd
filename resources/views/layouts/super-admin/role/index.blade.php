@@ -50,6 +50,61 @@
     </div>
   </div>
 
+
+
+  <div class="modal fade" id="exampleModalPermission" tabindex="-1" role="dialog" aria-labelledby="exampleModalPermission" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">All Permissions</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="{{route('superadmin.assign_permission')}}">
+            @csrf
+            <input type="hidden" name="role_id" id="role_id">
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Permission</th>
+                <th>Assign</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach($permission as $item)
+                <tr>
+                  <td>{{ $item->name }}</td>
+                  <td>
+                    <div class="form-check form-switch d-inline-block col">
+                    <input class="form-check-input" id="permission7" name="permissions[]" type="checkbox" value="{{$item->id }}" >
+                    </div>
+
+                   
+             
+                  </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+  
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+       </form>
+      </div>
+    </div>
+  </div>
+
+
+
+  
+
   <div class="col-md-10 text-left mb-4">
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Role</button>
 </div>
@@ -73,6 +128,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Role</th>
+                                    <th>Action</th>
                                
                                 
                                 </tr>
@@ -85,6 +141,18 @@
                                 <td>{{$item->name}} </td>   
                               
  
+                                <td>
+                                  <div class="dropdown">
+                                      <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="submenuDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          Actions
+                                      </button>
+                                      <div class="dropdown-menu" aria-labelledby="submenuDropdown">
+                                         
+                                          <a class="dropdown-item modal-idd" href="#"  data-toggle="modal" data-target="#exampleModalPermission"  data-id="{{$item->id}}" >  <i class="fas fa-edit"></i> Assign Permission User</a>
+                                          <!-- Add more submenu items here -->
+                                      </div>
+                                  </div>
+                              </td>
                                 </tr>
                                 @endforeach 
                             </tbody>
@@ -118,6 +186,22 @@
     $(function () {
 
       var table = $('.data-table').DataTable();
+
+
+
+
+      $('.modal-idd').click(function(e) {
+      e.preventDefault(); // Prevent the default behavior of the link
+
+      // Get the data-id attribute value
+      var role_id = $(this).data('id');
+
+  
+      $('#role_id').val(role_id);
+
+
+    
+    });
 
     });
   </script>

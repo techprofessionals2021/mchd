@@ -73,6 +73,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Permission</th>
+                                    <th>Status</th>
                                
                                 
                                 </tr>
@@ -83,6 +84,14 @@
                                     
                                 <td>{{$item->id}} </td>   
                                 <td>{{$item->name}} </td>   
+
+                              
+                                <td>
+                                  <div class="form-check form-switch d-inline-block col">
+                                  <input class="form-check-input permission-toggle" id="is_active" name="is_active" type="checkbox" value="{{$item->id }}"  {{ $item->is_active == 1 ? 'checked' : '' }}>
+                                  </div>
+                                </td>   
+                               
                               
  
                                 </tr>
@@ -119,6 +128,34 @@
 
       var table = $('.data-table').DataTable();
 
+
+
+
+      $('.permission-toggle').click(function() {
+            var isChecked = $(this).prop('checked');
+            var permissionId = $(this).val(); // Get the value attribute, which contains the permission ID
+            
+            // Define your AJAX request
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('superadmin.permission.update_is_active', ['permission' => 'permissionId']) }}'.replace('permissionId', permissionId), // Replace 'permissionId' with the actual permission ID
+
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    permission_id: permissionId,
+                    is_active: isChecked ? 1 : 0 // Convert true/false to 1/0
+                },
+                success: function(response) {
+                    // Handle success response if needed
+                    show_toastr('{{ __('Success') }}', '{{ __('Status Updated Successfully!') }}',
+                                'success');
+                },
+                error: function(error) {
+                    // Handle error if needed
+                    console.error('AJAX request error', error);
+                }
+            });
+        });
     });
   </script>
 @endpush
