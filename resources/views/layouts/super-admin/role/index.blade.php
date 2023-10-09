@@ -79,7 +79,7 @@
                   <td>{{ $item->name }}</td>
                   <td>
                     <div class="form-check form-switch d-inline-block col">
-                    <input class="form-check-input" id="permission7" name="permissions[]" type="checkbox" value="{{$item->id }}" >
+                    <input class="form-check-input" id="permission{{$item->id}}" name="permissions[]" type="checkbox" value="{{$item->id}}" >
                     </div>
 
                    
@@ -135,6 +135,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($role as $item)
+                                
                                 <tr>
                                     
                                 <td>{{$item->id}} </td>   
@@ -148,13 +149,13 @@
                                       </button>
                                       <div class="dropdown-menu" aria-labelledby="submenuDropdown">
                                          
-                                          <a class="dropdown-item modal-idd" href="#"  data-toggle="modal" data-target="#exampleModalPermission"  data-id="{{$item->id}}" >  <i class="fas fa-edit"></i> Assign Permission User</a>
+                                          <a class="dropdown-item modal-idd" href="#"  data-toggle="modal" data-target="#exampleModalPermission"  data-id="{{$item->id}}"  data-permission-id="" >  <i class="fas fa-edit"></i> Assign Permission User</a>
                                           <!-- Add more submenu items here -->
                                       </div>
                                   </div>
                               </td>
                                 </tr>
-                                @endforeach 
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -189,7 +190,6 @@
 
 
 
-
       $('.modal-idd').click(function(e) {
       e.preventDefault(); // Prevent the default behavior of the link
 
@@ -198,6 +198,46 @@
 
   
       $('#role_id').val(role_id);
+
+      var url = "{{ route('superadmin.get_permission_by_role', ':role_id') }}".replace(':role_id', role_id);
+
+
+      $.ajax({
+        type: 'GET',
+        url: url, // Replace with your actual route URL
+        success: function(data) {
+
+          data.forEach(function(permission) {
+    // Access properties of each permission object within the loop
+
+        //  alert(id);
+          // var inputValue = $('#permission7').val();
+
+
+          var permissionIds = @json($permission->pluck('id')->toArray());
+
+          // Assuming 'id' contains the ID you want to match
+          var id = permission.id;
+
+          // Check if 'id' is included in the permission IDs array
+          if (permissionIds.includes(id)) {
+              // If 'id' is in the array, check the corresponding checkbox
+              $('#permission' + id).prop('checked', true);
+          } else {
+              // If 'id' is not in the array, uncheck the checkbox
+              $('#permission' + id).prop('checked', false);
+          }
+                              
+      
+  });
+        
+        },
+        error: function(error) {
+            // Handle errors if the request fails
+            console.log(error);
+        }
+        
+    });
 
 
     

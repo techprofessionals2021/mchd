@@ -94,11 +94,13 @@ class SuperAdminController extends Controller
     public function role()
     {
 
-        $role = Role::get();
+        $role = Role::with('permissions')->get();
+
+        // dd($role);
 
         $permission = Permission::get();
 
-        $role_has_permission = RolehasPermission::get();
+        // $role_has_permission = RolehasPermission::get();
 
         // dd($role_has_permission);
 
@@ -150,6 +152,18 @@ class SuperAdminController extends Controller
 
     }
 
+
+    
+    public function get_permission_by_role($role_id)
+    {
+        // Retrieve permissions based on the provided role_id
+        $permissions = Permission::whereHas('roles', function ($query) use ($role_id) {
+            $query->where('role_id', $role_id);
+        })->get();
+
+        // You can return the permissions as JSON or any other format you prefer
+        return response()->json($permissions);
+    }
 
     
 
@@ -229,9 +243,6 @@ class SuperAdminController extends Controller
 
         return view('layouts.super-admin.task.index',compact('task'));
     }
-
-
-
 
 
 }

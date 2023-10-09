@@ -270,12 +270,15 @@ Route::post('/role/store', [SuperAdminController::class, 'role_store'])->name('r
 
 Route::post('/assign/permission', [SuperAdminController::class, 'assign_permission'])->name('assign_permission')->middleware(['auth']);
 
+Route::get('/get-permissions/{role_id}', [SuperAdminController::class, 'get_permission_by_role'])->name('get_permission_by_role');
+
 
 Route::get('/permissions', [SuperAdminPermissionController::class, 'index'])->name('permission.index');
 
 Route::post('/store', [SuperAdminPermissionController::class, 'store'])->name('permission.store');
 
 Route::post('/update-permission-status/{permission}', [SuperAdminPermissionController::class, 'update_is_active'])->name('permission.update_is_active');
+
 
 
 
