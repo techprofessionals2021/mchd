@@ -134,7 +134,7 @@
                     @if (isset($currentWorkspace) && $currentWorkspace)
                         @auth('web')
                             <li class="dash-item dash-hasmenu">
-                                <a href="{{ route('users.index', $currentWorkspace->slug) }}"
+                                <a href=""
                                     class="dash-link {{ Request::route()->getName() == 'users.index' ? ' active' : '' }} side-item"><span
                                         class="dash-micon mr-3"> <img
                                             src="{{ asset('custom-ui/images/notification.svg') }}" class="icon-image" /></span><span
