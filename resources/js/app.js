@@ -28,6 +28,9 @@ import {createApp} from 'vue'
 
 import App from './App.vue'
 import AntdSidebar from './Components/AntdSidebar.vue'
+import Menu from './Components/Custom/Menu.vue'
+import InputSearch from './Components/Custom/InputSearch.vue'
+import Avatar from './Components/Custom/Avatar.vue'
 import STable from '@surely-vue/table';
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/reset.css';
@@ -37,6 +40,9 @@ const app = createApp({})
 app.use(Antd);
 app.use(STable);
 app.component('app', App)
-app.component('antd-sidebar', AntdSidebar)
+// app.component('antd-sidebar', AntdSidebar)
+app.component('custom-menu', Menu)
+app.component('custom-input-search', InputSearch)
+app.component('custom-avatar', Avatar)
 app.mount("#app")
 // createApp(App)

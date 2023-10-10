@@ -22,6 +22,7 @@ class TaskResource extends JsonResource
             'title' => $this->title,
             'due_date' => $this->due_date,
             'priority' => $this->priority,
+            'assignee'=> UserResource::collection($this->users()),
             'modal_url' => route('tasks.show',[auth()->user()->currentWorkspace->slug,$this->project_id,$this->id]),
             'children' => SubTaskResource::collection($this->sub_tasks)
         ];

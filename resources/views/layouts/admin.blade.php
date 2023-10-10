@@ -103,6 +103,7 @@
     {{-- <link rel="stylesheet" href="{{asset('assets/css/landing.css')}}" /> --}}
     <link rel="stylesheet" href="{{asset('assets/css/plugins/animate.min.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/custom/libs/summernote/summernote-bs4.css')}}">
+    <link rel="stylesheet" href="{{asset('custom-ui/css/style.css')}}">
 
     <!-- vendor css -->
     @stack('css-page')
@@ -188,6 +189,8 @@
 [dir="rtl"] #calender_type {
     float:  left !important;
 }
+
+
  </style>
 
 
@@ -228,7 +231,7 @@
 
     </script>
 <div id="app">
-@include('partials.sidebar')
+@include('vue-ui.partials.sidebar')
 
 @include('partials.topnav')
 <div class="dash-container">
@@ -351,6 +354,7 @@
 
 <script src="{{ asset('assets/custom/js/site.core.js') }}"></script>
 <script src="{{ asset('assets/custom/libs/moment/min/moment.min.js') }}"></script>
+
 <script src="{{ asset('assets/js/plugins/popper.min.js')}}"></script>
 <script src="{{ asset('assets/js/plugins/bootstrap.min.js')}}"></script>
 <script src="{{asset('assets/custom/js/main.min.js')}}"></script>
@@ -363,7 +367,7 @@
 <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js')}}"></script>
 <script src="{{ asset('assets/js/plugins/datepicker-full.min.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/feather.min.js')}}"></script>
-<script src="{{ asset('assets/js/dash.js')}}"></script>
+  {{--<script src="{{ asset('assets/js/dash.js')}}"></script>--}}
 <script src="{{asset('assets/custom/libs/summernote/summernote-bs4.js')}}"></script>
 <script>
     if ($(".summernote-simple").length) {

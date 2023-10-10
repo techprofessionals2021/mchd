@@ -1,0 +1,162 @@
+.h-text {
+    font-family: 'Montserrat';
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+.p-text {
+    font-family: 'Montserrat';
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+.text-primary {
+    color: #014AAB;
+}
+
+.grey-border-bottom {
+    border-bottom: 1px solid #A6A5A5;
+}
+.arrow-style{
+    background-color: #014AAB;
+    color: white;
+    border-radius: 20px;
+}
+
+.rotate-90{
+    transform: rotate(90deg);
+    transition: transform 0.3s ease-in-out;
+}
+.custom-bc::before{
+    padding-top: 5px;
+}
+
+
+.text-common{
+font-family: 'Montserrat';
+font-size: 14px;
+font-weight: 500;
+line-height: 24px;
+letter-spacing: 0em;
+color: #A6A5A5 !important;
+}
+
+.side-item{
+    box-shadow: -6px 11px 19px rgba(0, 0, 0, 0.04) !important;
+    background: #fff !important;
+    color: #333333 !important;
+}
+.side-nav-project-text{
+font-family: 'Montserrat';
+font-size: 13px;
+font-weight: 500 !important;
+line-height: 24px !important;
+letter-spacing: 0em;
+color: #A6A5A5 !important;
+vertical-align: middle;
+}
+
+.side-nav-text{
+    font-family: 'Montserrat';
+    font-size: 16px;
+    font-weight: 500 !important;
+    line-height: 24px !important;
+    letter-spacing: 0em;
+    color: #A6A5A5 !important;
+    vertical-align: middle;
+    }
+.dash-sidebar.light-sidebar .dash-link .dash-micon {
+    box-shadow:none !important;
+}
+.nav-icon{
+    font-size: 30px !important;
+    color: #A6A5A5 !important;
+    height: 30px !important;
+    width: 30px !important;
+}
+.dash-sidebar.light-sidebar .dash-link .dash-micon svg{
+    stroke:#A6A5A5 !important
+}
+
+.space-btn{
+    padding: 3px 39px !important;
+    background: #D9D9D9 !important;
+}
+
+.ws-li-block{
+    background: rgb(1, 74, 171);
+    height: 25px;
+    width: 25px;
+    display: inline-block;
+    border-radius: 8px;
+}
+.project-list{
+    list-style-type: square !important;
+    text-align: left !important;
+    padding-left: 24px !important;
+}
+
+.project-list li{
+    list-style-position: inside;
+}
+
+.nav-arrow{
+    float: right;
+    display: inline-block;
+    transition: all 0.2s ease-in-out;
+}
+
+
+
+/*  */
+
+.scroll-container {
+    /* width: 300px; Set the desired width */
+    height: 26.4rem;
+    /* Set the desired height */
+    overflow: hidden;
+    /* Hide the scrollbar */
+    position: relative;
+    /* Required for absolute positioning of the content */
+  }
+
+  .scroll-container .content {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    /* Enable scrolling when overflow occurs */
+  }
+
+  .scroll-container .content::-webkit-scrollbar {
+    width: 0;
+    /* Hide the default scrollbar on WebKit browsers */
+  }
+
+  .scroll-container .content {
+    scrollbar-width: none;
+    /* Hide the default scrollbar on Firefox */
+  }
+
+  /* If you want to style the scrollbar */
+  .scroll-container .content::-webkit-scrollbar {
+    width: 0px;
+    /* Set the desired width of the scrollbar */
+  }
+
+  .icon-image{
+    height: 18px;
+  }
+
+  .mr-3{
+    margin-right: 3px !important;
+  }
+
+  .cursor-pointer{
+    cursor: pointer;
+  }
