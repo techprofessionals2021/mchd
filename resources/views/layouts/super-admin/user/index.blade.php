@@ -64,7 +64,7 @@
                     
                         
                         <div class="form-group" id="workspace-div" >
-                            <label for="permission">Workspace</label>
+                            <label for="permission">Department - Workspace</label>
                             <select name="workspace_id" id="workspace" class="form-control">
                                 @foreach ($workspace as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
