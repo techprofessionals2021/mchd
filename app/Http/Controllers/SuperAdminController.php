@@ -175,7 +175,12 @@ class SuperAdminController extends Controller
 
         $role = Role::all();
 
-        return view('layouts.super-admin.user.index',compact('user','role'));
+        $workspace = Workspace::where('is_active','1')->get();
+
+
+        // dd($workspace);
+
+        return view('layouts.super-admin.user.index',compact('user','role','workspace'));
     }
 
 
@@ -213,7 +218,7 @@ class SuperAdminController extends Controller
                 // The role exists; assign it to the user.
                 $user->assignRole($role);
 
-                $user->roles()->updateExistingPivot($role->id, ['tag' => $tags]);
+                $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $request->workspace_id]);
                 
             } else {
                 // The role doesn't exist; create it and then assign it to the user.

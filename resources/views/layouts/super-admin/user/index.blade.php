@@ -51,12 +51,23 @@
 
                           <input type="hidden" name="user_id" id="user_id">
 
+
                           <div class="form-group">
                             <label for="permission">Role</label>
                             <select name="role" id="role" class="form-control">
-                                <!-- Populate the dropdown with available permissions -->
                                 @foreach ($role as $roles)
                                     <option value="{{ $roles->name }}">{{ $roles->name }}</option>
+                                @endforeach
+                            </select>
+                         </div>
+
+                    
+                        
+                        <div class="form-group" id="workspace-div" >
+                            <label for="permission">Workspace</label>
+                            <select name="workspace_id" id="workspace" class="form-control">
+                                @foreach ($workspace as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -171,6 +182,25 @@
             $('#exampleModal').find('#user_id').val(user_id);
             
         });
+
+        // if ($('#role').val() === 'HOD') {
+        //     $('#workspace-div').show();
+        // }
+
+
+      
+        $('#role').change(function() {
+
+    
+            if ($(this).val() === 'HOD') {
+                // Show the second div when "hod" is selected
+                $('#workspace-div').show();
+            } else {
+                // Hide the second div for other role selections
+                $('#workspace-div').hide();
+            }
+        });
+ 
   </script>
 
 
