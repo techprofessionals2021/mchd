@@ -95,7 +95,7 @@
             <a href="{{ route('home') }}" class="b-brand">
                 <!-- ========   change your logo hear   ============ -->
 
-                {{-- <img
+{{-- <img
             src="{{$logo.$company_logo.'?timestamp='.strtotime(isset($currentWorkspace) ? $currentWorkspace->updated_at : '')}}" alt="logo" class="sidebar_logo_size" /> --}}
 
                 <img src="{{ asset('custom-auth/uploads/logo/logo/20230320172321.png') }}" alt="logo"
@@ -128,7 +128,7 @@
                     </li>
                 @endif
 
-                {{-- <li class="dash-item dash-hasmenu">
+{{-- <li class="dash-item dash-hasmenu">
                     <a href="{{ route('getWorkSpaces', $currentWorkspace->slug) }}"
                         class="dash-link {{ Request::route()->getName() == 'getWorkSpaces' ? ' active' : '' }}">
                         <span class="dash-micon"><i class="ti ti-home"></i></span>
@@ -211,7 +211,7 @@
                         @endif
 
 
-                      
+
                         @if (Auth::user()->type == 'user' && $currentWorkspace->creater->id == Auth::user()->id)
                             {{-- <li class="dash-item {{ \Request::route()->getName() == 'time.tracker' ? 'active' : '' }}">
                                 <a href="{{ route('time.tracker', $currentWorkspace->slug) }}" class="dash-link "><span
@@ -270,7 +270,7 @@
                         @endif
 
 
-                      
+
                         <li class="dash-item {{ Request::route()->getName() == 'notes.index' ? ' active' : '' }}">
                             <a href="{{ route('notes.index', $currentWorkspace->slug) }}" class="dash-link "><span
                                     class="dash-micon"><i data-feather="clipboard"></i></span><span
@@ -356,9 +356,9 @@
                            class="dash-link "><span class="dash-micon"><i class="ti ti-chart-line"></i></span><span
                                class="dash-mtext">{{ __('Project Report') }}</span></a>
                        </li>
-             
+
                        @endif
-                       
+
 
                         {{-- <li
                             class="dash-item {{ Request::route()->getName() == 'zoom-meeting.index' ? ' active' : '' }}">
@@ -412,8 +412,8 @@
                     </li> --}}
                 @endif
 
-        
 
+            <antd-sidebar></antd-sidebar>
 
 
 

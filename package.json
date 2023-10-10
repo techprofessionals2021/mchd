@@ -27,7 +27,11 @@
         "vue-loader": "^16.2.0"
     },
     "dependencies": {
+        "@ant-design/icons-vue": "^7.0.0",
         "@surely-vue/table": "^4.1.10",
-        "ant-design-vue": "^4.0.3"
+        "@vue/babel-helper-vue-jsx-merge-props": "^1.4.0",
+        "@vue/babel-preset-jsx": "^1.4.0",
+        "ant-design-vue": "^4.0.3",
+        "moment": "^2.29.4"
     }
 }
