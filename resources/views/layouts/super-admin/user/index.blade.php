@@ -47,7 +47,7 @@
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Email:</label>
                             <input type="text" required class="form-control" name="email" id="email">
-                          </div>
+                        </div>
 
                           <input type="hidden" name="user_id" id="user_id">
 
@@ -63,7 +63,7 @@
 
                     
                         
-                        <div class="form-group" id="workspace-div" >
+                        <div class="form-group" id="workspace-div" style="display: none" >
                             <label for="permission">Department - Workspace</label>
                             <select name="workspace_id" id="workspace" class="form-control">
                                 @foreach ($workspace as $item)
@@ -71,6 +71,25 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        <div class="form-group" id="hod-div" style="display: none" >
+                            <label for="permission">Department - Hods</label>
+                            <select name="hods[]" id="hod" class="form-control" multiple>
+                                @foreach ($hodUsers as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="executive-div" style="display: none">
+                            <label for="permission">Department - Executives</label>
+                            <select name="executives[]" id="executive" class="form-control" multiple>
+                                @foreach ($executiveUsers as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
 
                         <div class="form-group">
                             <label for="tags" class="col-form-label">{{ __('Tags') }}</label>
@@ -169,6 +188,8 @@
     });
 
     $('.modal-id').on('click', function () {
+
+        // alert('moelcliek');
             // Get the data attributes
             const name = $(this).data('name');
             const email = $(this).data('email');
@@ -183,23 +204,41 @@
             
         });
 
-        // if ($('#role').val() === 'HOD') {
-        //     $('#workspace-div').show();
-        // }
-
+ 
 
       
         $('#role').change(function() {
+
 
     
             if ($(this).val() === 'HOD') {
                 // Show the second div when "hod" is selected
                 $('#workspace-div').show();
-            } else {
-                // Hide the second div for other role selections
+                $('#executive-div').hide();
+                $('#hod-div').hide();
+            }
+            if ($(this).val() === 'Executive') {
+                // Show the second div when "hod" is selected
                 $('#workspace-div').hide();
+                $('#hod-div').show();
+                $('#executive-div').hide();
+            }
+
+            if ($(this).val() === 'Ceo') {
+                // Show the second div when "hod" is selected
+                $('#workspace-div').hide();
+                $('#hod-div').hide();
+                $('#executive-div').show();
+            }
+            
+            else {
+                // Hide the second div for other role selections
+                // $('#workspace-div').hide();
+                // $('#hod-div').hide();
             }
         });
+
+        $('#executive-div').show();
  
   </script>
 

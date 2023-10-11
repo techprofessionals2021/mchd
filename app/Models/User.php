@@ -60,6 +60,13 @@ class User extends Authenticatable implements MustVerifyEmail
             return $this->belongsToMany(Project::class,'user_projects','user_id','project_id')->withPivot('is_active','permission')->withTimestamps();
         }
 
+
+        public function model_has_role()
+        {
+            return $this->hasMany(ModelHasRole::class,'model_id');
+        }
+
+
         public function workspace()
         {
                 return $this->belongsToMany('App\Models\Workspace', 'user_workspaces', 'user_id', 'workspace_id')->withPivot('permission');

@@ -171,16 +171,26 @@ class SuperAdminController extends Controller
 
     public function user()
     {
-        $user = User::get();
+        $user = User::with('model_has_role')->get();
+
+        // dd($user);
 
         $role = Role::all();
 
         $workspace = Workspace::where('is_active','1')->get();
 
+        $hodRole = Role::where('name', 'hod')->first();
+
+        $executiveRole = Role::where('name', 'executive')->first();
+
+        $hodUsers = User::role($hodRole)->get();
+
+        $executiveUsers = User::role($executiveRole)->get();
+        // dd($hodUsers);
 
         // dd($workspace);
 
-        return view('layouts.super-admin.user.index',compact('user','role','workspace'));
+        return view('layouts.super-admin.user.index',compact('user','role','workspace','hodUsers','executiveRole','executiveUsers'));
     }
 
 
@@ -188,6 +198,12 @@ class SuperAdminController extends Controller
     {
 
         $tags = Utility::convertTagsToJsonArray($request->tags);
+        $hods = json_encode($request->hods);
+        $executives = json_encode($request->executives);
+
+
+        // dd( $tags , $hods , $executives);
+
  
 
        
@@ -218,7 +234,7 @@ class SuperAdminController extends Controller
                 // The role exists; assign it to the user.
                 $user->assignRole($role);
 
-                $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $request->workspace_id]);
+                $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $request->workspace_id,'hods' => $hods,'executives' => $executives]);
                 
             } else {
                 // The role doesn't exist; create it and then assign it to the user.

@@ -219,14 +219,20 @@
           // Assuming 'id' contains the ID you want to match
           var id = permission.id;
 
+          // console.log(permissionIds ,  id);
+
           // Check if 'id' is included in the permission IDs array
           if (permissionIds.includes(id)) {
               // If 'id' is in the array, check the corresponding checkbox
+              // console.log('id includes');
               $('#permission' + id).prop('checked', true);
           } else {
+            // console.log('id not includes');
               // If 'id' is not in the array, uncheck the checkbox
               $('#permission' + id).prop('checked', false);
           }
+
+
                               
       
   });
