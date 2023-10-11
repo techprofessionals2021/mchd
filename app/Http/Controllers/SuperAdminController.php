@@ -171,7 +171,7 @@ class SuperAdminController extends Controller
 
     public function user()
     {
-        $user = User::with('model_has_role')->get();
+        $user = User::get();
 
         // dd($user);
 
@@ -219,13 +219,13 @@ class SuperAdminController extends Controller
         $roleName = $request->role;
 
         // Check if the user already has the role
-        $existingRole = $user->roles()->where('name', $roleName)->first();
+        // $existingRole = $user->roles()->where('name', $roleName)->first();
         
-        if (isset($existingRole)) {
+        // if (isset($existingRole)) {
     
-            return redirect()->route('superadmin.user')->with('error', 'The User Already Has this role.');
+        //     return redirect()->route('superadmin.user')->with('error', 'The User Already Has this role.');
             // The user already has this role; no need to update or insert.
-        } else {
+        // } else {
             // The user does not have this role, so assign it.
             $role = Role::where('name', $roleName)->first();
         
@@ -241,7 +241,7 @@ class SuperAdminController extends Controller
                 $role = Role::create(['name' => $roleName]);
                 $user->assignRole($role);
             }
-        }
+        // }
         
         // dd($role);
 
