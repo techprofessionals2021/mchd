@@ -600,6 +600,10 @@ Route::post('/{slug}/projects/{id}/file',[ProjectController::class, 'fileUpload'
 Route::get('/{slug}/projects/{id}/file/{fid}',[ProjectController::class, 'fileDownload'])->name('projects.file.download')->middleware(['auth','XSS']);
 Route::delete('/{slug}/projects/{id}/file/delete/{fid}',[ProjectController::class, 'fileDelete'])->name('projects.file.delete')->middleware(['auth','XSS']);
 
+// project Calender
+Route::get('/{slug}/projects/{id}/calender',[ProjectController::class, 'projectCalender'])->name('projects.calender');
+
+
 // Task Board
 Route::get('/{slug}/projects/client/task-board/{code}',[ProjectController::class, 'taskBoard'])->name('projects.client.task.board');
 Route::get('/{slug}/projects/{id}/task-board',[ProjectController::class, 'taskBoard'])->name('projects.task.board')->middleware(['auth','XSS']);

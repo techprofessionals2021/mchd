@@ -3277,4 +3277,39 @@ class ProjectController extends Controller
         $project->save();
         return redirect()->back()->with('success', __('Copy Link Setting Save Successfully!'));
     }
+    public function projectCalender($slug, $projectID)
+    {
+        $objUser = Auth::user();
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+        if ($objUser && $currentWorkspace) {
+            if ($objUser->getGuard() == 'client') {
+                $project = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
+            } else {
+                $project = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
+            }
+            if (isset($project) && $project != null) {
+                $chartData = $this->getProjectChart(
+                    [
+                        'workspace_id' => $currentWorkspace->id,
+                        'project_id' => $projectID,
+                        'duration' => 'week',
+                    ]
+                );
+
+                $daysleft = round((((strtotime($project->end_date) - strtotime(date('Y-m-d'))) / 24) / 60) / 60);
+
+                $permissions = Auth::user()->getPermission($project->id);
+
+                $tags = json_decode($project->tags);
+                return view('vue-ui.pages.project.calender', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags'));
+                // return view('projects.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags'));
+            } else {
+                return redirect()->back()->with('error', __("Project Not Found."));
+            }
+        } else {
+
+            return redirect()->back()->with('error', __("Workspace Not Found."));
+        }
+
+    }
 }
