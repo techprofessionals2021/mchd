@@ -14,6 +14,8 @@ use App\Models\Workspace;
 use App\Models\WorkspacePermission;
 use App\Models\Utility;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use App\Models\RolehasPermission;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -92,10 +94,18 @@ class SuperAdminController extends Controller
     public function role()
     {
 
-        $role = WorkspacePermission::get();
+        $role = Role::with('permissions')->get();
+
+        // dd($role);
+
+        $permission = Permission::get();
+
+        // $role_has_permission = RolehasPermission::get();
+
+        // dd($role_has_permission);
 
 
-        return view('layouts.super-admin.role.index',compact('role'));
+        return view('layouts.super-admin.role.index',compact('role','permission'));
 
     }
 
@@ -103,31 +113,56 @@ class SuperAdminController extends Controller
     public function role_store(Request $request)
     {
 
-        $check_workspace_permission = WorkspacePermission::where('role',$request->role)->first();
+        $role = Role::where('name',$request->name)->first();
 
-        if(isset($check_workspace_permission)){
+        if(isset($role)){
             return redirect()->back()->withErrors(['error' => 'Role Already Exists']);
         }
 
-        $default_permission = json_encode([
-
-            "invite user",
-            "create project",
-            "show calendar",
-            "show timesheet",
-            "project report"
         
-        ]);
+        $role = New Role;
 
-        $role = New WorkspacePermission;
-
-        $role->role = $request->role;
-        $role->permission = $default_permission;
+        $role->name = $request->name;
+        $role->guard_name = 'web';
         $role->save();
 
 
         return redirect()->route('superadmin.role');
 
+    }
+
+
+       
+    public function assign_permission(Request $request)
+    {
+
+        $roleId = $request->input('role_id');
+        $permissionIds = $request->input('permissions');
+
+        // Get the role and permissions models
+        $role = Role::find($roleId);
+        $permissions = Permission::find($permissionIds);
+    
+        // Attach permissions to the role
+        $role->permissions()->sync($permissions);
+    
+
+
+        return redirect()->route('superadmin.role')->with('success', 'Permission Assigned Successfully.');
+
+    }
+
+
+    
+    public function get_permission_by_role($role_id)
+    {
+        // Retrieve permissions based on the provided role_id
+        $permissions = Permission::whereHas('roles', function ($query) use ($role_id) {
+            $query->where('role_id', $role_id);
+        })->get();
+
+        // You can return the permissions as JSON or any other format you prefer
+        return response()->json($permissions);
     }
 
     
@@ -136,11 +171,26 @@ class SuperAdminController extends Controller
 
     public function user()
     {
-        $user = User::get();
+        $user = User::with('model_has_role')->get();
+
+        // dd($user);
 
         $role = Role::all();
 
-        return view('layouts.super-admin.user.index',compact('user','role'));
+        $workspace = Workspace::where('is_active','1')->get();
+
+        $hodRole = Role::where('name', 'hod')->first();
+
+        $executiveRole = Role::where('name', 'executive')->first();
+
+        $hodUsers = User::role($hodRole)->get();
+
+        $executiveUsers = User::role($executiveRole)->get();
+        // dd($hodUsers);
+
+        // dd($workspace);
+
+        return view('layouts.super-admin.user.index',compact('user','role','workspace','hodUsers','executiveRole','executiveUsers'));
     }
 
 
@@ -148,6 +198,12 @@ class SuperAdminController extends Controller
     {
 
         $tags = Utility::convertTagsToJsonArray($request->tags);
+        $hods = json_encode($request->hods);
+        $executives = json_encode($request->executives);
+
+
+        // dd( $tags , $hods , $executives);
+
  
 
        
@@ -178,7 +234,7 @@ class SuperAdminController extends Controller
                 // The role exists; assign it to the user.
                 $user->assignRole($role);
 
-                $user->roles()->updateExistingPivot($role->id, ['tag' => $tags]);
+                $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $request->workspace_id,'hods' => $hods,'executives' => $executives]);
                 
             } else {
                 // The role doesn't exist; create it and then assign it to the user.
@@ -208,9 +264,6 @@ class SuperAdminController extends Controller
 
         return view('layouts.super-admin.task.index',compact('task'));
     }
-
-
-
 
 
 }

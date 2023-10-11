@@ -32,4 +32,13 @@ class SuperAdminPermissionController extends Controller
 
         // Redirect or return a response
     }
+
+    public function update_is_active(Permission $permission)
+    {
+        // dd($permission->id);
+       
+        $permission->update(['is_active' => !$permission->is_active]);
+
+        return response()->json(['message' => 'is_active attribute toggled successfully']);
+    }
 }
