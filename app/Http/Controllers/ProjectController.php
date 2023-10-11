@@ -494,6 +494,12 @@ class ProjectController extends Controller
     {
         $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+
+        if($objUser->id != $currentWorkspace->id){
+            // $objUser->currant_workspace = $currentWorkspace->id;
+            // $objUser->save();
+        }
+        // dd($currentWorkspace);
         if ($objUser && $currentWorkspace) {
             if ($objUser->getGuard() == 'client') {
                 $project = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();

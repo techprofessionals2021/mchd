@@ -231,7 +231,7 @@
 
     </script>
 <div id="app">
-@include('vue-ui.partials.sidebar')
+    @include('vue-ui.partials.sidebar')
 
 @include('partials.topnav')
 <div class="dash-container">
