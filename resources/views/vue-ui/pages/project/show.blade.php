@@ -133,7 +133,7 @@
                                             <p class="h-text d-inline ms-2 text-primary">Team Space</p>
                                         </div>
                                         <div class="col-5">
-                                            <custom-menu></custom-menu>
+                                            <custom-menu :routes="{{ json_encode(['calender' => route('projects.calender', [$currentWorkspace->slug,'id'=>$project->id])]) }}"></custom-menu>
                                         </div>
                                     </div>
                                     <div class="row grey-border-bottom">

@@ -169,14 +169,14 @@
 
                             @foreach (auth()->user()->workspace as $workspace)
                             <div class="mt-2 p-l-15">
-                                <div class="d-flex c-slider">
+                                <div class="d-flex {{ $workspace->id == $currentWorkspace->id ? 'c-slider' : ''}}">
                                     <div class="ws-li-block"></div>
-                                    <p class="m-l-5 side-nav-text cursor-pointer {{ $workspace->id == $currentWorkspace->id ? 'font-extrabold' : ''}}">{{ $workspace->name}}</p>
+                                    <p class="m-l-5 side-nav-text cursor-pointer {{ $workspace->id == $currentWorkspace->id ? 'font-extrabold' : ''}}">{{ $workspace->name}} {!! $workspace->id == $currentWorkspace->id ? '<span class="badge badge-success">Current</span>' : ''!!} </p>
                                 </div>
                                 <div class="c-slided" style="display: none">
                                     <ul class='project-list'>
                                         @foreach ($workspace->projects as $project)
-                                        <li ><a href="{{route('projects.show',[$workspace->slug,$project->id])}}" class="side-nav-project-text">{{$project->name}}</a></li>
+                                        <li ><a href="{{route('projects.show',[$workspace->slug,$project->id])}}" class="side-nav-project-text">{{$project->name}} </a></li>
                                         @endforeach
                                     </ul>
                                 </div>

@@ -268,11 +268,17 @@ Route::get('/roles', [SuperAdminController::class, 'role'])->name('role')->middl
 
 Route::post('/role/store', [SuperAdminController::class, 'role_store'])->name('role_store')->middleware(['auth']);
 
+Route::post('/assign/permission', [SuperAdminController::class, 'assign_permission'])->name('assign_permission')->middleware(['auth']);
+
+Route::get('/get-permissions/{role_id}', [SuperAdminController::class, 'get_permission_by_role'])->name('get_permission_by_role');
 
 
 Route::get('/permissions', [SuperAdminPermissionController::class, 'index'])->name('permission.index');
 
 Route::post('/store', [SuperAdminPermissionController::class, 'store'])->name('permission.store');
+
+Route::post('/update-permission-status/{permission}', [SuperAdminPermissionController::class, 'update_is_active'])->name('permission.update_is_active');
+
 
 
 
@@ -599,6 +605,10 @@ Route::delete('/{slug}/projects/milestone/{id}',[ProjectController::class, 'mile
 Route::post('/{slug}/projects/{id}/file',[ProjectController::class, 'fileUpload'])->name('projects.file.upload')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/{id}/file/{fid}',[ProjectController::class, 'fileDownload'])->name('projects.file.download')->middleware(['auth','XSS']);
 Route::delete('/{slug}/projects/{id}/file/delete/{fid}',[ProjectController::class, 'fileDelete'])->name('projects.file.delete')->middleware(['auth','XSS']);
+
+// project Calender
+Route::get('/{slug}/projects/{id}/calender',[ProjectController::class, 'projectCalender'])->name('projects.calender');
+
 
 // Task Board
 Route::get('/{slug}/projects/client/task-board/{code}',[ProjectController::class, 'taskBoard'])->name('projects.client.task.board');

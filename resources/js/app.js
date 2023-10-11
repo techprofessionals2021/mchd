@@ -30,6 +30,7 @@ import App from './App.vue'
 import AntdSidebar from './Components/AntdSidebar.vue'
 import Menu from './Components/Custom/Menu.vue'
 import InputSearch from './Components/Custom/InputSearch.vue'
+import Calender from './Components/Custom/Calender.vue'
 import Avatar from './Components/Custom/Avatar.vue'
 import STable from '@surely-vue/table';
 import Antd from 'ant-design-vue';
@@ -44,5 +45,6 @@ app.component('app', App)
 app.component('custom-menu', Menu)
 app.component('custom-input-search', InputSearch)
 app.component('custom-avatar', Avatar)
+app.component('calender', Calender)
 app.mount("#app")
 // createApp(App)
