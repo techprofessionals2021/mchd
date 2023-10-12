@@ -285,9 +285,9 @@
                         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="body">
-                    <div class="modal-body">
-                            <form class="" method="post" action="{{ route('add-workspace') }}">
-                                @csrf
+                        <form class="" method="post" action="{{ route('add-workspace') }}">
+                            @csrf
+                        <div class="modal-body">
                                 <div class="row">
                                     {{-- @if ($currentWorkspace->is_chagpt_enable())
                                     <div class="text-end col-12">
@@ -299,13 +299,13 @@
                                         <label for="workspacename" class="col-form-label">{{ __('Name') }}</label>
                                         <input class="form-control" type="text" id="workspacename" name="name" required="" placeholder="{{ __('Workspace Name') }}">
                                     </div>
-                                    </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                  {{--   <button type="button" class="btn   btn-light text-end " data-dismiss="modal">{{ __('Close')}}</button>--}}
-                                        <!-- <button type="button" class="btn  btn-light" data-bs-dismiss="modal">{{ __('Close')}}</button> -->
-                                            <input type="submit" value="{{ __('Create')}}" class="btn  btn-primary">
-                                    </div>
+                                </div>
+                         </div>
+                        <div class="modal-footer">
+                            {{--   <button type="button" class="btn   btn-light text-end " data-dismiss="modal">{{ __('Close')}}</button>--}}
+                            <!-- <button type="button" class="btn  btn-light" data-bs-dismiss="modal">{{ __('Close')}}</button> -->
+                            <input type="submit" value="{{ __('Create')}}" class="btn  btn-primary">
+                        </div>
 
                             </form>
                         </div>

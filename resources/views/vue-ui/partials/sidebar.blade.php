@@ -162,7 +162,7 @@
                         <div class="dash-link side-item mt-0 space-body "
                             style="border-radius: 0px 0px 12px 12px ; display:none;
                                  text-align: center;">
-                            <button class="btn btn-light space-btn">
+                            <button class="btn btn-light space-btn openAddWorkSpace">
                                 <i class="ti ti-plus"></i>
                                 <span>New Space</span>
                             </button>
