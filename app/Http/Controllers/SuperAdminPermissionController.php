@@ -33,6 +33,21 @@ class SuperAdminPermissionController extends Controller
         // Redirect or return a response
     }
 
+
+    public function delete($id)
+    {
+        $permission = Permission::find($id);
+
+        
+        $permission->delete();
+
+
+        return redirect()->route('superadmin.permission.index')->with('success', 'Permission Deleted Successfully.');
+
+        // Redirect or return a response
+    }
+
+
     public function update_is_active(Permission $permission)
     {
         // dd($permission->id);

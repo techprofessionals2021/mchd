@@ -42,13 +42,10 @@
                                 <td>{{$item->id}} </td>   
                                 <td>{{$item->name}} </td>   
                                 <td> 
-                                    <form method="POST" action="{{ route('superadmin.delete-workspace-superadmin', ['id' => $item->id]) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="fas fa-trash"></i> Delete
-                                        </button>
-                                    </form>
+                                    <button type="button" class="btn btn-danger btn-delete" data-record-id="{{ $item->id }}">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+        
                                 </td>
 
                                
@@ -87,5 +84,47 @@
       var table = $('.data-table').DataTable();
 
     });
+
+
+    $('.btn-delete').click(function () {
+
+        var workspace_id = $(this).data('record-id');
+
+            Swal.fire({
+                title: 'Confirmation',
+                text: 'Are you sure you want to delete this item?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                    type: 'POST',
+                    url: '{{ route('superadmin.delete-workspace-superadmin', ['id' => 'workspace_id']) }}'.replace('workspace_id', workspace_id), // Replace 'permissionId' with the actual permission ID
+
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: workspace_id
+                     
+                    },
+                    success: function(response) {
+                        // Handle success response if needed
+                        show_toastr('{{ __('Success') }}', '{{ __('Workspace Deleted Successfully!') }}',
+                                    'success');
+                                    location.reload();
+                    },
+                    error: function(error) {
+                        // Handle error if needed
+                        console.error('AJAX request error', error);
+                    }
+                });
+                }
+            });
+        });
+
   </script>
+
+
+
 @endpush
