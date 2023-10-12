@@ -254,10 +254,12 @@ Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard')->m
 Route::prefix('superadmin')->as('superadmin.')->group(function() {
 Route::get('/', [SuperAdminController::class, 'index'])->name('home')->middleware(['auth']);
 Route::get('/workspace', [SuperAdminController::class, 'workspace'])->name('workspace')->middleware(['auth']);
-Route::delete('/workspace/delete/{id}',[SuperAdminController::class, 'delete_workspace'])->name('delete-workspace-superadmin')->middleware(['auth']);
+Route::post('/workspace/delete/{id}',[SuperAdminController::class, 'delete_workspace'])->name('delete-workspace-superadmin')->middleware(['auth']);
 
 Route::get('/user', [SuperAdminController::class, 'user'])->name('user')->middleware(['auth']);
-Route::delete('/user/delete/{id}',[SuperAdminController::class, 'delete_user'])->name('delete-user-superadmin')->middleware(['auth']);
+Route::post('/get-user-role/{id}', [SuperAdminController::class, 'get_user_role'])->name('get_user_role')->middleware(['auth']);
+
+Route::post('/user/delete/{id}',[SuperAdminController::class, 'delete_user'])->name('delete-user-superadmin')->middleware(['auth']);
 
 Route::post('/user/update', [SuperAdminController::class, 'update_user'])->name('update_user')->middleware(['auth']);
 
@@ -278,6 +280,8 @@ Route::get('/permissions', [SuperAdminPermissionController::class, 'index'])->na
 Route::post('/store', [SuperAdminPermissionController::class, 'store'])->name('permission.store');
 
 Route::post('/update-permission-status/{permission}', [SuperAdminPermissionController::class, 'update_is_active'])->name('permission.update_is_active');
+
+Route::post('permission/delete/{id}', [SuperAdminPermissionController::class, 'delete'])->name('permission.delete');
 
 
 

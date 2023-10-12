@@ -17,6 +17,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\RolehasPermission;
 use App\Models\Project;
+use App\Models\ModelHasRole;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -47,6 +48,7 @@ class SuperAdminController extends Controller
 
     public function delete_workspace($id)
     {
+        // dd($id);
         try {
             DB::beginTransaction();
         
@@ -171,6 +173,9 @@ class SuperAdminController extends Controller
 
     public function user()
     {
+        // $userId = $request->query('user_id');
+        // dd($userId);
+        // dd($request->user_id);
         $user = User::get();
 
         // dd($user);
@@ -185,6 +190,8 @@ class SuperAdminController extends Controller
 
         $hodUsers = User::role($hodRole)->get();
 
+        // dd($hodUsers);
+
         $executiveUsers = User::role($executiveRole)->get();
         // dd($hodUsers);
 
@@ -193,6 +200,34 @@ class SuperAdminController extends Controller
         return view('layouts.super-admin.user.index',compact('user','role','workspace','hodUsers','executiveRole','executiveUsers'));
     }
 
+
+  
+    public function get_user_role($id)
+    {
+        $user = User::where('id', $id)->first(); // Retrieve a single user by their ID
+
+        $roles = $user->roles;
+
+        $firstRole = $roles->first();
+
+        // dd($firstRole);
+
+        $model_has_role = ModelHasRole::where('role_id',$firstRole->id)->first();
+        
+
+        // dd($model_has_role);
+
+        $data = [
+            'user' => $user,
+            'role' => $firstRole,
+            'model_has_role' => $model_has_role,
+         
+        ];
+        
+        // dd($firstRole);
+
+        return response()->json($data);
+    }
 
     public function update_user(Request $request)
     {
