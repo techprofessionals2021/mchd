@@ -266,7 +266,7 @@ class ProjectController extends Controller
             // }
         }
 
-        return redirect()->route('projects.index', $currentWorkspace->slug)->with('success', __('Project Created Successfully!') . ((isset($smtp_error)) ? ' <br> <span class="text-danger">' . $smtp_error . '</span>' : ''));
+        return redirect()->back()->with('success', __('Project Created Successfully!') . ((isset($smtp_error)) ? ' <br> <span class="text-danger">' . $smtp_error . '</span>' : ''));
     }
 
     public function export()
