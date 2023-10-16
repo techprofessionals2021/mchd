@@ -176,7 +176,7 @@ class SuperAdminController extends Controller
         // $userId = $request->query('user_id');
         // dd($userId);
         // dd($request->user_id);
-        $user = User::get();
+        $user = User::where('type','!=','admin')->where('type','!=','super-admin')->get();
 
         // dd($user);
 
@@ -197,7 +197,7 @@ class SuperAdminController extends Controller
 
         // dd($workspace);
 
-        return view('layouts.super-admin.user.index',compact('user','role','workspace','hodUsers','executiveRole','executiveUsers'));
+        return view('layouts.super-admin.user.index',compact('user','role','workspace','hodUsers','executiveUsers'));
     }
 
 
@@ -206,14 +206,29 @@ class SuperAdminController extends Controller
     {
         $user = User::where('id', $id)->first(); // Retrieve a single user by their ID
 
+        // dd($user);
+
         $roles = $user->roles;
 
         $firstRole = $roles->first();
 
         // dd($firstRole);
 
-        $model_has_role = ModelHasRole::where('role_id',$firstRole->id)->first();
+        $model_has_role = ModelHasRole::where('role_id',$firstRole->id)->where('model_id',$id)->first();
+
+
+        $hodRole = Role::where('name', 'hod')->first();
+
+        $executiveRole = Role::where('name', 'executive')->first();
+
+        $hodUsers = User::role($hodRole)->where('id','!=',$id)->get();
+
+    
+
+        $executiveUsers = User::role($executiveRole)->where('id','!=',$id)->get();
+
         
+        // dd($executiveUsers);
 
         // dd($model_has_role);
 
@@ -221,6 +236,8 @@ class SuperAdminController extends Controller
             'user' => $user,
             'role' => $firstRole,
             'model_has_role' => $model_has_role,
+            'hodUsers' => $hodUsers,
+            'executiveUsers' => $executiveUsers,
          
         ];
         

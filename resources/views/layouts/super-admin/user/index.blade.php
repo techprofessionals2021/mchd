@@ -64,7 +64,7 @@
                     
                         
                         <div class="form-group" id="workspace-div" style="display: none" >
-                            <label for="permission">Department - Workspace</label>
+                            <label for="permission">Workspace</label>
                             <select name="workspace_id" id="workspace" class="form-control">
                                 @foreach ($workspace as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -73,8 +73,8 @@
                         </div>
 
                         <div class="form-group" id="hod-div" style="display: none" >
-                            <label for="permission">Department - Hods</label>
-                            <select name="hods[]" id="hod" class="form-control" multiple>
+                            <label for="permission">Hods</label>
+                            <select name="hods[]" id="hod"  class="form-control" multiple>
                                 @foreach ($hodUsers as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
@@ -82,7 +82,7 @@
                         </div>
 
                         <div class="form-group" id="executive-div" style="display: none">
-                            <label for="permission">Department - Executives</label>
+                            <label for="permission">Executives</label>
                             <select name="executives[]" id="executive" class="form-control" multiple>
                                 @foreach ($executiveUsers as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -192,9 +192,6 @@
 
     $('.modal-id').on('click', function () {
 
-        // alert('moelcliek');
-            // Get the data attributes
-
             const user_id = $(this).data('id');
 
 
@@ -213,15 +210,84 @@
                   
                 },
                 success: function(response) {
-                    // Handle success response if needed
-                    console.log(response.role);
-                    $('#exampleModal').find('#name').val(response.user.name);
+
+                    console.log(user_id);
+
+                    // if (response.role.name == "Executive") {
+                    //     $('#hod-div').show();
+                    // }
+
+                    if (response.role.name == "HOD") {
+                        // Show the second div when "hod" is selected
+                        $('#workspace-div').show();
+                        $('#executive-div').hide();
+                        $('#hod-div').hide();
+                    }
+                    if (response.role.name == "Executive") {
+                        // Show the second div when "hod" is selected
+                        $('#workspace-div').hide();
+                        $('#hod-div').show();
+                        $('#executive-div').hide();
+                    }
+
+                    if (response.role.name == "Ceo") {
+                        // Show the second div when "hod" is selected
+                        $('#workspace-div').hide();
+                        $('#hod-div').hide();
+                        $('#executive-div').show();
+                    }
+
+
+                     $('#exampleModal').find('#name').val(response.user.name);
                      $('#exampleModal').find('#email').val(response.user.email);
                      $('#exampleModal').find('#role').val(response.role.name);
                      $('#exampleModal').find('#tag-assign-user').val(response.model_has_role.tag);
+                     $('#exampleModal').find('#workspace').val(response.model_has_role.workspace_id);
 
-                    // show_toastr('{{ __('Success') }}', '{{ __('Status Updated Successfully!') }}',
-                    //             'success');
+
+
+                    var hodUsers = @json($hodUsers->pluck('id')->toArray());
+
+                    var executiveUsers = @json($executiveUsers->pluck('id')->toArray());
+
+            
+
+                    var id = response.user.id;
+
+                    // console.log(id);
+
+
+
+                    $('#hod option').each(function () {
+                    var optionValue = $(this).val();
+
+
+                    if (hodUsers.includes(id)) {
+                        $(this).prop("selected", true);
+                    } else {
+                        $(this).prop("selected", false);
+                    }
+
+                  
+                });
+
+                $('#executive option').each(function () {
+                    var optionValue = $(this).val();
+
+
+                    if (executiveUsers.includes(id)) {
+
+                        $(this).prop("selected", true);
+                    } else {
+
+                        $(this).prop("selected", false);
+                    }
+
+                  
+                });
+
+
+
                 },
                 error: function(error) {
                     // Handle error if needed
@@ -230,19 +296,35 @@
             });
 
 
-            // var currentUrl = window.location.href;
+    
 
-            // // Check if the URL already contains a query string
-            // if (currentUrl.includes('?')) {
-            //     // Remove the existing query string
-            //     currentUrl = currentUrl.substring(0, currentUrl.indexOf('?'));
-            // }
 
-            // // Append the new user_id as a query parameter
-            // var newUrl = currentUrl + '?user_id=' + user_id;
+            // var hodUsers = @json($hodUsers);
+            // var executiveUsers = @json($executiveUsers);
 
-            // // Update the URL in the browser
-            // window.history.pushState({ path: newUrl }, '', newUrl);
+            // console.log(hodUsers);
+
+            // var selectElement = document.getElementById("hod");
+
+            // var selectElement1 = document.getElementById("executive");
+
+        
+            // hodUsers.forEach(function (user) {
+            //     var option = document.createElement("option");
+            //     option.value = user.id;
+            //     option.text = user.name;
+            //     selectElement.appendChild(option);
+            // });
+
+            // executiveUsers.forEach(function (user) {
+            //     var option = document.createElement("option");
+            //     option.value = user.id;
+            //     option.text = user.name;
+            //     selectElement1.appendChild(option);
+            // });
+
+
+
 
             
         });
@@ -282,10 +364,6 @@
         });
 
         $('#executive-div').show();
-
-
-
-
 
 
         $('.btn-delete').click(function () {
