@@ -1980,6 +1980,9 @@ select {
 .p-6 {
   padding: 1.5rem;
 }
+.p-20 {
+  padding: 5rem;
+}
 .px-0 {
   padding-left: 0px;
   padding-right: 0px;
@@ -2180,6 +2183,9 @@ select {
 .font-bold {
   font-weight: 700;
 }
+.font-extrabold {
+  font-weight: 800;
+}
 .font-light {
   font-weight: 300;
 }
@@ -2191,9 +2197,6 @@ select {
 }
 .font-semibold {
   font-weight: 600;
-}
-.font-extrabold {
-  font-weight: 800;
 }
 .uppercase {
   text-transform: uppercase;

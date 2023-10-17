@@ -104,7 +104,7 @@
     <link rel="stylesheet" href="{{asset('assets/css/plugins/animate.min.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/custom/libs/summernote/summernote-bs4.css')}}">
     <link rel="stylesheet" href="{{asset('custom-ui/css/style.css')}}">
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/qalendar@3.5.0/dist/style.min.css">
     <!-- vendor css -->
     @stack('css-page')
 
@@ -618,7 +618,7 @@
 <script src="{{ asset('assets/custom/js/ac-alert.js')}}"></script>
  <script src="{{ asset('assets/custom/js/letter.avatar.js') }}"></script>
 <script src="{{ asset('assets/custom/js/fire.modal.js') }}"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/qalendar@3.5.0/dist/qalendar.umd.min.js"></script>
 <script src="{{asset('assets/js/plugins/simple-datatables.js')}}"></script>
 <script>
     const dataTable = new simpleDatatables.DataTable("#selection-datatable");
