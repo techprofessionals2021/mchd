@@ -25,7 +25,8 @@
                transition: transform .4s ease-in-out;">
 
 
-                <calender></calender>
+                {{-- <calender></calender> --}}
+                <qalendar></qalendar>
             </div>
         </div>
     </div>
