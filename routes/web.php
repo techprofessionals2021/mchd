@@ -184,7 +184,7 @@ Route::get('generate/{template_name}/{formate?}',[AiTemplateController::class,'c
 Route::post('generate/keywords/{id}',[AiTemplateController::class,'getKeywords'])->name('generate.keywords');
 Route::post('generate/response',[AiTemplateController::class,'AiGenerate'])->name('generate.response');
 
-//Message AI
+// Message AI
 Route::get('grammar/{template}',[AiTemplateController::class,'grammar'])->name('grammar')->middleware(['XSS']);;
 Route::post('grammar/response',[AiTemplateController::class,'grammarProcess'])->name('grammar.response')->middleware(['XSS']);;
 

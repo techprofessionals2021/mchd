@@ -271,14 +271,17 @@ class SuperAdminController extends Controller
         $roleName = $request->role;
 
         // Check if the user already has the role
-        // $existingRole = $user->roles()->where('name', $roleName)->first();
+        $model_role  = ModelHasRole::where('model_id',$request->user_id)->delete();
         
-        // if (isset($existingRole)) {
+        if (isset($existingRole)) {
+           
+            $user->assignRole($role);
+
+            $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $request->workspace_id,'hods' => $hods,'executives' => $executives]);
     
-        //     return redirect()->route('superadmin.user')->with('error', 'The User Already Has this role.');
-            // The user already has this role; no need to update or insert.
-        // } else {
-            // The user does not have this role, so assign it.
+        
+        } else {
+      
             $role = Role::where('name', $roleName)->first();
         
             if (isset($role)) {
@@ -293,7 +296,7 @@ class SuperAdminController extends Controller
                 $role = Role::create(['name' => $roleName]);
                 $user->assignRole($role);
             }
-        // }
+        }
         
         // dd($role);
 

@@ -75,18 +75,18 @@
                         <div class="form-group" id="hod-div" style="display: none" >
                             <label for="permission">Hods</label>
                             <select name="hods[]" id="hod"  class="form-control" multiple>
-                                @foreach ($hodUsers as $item)
+                                {{-- @foreach ($hodUsers as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
                         </div>
 
                         <div class="form-group" id="executive-div" style="display: none">
                             <label for="permission">Executives</label>
                             <select name="executives[]" id="executive" class="form-control" multiple>
-                                @foreach ($executiveUsers as $item)
+                                {{-- @foreach ($executiveUsers as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
                         </div>
 
@@ -211,8 +211,7 @@
                 },
                 success: function(response) {
 
-                    console.log(user_id);
-
+                 
                     // if (response.role.name == "Executive") {
                     //     $('#hod-div').show();
                     // }
@@ -222,6 +221,7 @@
                         $('#workspace-div').show();
                         $('#executive-div').hide();
                         $('#hod-div').hide();
+                        
                     }
                     if (response.role.name == "Executive") {
                         // Show the second div when "hod" is selected
@@ -247,22 +247,85 @@
 
 
                     var hodUsers = @json($hodUsers->pluck('id')->toArray());
+                    
 
                     var executiveUsers = @json($executiveUsers->pluck('id')->toArray());
 
-            
+                    // var executiveUsers = executiveUsers.map(function(id) {
+                    //     return String(id);
+                    // });
+
+              
+                 
+                    // console.log(executiveUsers);
+
 
                     var id = response.user.id;
-
+                    var excludeUserId = user_id;
                     // console.log(id);
+                    // console.log(executiveUsers);
+                    // console.log(executiveUsers);
+                    // console.log(response.model_has_role.executives);
 
+                    var checkExecutiveExistsinArray = executiveUsers.some(item => response.model_has_role.executives.includes(String(item)));
+                    var checkHodExistsinArray = hodUsers.some(item => response.model_has_role.hods.includes(String(item)));
+
+
+
+                    var hodUsers = @json($hodUsers);
+                    var selectElement = $("#hod");
+                    $.each(hodUsers, function (index, user) {
+                        selectElement.html($("<option></option>")
+                            .attr("value", user.id)
+                            .text(user.name));
+                    });
+
+                    // Populate the "executive" select element
+                    var executiveUsers = @json($executiveUsers);
+                    var selectElement1 = $("#executive");
+                    $.each(executiveUsers, function (index, user) {
+                        selectElement1.html($("<option></option>")
+                            .attr("value", user.id)
+                            .text(user.name));
+                    });
+
+                    
+            // var selectElement = document.getElementById("hod");
+
+            // var selectElement1 = document.getElementById("executive");
+
+
+            // hodUsers.forEach(function (user) {
+            //     var option = document.createElement("option");
+            //     option.value = user.id;
+            //     option.text = user.name;
+            //     selectElement.appendChild(option);
+            // });
+
+            // executiveUsers.forEach(function (user) {
+            //     var option = document.createElement("option");
+            //     option.value = user.id;
+            //     option.text = user.name;
+            //     selectElement1.appendChild(option);
+            // });
+
+ 
+                    // console.log(existsInSecondArray);
+
+
+                    // console.log(executiveUsers.includes('9'));
 
 
                     $('#hod option').each(function () {
                     var optionValue = $(this).val();
 
 
-                    if (hodUsers.includes(id)) {
+                    if (optionValue == excludeUserId) {
+                            // console.log('hod user');
+                            $(this).remove(); // Remove the option with the matching user ID
+                    }
+                   else  if (checkHodExistsinArray) {
+                       console.log('id includes hod');
                         $(this).prop("selected", true);
                     } else {
                         $(this).prop("selected", false);
@@ -274,9 +337,15 @@
                 $('#executive option').each(function () {
                     var optionValue = $(this).val();
 
+            
+                    if (optionValue == excludeUserId) {
+                            // console.log('hod user');
+                            $(this).remove(); // Remove the option with the matching user ID
+                    }
 
-                    if (executiveUsers.includes(id)) {
 
+                    else if (checkExecutiveExistsinArray) {
+                        console.log('id includes executive');
                         $(this).prop("selected", true);
                     } else {
 
@@ -303,25 +372,6 @@
             // var executiveUsers = @json($executiveUsers);
 
             // console.log(hodUsers);
-
-            // var selectElement = document.getElementById("hod");
-
-            // var selectElement1 = document.getElementById("executive");
-
-        
-            // hodUsers.forEach(function (user) {
-            //     var option = document.createElement("option");
-            //     option.value = user.id;
-            //     option.text = user.name;
-            //     selectElement.appendChild(option);
-            // });
-
-            // executiveUsers.forEach(function (user) {
-            //     var option = document.createElement("option");
-            //     option.value = user.id;
-            //     option.text = user.name;
-            //     selectElement1.appendChild(option);
-            // });
 
 
 
