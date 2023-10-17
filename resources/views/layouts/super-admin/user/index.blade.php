@@ -138,13 +138,16 @@
                                             Actions
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="submenuDropdown">
-                                            <form method="POST" action="{{ route('superadmin.delete-user-superadmin', ['id' => $item->id]) }}">
+                                            <button type="submit" class="dropdown-item btn btn-danger btn-delete" data-record-id="{{ $item->id }}">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                            {{-- <form method="POST" action="{{ route('superadmin.delete-user-superadmin', ['id' => $item->id]) }}">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="dropdown-item btn btn-danger">
                                                     <i class="fas fa-trash"></i> Delete
                                                 </button>
-                                            </form>
+                                            </form> --}}
                                             <a class="dropdown-item modal-id" href="#"  data-toggle="modal" data-target="#exampleModal" data-name="{{$item->name}}" data-id="{{$item->id}}" data-email="{{$item->email}}" >  <i class="fas fa-edit"></i> Edit User</a>
                                             <!-- Add more submenu items here -->
                                         </div>
@@ -191,16 +194,56 @@
 
         // alert('moelcliek');
             // Get the data attributes
-            const name = $(this).data('name');
-            const email = $(this).data('email');
+
             const user_id = $(this).data('id');
 
 
             // Update the modal content with the data
             $('#exampleModal').find('.modal-title').text('Edit User');
-            $('#exampleModal').find('#name').val(name);
-            $('#exampleModal').find('#email').val(email);
+     
             $('#exampleModal').find('#user_id').val(user_id);
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('superadmin.get_user_role', ['id' => 'user_id']) }}'.replace('user_id', user_id), // Replace 'permissionId' with the actual permission ID
+
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    user_id: user_id
+                  
+                },
+                success: function(response) {
+                    // Handle success response if needed
+                    console.log(response.role);
+                    $('#exampleModal').find('#name').val(response.user.name);
+                     $('#exampleModal').find('#email').val(response.user.email);
+                     $('#exampleModal').find('#role').val(response.role.name);
+                     $('#exampleModal').find('#tag-assign-user').val(response.model_has_role.tag);
+
+                    // show_toastr('{{ __('Success') }}', '{{ __('Status Updated Successfully!') }}',
+                    //             'success');
+                },
+                error: function(error) {
+                    // Handle error if needed
+                    console.error('AJAX request error', error);
+                }
+            });
+
+
+            // var currentUrl = window.location.href;
+
+            // // Check if the URL already contains a query string
+            // if (currentUrl.includes('?')) {
+            //     // Remove the existing query string
+            //     currentUrl = currentUrl.substring(0, currentUrl.indexOf('?'));
+            // }
+
+            // // Append the new user_id as a query parameter
+            // var newUrl = currentUrl + '?user_id=' + user_id;
+
+            // // Update the URL in the browser
+            // window.history.pushState({ path: newUrl }, '', newUrl);
+
             
         });
 
@@ -239,6 +282,48 @@
         });
 
         $('#executive-div').show();
+
+
+
+
+
+
+        $('.btn-delete').click(function () {
+
+            var user_id = $(this).data('record-id');
+
+                Swal.fire({
+                    title: 'Confirmation',
+                    text: 'Are you sure you want to delete this item?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                        type: 'POST',
+                        url: '{{ route('superadmin.delete-user-superadmin', ['id' => 'user_id']) }}'.replace('user_id', user_id), // Replace 'permissionId' with the actual permission ID
+
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            id: user_id
+                        
+                        },
+                        success: function(response) {
+                            // Handle success response if needed
+                            show_toastr('{{ __('Success') }}', '{{ __('User Deleted Successfully!') }}',
+                                        'success');
+                                        location.reload();
+                        },
+                        error: function(error) {
+                            // Handle error if needed
+                            console.error('AJAX request error', error);
+                        }
+                    });
+                    }
+                });
+            });
  
   </script>
 
