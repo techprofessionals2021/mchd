@@ -21,9 +21,6 @@
 @section('content')
     <div class="card">
 
-
-    
-
         <div class="card-body mt-3 mx-2">
 
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -211,10 +208,13 @@
                 },
                 success: function(response) {
 
+
                  
-                    // if (response.role.name == "Executive") {
-                    //     $('#hod-div').show();
-                    // }
+                     $('#exampleModal').find('#name').val(response.user.name);
+                     $('#exampleModal').find('#email').val(response.user.email);
+                     $('#exampleModal').find('#role').val(response.role.name);
+                     $('#exampleModal').find('#tag-assign-user').val(response.model_has_role.tag);
+                     $('#exampleModal').find('#workspace').val(response.model_has_role.workspace_id);
 
                     if (response.role.name == "HOD") {
                         // Show the second div when "hod" is selected
@@ -238,11 +238,7 @@
                     }
 
 
-                     $('#exampleModal').find('#name').val(response.user.name);
-                     $('#exampleModal').find('#email').val(response.user.email);
-                     $('#exampleModal').find('#role').val(response.role.name);
-                     $('#exampleModal').find('#tag-assign-user').val(response.model_has_role.tag);
-                     $('#exampleModal').find('#workspace').val(response.model_has_role.workspace_id);
+               
 
 
 
@@ -267,90 +263,59 @@
                     // console.log(executiveUsers);
                     // console.log(response.model_has_role.executives);
 
-                    var checkExecutiveExistsinArray = executiveUsers.some(item => response.model_has_role.executives.includes(String(item)));
-                    var checkHodExistsinArray = hodUsers.some(item => response.model_has_role.hods.includes(String(item)));
+                    // var checkExecutiveExistsinArray = executiveUsers.some(item => response.model_has_role.executives.includes(String(item)));
+                    // var checkHodExistsinArray = hodUsers.some(item => response.model_has_role.hods.includes(String(item)));
 
 
-
-                    var hodUsers = @json($hodUsers);
-                    var selectElement = $("#hod");
-                    $.each(hodUsers, function (index, user) {
-                        selectElement.html($("<option></option>")
-                            .attr("value", user.id)
-                            .text(user.name));
-                    });
-
-                    // Populate the "executive" select element
-                    var executiveUsers = @json($executiveUsers);
-                    var selectElement1 = $("#executive");
-                    $.each(executiveUsers, function (index, user) {
-                        selectElement1.html($("<option></option>")
-                            .attr("value", user.id)
-                            .text(user.name));
-                    });
-
-                    
-            // var selectElement = document.getElementById("hod");
-
-            // var selectElement1 = document.getElementById("executive");
-
-
-            // hodUsers.forEach(function (user) {
-            //     var option = document.createElement("option");
-            //     option.value = user.id;
-            //     option.text = user.name;
-            //     selectElement.appendChild(option);
-            // });
-
-            // executiveUsers.forEach(function (user) {
-            //     var option = document.createElement("option");
-            //     option.value = user.id;
-            //     option.text = user.name;
-            //     selectElement1.appendChild(option);
-            // });
-
- 
-                    // console.log(existsInSecondArray);
-
-
-                    // console.log(executiveUsers.includes('9'));
+                    // console.log(response.model_has_role.hods  , hodUsers );
 
 
                     $('#hod option').each(function () {
-                    var optionValue = $(this).val();
+                        var optionValue = parseInt($(this).val()); // Convert the value to an integer
 
-
-                    if (optionValue == excludeUserId) {
-                            // console.log('hod user');
+                        if (optionValue == excludeUserId) {
                             $(this).remove(); // Remove the option with the matching user ID
-                    }
-                   else  if (checkHodExistsinArray) {
-                       console.log('id includes hod');
-                        $(this).prop("selected", true);
-                    } else {
-                        $(this).prop("selected", false);
-                    }
+                        }
+
+                        else if (response.model_has_role.hods.includes(optionValue)) {
+                            $(this).prop("selected", true); // Select the option if its value is in the array
+                        } else {
+                            $(this).prop("selected", false); // Deselect the option if not in the array
+                        }
+                    });
+
+
+
+                //     $('#hod option').each(function () {
+                //     var optionValue = $(this).val();
+
+
+                //     if (optionValue == excludeUserId) {
+                //             // console.log('hod user');
+                //             $(this).remove(); // Remove the option with the matching user ID
+                //     }
+                //    else  if (checkHodExistsinArray) {
+                //        console.log('id includes hod');
+                //         $(this).prop("selected", true);
+                //     } else {
+                //         $(this).prop("selected", false);
+                //     }
 
                   
-                });
+                // });
 
                 $('#executive option').each(function () {
-                    var optionValue = $(this).val();
+                    var optionValue = parseInt($(this).val()); // Convert the value to an integer
 
-            
-                    if (optionValue == excludeUserId) {
-                            // console.log('hod user');
-                            $(this).remove(); // Remove the option with the matching user ID
-                    }
+                if (optionValue == excludeUserId) {
+                    $(this).remove(); // Remove the option with the matching user ID
+                }
 
-
-                    else if (checkExecutiveExistsinArray) {
-                        console.log('id includes executive');
-                        $(this).prop("selected", true);
-                    } else {
-
-                        $(this).prop("selected", false);
-                    }
+                else if (response.model_has_role.executives.includes(optionValue)) {
+                    $(this).prop("selected", true); // Select the option if its value is in the array
+                } else {
+                    $(this).prop("selected", false); // Deselect the option if not in the array
+                }
 
                   
                 });
@@ -380,7 +345,22 @@
         });
 
  
+        var hodUsers = @json($hodUsers);
+                    var selectElement = $("#hod");
+                    $.each(hodUsers, function (index, user) {
+                        selectElement.append($("<option></option>")
+                            .attr("value", user.id)
+                            .text(user.name));
+                    });
 
+                    // Populate the "executive" select element
+                    var executiveUsers = @json($executiveUsers);
+                    var selectElement1 = $("#executive");
+                    $.each(executiveUsers, function (index, user) {
+                        selectElement1.append($("<option></option>")
+                            .attr("value", user.id)
+                            .text(user.name));
+                    });
       
         $('#role').change(function() {
 

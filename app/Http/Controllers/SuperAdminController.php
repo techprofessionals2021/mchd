@@ -214,7 +214,7 @@ class SuperAdminController extends Controller
 
         // dd($firstRole);
 
-        $model_has_role = ModelHasRole::where('role_id',$firstRole->id)->where('model_id',$id)->first();
+        $model_has_role = ModelHasRole::where('role_id',$firstRole->id ?? '')->where('model_id',$id)->first();
 
 
         $hodRole = Role::where('name', 'hod')->first();
