@@ -71,7 +71,6 @@
 <script>
 import { Qalendar } from "qalendar";
 import { Avatar } from "./Avatar";
-import { meeting } from "./MeetingFormModal.vue";
 import { Modal } from 'ant-design-vue';
 import { ref } from 'vue';
 const open = ref(false);
@@ -79,7 +78,7 @@ export default {
     components: {
         Qalendar,
         Avatar,
-        meeting
+       
     },
     methods: {
         // handleDateClicked(value) {
