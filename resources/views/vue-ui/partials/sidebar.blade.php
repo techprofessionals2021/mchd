@@ -162,7 +162,7 @@
                         <div class="dash-link side-item mt-0 space-body "
                             style="border-radius: 0px 0px 12px 12px ; display:none;
                                  text-align: center;">
-                            <button class="btn btn-light space-btn">
+                            <button class="btn btn-light space-btn openAddWorkSpace">
                                 <i class="ti ti-plus"></i>
                                 <span>New Space</span>
                             </button>
@@ -178,6 +178,10 @@
                                         @foreach ($workspace->projects as $project)
                                         <li ><a href="{{route('projects.show',[$workspace->slug,$project->id])}}" class="side-nav-project-text">{{$project->name}} </a></li>
                                         @endforeach
+                                        <a class="btn btn-light add-project-btn-sidebar m-t-10" href="#" data-ajax-popup="true" data-size="md" data-title="{{ __('Create New Project') }}" data-url="{{route('projects.create',$currentWorkspace->slug)}}">
+                                            <i class="ti ti-plus"></i>
+                                            <span>Add Project</span>
+                                        </a>
                                     </ul>
                                 </div>
                             </div>
