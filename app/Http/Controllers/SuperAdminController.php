@@ -38,47 +38,7 @@ class SuperAdminController extends Controller
     }
 
 
-    public function workspace()
-    {
-        $workspace = Workspace::where('is_active','1')->get();
-
-        return view('layouts.super-admin.workspace.index',compact('workspace'));
-    }
-
-
-    public function delete_workspace($id)
-    {
-        // dd($id);
-        try {
-            DB::beginTransaction();
-        
-            $workspace = Workspace::find($id);
-            if (!$workspace) {
-                // Handle the case where the workspace is not found.
-                // You might want to throw an exception or return a response.
-            }
-        
-            $workspace->is_active = 0;
-            $workspace->save();
-        
-            $user_workspace = UserWorkspace::where('workspace_id', $workspace->id)->get();
-        
-            foreach ($user_workspace as $key => $value) {
-                $value->is_active = 0;
-                $value->save();
-            }
-        
-            DB::commit(); // Commit the transaction if all operations were successful.
-        } catch (\Exception $e) {
-            DB::rollback(); // Rollback the transaction if an error occurred.
-            // Handle the error, log it, or return a response.
-        }
-       
-        
-
-        return redirect()->route('superadmin.workspace');
-
-    }
+ 
 
 
     public function delete_user($id)
@@ -267,7 +227,7 @@ class SuperAdminController extends Controller
 
 
 
-
+        
         $roleName = $request->role;
 
         // Check if the user already has the role

@@ -1,5 +1,5 @@
 @extends('layouts.super-admin.super-admin')
-
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @section('page-title')
     {{ __('Users') }}
 @endsection
@@ -80,12 +80,29 @@
 
                         <div class="form-group" id="executive-div" style="display: none">
                             <label for="permission">Executives</label>
-                            <select name="executives[]" id="executive" class="form-control" multiple>
-                                {{-- @foreach ($executiveUsers as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach --}}
+                            <select name="executives[]" id="executive" class="form-control" multiple >
+                          
                             </select>
                         </div>
+
+                        {{-- <div class="form-group" id="executive-div" style="display: none">
+                            <label for="permission">Executives</label>
+                            <select name="executives[]" id="executive" class="form-control multi-select" multiple>
+            
+                            </select>
+                        </div> --}}
+
+
+                        {{-- <div class="form-group" id="executive-div" style="display: none"> --}}
+                            {{-- <label for="permission">Executives</label>
+                            <select class=" multi-select" id="assign_to" name="assign_to[]" data-toggle="select2" multiple="multiple" data-placeholder="{{ __('Select Users ...') }}" required>
+                                <option value="AL">Alabama</option>
+                                ...
+                              <option value="WY">Wyoming</option>
+                            </select> --}}
+                  
+                        {{-- </div> --}}
+
 
 
                         <div class="form-group">
@@ -165,9 +182,11 @@
 @endsection
 
 @push('css-page')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
 <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+
 @endpush
 {{-- <link rel="stylesheet" href="{{ asset('assets/custom/css/datatables.min.css') }}"> --}}
 
@@ -178,8 +197,11 @@
 {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script> --}}
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script> --}}
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
 <script type="text/javascript">
     $(function () {
 
@@ -187,6 +209,19 @@
 
     });
 
+    $(document).ready(function() {
+        if ($(".multi-select").length > 0) {
+            $( $(".multi-select") ).each(function( index,element ) {
+                var id = $(element).attr('id');
+                   var multipleCancelButton = new Choices(
+                        '#'+id, {
+                            removeItemButton: true,
+                        }
+                    );
+            });
+       }
+});
+  
     $('.modal-id').on('click', function () {
 
             const user_id = $(this).data('id');
@@ -305,21 +340,25 @@
                 // });
 
                 $('#executive option').each(function () {
+
                     var optionValue = parseInt($(this).val()); // Convert the value to an integer
 
-                if (optionValue == excludeUserId) {
-                    $(this).remove(); // Remove the option with the matching user ID
-                }
+                    if (optionValue == excludeUserId) {
+                        $(this).remove(); // Remove the option with the matching user ID
+                    }
 
-                else if (response.model_has_role.executives.includes(optionValue)) {
-                    $(this).prop("selected", true); // Select the option if its value is in the array
-                } else {
-                    $(this).prop("selected", false); // Deselect the option if not in the array
-                }
+                    else if (response.model_has_role.executives.includes(optionValue)) {
+                        console.log('true');
+                        $(this).prop("selected", true); // Select the option if its value is in the array
+                    } else {
+                        console.log('false');
+                        $(this).prop("selected", false); 
+                    }
 
-                  
                 });
 
+
+                // $('#executive').select2();
 
 
                 },

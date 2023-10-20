@@ -51,8 +51,10 @@ use App\Http\Controllers\CashfreeController;
 use App\Http\Controllers\AamarpayController;
 use App\Http\Controllers\PaytrController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\SuperAdminWorkspaceController;
+use App\Http\Controllers\SuperAdminProjectController;
 use App\Http\Controllers\SuperAdminPermissionController;
-
+use App\Http\Controllers\SuperAdminTaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -253,8 +255,18 @@ Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard')->m
 //start routes for superadmin
 Route::prefix('superadmin')->as('superadmin.')->group(function() {
 Route::get('/', [SuperAdminController::class, 'index'])->name('home')->middleware(['auth']);
-Route::get('/workspace', [SuperAdminController::class, 'workspace'])->name('workspace')->middleware(['auth']);
-Route::post('/workspace/delete/{id}',[SuperAdminController::class, 'delete_workspace'])->name('delete-workspace-superadmin')->middleware(['auth']);
+Route::get('/workspace', [SuperAdminWorkspaceController::class, 'workspace'])->name('workspace')->middleware(['auth']);
+Route::post('/workspace/delete/{id}',[SuperAdminWorkspaceController::class, 'delete_workspace'])->name('delete-workspace-superadmin')->middleware(['auth']);
+Route::get('/workspace/projects/{workspace_id}', [SuperAdminWorkspaceController::class, 'workspace_projects'])->name('workspace_projects')->middleware(['auth']);
+Route::get('/workspace/tasks/{project_id}', [SuperAdminWorkspaceController::class, 'workspace_tasks'])->name('workspace_tasks')->middleware(['auth']);
+
+//projects
+Route::get('/{slug}/projects/{id}/edit',[SuperAdminProjectController::class, 'edit'])->name('projects.edit')->middleware(['auth']);
+Route::post('/{slug}/projects/{id}/update',[SuperAdminProjectController::class, 'update'])->name('projects.update')->middleware(['auth']);
+
+//tasks
+Route::get('/{slug}/projects/{id}/task-board/edit/{tid}',[SuperAdminTaskController::class, 'taskEdit'])->name('tasks.edit')->middleware(['auth','XSS']);
+Route::post('/{slug}/projects/{id}/task-board/{tid}/update',[SuperAdminTaskController::class, 'taskUpdate'])->name('tasks.update')->middleware(['auth','XSS']);
 
 Route::get('/user', [SuperAdminController::class, 'user'])->name('user')->middleware(['auth']);
 Route::post('/get-user-role/{id}', [SuperAdminController::class, 'get_user_role'])->name('get_user_role')->middleware(['auth']);
