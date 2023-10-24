@@ -42,9 +42,16 @@
                                 <td>{{$item->id}} </td>   
                                 <td>{{$item->name}} </td>   
                                 <td> 
-                                    <button type="button" class="btn btn-danger btn-delete" data-record-id="{{ $item->id }}">
-                                        <i class="fas fa-trash"></i> Delete
+                                    <button type="button" class="btn btn-danger btn-delete btn-sm" data-record-id="{{ $item->id }}">
+                                        <i class="fas fa-trash"></i> 
                                     </button>
+
+                                    {{-- <a data-url="{{route('superadmin.tasks.edit',[$get_workspace_slug,$project_id,$item->id])}}" data-ajax-popup="true" data-toggle="tooltip" class="btn btn-primary btn-sm" style="color: white" >
+                                        <i class="fas fa-edit"></i> 
+                                    </a> --}}
+                                    <a href="{{route('superadmin.workspace_projects', ['workspace_id' => $item->id])}}" class="btn btn-light btn-sm">
+                                        <i class="fas fa-eye"></i> 
+                                    </a>
         
                                 </td>
 

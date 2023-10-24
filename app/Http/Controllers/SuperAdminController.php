@@ -38,47 +38,7 @@ class SuperAdminController extends Controller
     }
 
 
-    public function workspace()
-    {
-        $workspace = Workspace::where('is_active','1')->get();
-
-        return view('layouts.super-admin.workspace.index',compact('workspace'));
-    }
-
-
-    public function delete_workspace($id)
-    {
-        // dd($id);
-        try {
-            DB::beginTransaction();
-        
-            $workspace = Workspace::find($id);
-            if (!$workspace) {
-                // Handle the case where the workspace is not found.
-                // You might want to throw an exception or return a response.
-            }
-        
-            $workspace->is_active = 0;
-            $workspace->save();
-        
-            $user_workspace = UserWorkspace::where('workspace_id', $workspace->id)->get();
-        
-            foreach ($user_workspace as $key => $value) {
-                $value->is_active = 0;
-                $value->save();
-            }
-        
-            DB::commit(); // Commit the transaction if all operations were successful.
-        } catch (\Exception $e) {
-            DB::rollback(); // Rollback the transaction if an error occurred.
-            // Handle the error, log it, or return a response.
-        }
-       
-        
-
-        return redirect()->route('superadmin.workspace');
-
-    }
+ 
 
 
     public function delete_user($id)
@@ -176,7 +136,7 @@ class SuperAdminController extends Controller
         // $userId = $request->query('user_id');
         // dd($userId);
         // dd($request->user_id);
-        $user = User::get();
+        $user = User::where('type','!=','admin')->where('type','!=','super-admin')->get();
 
         // dd($user);
 
@@ -197,7 +157,7 @@ class SuperAdminController extends Controller
 
         // dd($workspace);
 
-        return view('layouts.super-admin.user.index',compact('user','role','workspace','hodUsers','executiveRole','executiveUsers'));
+        return view('layouts.super-admin.user.index',compact('user','role','workspace','hodUsers','executiveUsers'));
     }
 
 
@@ -206,14 +166,29 @@ class SuperAdminController extends Controller
     {
         $user = User::where('id', $id)->first(); // Retrieve a single user by their ID
 
+        // dd($user);
+
         $roles = $user->roles;
 
         $firstRole = $roles->first();
 
         // dd($firstRole);
 
-        $model_has_role = ModelHasRole::where('role_id',$firstRole->id)->first();
+        $model_has_role = ModelHasRole::where('role_id',$firstRole->id ?? '')->where('model_id',$id)->first();
+
+
+        $hodRole = Role::where('name', 'hod')->first();
+
+        $executiveRole = Role::where('name', 'executive')->first();
+
+        $hodUsers = User::role($hodRole)->where('id','!=',$id)->get();
+
+    
+
+        $executiveUsers = User::role($executiveRole)->where('id','!=',$id)->get();
+
         
+        // dd($executiveUsers);
 
         // dd($model_has_role);
 
@@ -221,6 +196,8 @@ class SuperAdminController extends Controller
             'user' => $user,
             'role' => $firstRole,
             'model_has_role' => $model_has_role,
+            'hodUsers' => $hodUsers,
+            'executiveUsers' => $executiveUsers,
          
         ];
         
@@ -250,18 +227,21 @@ class SuperAdminController extends Controller
 
 
 
-
+        
         $roleName = $request->role;
 
         // Check if the user already has the role
-        // $existingRole = $user->roles()->where('name', $roleName)->first();
+        $model_role  = ModelHasRole::where('model_id',$request->user_id)->delete();
         
-        // if (isset($existingRole)) {
+        if (isset($existingRole)) {
+           
+            $user->assignRole($role);
+
+            $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $request->workspace_id,'hods' => $hods,'executives' => $executives]);
     
-        //     return redirect()->route('superadmin.user')->with('error', 'The User Already Has this role.');
-            // The user already has this role; no need to update or insert.
-        // } else {
-            // The user does not have this role, so assign it.
+        
+        } else {
+      
             $role = Role::where('name', $roleName)->first();
         
             if (isset($role)) {
@@ -276,7 +256,7 @@ class SuperAdminController extends Controller
                 $role = Role::create(['name' => $roleName]);
                 $user->assignRole($role);
             }
-        // }
+        }
         
         // dd($role);
 

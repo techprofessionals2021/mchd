@@ -230,10 +230,7 @@
             // console.log('id not includes');
               // If 'id' is not in the array, uncheck the checkbox
               $('#permission' + id).prop('checked', false);
-          }
-
-
-                              
+          }                        
       
   });
         

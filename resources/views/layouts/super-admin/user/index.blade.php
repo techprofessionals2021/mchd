@@ -1,5 +1,5 @@
 @extends('layouts.super-admin.super-admin')
-
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @section('page-title')
     {{ __('Users') }}
 @endsection
@@ -20,9 +20,6 @@
 @endpush
 @section('content')
     <div class="card">
-
-
-    
 
         <div class="card-body mt-3 mx-2">
 
@@ -64,7 +61,7 @@
                     
                         
                         <div class="form-group" id="workspace-div" style="display: none" >
-                            <label for="permission">Department - Workspace</label>
+                            <label for="permission">Workspace</label>
                             <select name="workspace_id" id="workspace" class="form-control">
                                 @foreach ($workspace as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -73,22 +70,39 @@
                         </div>
 
                         <div class="form-group" id="hod-div" style="display: none" >
-                            <label for="permission">Department - Hods</label>
-                            <select name="hods[]" id="hod" class="form-control" multiple>
-                                @foreach ($hodUsers as $item)
+                            <label for="permission">Hods</label>
+                            <select name="hods[]" id="hod"  class="form-control" multiple>
+                                {{-- @foreach ($hodUsers as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
                         </div>
 
                         <div class="form-group" id="executive-div" style="display: none">
-                            <label for="permission">Department - Executives</label>
-                            <select name="executives[]" id="executive" class="form-control" multiple>
-                                @foreach ($executiveUsers as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
+                            <label for="permission">Executives</label>
+                            <select name="executives[]" id="executive" class="form-control" multiple >
+                          
                             </select>
                         </div>
+
+                        {{-- <div class="form-group" id="executive-div" style="display: none">
+                            <label for="permission">Executives</label>
+                            <select name="executives[]" id="executive" class="form-control multi-select" multiple>
+            
+                            </select>
+                        </div> --}}
+
+
+                        {{-- <div class="form-group" id="executive-div" style="display: none"> --}}
+                            {{-- <label for="permission">Executives</label>
+                            <select class=" multi-select" id="assign_to" name="assign_to[]" data-toggle="select2" multiple="multiple" data-placeholder="{{ __('Select Users ...') }}" required>
+                                <option value="AL">Alabama</option>
+                                ...
+                              <option value="WY">Wyoming</option>
+                            </select> --}}
+                  
+                        {{-- </div> --}}
+
 
 
                         <div class="form-group">
@@ -168,9 +182,11 @@
 @endsection
 
 @push('css-page')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
 <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+
 @endpush
 {{-- <link rel="stylesheet" href="{{ asset('assets/custom/css/datatables.min.css') }}"> --}}
 
@@ -181,8 +197,11 @@
 {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script> --}}
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script> --}}
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
 <script type="text/javascript">
     $(function () {
 
@@ -190,10 +209,20 @@
 
     });
 
+    $(document).ready(function() {
+        if ($(".multi-select").length > 0) {
+            $( $(".multi-select") ).each(function( index,element ) {
+                var id = $(element).attr('id');
+                   var multipleCancelButton = new Choices(
+                        '#'+id, {
+                            removeItemButton: true,
+                        }
+                    );
+            });
+       }
+});
+  
     $('.modal-id').on('click', function () {
-
-        // alert('moelcliek');
-            // Get the data attributes
 
             const user_id = $(this).data('id');
 
@@ -213,15 +242,125 @@
                   
                 },
                 success: function(response) {
-                    // Handle success response if needed
-                    console.log(response.role);
-                    $('#exampleModal').find('#name').val(response.user.name);
+
+
+                 
+                     $('#exampleModal').find('#name').val(response.user.name);
                      $('#exampleModal').find('#email').val(response.user.email);
                      $('#exampleModal').find('#role').val(response.role.name);
                      $('#exampleModal').find('#tag-assign-user').val(response.model_has_role.tag);
+                     $('#exampleModal').find('#workspace').val(response.model_has_role.workspace_id);
 
-                    // show_toastr('{{ __('Success') }}', '{{ __('Status Updated Successfully!') }}',
-                    //             'success');
+                    if (response.role.name == "HOD") {
+                        // Show the second div when "hod" is selected
+                        $('#workspace-div').show();
+                        $('#executive-div').hide();
+                        $('#hod-div').hide();
+                        
+                    }
+                    if (response.role.name == "Executive") {
+                        // Show the second div when "hod" is selected
+                        $('#workspace-div').hide();
+                        $('#hod-div').show();
+                        $('#executive-div').hide();
+                    }
+
+                    if (response.role.name == "Ceo") {
+                        // Show the second div when "hod" is selected
+                        $('#workspace-div').hide();
+                        $('#hod-div').hide();
+                        $('#executive-div').show();
+                    }
+
+
+               
+
+
+
+                    var hodUsers = @json($hodUsers->pluck('id')->toArray());
+                    
+
+                    var executiveUsers = @json($executiveUsers->pluck('id')->toArray());
+
+                    // var executiveUsers = executiveUsers.map(function(id) {
+                    //     return String(id);
+                    // });
+
+              
+                 
+                    // console.log(executiveUsers);
+
+
+                    var id = response.user.id;
+                    var excludeUserId = user_id;
+                    // console.log(id);
+                    // console.log(executiveUsers);
+                    // console.log(executiveUsers);
+                    // console.log(response.model_has_role.executives);
+
+                    // var checkExecutiveExistsinArray = executiveUsers.some(item => response.model_has_role.executives.includes(String(item)));
+                    // var checkHodExistsinArray = hodUsers.some(item => response.model_has_role.hods.includes(String(item)));
+
+
+                    // console.log(response.model_has_role.hods  , hodUsers );
+
+
+                    $('#hod option').each(function () {
+                        var optionValue = parseInt($(this).val()); // Convert the value to an integer
+
+                        if (optionValue == excludeUserId) {
+                            $(this).remove(); // Remove the option with the matching user ID
+                        }
+
+                        else if (response.model_has_role.hods.includes(optionValue)) {
+                            $(this).prop("selected", true); // Select the option if its value is in the array
+                        } else {
+                            $(this).prop("selected", false); // Deselect the option if not in the array
+                        }
+                    });
+
+
+
+                //     $('#hod option').each(function () {
+                //     var optionValue = $(this).val();
+
+
+                //     if (optionValue == excludeUserId) {
+                //             // console.log('hod user');
+                //             $(this).remove(); // Remove the option with the matching user ID
+                //     }
+                //    else  if (checkHodExistsinArray) {
+                //        console.log('id includes hod');
+                //         $(this).prop("selected", true);
+                //     } else {
+                //         $(this).prop("selected", false);
+                //     }
+
+                  
+                // });
+
+                $('#executive option').each(function () {
+
+                    var optionValue = parseInt($(this).val()); // Convert the value to an integer
+
+                    if (optionValue == excludeUserId) {
+                        $(this).remove(); // Remove the option with the matching user ID
+                    }
+
+                    else if (response.model_has_role.executives.includes(optionValue)) {
+                        console.log('true');
+                        $(this).prop("selected", true); // Select the option if its value is in the array
+                    } else {
+                        console.log('false');
+                        $(this).prop("selected", false); 
+                    }
+
+                });
+
+
+                // $('#executive').select2();
+
+
                 },
                 error: function(error) {
                     // Handle error if needed
@@ -230,25 +369,37 @@
             });
 
 
-            // var currentUrl = window.location.href;
+    
 
-            // // Check if the URL already contains a query string
-            // if (currentUrl.includes('?')) {
-            //     // Remove the existing query string
-            //     currentUrl = currentUrl.substring(0, currentUrl.indexOf('?'));
-            // }
 
-            // // Append the new user_id as a query parameter
-            // var newUrl = currentUrl + '?user_id=' + user_id;
+            // var hodUsers = @json($hodUsers);
+            // var executiveUsers = @json($executiveUsers);
 
-            // // Update the URL in the browser
-            // window.history.pushState({ path: newUrl }, '', newUrl);
+            // console.log(hodUsers);
+
+
+
 
             
         });
 
  
+        var hodUsers = @json($hodUsers);
+                    var selectElement = $("#hod");
+                    $.each(hodUsers, function (index, user) {
+                        selectElement.append($("<option></option>")
+                            .attr("value", user.id)
+                            .text(user.name));
+                    });
 
+                    // Populate the "executive" select element
+                    var executiveUsers = @json($executiveUsers);
+                    var selectElement1 = $("#executive");
+                    $.each(executiveUsers, function (index, user) {
+                        selectElement1.append($("<option></option>")
+                            .attr("value", user.id)
+                            .text(user.name));
+                    });
       
         $('#role').change(function() {
 
@@ -282,10 +433,6 @@
         });
 
         $('#executive-div').show();
-
-
-
-
 
 
         $('.btn-delete').click(function () {

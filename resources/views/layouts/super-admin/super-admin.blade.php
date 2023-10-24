@@ -99,7 +99,7 @@
     <link rel="stylesheet" href="{{asset('assets/css/plugins/animate.min.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/custom/libs/summernote/summernote-bs4.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-
+ 
 
     <!-- vendor css -->
     @stack('css-page')
@@ -350,6 +350,7 @@
 <script src="{{ asset('assets/js/dash.js')}}"></script>
 <script src="{{asset('assets/custom/libs/summernote/summernote-bs4.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
 
 <script>
     if ($(".summernote-simple").length) {

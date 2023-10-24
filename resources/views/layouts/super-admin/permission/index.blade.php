@@ -50,9 +50,9 @@
     </div>
   </div>
 
-  <div class="col-md-10 text-left mb-4">
+  {{-- <div class="col-md-10 text-left mb-4">
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Permission</button>
-</div>
+</div> --}}
     <div class="card">
         @if($errors->has('error'))
         <div class="alert alert-danger">
