@@ -33,6 +33,7 @@ use App\Models\User;
 use App\Models\UserProject;
 use App\Models\UserWorkspace;
 use App\Models\Utility;
+use App\Models\WorkspaceType;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
@@ -497,6 +498,7 @@ class ProjectController extends Controller
     {
         $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+        $workspace_type = WorkspaceType::get();
 
         if($objUser->id != $currentWorkspace->id){
             // $objUser->currant_workspace = $currentWorkspace->id;
@@ -524,7 +526,7 @@ class ProjectController extends Controller
 
                 $tags = json_decode($project->tags);
 
-                return view('vue-ui.pages.project.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags'));
+                return view('vue-ui.pages.project.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type'));
                 // return view('projects.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags'));
             } else {
                 return redirect()->back()->with('error', __("Project Not Found."));
