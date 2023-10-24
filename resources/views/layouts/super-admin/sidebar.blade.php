@@ -59,18 +59,17 @@
                             class="dash-mtext">{{ __('Dashboard') }}</span></a>
                 </li> 
                 <li class="dash-item dash-hasmenu {{ Request::route()->getName() == 'getWorkSpaces' ? ' active' : '' }}">
-                <a href="#" class="dash-link"><span class="dash-micon"><i
+                <a href="{{route('superadmin.workspace')}}" class="dash-link"><span class="dash-micon"><i
                             class="ti ti-device-floppy"></i></span><span
-                        class="dash-mtext">{{ __('Workspaces') }}</span><span class="dash-arrow"><i
-                            data-feather="chevron-right"></i></span></a>
-                <ul
+                        class="dash-mtext">{{ __('Workspaces') }}</span></a>
+                {{-- <ul
                     class="dash-submenu collapse  {{ Request::route()->getName() == 'contracts.index' ? ' active' : '' }}">
                   
                     <li class="dash-item ">
                         <a class="dash-link"
                             href="{{route('superadmin.workspace')}}">{{ __('Workspaces') }}</a>
                     </li>
-                </ul>
+                </ul> --}}
                </li>
 
 

@@ -299,6 +299,23 @@
                                         <label for="workspacename" class="col-form-label">{{ __('Name') }}</label>
                                         <input class="form-control" type="text" id="workspacename" name="name" required="" placeholder="{{ __('Workspace Name') }}">
                                     </div>
+
+                                    <div class="col-md-12">
+                                        <label for="workspacename" class="col-form-label">{{ __('Workspace Type') }}</label>
+                                        <select id="status" name="workspace_type_id" class="form-control select2" required>
+                                      
+                                            @foreach ($workspace_type as $item)
+                                            <option value="{{$item->id}}">{{ $item->type }} </option>
+                                            @endforeach
+
+                                         
+                                            </option>
+                                        </select>
+                                    </div>
+
+
+
+                                   
                                 </div>
                          </div>
                         <div class="modal-footer">

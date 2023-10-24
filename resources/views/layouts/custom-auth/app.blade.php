@@ -31,6 +31,16 @@
             --primary: rgba(0, 74, 171, 0.9);
             --secondary: rgba(0, 74, 171, 1);
         }
+
+
+        select#status {
+        font-family: Arial, sans-serif;
+        color: #333;
+        background-color: #f7f7f7;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 8px;
+}
     </style>
     <style>
         .cookie-consent {

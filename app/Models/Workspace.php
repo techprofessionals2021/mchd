@@ -34,6 +34,7 @@ class Workspace extends Model
         'invoice_footer_title',
         'invoice_footer_notes',
         'is_active',
+        'workspace_type_id',
     ];
 
     public static function create($data)
@@ -92,6 +93,12 @@ class Workspace extends Model
     {
         return $this->hasOne('App\Models\User', 'id', 'created_by');
     }
+
+
+    public function workspaceType() {
+        return $this->belongsTo(WorkspaceType::class, 'workspace_type_id');
+    }
+
 
     public function owner($id)
     {

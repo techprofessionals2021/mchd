@@ -98,10 +98,13 @@ class AuthenticatedSessionController extends Controller
                 'date' => date('Y-m-d H:i:s'),
                 'details' => $json,
                 'type' => 'user',
-                'created_by' => $user->currant_workspace,
+                'created_by' => $user->currant_workspace ?? '',
             ]);
         }
 
+
+
+        // dd(Auth::user()->roles->contains('name', 'Ceo'));
 
      
 
