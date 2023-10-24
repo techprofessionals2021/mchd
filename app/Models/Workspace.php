@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Database\Eloquent\Model;
 
 class Workspace extends Model
@@ -158,4 +159,9 @@ class Workspace extends Model
     {
         return $this->currency . "" . number_format($price, 2);
     }
+
+    public function getUsers(){
+        $users = $this->users();
+        return UserResource::collection($users);
+      }
 }

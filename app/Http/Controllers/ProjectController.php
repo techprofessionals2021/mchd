@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Exports\projectsExport;
+use App\Http\Resources\MeetingResource;
+use App\Http\Resources\UserResource;
 use App\Imports\projectsImport;
 use App\Models\ActivityLog;
 use App\Models\BugComment;
@@ -16,6 +18,7 @@ use App\Models\Mail\SendInvication;
 use App\Models\Mail\SendLoginDetail;
 use App\Models\Mail\SendWorkspaceInvication;
 use App\Models\Mail\ShareProjectToClient;
+use App\Models\Meeting;
 use App\Models\Milestone;
 use App\Models\Project;
 use App\Models\ProjectFile;
@@ -3307,7 +3310,11 @@ class ProjectController extends Controller
                 $permissions = Auth::user()->getPermission($project->id);
 
                 $tags = json_decode($project->tags);
-                return view('vue-ui.pages.project.calender', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags'));
+                $meetings = Meeting::get();
+                // $currentWorkspace->getUsers();
+                $WSUsers = UserResource::collection($currentWorkspace->users);
+                $meetingCollection = MeetingResource::collection($meetings);
+                return view('vue-ui.pages.project.calender', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','WSUsers','meetingCollection'));
                 // return view('projects.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags'));
             } else {
                 return redirect()->back()->with('error', __("Project Not Found."));

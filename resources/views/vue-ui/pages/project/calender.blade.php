@@ -26,7 +26,7 @@
 
 
                 {{-- <calender></calender> --}}
-                <qalendar></qalendar>
+                <qalendar :users='{{ json_encode($WSUsers) }}' :meetings='{{ json_encode($meetingCollection)}}' ></qalendar>
             </div>
         </div>
     </div>

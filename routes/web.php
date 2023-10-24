@@ -49,6 +49,7 @@ use App\Http\Controllers\PaytabController;
 use App\Http\Controllers\BenefitPaymentController;
 use App\Http\Controllers\CashfreeController;
 use App\Http\Controllers\AamarpayController;
+use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PaytrController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\SuperAdminPermissionController;
@@ -826,6 +827,9 @@ Route::post('/{slug}/zoom-meeting/{id}/update',[ZoomMeetingController::class, 'u
 Route::delete('/{slug}/zoom-meeting/{id}',[ZoomMeetingController::class, 'destroy'])->name('zoom-meeting.destroy')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/{id}/members',[ProjectController::class, 'members'])->name('projects.members')->middleware(['auth','XSS']);
 
+//=================================== custom meeting =============================================================//
+
+Route::post('/meeting/store',[MeetingController::class,'store'])->name('meeting.store');
 
 //=================================== slack=============================================================//
 
