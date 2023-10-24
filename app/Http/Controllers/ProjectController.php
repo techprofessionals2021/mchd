@@ -3291,6 +3291,7 @@ class ProjectController extends Controller
     public function projectCalender($slug, $projectID)
     {
         $objUser = Auth::user();
+        $workspace_type = WorkspaceType::get();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         if ($objUser && $currentWorkspace) {
             if ($objUser->getGuard() == 'client') {
@@ -3316,7 +3317,7 @@ class ProjectController extends Controller
                 // $currentWorkspace->getUsers();
                 $WSUsers = UserResource::collection($currentWorkspace->users);
                 $meetingCollection = MeetingResource::collection($meetings);
-                return view('vue-ui.pages.project.calender', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','WSUsers','meetingCollection'));
+                return view('vue-ui.pages.project.calender', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','WSUsers','meetingCollection','workspace_type'));
                 // return view('projects.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags'));
             } else {
                 return redirect()->back()->with('error', __("Project Not Found."));
