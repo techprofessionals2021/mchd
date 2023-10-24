@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Workspace;
 use App\Models\Utility;
 use App\Models\UserWorkspace;
+use App\Models\WorkspaceType;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -47,6 +48,15 @@ class RegisteredUserController extends Controller
 
   public function showRegistrationForm($lang = '')
     {
+
+        // $workspace_type = Workspace::where('workspace_type_id','2')->get();
+
+        $workspace_type = Workspace::whereHas('workspaceType', function ($query) {
+            $query->where('slug', 'depart');
+        })->get();
+        // dd($workspace_type);
+
+        // dd('asd');
         if ($lang == '') {
             $lang = env('DEFAULT_ADMIN_LANG') ?? 'en';
         }
@@ -58,7 +68,7 @@ class RegisteredUserController extends Controller
         // }else{
         //     return abort('404', 'Page not found');
         // }
-        return view('custom-auth.register', compact('lang'));
+        return view('custom-auth.register', compact('lang','workspace_type'));
     }
 
     public function store(Request $request)
@@ -89,15 +99,15 @@ class RegisteredUserController extends Controller
         ]);
 
 
-        $objWorkspace = Workspace::create(['created_by'=>$user->id,'name'=>$request->workspace, 'currency_code' => 'USD', 'paypal_mode' => 'sandbox']);
+        // $objWorkspace = Workspace::create(['created_by'=>$user->id,'name'=>$request->workspace, 'currency_code' => 'USD', 'paypal_mode' => 'sandbox']);
         $setting = Utility::getAdminPaymentSettings();
 
 
 
         $userWorkspace               =   new UserWorkspace();
         $userWorkspace->user_id      =     $user->id;
-        $userWorkspace->workspace_id =    $objWorkspace->id;
-        $userWorkspace->permission   = 'Owner';
+        $userWorkspace->workspace_id =    $request->workspace_id;
+        $userWorkspace->permission   = 'Member';
 
         if(empty($userWorkspace))
         {
@@ -108,7 +118,7 @@ class RegisteredUserController extends Controller
             $userWorkspace->save();
         }
 
-            $user->currant_workspace = $objWorkspace->id;
+            $user->currant_workspace = $request->workspace_id;
             User::userDefaultDataRegister($user);
 
             Auth::login($user);

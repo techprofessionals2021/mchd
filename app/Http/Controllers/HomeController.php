@@ -8,6 +8,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Models\UserProject;
 use App\Models\UserWorkspace;
+use App\Models\WorkspaceType;
 use App\Models\Utility;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,6 +40,9 @@ class HomeController extends Controller
      */
     public function index($slug = '')
     {
+
+     
+
         $userObj = Auth::user();
         if ($userObj->type == 'admin') {
             $users = User::where('type', '!=', 'admin')->get();
@@ -85,6 +89,7 @@ class HomeController extends Controller
 
             } else {
                 // dd(date("Y-m-d"));
+                $workspace_type = WorkspaceType::get();
                 $totalProject = UserProject::join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->count();
                 $dueDateProjects = UserProject::join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->whereDate('end_date', '=', date("Y-m-d"))->count();
                 $inProgressProjects = UserProject::join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('status', '=', 'Ongoing')->count();
@@ -148,7 +153,8 @@ class HomeController extends Controller
                 'inProgressProjects',
                 'dueDateProjects',
                 'inProgressTask',
-                'dueDateTask'
+                'dueDateTask',
+                'workspace_type'
 
             ));
             }

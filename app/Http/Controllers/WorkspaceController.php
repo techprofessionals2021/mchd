@@ -29,6 +29,7 @@ class WorkspaceController extends Controller
 
     public function store(Request $request)
     {
+    
         $objUser = Auth::user();
 
         $validator = \Validator::make(
@@ -47,6 +48,7 @@ class WorkspaceController extends Controller
                 'name' => $request->name,
                 'currency_code' => 'USD',
                 'paypal_mode' => 'sandbox',
+                'workspace_type_id' => $request->workspace_type_id,
             ]
         );
 
