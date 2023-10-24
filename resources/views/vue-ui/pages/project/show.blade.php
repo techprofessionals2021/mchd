@@ -161,6 +161,9 @@
                                                             <h4 class="mb-0 m-l-10">{{ __('Tasks') }}
                                                             </h4>
                                                         </div>
+                                                        <div>
+                                                            <a href="#" class="btn btn-sm btn-primary" data-ajax-popup="true" data-size="lg" data-title="{{ __('Create New Task') }}" data-url="{{route($client_keyword.'tasks.create',[$currentWorkspace->slug,$project->id])}}" data-toggle="tooltip" title="{{ __('Add Task') }}"><i class="ti ti-plus"></i></a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="card-body tasks-body"

@@ -42,7 +42,7 @@ class MeetingController extends Controller
            'time_out' => date('H:i', strtotime($request->time_out)),
            'meeting_cundocter_id' => auth()->id(),
            'color' => $request->color,
-           'meeting_date' => $request->meeting_date,
+           'meeting_date' => $request->date,
         ]);
         $meeting->members()->attach($request->assignee);
         return response()->json([

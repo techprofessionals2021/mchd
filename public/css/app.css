@@ -1270,6 +1270,9 @@ select {
 .m-auto {
   margin: auto;
 }
+.m-10 {
+  margin: 2.5rem;
+}
 .-my-5 {
   margin-top: -1.25rem;
   margin-bottom: -1.25rem;
