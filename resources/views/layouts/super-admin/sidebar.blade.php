@@ -81,7 +81,7 @@
                                     class="dash-mtext">{{ __('Users') }}</span></a>
                         </li>
 
-                        <li class="dash-item dash-hasmenu">
+                        {{-- <li class="dash-item dash-hasmenu">
                             <a href="{{route('superadmin.project')}}"
                                 class="dash-link {{ Request::route()->getName() == 'projects.index' ? ' active' : '' }}"><span
                                     class="dash-micon"> <i data-feather="briefcase"></i></span><span
@@ -93,7 +93,7 @@
                             <a href="{{route('superadmin.task')}}" class="dash-link "><span
                                     class="dash-micon"><i data-feather="list"></i></span><span
                                     class="dash-mtext">{{ __('Tasks') }}</span></a>
-                        </li>
+                        </li> --}}
 
 
 

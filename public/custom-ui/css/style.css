@@ -95,10 +95,12 @@ vertical-align: middle;
 
 .ws-li-block{
     background: rgb(1, 74, 171);
-    height: 25px;
-    width: 25px;
+    height: 15px;
+    width: 15px;
     display: inline-block;
     border-radius: 8px;
+    margin-top: 4px;
+
 }
 .project-list{
     list-style-type: square !important;

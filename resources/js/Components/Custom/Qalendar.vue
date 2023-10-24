@@ -1,55 +1,42 @@
 <template>
-    <Qalendar  :events="events" :config="config" @date-was-clicked="handleDateClicked">
+    <div class="m-10 text-end">
+        <a href="#" class="btn btn-sm btn-primary"  title="Add Meeting" @click="handleOpenModal"><i class="ti ti-plus"></i></a>
+    </div>
+    <Qalendar :events="events" :config="config" @date-was-clicked="handleDateClicked"
+        @event-was-clicked="handleEventClicked">
         <template #eventDialog="props">
             <div v-if="props.eventDialogData && props.eventDialogData.title">
                 <h3 :style="{ marginBottom: '8px' }" class="text-center mt-2">Meeting Details</h3>
                 <div class="p-20">
                     <div class="mt-2">
                         <span class="font-bold">Title</span>:
-                        <span>Staff Meeting</span>
+                        <span>{{ props?.eventDialogData?.title }}</span>
                     </div>
                     <div class="mt-2">
                         <span class="font-bold">Description</span>:
-                        <span>meeting for managing I.C.U </span>
+                        <span>{{ props?.eventDialogData?.description }}</span>
                     </div>
                     <div class="row mt-2">
-                        <div class="col-6">
+                        <div class="col-4">
                             <span class="font-bold">Assignee</span>:
-                            <!-- <a-avatar style="background-color: #1890ff">d
-                </a-avatar> -->
-
                             <a-avatar-group :max-count="2" max-popover-trigger="click" size="large"
                                 :max-style="{ color: '#f56a00', backgroundColor: '#fde3cf', cursor: 'pointer' }">
-                                <a-tooltip title="dummyuser" placement="top">
-                                    <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                                </a-tooltip>
-                                <a-tooltip title="dummyuser" placement="top">
-                                    <a-avatar style="background-color: #f56a00">K</a-avatar>
-                                </a-tooltip>
-                                <a-tooltip title="dummyuser" placement="top">
-                                    <a-avatar style="background-color: #87d068">
-                                        <template #icon>
-                                            <UserOutlined />
-                                        </template>
-                                    </a-avatar>
-                                </a-tooltip>
+                                <template v-for="(value, index) in props.eventDialogData.assignee">
+                                    <a-tooltip :title="value.name" placement="top">
+                                        <a-avatar :style="{ backgroundColor: 'rgb(155 131 113)' }">{{ value.name.charAt(0)
+                                        }}</a-avatar>
+                                    </a-tooltip>
+                                </template>
                             </a-avatar-group>
                         </div>
-                        <div class="col-6 text-end align-self-end">
+                        <div class="col-8 text-end align-self-end">
                             <span>Time</span>:
-                            <span>6:00 pm</span>
+                            <span>{{ convertTo12HourFormat(props?.eventDialogData?.start_time) }}</span>
                         </div>
 
 
                     </div>
                 </div>
-
-
-                <!-- <input class="flyout-input" type="text" style="width: 90%, padding: 8px, marginBottom: 8px" >
-
-        <button class="close-flyout" @click="props.closeEventDialog">
-          Finished!
-        </button> -->
             </div>
         </template>
 
@@ -60,100 +47,131 @@
         </template>
     </Qalendar>
 
-    <!-- <div> -->
-        <!-- <a-button type="primary" @click="showModal">Open Modal</a-button>
-        <a-button @click="success">Success</a-button> -->
-        <!-- <a-modal v-model:open="open" title="Basic Modal">
-            </a-modal> -->
-    <!-- </div> -->
+    <div>
+        <a-modal v-model:open="open" width="22rem" title="Create Meeting" :footer="null">
+            <div>
+                <a-input v-model:value="form.title" placeholder="Enter Meeting Title" allow-clear class="mt-3" />
+                <a-textarea v-model:value="form.description" placeholder="Enter Meeting Description" allow-clear
+                    class="mt-2" />
+                <br />
+
+                <div class="mt-3">
+                    <a-date-picker v-model:value="form.date" class="w-100"/>
+                </div>
+                <div class="mt-3">
+                    <a-time-picker v-model:value="form.time_in" format="HH:mm" placeholder="Time In" />
+                    <a-time-picker v-model:value="form.time_out" format="HH:mm" placeholder="Time Out" class="m-l-20" />
+                </div>
+
+                <a-select v-model:value="form.assignee" mode="multiple" style="width: 100%" placeholder="Select Item..."
+                    max-tag-count="responsive" :options="users" class="mt-3"></a-select>
+
+                <!--  -->
+                <div class="custom-radios mt-3">
+
+                    <div v-for="(color, index) in colors">
+                        <input type="radio" v-model="form.color" :id="index" name="color" :value="index"
+                            :checked="form.color === index">
+                        <label for="color-1" @click="handleChangeColor(index)">
+                            <span>
+                                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg" class="m-t-10"
+                                    alt="Checked Icon" />
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <!--  -->
+
+                <a-button type="primary" class="mt-2 w-100" @click="onSubmit">Create</a-button>
+            </div>
+        </a-modal>
+    </div>
 </template>
 
 <script>
 import { Qalendar } from "qalendar";
-import { Avatar } from "./Avatar";
-import { Modal } from 'ant-design-vue';
 import { ref } from 'vue';
+import moment, { now } from 'moment';
+const users = [];
 const open = ref(false);
+const meetings = [];
+const colors = {
+    green: '#def5e6',
+    blue: '#dff2f7',
+    purple: '#d9d2ff',
+    orange: '#feeed7',
+    grey: '#e5e5e5'
+}
+
 export default {
+    props: ['users', 'meetings'],
     components: {
         Qalendar,
-        Avatar,
-       
     },
     methods: {
-        // handleDateClicked(value) {
-        //     alert(value);
-        //     open.value = true;
-        // },
+        handleDateClicked(value, e) {
+            // this.form.meeting_date = value;
+            // open.value = true;
+        },
+        handleEventClicked(v, e) {
+        },
         showModal() {
             open.value = true;
         },
-        handleOk(e) {
-            console.log(e);
-            open.value = false;
+        onSubmit(e) {
+            e.preventDefault();
+            let currentObj = this;
+            axios.post('/meeting/store', {
+                title: this.form.title,
+                description: this.form.description,
+                time_in: this.form.time_in.format("hh:mm a"),
+                time_out: this.form.time_out.format("hh:mm a"),
+                assignee: this.form.assignee,
+                color: this.form.color,
+                meeting_date: this.form.meeting_date,
+                date: this.form.date.format("YYYY-MM-DD"),
+            }
+
+            )
+                .then(function (response) {
+                    open.value = false;
+                    location.reload();
+                })
+                .catch(function (error) {
+                    currentObj.output = error;
+                });
         },
-        success() {
-            Modal.success({
-                title: 'This is a success message',
-            });
+
+        handleChangeColor(color) {
+            this.form.color = color;
+        },
+
+        convertTo12HourFormat(time24) {
+            // Create a Date object with the 24-hour time
+            const dateObj = new Date(`2000-01-01T${time24}`);
+
+            // Use Intl.DateTimeFormat to format as 12-hour time
+            const options = { hour: '2-digit', minute: '2-digit', hour12: true };
+            return new Intl.DateTimeFormat('en-US', options).format(dateObj);
+        },
+        handleOpenModal(){
+            open.value = true;
         }
     },
 
-    data() {
+    data(props) {
+        props.users.forEach(element => {
+            users.push({
+                label: element.name,
+                value: element.id,
+            });
+        });
+        props.meetings.forEach(element => {
+            meetings.push(element);
+        });
         return {
-            events: [
-                // ...
-                {
-                    title: "Meeting For Health",
-                    // with: "Chandler Bing",
-                    time: { start: "2023-10-18 07:05", end: "2023-10-18 09:00" },
-                    color: "green",
-                    // isEditable: true,
-                    id: "753944708f0f",
-                    // description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores assumenda corporis doloremque et expedita molestias necessitatibus quam quas temporibus veritatis. Deserunt excepturi illum nobis perferendis praesentium repudiandae saepe sapiente voluptatem!"
-                },
-                {
-                    title: "Meeting For Work",
-                    // with: "Chandler Bing",
-                    time: { start: "2023-10-21 08:05", end: "2023-10-21 11:00" },
-                    color: "red",
-                    // isEditable: true,
-                    id: "7539448f0f",
-                    // description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores assumenda corporis doloremque et expedita molestias necessitatibus quam quas temporibus veritatis. Deserunt excepturi illum nobis perferendis praesentium repudiandae saepe sapiente voluptatem!"
-                },
-                {
-                    title: "Meeting For Food",
-                    // with: "Chandler Bing",
-                    time: { start: "2023-10-20 11:05", end: "2023-10-20 13:00" },
-                    color: "yellow",
-                    // isEditable: true,
-                    id: "753944f0f",
-                    // description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores assumenda corporis doloremque et expedita molestias necessitatibus quam quas temporibus veritatis. Deserunt excepturi illum nobis perferendis praesentium repudiandae saepe sapiente voluptatem!"
-                },
-                {
-                    title: "Meeting For Sport",
-                    // with: "Chandler Bing",
-                    time: { start: "2023-10-21 11:05", end: "2023-10-21 13:00" },
-                    color: "brown",
-                    // isEditable: true,
-                    id: "7539f0f",
-                    // description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores assumenda corporis doloremque et expedita molestias necessitatibus quam quas temporibus veritatis. Deserunt excepturi illum nobis perferendis praesentium repudiandae saepe sapiente voluptatem!"
-                },
-                {
-                    title: "Meeting For Food",
-                    // with: "Chandler Bing",
-                    time: { start: "2023-10-16 11:05", end: "2023-10-16 13:00" },
-                    color: "blue",
-                    // isEditable: true,
-                    id: "753944f0f",
-                    // description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores assumenda corporis doloremque et expedita molestias necessitatibus quam quas temporibus veritatis. Deserunt excepturi illum nobis perferendis praesentium repudiandae saepe sapiente voluptatem!"
-                },
-            ],
+            events: meetings,
             config: {
-                height:'2000px',
-                eventStyle: {
-                    background: this.eventBackgroundColor, // Bind background color
-                },
                 dayBoundaries: {
                     start: 6,
                     end: 18,
@@ -163,27 +181,72 @@ export default {
                     isCustom: true
                 },
                 style: {
-                    // When adding a custom font, please also set the fallback(s) yourself
-                    fontFamily: '',
+                    colorSchemes: {
+                        green: {
+                            color: 'black',
+                            // backgroundColor: '#cffad6',
+                            backgroundColor: '#def5e6',
+                        },
+                        purple: {
+                            color: 'black',
+                            backgroundColor: '#d9d2ff',
+                        },
+                        blue: {
+                            color: 'black',
+                            backgroundColor: '#dff2f7',
+                        },
+                        orange: {
+                            color: 'black',
+                            backgroundColor: '#feeed7',
+                        },
+                        grey: {
+                            color: 'black',
+                            backgroundColor: '#e5e5e5',
+                        },
+                    }
                 },
+                // defaultMode: 'month',
             },
             visible: false,
             form: {
                 title: '',
                 description: '',
-                time: null,
-                assignee: '',
+                time_in: null,
+                time_out: null,
+                assignee: [],
+                color: 'green',
+                meeting_date: null,
+                date:null
             },
             open,
-            eventBackgroundColor: 'yellow',
+            moment,
+            colors,
+            users,
+            meetings: meetings,
+
         }
     },
+
+    mounted: function () {
+        (function () {
+            setTimeout(() => {
+                const eventElements = document.querySelectorAll('.calendar-month__event');
+                console.log(eventElements);
+                eventElements.forEach((eventElement) => {
+
+                    console.log(getComputedStyle(eventElement.firstElementChild).backgroundColor,'style');
+                    eventElement.style.backgroundColor = getComputedStyle(eventElement.firstElementChild).backgroundColor;
+                    eventElement.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                });
+                });
+            }, 1000);
+        })();
+    }
 }
 </script>
 
 <style>
-/* @import "qalendar/dist/style.css"; */
-
 .week-timeline__event {
     height: 2rem !important;
 }
@@ -202,7 +265,71 @@ export default {
     cursor: pointer;
 }
 
-.mode-is-month{
+.mode-is-month {
     height: 40rem !important;
+}
+
+.ant-modal-mask {
+    height: 0px !important;
+}
+
+/*  */
+.custom-radios div {
+    display: inline-block;
+}
+
+.custom-radios input[type="radio"] {
+    display: none;
+}
+
+.custom-radios input[type="radio"]+label {
+    color: #333;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.custom-radios input[type="radio"]+label span {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    margin: -1px 4px 0 0;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
+    line-height: 44px;
+}
+
+.custom-radios input[type="radio"]+label span img {
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.custom-radios input[type="radio"]#green+label span {
+    background-color: #def5e6;
+}
+
+.custom-radios input[type="radio"]#blue+label span {
+    background-color: #dff2f7;
+}
+
+.custom-radios input[type="radio"]#purple+label span {
+    background-color: #d9d2ff;
+}
+
+.custom-radios input[type="radio"]#orange+label span {
+    background-color: #feeed7;
+}
+
+.custom-radios input[type="radio"]#grey+label span {
+    background-color: #e5e5e5;
+}
+
+.custom-radios input[type="radio"]:checked+label span img {
+    opacity: 1;
 }
 </style>

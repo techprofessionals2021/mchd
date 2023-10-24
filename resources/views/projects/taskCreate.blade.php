@@ -32,6 +32,7 @@
                 <input type="text" class="form-control form-control-light" id="task-title" placeholder="{{ __('Enter Title')}}" name="title" required>
             </div>
             <div class="form-group col-md-4">
+                
                 <label class="col-form-label">{{ __('Priority')}}</label>
                 <select class="form-control form-control-light select2" name="priority" id="task-priority" required>
                     <option value="Low">{{ __('Low')}}</option>
@@ -42,7 +43,7 @@
             <div class="form-group col-md-12">
                 <label class="col-form-label">{{ __('Assign To')}}</label>
 
-                      <select class=" multi-select" id="assign_to" name="assign_to[]" data-toggle="select2" multiple="multiple" data-placeholder="{{ __('Select Users ...') }}" required>
+                    <select class=" multi-select" id="assign_to" name="assign_to[]" data-toggle="select2" multiple="multiple" data-placeholder="{{ __('Select Users ...') }}" required>
                     @foreach($users as $u)
                         <option value="{{$u->id}}">{{$u->name}} - {{$u->email}}</option>
                     @endforeach
