@@ -170,3 +170,9 @@ vertical-align: middle;
   .badge-success{
     background: green;
   }
+
+  .overflow-hiddenn{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
