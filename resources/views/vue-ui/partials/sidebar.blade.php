@@ -171,7 +171,7 @@
                             <div class="mt-2 p-l-15">
                                 <div class="d-flex {{ $workspace->id == $currentWorkspace->id ? 'c-slider' : ''}}">
                                     <div class="ws-li-block"></div>
-                                    <p class="m-l-5 side-nav-text cursor-pointer {{ $workspace->id == $currentWorkspace->id ? 'font-extrabold' : ''}}">{{ $workspace->name}} {!! $workspace->id == $currentWorkspace->id ? '<span class="badge badge-success">Current</span>' : ''!!} </p>
+                                    <p class="m-l-5 side-nav-text cursor-pointer overflow-hiddenn {{ $workspace->id == $currentWorkspace->id ? 'font-extrabold' : ''}}">{{ $workspace->name}} {!! $workspace->id == $currentWorkspace->id ? '<span class="badge badge-success">Current</span>' : ''!!} </p>
                                 </div>
                                 <div class="c-slided" style="display: none">
                                     <ul class='project-list'>
