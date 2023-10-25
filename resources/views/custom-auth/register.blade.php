@@ -92,7 +92,7 @@
 
 
                         <p class="text-[#616161] font-semibold mb-2 mt-5">
-                            Workspace Type
+                        Department
                         </p>
                         <div class="relative">
                             <div class="relative">
