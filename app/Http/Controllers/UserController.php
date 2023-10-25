@@ -28,6 +28,7 @@ use App\Models\UserEmailTemplate;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Mail\SendWorkspaceInvication;
 use App\Models\Workspace;
+use App\Models\WorkspaceType;
 use App\Models\WorkspacePermission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -344,8 +345,9 @@ class UserController extends Controller
 
         $user             = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug('');
+        $workspace_type = WorkspaceType::get();
 
-        return view('users.account', compact('currentWorkspace', 'user'));
+        return view('users.account', compact('currentWorkspace', 'user','workspace_type'));
     }
 
     public function edit($slug, $id)

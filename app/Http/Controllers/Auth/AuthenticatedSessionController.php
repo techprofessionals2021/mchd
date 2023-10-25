@@ -115,6 +115,11 @@ class AuthenticatedSessionController extends Controller
 
         }
 
+        // else if(Auth::user()->roles->contains('name', 'HOD')){
+        //     // dd('hod');
+        //     return redirect()->route('hod.home');
+        // }
+
         else{
             // dd('for users');
         return redirect()->intended(RouteServiceProvider::HOME);

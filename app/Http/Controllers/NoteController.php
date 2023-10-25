@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Note;
 use App\Models\User;
+use App\Models\WorkspaceType;
 use App\Models\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,13 +14,15 @@ class NoteController extends Controller
 
     public function index($slug)
     {
+        $workspace_type = WorkspaceType::get();
+       
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         $personal_notes = Note::where('type','=','personal')->where('workspace','=',$currentWorkspace->id)->where('created_by','=',Auth::user()->id)->get();
         $shared_notes = Note::where('type','=','shared')->where('workspace','=',$currentWorkspace->id)
                             ->whereRaw("find_in_set('".Auth::user()->id."',notes.assign_to)")
                             ->get();
 
-        return view('notes.index',compact('currentWorkspace','personal_notes', 'shared_notes'));
+        return view('notes.index',compact('currentWorkspace','personal_notes', 'shared_notes','workspace_type'));
     }
 
 
