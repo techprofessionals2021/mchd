@@ -42,6 +42,7 @@ use App\Models\Note;
 use App\Models\ClientProject;
 use App\Models\Milestone;
 use App\Models\Task;
+use App\Models\WorkspaceType;
 use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
@@ -59,7 +60,7 @@ class UserController extends Controller
     public function index($slug = '')
     {
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
-
+        $workspace_type = WorkspaceType::get();
 
         $user = User::find(Auth::id());
         $permissions = $user->getPermissionWorkspace($currentWorkspace->id);
@@ -80,7 +81,7 @@ class UserController extends Controller
             $users = User::where('type', '!=', 'admin')->get();
         }
 
-        return view('users.index', compact('currentWorkspace', 'users','permissions'));
+        return view('users.index', compact('currentWorkspace', 'users','permissions','workspace_type'));
     }
 
     public function filterUsers(Request $request,$slug)
@@ -534,7 +535,7 @@ class UserController extends Controller
 
     public function inviteUser($slug, Request $request)
     {
-    
+
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
 
         $post             = $request->all();
