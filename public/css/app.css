@@ -1261,6 +1261,9 @@ select {
 .m-1 {
   margin: 0.25rem;
 }
+.m-10 {
+  margin: 2.5rem;
+}
 .m-2 {
   margin: 0.5rem;
 }
@@ -1269,9 +1272,6 @@ select {
 }
 .m-auto {
   margin: auto;
-}
-.m-10 {
-  margin: 2.5rem;
 }
 .-my-5 {
   margin-top: -1.25rem;

@@ -28,6 +28,7 @@ use App\Models\UserEmailTemplate;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Mail\SendWorkspaceInvication;
 use App\Models\Workspace;
+use App\Models\WorkspaceType;
 use App\Models\WorkspacePermission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +42,7 @@ use App\Models\Note;
 use App\Models\ClientProject;
 use App\Models\Milestone;
 use App\Models\Task;
+use App\Models\WorkspaceType;
 use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
@@ -58,7 +60,7 @@ class UserController extends Controller
     public function index($slug = '')
     {
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
-
+        $workspace_type = WorkspaceType::get();
 
         $user = User::find(Auth::id());
         $permissions = $user->getPermissionWorkspace($currentWorkspace->id);
@@ -79,7 +81,7 @@ class UserController extends Controller
             $users = User::where('type', '!=', 'admin')->get();
         }
 
-        return view('users.index', compact('currentWorkspace', 'users','permissions'));
+        return view('users.index', compact('currentWorkspace', 'users','permissions','workspace_type'));
     }
 
     public function filterUsers(Request $request,$slug)
@@ -344,8 +346,9 @@ class UserController extends Controller
 
         $user             = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug('');
+        $workspace_type = WorkspaceType::get();
 
-        return view('users.account', compact('currentWorkspace', 'user'));
+        return view('users.account', compact('currentWorkspace', 'user','workspace_type'));
     }
 
     public function edit($slug, $id)
@@ -532,7 +535,7 @@ class UserController extends Controller
 
     public function inviteUser($slug, Request $request)
     {
-    
+
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
 
         $post             = $request->all();

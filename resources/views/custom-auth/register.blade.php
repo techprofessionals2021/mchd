@@ -108,6 +108,24 @@
                             </div>
                         </div>
 
+
+                        <p class="text-[#616161] font-semibold mb-2 mt-5">
+                            Department Role
+                            </p>
+                            <div class="relative">
+                                <div class="relative">
+                                    <select id="status" name="depart_user_role_id" class="form-control  py-2 password px-3 border border-gray-200 w-full placeholder:text-[#9E9E9E]" required>
+                                  
+                                        @foreach ($depart_user_role as $item)
+                                        <option value="{{$item->id}}">{{ $item->name }} </option>
+                                        @endforeach
+        
+                                     
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
                 
                         {{-- <div class="col-md-12">
                           

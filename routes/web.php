@@ -56,6 +56,7 @@ use App\Http\Controllers\SuperAdminWorkspaceController;
 use App\Http\Controllers\SuperAdminProjectController;
 use App\Http\Controllers\SuperAdminPermissionController;
 use App\Http\Controllers\SuperAdminTaskController;
+use App\Http\Controllers\HodDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -301,6 +302,18 @@ Route::post('permission/delete/{id}', [SuperAdminPermissionController::class, 'd
 
 });
 //end routes for superadmin
+
+
+//start routes for hod
+Route::prefix('hod')->as('hod.')->group(function() {
+  Route::get('/', [HodDashboardController::class, 'index'])->name('home')->middleware(['auth']);
+  
+});
+
+  //end route for hod
+
+
+
 
 
 Route::prefix('client')->as('client.')->group(function() {
@@ -594,6 +607,7 @@ Route::get('/{slug}/projects/',[ProjectController::class, 'index'])->name('proje
 Route::post('/{slug}/projects/filter',[ProjectController::class, 'filterProducts'])->name('projects.filter')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/create',[ProjectController::class, 'create'])->name('projects.create')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/{id}',[ProjectController::class, 'show'])->name('projects.show')->middleware(['auth','XSS']);
+Route::get('/{slug}/projects/{id}/search',[ProjectController::class, 'searchTasks'])->name('projects.searchTasks')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects',[ProjectController::class, 'store'])->name('projects.store')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/{id}/edit',[ProjectController::class, 'edit'])->name('projects.edit')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects/{id}/update',[ProjectController::class, 'update'])->name('projects.update')->middleware(['auth','XSS']);

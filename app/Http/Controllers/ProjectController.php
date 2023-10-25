@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\projectsExport;
 use App\Http\Resources\MeetingResource;
+use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;
 use App\Imports\projectsImport;
 use App\Models\ActivityLog;
@@ -163,9 +164,10 @@ class ProjectController extends Controller
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         $treckers = TimeTracker::where('project_id', $id)->get();
         $project = Project::where('id', $id)->first();
+        $workspace_type = WorkspaceType::get();
 
         if (isset($project) && $project != null) {
-            return view('projects.tracker', compact('currentWorkspace', 'treckers', 'id', 'project'));
+            return view('projects.tracker', compact('currentWorkspace', 'treckers', 'id', 'project','workspace_type'));
         } else {
             return redirect()->back()->with('error', __('Tracker Not Found.'));
         }
@@ -526,8 +528,12 @@ class ProjectController extends Controller
 
                 $tags = json_decode($project->tags);
 
-                return view('vue-ui.pages.project.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type'));
-                // return view('projects.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags'));
+                $tasks = Task::with('sub_tasks')->where('project_id', '=', $projectID)->get();
+
+               $taskResource = TaskResource::collection($tasks);
+
+                return view('vue-ui.pages.project.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type','taskResource'));
+                // return view('projects.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type'));
             } else {
                 return redirect()->back()->with('error', __("Project Not Found."));
             }
@@ -535,6 +541,56 @@ class ProjectController extends Controller
 
             return redirect()->back()->with('error', __("Workspace Not Found."));
         }
+    }
+
+    public function testShow(Request $request, $slug,$projectID){
+        $objUser = Auth::user();
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+        $workspace_type = WorkspaceType::get();
+
+        if($objUser->id != $currentWorkspace->id){
+            // $objUser->currant_workspace = $currentWorkspace->id;
+            // $objUser->save();
+        }
+        // dd($currentWorkspace);
+        if ($objUser && $currentWorkspace) {
+            if ($objUser->getGuard() == 'client') {
+                $project = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
+            } else {
+                $project = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
+            }
+            if (isset($project) && $project != null) {
+                $chartData = $this->getProjectChart(
+                    [
+                        'workspace_id' => $currentWorkspace->id,
+                        'project_id' => $projectID,
+                        'duration' => 'week',
+                    ]
+                );
+
+                $daysleft = round((((strtotime($project->end_date) - strtotime(date('Y-m-d'))) / 24) / 60) / 60);
+
+                $permissions = Auth::user()->getPermission($project->id);
+
+                $tags = json_decode($project->tags);
+
+                $tasks = Task::with('sub_tasks')->where('project_id', '=', $projectID)
+                ->where('title','LIKE',"%{$request->search}%")->get();
+
+               $taskResource = TaskResource::collection($tasks);
+
+                return view('vue-ui.pages.project.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type','taskResource'));
+                // return view('projects.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type'));
+            } else {
+                return redirect()->back()->with('error', __("Project Not Found."));
+            }
+        } else {
+
+            return redirect()->back()->with('error', __("Workspace Not Found."));
+        }
+
+        $tasks = Task::with('sub_tasks')->where('project_id', '=', $projectID)
+        ->where('title','LIKE',"%{$request->search}%")->get();
     }
 
     public function getProjectChart($arrParam)
@@ -766,7 +822,7 @@ class ProjectController extends Controller
     public function taskBoard($slug, $projectID)
     {
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
-
+        $workspace_type = WorkspaceType::get();
         $objUser = Auth::user();
 
         if ($objUser && $currentWorkspace) {
@@ -798,7 +854,7 @@ class ProjectController extends Controller
                     }
                 }
 
-                return view('projects.taskboard', compact('currentWorkspace', 'project', 'stages', 'statusClass'));
+                return view('projects.taskboard', compact('currentWorkspace', 'project', 'stages', 'statusClass','workspace_type'));
             } else {
                 return redirect()->back()->with('error', __('Task Not Found.'));
             }
@@ -2201,6 +2257,7 @@ class ProjectController extends Controller
         // dd('asd');
         $userObj = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+        $workspace_type = WorkspaceType::get();
 
         if ($userObj->getGuard() == 'client') {
             $projects = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
@@ -2213,7 +2270,7 @@ class ProjectController extends Controller
         $stages = Stage::where('workspace_id', '=', $currentWorkspace->id)->orderBy('order')->get();
         $users = User::select('users.*')->join('user_workspaces', 'user_workspaces.user_id', '=', 'users.id')->where('user_workspaces.workspace_id', '=', $currentWorkspace->id)->get();
 
-        return view('projects.tasks', compact('currentWorkspace', 'projects', 'users', 'stages'));
+        return view('projects.tasks', compact('currentWorkspace', 'projects', 'users', 'stages','workspace_type'));
     }
 
     public function ajax_tasks($slug, Request $request)
@@ -2310,6 +2367,8 @@ class ProjectController extends Controller
                 ]
             )->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->join("stages", "stages.id", "=", "tasks.status")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)");
         }
+
+
         if ($request->project) {
             $tasks->where('tasks.project_id', '=', $request->project);
         }
@@ -2420,6 +2479,7 @@ class ProjectController extends Controller
     public function gantt($slug, $projectID, $duration = 'Week')
     {
         $objUser = Auth::user();
+        $workspace_type = WorkspaceType::get();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         $is_client = '';
 
@@ -2455,7 +2515,7 @@ class ProjectController extends Controller
             }
         }
 
-        return view('projects.gantt', compact('currentWorkspace', 'project', 'tasks', 'duration', 'is_client'));
+        return view('projects.gantt', compact('currentWorkspace', 'project', 'tasks', 'duration', 'is_client','workspace_type'));
     }
 
     public function ganttPost($slug, $projectID, Request $request)
@@ -3313,7 +3373,13 @@ class ProjectController extends Controller
                 $permissions = Auth::user()->getPermission($project->id);
 
                 $tags = json_decode($project->tags);
-                $meetings = Meeting::get();
+                // $meetings = auth()->meeting() Meeting::get();
+                $meetings = Meeting::whereHas('members', function ($query) use ($objUser) {
+                    $query->where('member_id', $objUser->id);
+                })->orWhere('meeting_cundocter_id', $objUser->id)
+                ->get();
+
+
                 // $currentWorkspace->getUsers();
                 $WSUsers = UserResource::collection($currentWorkspace->users);
                 $meetingCollection = MeetingResource::collection($meetings);

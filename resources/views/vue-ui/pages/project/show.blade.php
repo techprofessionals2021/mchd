@@ -137,12 +137,40 @@
                                         </div>
                                     </div>
                                     <div class="row grey-border-bottom">
-                                        <div class="col-6 my-3">
-                                            <custom-input-search></custom-input-search>
+                                        <div class="col-6 ">
+
+                                            <form action="{{route('projects.searchTasks',[$currentWorkspace->slug,$project->id])}}" method="Get" class="m-t-15">
+                                                <div class="input-group w-50">
+                                                    <input type="text" class="form-control" placeholder="input search text" aria-label="Search" style="width: 14%" name="search">
+                                                    <div class="input-group-append" style="border: 1px solid #ced4da;border-radius: 0px 8px 8px 0px">
+                                                        <button class="btn btn-outline-secondary" style="border: none" type="submit">
+                                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fill-rule="evenodd" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-1.414 0zM10 6.5a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0z"/>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                            {{-- <custom-input-search></custom-input-search> --}}
+
                                         </div>
-                                        <div class="col-6 my-3 text-end">
-                                            <img src='{{ asset('custom-ui/images/filter.svg') }}' class="m-r-5" />
-                                            <span class="p-text">Filter</span>
+                                        <div class="col-6 my-3 text-end d-flex justify-content-end align-items-center">
+                                            <div class="m-r-10">
+                                                <a href="#" class=""
+                                                data-url="{{ route('projects.edit', [$currentWorkspace->slug, $project->id]) }}"
+                                                data-ajax-popup="true" data-title="{{ __('Edit Project') }}"
+                                                data-toggle="popover" title="{{ __('Edit') }}">
+                                                <img
+                                                src="{{ asset('custom-ui/images/note.svg') }}" class="m-r-5 icon-image" />
+                                                <span class="p-text">Edit</span>
+                                            </a>
+
+                                            </div>
+                                            <div>
+                                                <img src='{{ asset('custom-ui/images/filter.svg') }}' class="m-r-5" />
+                                                <span class="p-text">Filter</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <br>
@@ -170,7 +198,7 @@
                                                     style="display:none;
                                                    transform-origin: top;
                                                    transition: transform .4s ease-in-out;">
-                                                    <app :tasks='{{ json_encode($project->getTasksWithSubTasks()) }}'>
+                                                    <app :tasks='{{ json_encode($taskResource) }}'>
                                                     </app>
                                                 </div>
                                             </div>
