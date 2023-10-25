@@ -52,41 +52,9 @@
 {{-- {{dd(auth()->user()->hasRole(('HOD')))}} --}}
 
 
-@if (auth()->user()->hasRole('HOD'))
-    <nav class="dash-sidebar light-sidebar {{ isset($cust_theme_bg) && $cust_theme_bg == 'on' ? 'transprent-bg' : '' }}">
-        <div class="navbar-wrapper">
-            <div class="m-header main-logo">
-                <a href="{{ route('home') }}" class="b-brand">
-                    <!-- ========   change your logo hear   ============ -->
+{{-- @if (auth()->user()->hasRole('HOD'))
 
-                    {{-- <img
-            src="{{$logo.$company_logo.'?timestamp='.strtotime(isset($currentWorkspace) ? $currentWorkspace->updated_at : '')}}" alt="logo" class="sidebar_logo_size" /> --}}
-
-                    <img src="{{ asset('custom-auth/uploads/logo/logo/20230320172321.png') }}" alt="logo"
-                        class="sidebar_logo_size" />
-                </a>
-            </div>
-            <div class="navbar-content">
-                <ul class="dash-navbar">
-
-                    <li class="dash-item dash-hasmenu">
-                        <a href="{{ route('projects.index', $currentWorkspace->slug) }}"
-                            class="dash-link {{ Request::route()->getName() == 'projects.index' ? ' active' : '' }} side-item"><span
-                                class="dash-micon"> <i data-feather="briefcase"></i></span><span
-                                class="dash-mtext">{{ __('Projects') }}</span></a>
-                    </li>
-
-                    <li class="dash-item {{ Request::route()->getName() == 'tasks.index' ? ' active' : '' }} side-item">
-                        <a href="{{ route('tasks.index', $currentWorkspace->slug) }}" class="dash-link "><span
-                                class="dash-micon"><i data-feather="list"></i></span><span
-                                class="dash-mtext">{{ __('Tasks') }}</span></a>
-                    </li>
-
-
-            </div>
-        </div>
-    </nav>
-@else
+@else --}}
     <nav class="dash-sidebar light-sidebar {{ isset($cust_theme_bg) && $cust_theme_bg == 'on' ? 'transprent-bg' : '' }}"
         style="border-right: 1px solid ">
         <div class="navbar-wrapper">
@@ -236,7 +204,7 @@
             </div>
         </div>
     </nav>
-@endif
+{{-- @endif --}}
 
 
 
