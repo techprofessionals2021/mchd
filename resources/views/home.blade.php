@@ -278,7 +278,7 @@
 
 
                 <div class="col-lg-12 col-md-12 ">
-                    <div class="card">
+                    {{-- <div class="card">
                         <div class="card-header">
                             <h5>{{ __('Tasks Overview') }}</h5>
                             <div class="text-end"><small class=""></small></div>
@@ -286,7 +286,7 @@
                         <div class="card-body">
                             <div id="task-area-chart"></div>
                         </div>
-                    </div>
+                    </div> --}}
 
 
 
