@@ -123,6 +123,7 @@
         <script src="{{asset('assets/custom/js/frappe-gantt.js')}}"></script>
         <script>
             var tasks = JSON.parse('{!! addslashes(json_encode($tasks)) !!}');
+          
             var gantt_chart = new Gantt(".gantt-target", tasks, {
                 custom_popup_html: function(task) {
                     var status_class = 'success';
