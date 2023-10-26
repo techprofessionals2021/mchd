@@ -494,8 +494,12 @@
             })();
         </script>
     @elseif(isset($currentWorkspace) && $currentWorkspace)
+
         <script>
             (function() {
+
+                console.log( {!! json_encode($chartData) !!});
+
                 var options = {
                     chart: {
                         height: 150,
@@ -515,7 +519,7 @@
                         @foreach ($chartData['stages'] as $id => $name)
                             {
                                 name: "{{ __($name) }}",
-                                data: {!! json_encode($chartData[$id]) !!}
+                                data: {!! json_encode($chartData[$id] )  !!}
                             },
                         @endforeach
                     ],

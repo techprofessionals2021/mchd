@@ -85,6 +85,7 @@ class HomeController extends Controller
                     'workspace_id' => $currentWorkspace->id,
                     'duration' => 'week',
                 ]);
+
                 return view('home', compact('currentWorkspace', 'totalProject', 'totalBugs', 'totalTask', 'totalMembers', 'arrProcessLabel', 'arrProcessPer', 'arrProcessClass', 'completeTask', 'tasks', 'chartData'));
 
             } else {
@@ -134,11 +135,20 @@ class HomeController extends Controller
                     'text-danger',
                 ];
 
-                $chartData = app('App\Http\Controllers\ProjectController')->getProjectChart([
+                $projectController = new ProjectReportController();
+
+                $chartData = $projectController->getProjectChart([
                     'workspace_id' => $currentWorkspace->id,
                     'duration' => 'week',
                 ]);
-                // dd('sds');
+                // $chartData = app('App\Http\Controllers\ProjectController')->getProjectChart([
+                //     'workspace_id' => $currentWorkspace->id,
+                //     'duration' => 'week',
+                // ]);
+
+
+              
+                // dd($chartData);
                 return view('home', compact('currentWorkspace',
                 'totalProject',
                 'totalBugs',
