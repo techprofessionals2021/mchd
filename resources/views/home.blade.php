@@ -497,10 +497,10 @@
 
         <script>
             (function() {
-                
+
                 var options = {
                     chart: {
-                        height: 150,
+                        height: 300,
                         type: 'line',
                         toolbar: {
                             show: false,

@@ -33,7 +33,7 @@
                 <a v-else>{{ text }}</a>
             </template>
 
-
+            
             <template v-else-if="column.dataIndex === 'assignee'">
                 <a-avatar-group :max-count="2" size="large" :max-style="{
                     color: '#f56a00',
@@ -60,6 +60,27 @@
                     <!-- </a-avatar> -->
                 </a-tooltip>
             </template>
+
+
+            <template v-else-if="column.dataIndex === 'edittask'">
+                <a v-if="record['modal_url_edit']" href="#" data-size="lg" :data-url="record['modal_url_edit']" data-ajax-popup="true"
+                    data-title="Task Edit" class="h6 task-title">
+                    <h5>      <EditTwoTone style="font-size: 24px;" /></h5>
+                                </a>
+                                <a v-else>{{ 'Edit' }}</a>
+                              
+            </template>
+
+
+            <template v-else-if="column.dataIndex === 'deletetask'">
+                <a :href="record['modal_url_destory']" 
+                    class="h6">
+                    <h5>      <DeleteTwoTone  style="font-size: 24px;" /></h5>
+                                </a>
+                                
+                              
+            </template>
+
         </template>
 
     </a-table>
@@ -70,7 +91,9 @@ import {
 
     CalendarOutlined,
     TableOutlined,
-    FlagOutlined
+    FlagOutlined,
+    EditTwoTone,
+    DeleteTwoTone ,
 } from '@ant-design/icons-vue';
 import moment from 'moment';
 
@@ -81,7 +104,7 @@ const columns = [
         key: 'title',
     },
     {
-        title: 'Assignee',
+        title: 'Assigne',
         dataIndex: 'assignee',
         key: 'assignee',
         //   width: '12%',
@@ -96,6 +119,18 @@ const columns = [
         dataIndex: 'priority',
         key: 'priority',
     },
+    {
+        title: 'Edit Task',
+        dataIndex: 'edittask',
+        key: 'edittask',
+    },
+
+    {
+        title: 'Delete Task',
+        dataIndex: 'deletetask',
+        key: 'deletetask',
+    },
+  
 
 ];
 
@@ -125,11 +160,13 @@ export default {
     },
     components: {
         CalendarOutlined,
-        FlagOutlined
+        FlagOutlined,
+        EditTwoTone,
+        DeleteTwoTone 
     },
     methods: {
         dateFormatter(dateTimeString) {
-            console.log(dateTimeString);
+            // console.log(dateTimeString);
             // Parse the date-time string using Moment.js
             const parsedDate = moment(dateTimeString, "YYYY-MM-DD HH:mm:ss");
 

@@ -47,7 +47,7 @@
 
     <?php $permissions = Auth::user()->getPermission($project->id); ?>
 
-    <section class="section">
+    <section class="section">    
 
         @if($project && $currentWorkspace)
             <div class="row">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\projectsExport;
 use App\Http\Resources\MeetingResource;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\TaskResource;
 use App\Imports\projectsImport;
 use App\Models\ActivityLog;
 use App\Models\BugComment;
@@ -500,6 +501,10 @@ class ProjectController extends Controller
         $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         $workspace_type = WorkspaceType::get();
+        
+
+      
+
 
         if($objUser->id != $currentWorkspace->id){
             // $objUser->currant_workspace = $currentWorkspace->id;
@@ -527,7 +532,14 @@ class ProjectController extends Controller
 
                 $tags = json_decode($project->tags);
 
-                return view('vue-ui.pages.project.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type'));
+                $tasks = Task::with('sub_tasks')->where('project_id', '=', $projectID)->get();
+
+                $taskResource = TaskResource::collection($tasks);
+        
+        
+        
+
+                return view('vue-ui.pages.project.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type','taskResource'));
                 // return view('projects.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type'));
             } else {
                 return redirect()->back()->with('error', __("Project Not Found."));
@@ -934,13 +946,16 @@ class ProjectController extends Controller
                         ]
                     )->with('success', __('Task Create Successfully!'));
                 } else {
-                    return redirect()->route(
-                        'projects.task.board',
-                        [
-                            $currentWorkspace->slug,
-                            $request->project_id,
-                        ]
-                    )->with('success', __('Task Create Successfully!'));
+                    // return redirect()->route(
+                    //     'projects.task.board',
+                    //     [
+                    //         $currentWorkspace->slug,
+                    //         $request->project_id,
+                    //     ]
+                    // )->with('success', __('Task Create Successfully!'));
+
+
+                    return redirect()->back()->with('success', __('Task Create Successfully!'));
                 }
             } else {
                 return redirect()->back()->with('error', __('Please add stages first.'));
@@ -1089,8 +1104,10 @@ class ProjectController extends Controller
 
     public function taskDestroy($slug, $projectID, $taskID)
     {
+  
         $objUser = Auth::user();
         $task = Task::find($taskID);
+
         try {
             if ($task) {
                 $task = Task::where('id', $taskID)->delete();
