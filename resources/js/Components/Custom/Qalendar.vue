@@ -63,7 +63,7 @@
                     <a-time-picker v-model:value="form.time_out" format="HH:mm" placeholder="Time Out" class="m-l-20" />
                 </div>
 
-                <a-select v-model:value="form.assignee" mode="multiple" style="width: 100%" placeholder="Select Item..."
+                <a-select v-model:value="form.assignee" mode="multiple" style="width: 100%" placeholder="Select Members"
                     max-tag-count="responsive" :options="users" class="mt-3"></a-select>
 
                 <!--  -->
