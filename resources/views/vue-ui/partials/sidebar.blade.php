@@ -178,6 +178,14 @@
 
                     </li>
 
+                     <li class="dash-item dash-hasmenu">
+                        <a href="{{ route('projects.calender',[$currentWorkspace->slug,'id'=>$project->id]) }}"
+                            class="dash-link{{ Request::route()->getName() == 'calender.show' ? ' active' : '' }} side-item"><span
+                                class="dash-micon mr-3"> <img
+                                    src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
+                                class="dash-mtext side-nav-text">{{ __('Calendar') }}</span></a>
+                    </li> 
+
                     @if (Auth::user()->type == 'admin')
                         <li
                             class="dash-item {{ Request::route()->getName() == 'lang_workspace' ? ' active' : '' }} side-item">

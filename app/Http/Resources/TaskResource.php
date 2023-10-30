@@ -24,6 +24,9 @@ class TaskResource extends JsonResource
             'priority' => $this->priority,
             'assignee'=> UserResource::collection($this->users()),
             'modal_url' => route('tasks.show',[auth()->user()->currentWorkspace->slug,$this->project_id,$this->id]),
+            'modal_url_edit' => route('tasks.edit',[auth()->user()->currentWorkspace->slug,$this->project_id,$this->id]),
+            'modal_url_destory' => route('tasks.destroy',[auth()->user()->currentWorkspace->slug, $this->project_id, $this->id]),
+
             'children' => SubTaskResource::collection($this->sub_tasks)
         ];
     }

@@ -639,6 +639,7 @@ Route::delete('/{slug}/projects/{id}/file/delete/{fid}',[ProjectController::clas
 
 // project Calender
 Route::get('/{slug}/projects/{id}/calender',[ProjectController::class, 'projectCalender'])->name('projects.calender');
+Route::get('/calender',[ProjectController::class, 'dashboardCalender'])->name('calender.show');
 
 
 // Task Board
@@ -649,7 +650,7 @@ Route::post('/{slug}/projects/{id}/task-board',[ProjectController::class, 'taskS
 Route::post('/{slug}/projects/{id}/task-board/order-update',[ProjectController::class, 'taskOrderUpdate'])->name('tasks.update.order');
 Route::get('/{slug}/projects/{id}/task-board/edit/{tid}',[ProjectController::class, 'taskEdit'])->name('tasks.edit')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects/{id}/task-board/{tid}/update',[ProjectController::class, 'taskUpdate'])->name('tasks.update')->middleware(['auth','XSS']);
-Route::delete('/{slug}/projects/{id}/task-board/{tid}',[ProjectController::class, 'taskDestroy'])->name('tasks.destroy')->middleware(['auth','XSS']);
+Route::get('/{slug}/projects/{id}/task-board/{tid}',[ProjectController::class, 'taskDestroy'])->name('tasks.destroy')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects/{id}/task-board/{tid}/drag',[ProjectController::class, 'taskDrag'])->name('tasks.drag.event');
 
 // Gantt Chart

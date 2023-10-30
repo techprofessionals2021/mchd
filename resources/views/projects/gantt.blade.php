@@ -22,8 +22,8 @@
 
 @section('action-button')
     <div class="btn-group mx-1" id="change_view" role="group">
-        <a href="{{route($is_client.'projects.gantt',[$currentWorkspace->slug,$project->id,'Quarter Day'])}}" class="btn btn-sm px-3 btn-info @if($duration == 'Quarter Day')active @endif" data-value="Quarter Day">{{__('Quarter Day')}}</a>
-        <a href="{{route($is_client.'projects.gantt',[$currentWorkspace->slug,$project->id,'Half Day'])}}" class="btn btn-sm  px-3 btn-info @if($duration == 'Half Day')active @endif" data-value="Half Day">{{__('Half Day')}}</a>
+        {{-- <a href="{{route($is_client.'projects.gantt',[$currentWorkspace->slug,$project->id,'Quarter Day'])}}" class="btn btn-sm px-3 btn-info @if($duration == 'Quarter Day')active @endif" data-value="Quarter Day">{{__('Quarter Day')}}</a>
+        <a href="{{route($is_client.'projects.gantt',[$currentWorkspace->slug,$project->id,'Half Day'])}}" class="btn btn-sm  px-3 btn-info @if($duration == 'Half Day')active @endif" data-value="Half Day">{{__('Half Day')}}</a> --}}
         <a href="{{route($is_client.'projects.gantt',[$currentWorkspace->slug,$project->id,'Day'])}}" class="btn btn-sm px-3 btn-info @if($duration == 'Day')active @endif" data-value="Day">{{__('Day')}}</a>
         <a href="{{route($is_client.'projects.gantt',[$currentWorkspace->slug,$project->id,'Week'])}}" class="btn btn-sm px-3 btn-info @if($duration == 'Week')active @endif" data-value="Week">{{__('Week')}}</a>
         <a href="{{route($is_client.'projects.gantt',[$currentWorkspace->slug,$project->id,'Month'])}}" class="btn btn-sm px-3 btn-info @if($duration == 'Month')active @endif" data-value="Month">{{__('Month')}}</a>
@@ -47,7 +47,7 @@
 
     <?php $permissions = Auth::user()->getPermission($project->id); ?>
 
-    <section class="section">
+    <section class="section">    
 
         @if($project && $currentWorkspace)
             <div class="row">
@@ -123,6 +123,7 @@
         <script src="{{asset('assets/custom/js/frappe-gantt.js')}}"></script>
         <script>
             var tasks = JSON.parse('{!! addslashes(json_encode($tasks)) !!}');
+          
             var gantt_chart = new Gantt(".gantt-target", tasks, {
                 custom_popup_html: function(task) {
                     var status_class = 'success';
