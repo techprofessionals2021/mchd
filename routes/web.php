@@ -639,6 +639,7 @@ Route::delete('/{slug}/projects/{id}/file/delete/{fid}',[ProjectController::clas
 
 // project Calender
 Route::get('/{slug}/projects/{id}/calender',[ProjectController::class, 'projectCalender'])->name('projects.calender');
+Route::get('/calender',[ProjectController::class, 'dashboardCalender'])->name('calender.show');
 
 
 // Task Board

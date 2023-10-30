@@ -341,6 +341,28 @@
                             </div>
                         </div>
                     </div>
+
+
+
+                    {{-- <div class="card">
+                        <div class="card-header">
+                            <div class="float-end">
+                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Refferals"><i
+                                        class=""></i></a>
+                            </div>
+
+                            <h5>{{ __('Progress Report') }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-sm-6">
+                                    <div id="progress-chart"></div>
+                                </div>
+                              
+                                </div>
+                            </div>
+                        </div>
+                    </div> --}}
                 </div>
             </div>
         @else
@@ -368,18 +390,109 @@
     @elseif(isset($currentWorkspace) && $currentWorkspace)
         <script>
             (function() {
+
+                console.log({!! json_encode($arrProcessPer) !!});
+
+                //new chart
+
+                var options = {
+                series: [{
+                    name: 'Progress',
+                    data: {!! json_encode($arrProcessPer) !!}
+                }],
+                chart: {
+                    height: 350,
+                    type: 'bar',
+                    width: '200%' 
+                },
+                plotOptions: {
+                    bar: {
+                        borderRadius: 10,
+                        dataLabels: {
+                            position: 'top', // top, center, bottom
+                        }
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    formatter: function (val) {
+                        return val + "%";
+                    },
+                    offsetY: -20,
+                    style: {
+                        fontSize: '12px',
+                        colors: ["#304758"]
+                    }
+                },
+                xaxis: {
+                    categories: {!! json_encode($arrProcessLabel) !!},
+                    position: 'top',
+                    axisBorder: {
+                        show: false
+                    },
+                    axisTicks: {
+                        show: false
+                    },
+                    crosshairs: {
+                        fill: {
+                            type: 'gradient',
+                            gradient: {
+                                colorFrom: '#D8E3F0',
+                                colorTo: '#BED1E6',
+                                stops: [0, 100],
+                                opacityFrom: 0.4,
+                                opacityTo: 0.5,
+                            }
+                        }
+                    },
+                    tooltip: {
+                        enabled: true,
+                    }
+                },
+                yaxis: {
+                    axisBorder: {
+                        show: false
+                    },
+                    axisTicks: {
+                        show: false,
+                    },
+                    labels: {
+                        show: false,
+                        formatter: function (val) {
+                            return val + "%";
+                        }
+                    },
+                },
+                title: {
+                    text: 'Progress Chart',
+                    floating: true,
+                    offsetY: 330,
+                    align: 'center',
+                    style: {
+                        color: '#444'
+                    }
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#progress-chart"), options);
+            chart.render();
+      
+
+                    //close chart
+
+
                 var options = {
                     chart: {
                         height: 200,
-                        type: 'donut',
+                        type: 'pie',
                     },
                     dataLabels: {
-                        enabled: false,
+                        enabled: true,
                     },
                     plotOptions: {
                         pie: {
                             donut: {
-                                size: '70%',
+                                size: '60%',
                             }
                         }
                     },
@@ -395,7 +508,7 @@
                         },
                     },
                     markers: {
-                        size: 1
+                        size: 7
                     },
                     legend: {
                         show: false
