@@ -307,7 +307,7 @@ Route::post('permission/delete/{id}', [SuperAdminPermissionController::class, 'd
 //start routes for hod
 Route::prefix('hod')->as('hod.')->group(function() {
   Route::get('/', [HodDashboardController::class, 'index'])->name('home')->middleware(['auth']);
-  
+
 });
 
   //end route for hod
@@ -493,7 +493,7 @@ Route::prefix('client')->as('client.')->group(function() {
 // Calender
 Route::get('/{slug}/calendar/{id?}',[CalenderController::class, 'index'])->name('calender.index')->middleware(['auth','XSS']);
 Route::any('/{slug}/calendarr/{id?}',[CalenderController::class, 'calendar'])->name('calender.google.calendar')->middleware(['auth','XSS']);
-
+Route::get('/{slug}/custom-calender',[CalenderController::class, 'customCalender'])->name('custom.calender');
 
 // Chats
 
@@ -857,6 +857,7 @@ Route::get('/{slug}/projects/{id}/members',[ProjectController::class, 'members']
 //=================================== custom meeting =============================================================//
 
 Route::post('/meeting/store',[MeetingController::class,'store'])->name('meeting.store');
+Route::post('/meeting/cancel',[MeetingController::class,'cancelMeeting'])->name('meeting.cancel');
 
 //=================================== slack=============================================================//
 
