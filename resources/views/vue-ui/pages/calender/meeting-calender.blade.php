@@ -15,6 +15,11 @@
         width: 30px !important;
         height: 30px !important;
     }
+
+    .text-muted::after{
+    content: "\a";
+    white-space: pre;
+    }
 </style>
 @section('page-title')
     {{ __('Calendar') }}
@@ -75,39 +80,32 @@
                             $date1 = Carbon\Carbon::now()->format('y');
                             $this_month_task = App\Models\project::where('workspace', $currentWorkspace->id)->get();
                         @endphp
-                        @foreach ($this_month_task as $task)
-                            @php
-                                $task_get = App\Models\task::where('project_id', $task->id)->get();
-                            @endphp
-                            @foreach ($task_get as $t)
-                                @php
-                                    $month = date('m', strtotime($t->start_date));
-                                    $year = date('y', strtotime($t->start_date));
-                                @endphp
-                                @if ($date == $month && $date1 == $year)
+                            @foreach ($pendingMeetings as $meeting)
                                     <li class="list-group-item card mb-3">
                                         <div class="row align-items-center justify-content-between">
-                                            <div class="col-auto mb-3 mb-sm-0">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="ms-3">
-                                                        <h6 class="m-0">{{ $t->title }}</h6>
-                                                        <small class="text-muted">{{ $t->start_date }} to
-                                                            {{ $t->due_date }}</small>
-                                                    </div>
-                                                    <div class="theme-avtar bg-secondary accept-icon">
-                                                        <i class="fa fa-times"></i>
-                                                    </div>
-                                                    <div class="theme-avtar bg-secondary accept-icon">
-                                                        <i class="fa fa-check"></i>
-                                                    </div>
+                                            <div class="col-7 mb-3 mb-sm-0">
+                                                <div class="ms-3">
+                                                    <h6 class="m-0 mb-1">{{ $meeting->title }}</h6>
+                                                   <small class="text-muted">{{ $meeting->meeting_date }}</small>
+                                                   <small class="text-muted">{{ $meeting->time_in }}</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-5 mb-3 mb-sm-0 row justify-content-between">
 
+                                                <div class="theme-avtar bg-secondary accept-icon col-6">
+                                                    <a href="{{route('meeting.decision',[$meeting->id,0])}}" class="text-white">
+                                                        <i class="fa fa-times"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="theme-avtar bg-secondary accept-icon col-6" >
+                                                    <a href="{{route('meeting.decision',[$meeting->id,1])}}" class="text-white">
+                                                        <i class="fa fa-check"></i>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
                                     </li>
-                                @endif
                             @endforeach
-                        @endforeach
                     </ul>
                 </div>
             </div>

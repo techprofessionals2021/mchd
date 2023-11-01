@@ -194,20 +194,29 @@ class CalenderController extends Controller
         $objUser = Auth::user();
         $workspace_type = WorkspaceType::get();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
-            // $meetings = auth()->meeting() Meeting::get();
-            $meetings = Meeting::where('is_canceled','!=',1)->whereHas('members', function ($query) use ($objUser) {
-                $query->where('member_id', $objUser->id)
-                ->orWhere('meeting_cundocter_id', $objUser->id);
-            })->get();
 
+        $pendingMeetings = Meeting::where('is_canceled', '!=', 1)
+            ->whereHas('members', function ($query) use ($objUser) {
+                $query->where('member_id', $objUser->id);
+                $query->where('meeting_users.is_accepted', null);
+            })
+            ->whereNot('meeting_cundocter_id', $objUser->id)->get();
 
-            // $currentWorkspace->getUsers();
-            $WSUsers = UserResource::collection($currentWorkspace->users);
-            $meetingCollection = MeetingResource::collection($meetings);
-            return view('vue-ui.pages.calender.meeting-calender', compact('currentWorkspace','WSUsers', 'meetingCollection', 'workspace_type'));
-            // return view('projects.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags'));
+        $allMeetings = Meeting::where('is_canceled', '!=', 1)
+            ->where(function ($query) use ($objUser) {
+                $query->where('meeting_cundocter_id', auth()->id())
+                    ->orWhereHas('members', function ($subquery) use ($objUser) {
+                        $subquery->where('member_id', $objUser->id)
+                            ->where('meeting_users.is_accepted', 1);
+                    });
+            })
+            ->get();
 
-            return view('vue-ui.pages.calender.meeting-calender', compact('currentWorkspace'));
+        $WSUsers = UserResource::collection($currentWorkspace->users);
+        $meetingCollection = MeetingResource::collection($allMeetings);
+        return view('vue-ui.pages.calender.meeting-calender', compact('currentWorkspace', 'WSUsers', 'meetingCollection', 'workspace_type','pendingMeetings'));
+        // return view('projects.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags'));
 
+        return view('vue-ui.pages.calender.meeting-calender', compact('currentWorkspace'));
     }
 }

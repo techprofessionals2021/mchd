@@ -866,6 +866,7 @@ Route::get('/{slug}/projects/{id}/members',[ProjectController::class, 'members']
 
 Route::post('/meeting/store',[MeetingController::class,'store'])->name('meeting.store');
 Route::post('/meeting/cancel',[MeetingController::class,'cancelMeeting'])->name('meeting.cancel');
+Route::get('/meeting/confirmation/{meeting_id}/{decision}',[MeetingController::class,'acceptOrReject'])->name('meeting.decision');
 
 //=================================== slack=============================================================//
 

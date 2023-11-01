@@ -104,6 +104,9 @@
                 /* -moz-border-radius: 5px; */
                 /* border-radius: 5px; */
             }
+            .gantt .bar-progress {
+               fill: rgb(65, 148, 246);;
+            }
         </style>
     @endpush
     @push('scripts')
@@ -195,7 +198,7 @@
                 // column_width: 30,
                 // step: 12,
                 // view_modes: ['Quarter Day', 'Half Day', 'Day', 'Week', 'Month'],
-                // bar_height: 30,
+                bar_height: 25,
                 bar_corner_radius: 10,
                 // arrow_curve: 5,
                 // padding: 18,

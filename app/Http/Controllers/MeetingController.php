@@ -104,4 +104,12 @@ class MeetingController extends Controller
         $meeting->save();
         return redirect()->back()->with('success',__('Meeting has been canceled successfully'));
     }
+
+    public function acceptOrReject($meeting_id,$decision)
+    {
+        $meeting = Meeting::find($meeting_id);
+        $meeting->members()->updateExistingPivot(auth()->id(),['is_accepted' => $decision]);
+        $message = $decision == 0 ? 'rejected' : 'accepted';
+        return redirect()->back()->with('success',__('Meeting has been '. $message .' successfully'));
+    }
 }
