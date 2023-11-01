@@ -20,6 +20,10 @@
     content: "\a";
     white-space: pre;
     }
+
+    .calendar-root{
+        border: 3px solid rgb(224 224 224) !important;
+    }
 </style>
 @section('page-title')
     {{ __('Calendar') }}
@@ -75,7 +79,7 @@
                 <div class="card-body">
                     <h4 class="mb-4">{{ __('New Meetings') }}</h4>
                     <ul class="event-cards list-group list-group-flush mt-3 w-100">
-                      
+
                             @foreach ($pendingMeetings as $meeting)
                                     <li class="list-group-item card mb-3">
                                         <div class="row align-items-center justify-content-between">
