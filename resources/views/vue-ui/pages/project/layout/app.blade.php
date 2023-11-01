@@ -436,7 +436,9 @@
             });
         @endforeach
     </script>
+
 @endpush
+@stack('scriptss')
 
 @push('scripts')
     <script>

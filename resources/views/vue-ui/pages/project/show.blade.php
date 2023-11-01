@@ -133,7 +133,7 @@
                                             <p class="h-text d-inline ms-2 text-primary">Team Space</p>
                                         </div>
                                         <div class="col-5">
-                                            <custom-menu :routes="{{ json_encode(['calender' => route('projects.calender', [$currentWorkspace->slug,'id'=>$project->id])]) }}"></custom-menu>
+                                            <custom-menu :routes="{{ json_encode(['calender' => route('projects.calender', [$currentWorkspace->slug,'id'=>$project->id]),'board' => route($client_keyword .'projects.task.board.custom', [$currentWorkspace->slug, $project->id])]) }}"></custom-menu>
                                         </div>
                                     </div>
                                     <div class="row grey-border-bottom">
@@ -141,7 +141,7 @@
 
                                             <form action="{{route('projects.searchTasks',[$currentWorkspace->slug,$project->id])}}" method="Get" class="m-t-15">
                                                 <div class="input-group w-50">
-                                                    <input type="text" class="form-control" placeholder="input search text" aria-label="Search" style="width: 14%" name="search">
+                                                    <input type="text" class="form-control" placeholder="Search Tasks" aria-label="Search" style="width: 14%" name="search">
                                                     <div class="input-group-append" style="border: 1px solid #ced4da;border-radius: 0px 8px 8px 0px">
                                                         <button class="btn btn-outline-secondary" style="border: none" type="submit">
                                                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -164,13 +164,13 @@
                                                 <img
                                                 src="{{ asset('custom-ui/images/note.svg') }}" class="m-r-5 icon-image" />
                                                 <span class="p-text">Edit</span>
-                                            </a>
+                                                </a>
 
                                             </div>
-                                            <div>
+                                            {{-- <div>
                                                 <img src='{{ asset('custom-ui/images/filter.svg') }}' class="m-r-5" />
                                                 <span class="p-text">Filter</span>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                     <br>

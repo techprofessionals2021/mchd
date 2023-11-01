@@ -13,10 +13,10 @@
             <template v-if="column.key === 'title'">
                 <span>
                     <span class="id-label">
-                        TO DO
+                      Title
                     </span>
                     <span class="m-l-5 text-common">
-                        3 Tasks
+                        {{ data.length }} Tasks
                     </span>
                 </span>
             </template>
@@ -33,7 +33,7 @@
                 <a v-else>{{ text }}</a>
             </template>
 
-            
+
             <template v-else-if="column.dataIndex === 'assignee'">
                 <a-avatar-group :max-count="2" size="large" :max-style="{
                     color: '#f56a00',
@@ -68,17 +68,17 @@
                     <h5>      <EditTwoTone style="font-size: 24px;" /></h5>
                                 </a>
                                 <a v-else>{{ 'Edit' }}</a>
-                              
+
             </template>
 
 
             <template v-else-if="column.dataIndex === 'deletetask'">
-                <a :href="record['modal_url_destory']" 
+                <a :href="record['modal_url_destory']"
                     class="h6">
                     <h5>      <DeleteTwoTone  style="font-size: 24px;" /></h5>
                                 </a>
-                                
-                              
+
+
             </template>
 
         </template>
@@ -130,7 +130,7 @@ const columns = [
         dataIndex: 'deletetask',
         key: 'deletetask',
     },
-  
+
 
 ];
 
@@ -162,7 +162,7 @@ export default {
         CalendarOutlined,
         FlagOutlined,
         EditTwoTone,
-        DeleteTwoTone 
+        DeleteTwoTone
     },
     methods: {
         dateFormatter(dateTimeString) {

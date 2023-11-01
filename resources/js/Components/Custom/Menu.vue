@@ -7,7 +7,7 @@ import { MailOutlined, AppstoreOutlined, SettingOutlined, UnorderedListOutlined,
 
 
 let url = window.location.href;
-let array = ["calender", "gantt"];
+let array = ["calender", "gantt",'board'];
 
 let current = ref(['list']);
 
@@ -48,7 +48,7 @@ export default {
                 label: h(
                     'a',
                     {
-                        href: '',
+                        href: props.routes.board,
                     },
                     'Board',
                 ),

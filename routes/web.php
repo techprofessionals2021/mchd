@@ -650,9 +650,10 @@ Route::post('/{slug}/projects/{id}/task-board',[ProjectController::class, 'taskS
 Route::post('/{slug}/projects/{id}/task-board/order-update',[ProjectController::class, 'taskOrderUpdate'])->name('tasks.update.order');
 Route::get('/{slug}/projects/{id}/task-board/edit/{tid}',[ProjectController::class, 'taskEdit'])->name('tasks.edit')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects/{id}/task-board/{tid}/update',[ProjectController::class, 'taskUpdate'])->name('tasks.update')->middleware(['auth','XSS']);
-Route::get('/{slug}/projects/{id}/task-board/{tid}',[ProjectController::class, 'taskDestroy'])->name('tasks.destroy')->middleware(['auth','XSS']);
+Route::get('/{slug}/projects/{id}/task-board/{tid}/delete',[ProjectController::class, 'taskDestroy'])->name('tasks.destroy')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects/{id}/task-board/{tid}/drag',[ProjectController::class, 'taskDrag'])->name('tasks.drag.event');
-
+// custom task board
+Route::get('/{slug}/projects/{id}/custom-task-board',[ProjectController::class, 'customProjectTaskBoard'])->name('projects.task.board.custom')->middleware(['auth','XSS']);
 // Gantt Chart
 Route::get('/{slug}/projects/{id}/gantt/{duration?}',[ProjectController::class, 'gantt'])->name('projects.gantt')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects/{id}/gantt',[ProjectController::class, 'ganttPost'])->name('projects.gantt.post')->middleware(['auth','XSS']);
