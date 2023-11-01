@@ -278,7 +278,7 @@
 
 
                 <div class="col-lg-12 col-md-12 ">
-                    {{-- <div class="card">
+                    <div class="card">
                         <div class="card-header">
                             <h5>{{ __('Tasks Overview') }}</h5>
                             <div class="text-end"><small class=""></small></div>
@@ -286,7 +286,7 @@
                         <div class="card-body">
                             <div id="task-area-chart"></div>
                         </div>
-                    </div> --}}
+                    </div>
 
 
 
@@ -307,13 +307,13 @@
                                 <div class="col-sm-6  pb-5 px-3">
                                     <div class="col-12 col-sm-10">
                                         <span class="d-flex justify-content-center align-items-center mb-2">
-                                            <i class="f-10 lh-1 fas fa-circle" style="color:#545454;"></i>
+                                            <i class="f-10 lh-1 fas fa-circle" style="color:#3cb8d9;"></i>
                                             <span class="ms-2 text-sm">On Going</span>
                                         </span>
                                     </div>
                                     <div class="col-12 col-sm-10">
                                         <span class="d-flex justify-content-center align-items-center mb-2">
-                                            <i class="f-10 lh-1 fas fa-circle" style="color: #3cb8d9;"></i>
+                                            <i class="f-10 lh-1 fas fa-circle" style="color: #545454;"></i>
                                             <span class="ms-2 text-sm">On Hold</span>
                                         </span>
                                     </div>
@@ -325,9 +325,9 @@
                                     </div>
                                 </div>
 
-                                <div class="row text-center">
+                                {{-- <div class="row text-center">
 
-                                    {{-- @foreach ($arrProcessPer as $index => $value)
+                                    @foreach ($arrProcessPer as $index => $value)
                                         <div class="col-4">
                                             <i class="fas fa-chart {{ $arrProcessClass[$index] }}  h3"></i>
                                             <h6 class="font-weight-bold">
@@ -335,12 +335,34 @@
                                             </h6>
                                             <p class="text-muted">{{ __($arrProcessLabel[$index]) }}</p>
                                         </div>
-                                    @endforeach --}}
+                                    @endforeach
 
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
+
+
+
+                    {{-- <div class="card">
+                        <div class="card-header">
+                            <div class="float-end">
+                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Refferals"><i
+                                        class=""></i></a>
+                            </div>
+
+                            <h5>{{ __('Progress Report') }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-sm-6">
+                                    <div id="progress-chart"></div>
+                                </div>
+                              
+                                </div>
+                            </div>
+                        </div>
+                    </div> --}}
                 </div>
             </div>
         @else
@@ -368,18 +390,109 @@
     @elseif(isset($currentWorkspace) && $currentWorkspace)
         <script>
             (function() {
+
+                console.log({!! json_encode($arrProcessPer) !!});
+
+                //new chart
+
+                var options = {
+                series: [{
+                    name: 'Progress',
+                    data: {!! json_encode($arrProcessPer) !!}
+                }],
+                chart: {
+                    height: 350,
+                    type: 'bar',
+                    width: '200%' 
+                },
+                plotOptions: {
+                    bar: {
+                        borderRadius: 10,
+                        dataLabels: {
+                            position: 'top', // top, center, bottom
+                        }
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    formatter: function (val) {
+                        return val + "%";
+                    },
+                    offsetY: -20,
+                    style: {
+                        fontSize: '12px',
+                        colors: ["#304758"]
+                    }
+                },
+                xaxis: {
+                    categories: {!! json_encode($arrProcessLabel) !!},
+                    position: 'top',
+                    axisBorder: {
+                        show: false
+                    },
+                    axisTicks: {
+                        show: false
+                    },
+                    crosshairs: {
+                        fill: {
+                            type: 'gradient',
+                            gradient: {
+                                colorFrom: '#D8E3F0',
+                                colorTo: '#BED1E6',
+                                stops: [0, 100],
+                                opacityFrom: 0.4,
+                                opacityTo: 0.5,
+                            }
+                        }
+                    },
+                    tooltip: {
+                        enabled: true,
+                    }
+                },
+                yaxis: {
+                    axisBorder: {
+                        show: false
+                    },
+                    axisTicks: {
+                        show: false,
+                    },
+                    labels: {
+                        show: false,
+                        formatter: function (val) {
+                            return val + "%";
+                        }
+                    },
+                },
+                title: {
+                    text: 'Progress Chart',
+                    floating: true,
+                    offsetY: 330,
+                    align: 'center',
+                    style: {
+                        color: '#444'
+                    }
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#progress-chart"), options);
+            chart.render();
+      
+
+                    //close chart
+
+
                 var options = {
                     chart: {
                         height: 200,
-                        type: 'donut',
+                        type: 'pie',
                     },
                     dataLabels: {
-                        enabled: false,
+                        enabled: true,
                     },
                     plotOptions: {
                         pie: {
                             donut: {
-                                size: '70%',
+                                size: '60%',
                             }
                         }
                     },
@@ -395,7 +508,7 @@
                         },
                     },
                     markers: {
-                        size: 1
+                        size: 7
                     },
                     legend: {
                         show: false
@@ -494,11 +607,13 @@
             })();
         </script>
     @elseif(isset($currentWorkspace) && $currentWorkspace)
+
         <script>
             (function() {
+
                 var options = {
                     chart: {
-                        height: 150,
+                        height: 300,
                         type: 'line',
                         toolbar: {
                             show: false,
@@ -515,7 +630,7 @@
                         @foreach ($chartData['stages'] as $id => $name)
                             {
                                 name: "{{ __($name) }}",
-                                data: {!! json_encode($chartData[$id]) !!}
+                                data: {!! json_encode($chartData[$id] )  !!}
                             },
                         @endforeach
                     ],

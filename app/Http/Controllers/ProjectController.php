@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Exports\projectsExport;
 use App\Http\Resources\MeetingResource;
-use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\TaskResource;
 use App\Imports\projectsImport;
 use App\Models\ActivityLog;
 use App\Models\BugComment;
@@ -502,6 +502,10 @@ class ProjectController extends Controller
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         $workspace_type = WorkspaceType::get();
 
+
+
+
+
         if($objUser->id != $currentWorkspace->id){
             // $objUser->currant_workspace = $currentWorkspace->id;
             // $objUser->save();
@@ -530,7 +534,10 @@ class ProjectController extends Controller
 
                 $tasks = Task::with('sub_tasks')->where('project_id', '=', $projectID)->get();
 
-               $taskResource = TaskResource::collection($tasks);
+                $taskResource = TaskResource::collection($tasks);
+
+
+
 
                 return view('vue-ui.pages.project.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type','taskResource'));
                 // return view('projects.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type'));
@@ -543,7 +550,7 @@ class ProjectController extends Controller
         }
     }
 
-    public function testShow(Request $request, $slug,$projectID){
+    public function searchTasks(Request $request, $slug,$projectID){
         $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         $workspace_type = WorkspaceType::get();
@@ -989,13 +996,16 @@ class ProjectController extends Controller
                         ]
                     )->with('success', __('Task Create Successfully!'));
                 } else {
-                    return redirect()->route(
-                        'projects.task.board',
-                        [
-                            $currentWorkspace->slug,
-                            $request->project_id,
-                        ]
-                    )->with('success', __('Task Create Successfully!'));
+                    // return redirect()->route(
+                    //     'projects.task.board',
+                    //     [
+                    //         $currentWorkspace->slug,
+                    //         $request->project_id,
+                    //     ]
+                    // )->with('success', __('Task Create Successfully!'));
+
+
+                    return redirect()->back()->with('success', __('Task Create Successfully!'));
                 }
             } else {
                 return redirect()->back()->with('error', __('Please add stages first.'));
@@ -1144,8 +1154,10 @@ class ProjectController extends Controller
 
     public function taskDestroy($slug, $projectID, $taskID)
     {
+
         $objUser = Auth::user();
         $task = Task::find($taskID);
+
         try {
             if ($task) {
                 $task = Task::where('id', $taskID)->delete();
@@ -3393,5 +3405,113 @@ class ProjectController extends Controller
             return redirect()->back()->with('error', __("Workspace Not Found."));
         }
 
+    }
+
+
+    public function customProjectTaskBoard($slug, $projectID)
+    {
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+        $workspace_type = WorkspaceType::get();
+        $objUser = Auth::user();
+
+        if ($objUser && $currentWorkspace) {
+
+            if ($objUser->getGuard() == 'client') {
+                $project = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
+            } else {
+                $project = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
+            }
+
+            if ($project) {
+                //
+                $chartData = $this->getProjectChart(
+                    [
+                        'workspace_id' => $currentWorkspace->id,
+                        'project_id' => $projectID,
+                        'duration' => 'week',
+                    ]
+                );
+
+                $daysleft = round((((strtotime($project->end_date) - strtotime(date('Y-m-d'))) / 24) / 60) / 60);
+
+
+                //
+                $stages = $statusClass = [];
+
+                $permissions = Auth::user()->getPermission($projectID);
+
+                if ($project && (isset($permissions) && in_array('show task', $permissions)) || (isset($currentWorkspace) && $currentWorkspace->permission == 'Owner')) {
+                    $stages = Stage::where('workspace_id', '=', $currentWorkspace->id)->orderBy('order')->get();
+
+                    foreach ($stages as &$status) {
+                        $statusClass[] = 'task-list-' . str_replace(' ', '_', $status->id);
+                        $task = Task::where('project_id', '=', $projectID);
+                        if ($currentWorkspace->permission != 'Owner' && $objUser->getGuard() != 'client') {
+                            if (isset($objUser) && $objUser) {
+                                $task->whereRaw("find_in_set('" . $objUser->id . "',assign_to)");
+                            }
+                        }
+                        $task->orderBy('order');
+                        $status['tasks'] = $task->where('status', '=', $status->id)->get();
+                    }
+                }
+                // dd('sdsd');
+                return view('vue-ui.pages.project.taskboard', compact('chartData','currentWorkspace', 'project', 'stages', 'statusClass','workspace_type'));
+            } else {
+                return redirect()->back()->with('error', __('Task Not Found.'));
+            }
+        } else {
+            return redirect()->back()->with('error', __('Workspace Not Found.'));
+        }
+    }
+
+    public function customGantt($slug, $projectID, $duration = 'Week')
+    {
+        $objUser = Auth::user();
+        $workspace_type = WorkspaceType::get();
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+        $is_client = '';
+
+        if ($objUser->getGuard() == 'client') {
+            $project = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
+            $is_client = 'client.';
+        } else {
+            $project = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
+        }
+        $tasks = [];
+        $permissions = Auth::user()->getPermission($projectID);
+
+        if ($project && (isset($permissions) && in_array('show gantt', $permissions)) || (isset($currentWorkspace) && $currentWorkspace->permission == 'Owner')) {
+            if ($objUser->getGuard() == 'client' || $currentWorkspace->permission == 'Owner') {
+                $tasksobj = Task::where('project_id', '=', $project->id)->orderBy('start_date')->get();
+            } else {
+                $tasksobj = Task::where('project_id', '=', $project->id)->where('assign_to', '=', $objUser->id)->orderBy('start_date')->get();
+            }
+            foreach ($tasksobj as $task) {
+                $tmp = [];
+                $tmp['id'] = 'task_' . $task->id;
+                $tmp['name'] = $task->title;
+                $tmp['start'] = $task->start_date;
+                $tmp['end'] = $task->due_date;
+                $tmp['custom_class'] = strtolower($task->priority);
+                $tmp['progress'] = $task->subTaskPercentage();
+                $tmp['extra'] = [
+                    'priority' => __($task->priority),
+                    'comments' => count($task->comments),
+                    'duration' => Date::parse($task->start_date)->format('d M Y H:i A') . ' - ' . Date::parse($task->due_date)->format('d M Y H:i A'),
+                ];
+                $tasks[] = $tmp;
+            }
+        }
+        //
+        $chartData = $this->getProjectChart(
+            [
+                'workspace_id' => $currentWorkspace->id,
+                'project_id' => $projectID,
+                'duration' => 'week',
+            ]
+        );
+        //
+        return view('vue-ui.pages.project.gantt', compact('chartData','currentWorkspace', 'project', 'tasks', 'duration', 'is_client','workspace_type'));
     }
 }

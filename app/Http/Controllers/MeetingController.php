@@ -95,4 +95,21 @@ class MeetingController extends Controller
     {
         //
     }
+
+    public function cancelMeeting(Request $req)
+    {
+        $meeting = Meeting::find($req->id);
+        $meeting->is_canceled = 1;
+        $meeting->canceled_by = auth()->id();
+        $meeting->save();
+        return redirect()->back()->with('success',__('Meeting has been canceled successfully'));
+    }
+
+    public function acceptOrReject($meeting_id,$decision)
+    {
+        $meeting = Meeting::find($meeting_id);
+        $meeting->members()->updateExistingPivot(auth()->id(),['is_accepted' => $decision]);
+        $message = $decision == 0 ? 'rejected' : 'accepted';
+        return redirect()->back()->with('success',__('Meeting has been '. $message .' successfully'));
+    }
 }

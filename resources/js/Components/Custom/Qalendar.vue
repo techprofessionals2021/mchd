@@ -1,6 +1,7 @@
 <template>
     <div class="m-10 text-end">
-        <a href="#" class="btn btn-sm btn-primary"  title="Add Meeting" @click="handleOpenModal"><i class="ti ti-plus"></i></a>
+        <a href="#" class="btn btn-sm btn-primary" title="Add Meeting" @click="handleOpenModal"><i
+                class="ti ti-plus"></i></a>
     </div>
     <Qalendar :events="events" :config="config" @date-was-clicked="handleDateClicked"
         @event-was-clicked="handleEventClicked">
@@ -36,6 +37,11 @@
 
 
                     </div>
+                    <div class="mt-2">
+                            <a-popconfirm title="Are you sure？" ok-text="Yes" cancel-text="No"  @confirm="handleCancelMeeting(props?.eventDialogData?.id)">
+                                <a-button class="mt-2 w-100" danger>Cancel Meeting</a-button>
+                            </a-popconfirm>
+                    </div>
                 </div>
             </div>
         </template>
@@ -56,14 +62,14 @@
                 <br />
 
                 <div class="mt-3">
-                    <a-date-picker v-model:value="form.date" class="w-100"/>
+                    <a-date-picker v-model:value="form.date" class="w-100" />
                 </div>
                 <div class="mt-3">
                     <a-time-picker v-model:value="form.time_in" format="HH:mm" placeholder="Time In" />
                     <a-time-picker v-model:value="form.time_out" format="HH:mm" placeholder="Time Out" class="m-l-20" />
                 </div>
 
-                <a-select v-model:value="form.assignee" mode="multiple" style="width: 100%" placeholder="Select Item..."
+                <a-select v-model:value="form.assignee" mode="multiple" style="width: 100%" placeholder="Select Members"
                     max-tag-count="responsive" :options="users" class="mt-3"></a-select>
 
                 <!--  -->
@@ -154,8 +160,22 @@ export default {
             const options = { hour: '2-digit', minute: '2-digit', hour12: true };
             return new Intl.DateTimeFormat('en-US', options).format(dateObj);
         },
-        handleOpenModal(){
+        handleOpenModal() {
             open.value = true;
+        },
+        handleCancelMeeting(meetingId){
+            axios.post('/meeting/cancel', {
+                id: meetingId,
+            }
+            )
+                .then(function (response) {
+                    open.value = false;
+                    location.reload();
+                })
+                .catch(function (error) {
+                    currentObj.output = error;
+                });
+            console.log(meetingId,'meetingId');
         }
     },
 
@@ -216,7 +236,7 @@ export default {
                 assignee: [],
                 color: 'green',
                 meeting_date: null,
-                date:null
+                date: null
             },
             open,
             moment,
@@ -234,11 +254,11 @@ export default {
                 console.log(eventElements);
                 eventElements.forEach((eventElement) => {
 
-                    console.log(getComputedStyle(eventElement.firstElementChild).backgroundColor,'style');
+                    console.log(getComputedStyle(eventElement.firstElementChild).backgroundColor, 'style');
                     eventElement.style.backgroundColor = getComputedStyle(eventElement.firstElementChild).backgroundColor;
                     eventElement.addEventListener('click', (event) => {
-                    event.stopPropagation();
-                });
+                        event.stopPropagation();
+                    });
                 });
             }, 1000);
         })();

@@ -345,8 +345,10 @@ class ProjectReportController extends Controller
     }
 
 
-        public function getProjectChart($arrParam)
+     public function getProjectChart($arrParam)
     {
+    
+       
         $arrDuration = [];
         if ($arrParam['duration'] && $arrParam['duration'] == 'week') {
             $previous_week = Utility::getFirstSeventhWeekDay(-1);
@@ -355,15 +357,25 @@ class ProjectReportController extends Controller
             }
         }
 
+
         $arrTask = [
             'label' => [],
             'color' => [],
         ];
         $stages = Stage::where('workspace_id', '=', $arrParam['workspace_id'])->orderBy('order');
 
-        foreach ($arrDuration as $date => $label) {
-            $objProject = Task::select('status', DB::raw('count(*) as total'))->whereDate('updated_at', '=', $date)->groupBy('status');
 
+        
+     
+      
+      
+        foreach ($arrDuration as $date => $label) {
+            // $objProject = Task::select('status', DB::raw('count(*) as total'))->whereDate('updated_at', '=', $date)->groupBy('status');
+
+            $objProject = Task::select('status', DB::raw('count(*) as total'))->groupBy('status');
+
+      
+            // dd($objProject);
             if (isset($arrParam['project_id'])) {
                 $objProject->where('project_id', '=', $arrParam['project_id']);
             }
@@ -375,11 +387,18 @@ class ProjectReportController extends Controller
                 );
             }
             $data = $objProject->pluck('total', 'status')->all();
-
+             
             foreach ($stages->pluck('name', 'id')->toArray() as $id => $stage) {
+                // dd($stage);
                 $arrTask[$id][] = isset($data[$id]) ? $data[$id] : 0;
+              
             }
+            
             $arrTask['label'][] = __($label);
+
+        
+
+         
         }
         $arrTask['stages'] = $stages->pluck('name', 'id')->toArray();
         $arrTask['color'] = $stages->pluck('color')->toArray();

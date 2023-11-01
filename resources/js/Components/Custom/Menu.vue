@@ -7,7 +7,7 @@ import { MailOutlined, AppstoreOutlined, SettingOutlined, UnorderedListOutlined,
 
 
 let url = window.location.href;
-let array = ["calender", "gantt"];
+let array = ["calender", "Gantt",'board'];
 
 let current = ref(['list']);
 
@@ -48,14 +48,14 @@ export default {
                 label: h(
                     'a',
                     {
-                        href: '',
+                        href: props.routes.board,
                     },
                     'Board',
                 ),
                 title: 'Board',
             },
             {
-                key: 'gantt',
+                key: 'Gantt',
                 icon: () => h(
                     'object',
                     {
@@ -66,24 +66,24 @@ export default {
                 label: h(
                     'a',
                     {
-                        href: '',
+                        href: props.routes.gantt,
                     },
                     'Gantt',
                 ),
                 title: 'Gantt',
             },
-            {
-                key: 'calender',
-                icon: () => h(CalendarOutlined),
-                label: h(
-                    'a',
-                    {
-                        href: props.routes.calender,
-                    },
-                    'Calender',
-                ),
-                title: 'Calender',
-            },
+            // {
+            //     key: 'calender',
+            //     icon: () => h(CalendarOutlined),
+            //     label: h(
+            //         'a',
+            //         {
+            //             href: props.routes.calender,
+            //         },
+            //         'Calender',
+            //     ),
+            //     title: 'Calender',
+            // },
         ]);
 
 

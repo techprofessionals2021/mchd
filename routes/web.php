@@ -307,7 +307,7 @@ Route::post('permission/delete/{id}', [SuperAdminPermissionController::class, 'd
 //start routes for hod
 Route::prefix('hod')->as('hod.')->group(function() {
   Route::get('/', [HodDashboardController::class, 'index'])->name('home')->middleware(['auth']);
-  
+
 });
 
   //end route for hod
@@ -493,7 +493,7 @@ Route::prefix('client')->as('client.')->group(function() {
 // Calender
 Route::get('/{slug}/calendar/{id?}',[CalenderController::class, 'index'])->name('calender.index')->middleware(['auth','XSS']);
 Route::any('/{slug}/calendarr/{id?}',[CalenderController::class, 'calendar'])->name('calender.google.calendar')->middleware(['auth','XSS']);
-
+Route::get('/{slug}/custom-calender',[CalenderController::class, 'customCalender'])->name('custom.calender');
 
 // Chats
 
@@ -639,6 +639,7 @@ Route::delete('/{slug}/projects/{id}/file/delete/{fid}',[ProjectController::clas
 
 // project Calender
 Route::get('/{slug}/projects/{id}/calender',[ProjectController::class, 'projectCalender'])->name('projects.calender');
+Route::get('/calender',[ProjectController::class, 'dashboardCalender'])->name('calender.show');
 
 
 // Task Board
@@ -649,15 +650,23 @@ Route::post('/{slug}/projects/{id}/task-board',[ProjectController::class, 'taskS
 Route::post('/{slug}/projects/{id}/task-board/order-update',[ProjectController::class, 'taskOrderUpdate'])->name('tasks.update.order');
 Route::get('/{slug}/projects/{id}/task-board/edit/{tid}',[ProjectController::class, 'taskEdit'])->name('tasks.edit')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects/{id}/task-board/{tid}/update',[ProjectController::class, 'taskUpdate'])->name('tasks.update')->middleware(['auth','XSS']);
-Route::delete('/{slug}/projects/{id}/task-board/{tid}',[ProjectController::class, 'taskDestroy'])->name('tasks.destroy')->middleware(['auth','XSS']);
+Route::get('/{slug}/projects/{id}/task-board/{tid}/delete',[ProjectController::class, 'taskDestroy'])->name('tasks.destroy')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects/{id}/task-board/{tid}/drag',[ProjectController::class, 'taskDrag'])->name('tasks.drag.event');
+
+// custom task board
+Route::get('/{slug}/projects/{id}/custom-task-board',[ProjectController::class, 'customProjectTaskBoard'])->name('projects.task.board.custom')->middleware(['auth','XSS']);
 
 // Gantt Chart
 Route::get('/{slug}/projects/{id}/gantt/{duration?}',[ProjectController::class, 'gantt'])->name('projects.gantt')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects/{id}/gantt',[ProjectController::class, 'ganttPost'])->name('projects.gantt.post')->middleware(['auth','XSS']);
 
+// custom gantt chart
+Route::get('/{slug}/projects/{id}/customGantt/{duration?}',[ProjectController::class, 'customGantt'])->name('projects.gantt.custom')->middleware(['auth','XSS']);
+
+
 Route::get('/{slug}/tasks',[ProjectController::class, 'allTasks'])->name('tasks.index')->middleware(['auth','XSS']);
 Route::post('/{slug}/tasks',[ProjectController::class, 'ajax_tasks'])->name('tasks.ajax')->middleware(['auth','XSS']);
+
 
 // Timesheet
 Route::get('/{slug}/tasks/{id?}',[ProjectController::class, 'getTask'])->name('tasks.ajax')->middleware(['auth','XSS']);
@@ -856,6 +865,8 @@ Route::get('/{slug}/projects/{id}/members',[ProjectController::class, 'members']
 //=================================== custom meeting =============================================================//
 
 Route::post('/meeting/store',[MeetingController::class,'store'])->name('meeting.store');
+Route::post('/meeting/cancel',[MeetingController::class,'cancelMeeting'])->name('meeting.cancel');
+Route::get('/meeting/confirmation/{meeting_id}/{decision}',[MeetingController::class,'acceptOrReject'])->name('meeting.decision');
 
 //=================================== slack=============================================================//
 
