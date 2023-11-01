@@ -6,7 +6,7 @@
     $logo = \App\Models\Utility::get_file('users-avatar/');
     $logo_tasks = \App\Models\Utility::get_file('tasks/');
 @endphp
-{{-- @section('page-title')
+@section('page-title')
     {{ __('Task Board') }}
 @endsection
 @section('links')
@@ -23,10 +23,10 @@
         </li>
     @endif
     <li class="breadcrumb-item"><a
-            href="{{ route($client_keyword . 'projects.show', [$currentWorkspace->slug, $project->id]) }}">{{ __('Project Details') }}</a>
+            href="{{ route($client_keyword . 'projects.show', [$currentWorkspace->slug, $project->id]) }}">{{ $project->name }}</a>
     </li>
     <li class="breadcrumb-item">{{ __('Task Board') }}</li>
-@endsection --}}
+@endsection
 
 
 {{-- @section('action-button')
@@ -123,9 +123,9 @@
                                                                         </a>
                                                                         <form id="delete-form-{{ $task->id }}"
                                                                             action="{{ route('tasks.destroy', [$currentWorkspace->slug, $task->project_id, $task->id]) }}"
-                                                                            method="POST" style="display: none;">
+                                                                            style="display: none;">
                                                                             @csrf
-                                                                            @method('DELETE')
+                                                                            {{-- @method('DELETE') --}}
                                                                         </form>
                                                                     @elseif(isset($permissions))
                                                                         @if (in_array('edit task', $permissions))

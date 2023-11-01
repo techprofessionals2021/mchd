@@ -652,14 +652,21 @@ Route::get('/{slug}/projects/{id}/task-board/edit/{tid}',[ProjectController::cla
 Route::post('/{slug}/projects/{id}/task-board/{tid}/update',[ProjectController::class, 'taskUpdate'])->name('tasks.update')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/{id}/task-board/{tid}/delete',[ProjectController::class, 'taskDestroy'])->name('tasks.destroy')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects/{id}/task-board/{tid}/drag',[ProjectController::class, 'taskDrag'])->name('tasks.drag.event');
+
 // custom task board
 Route::get('/{slug}/projects/{id}/custom-task-board',[ProjectController::class, 'customProjectTaskBoard'])->name('projects.task.board.custom')->middleware(['auth','XSS']);
+
 // Gantt Chart
 Route::get('/{slug}/projects/{id}/gantt/{duration?}',[ProjectController::class, 'gantt'])->name('projects.gantt')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects/{id}/gantt',[ProjectController::class, 'ganttPost'])->name('projects.gantt.post')->middleware(['auth','XSS']);
 
+// custom gantt chart
+Route::get('/{slug}/projects/{id}/customGantt/{duration?}',[ProjectController::class, 'customGantt'])->name('projects.gantt.custom')->middleware(['auth','XSS']);
+
+
 Route::get('/{slug}/tasks',[ProjectController::class, 'allTasks'])->name('tasks.index')->middleware(['auth','XSS']);
 Route::post('/{slug}/tasks',[ProjectController::class, 'ajax_tasks'])->name('tasks.ajax')->middleware(['auth','XSS']);
+
 
 // Timesheet
 Route::get('/{slug}/tasks/{id?}',[ProjectController::class, 'getTask'])->name('tasks.ajax')->middleware(['auth','XSS']);
