@@ -75,11 +75,7 @@
                 <div class="card-body">
                     <h4 class="mb-4">{{ __('New Meetings') }}</h4>
                     <ul class="event-cards list-group list-group-flush mt-3 w-100">
-                        @php
-                            $date = Carbon\Carbon::now()->format('m');
-                            $date1 = Carbon\Carbon::now()->format('y');
-                            $this_month_task = App\Models\project::where('workspace', $currentWorkspace->id)->get();
-                        @endphp
+                      
                             @foreach ($pendingMeetings as $meeting)
                                     <li class="list-group-item card mb-3">
                                         <div class="row align-items-center justify-content-between">
