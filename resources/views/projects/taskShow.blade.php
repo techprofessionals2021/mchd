@@ -42,8 +42,8 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
 
         <div class="row mb-4">
             <div class="col-md-4">
-                <div class="form-control-label">{{ __('Create Date')}}</div>
-                <p class="mt-1">{{ \App\Models\Utility::dateFormat($task->created_at) }}</p>
+                <div class="form-control-label">{{ __('Start Date')}}</div>
+                <p class="mt-1">{{ \App\Models\Utility::dateFormat($task->start_date) }}</p>
             </div>
             <div class="col-md-4">
                 <div class="form-control-label">{{ __('Due Date')}}</div>
