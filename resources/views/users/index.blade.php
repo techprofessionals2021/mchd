@@ -75,11 +75,11 @@
                                     @if (Auth::user()->type != 'admin')
                                         @if ($user->permission == 'Owner')
                                             <div class="badge p-2 px-3 rounded bg-success">{{ __('Owner') }}</div>
-                                         @elseif($user->permission == 'TeamLead') 
+                                         @elseif($user->permission == 'TeamLead')
                                          <div class="badge p-2 px-3 rounded bg-primary">{{ __('TeamLead') }}</div>
-                                         {{-- @elseif($user->permission == 'Follower') 
+                                         {{-- @elseif($user->permission == 'Follower')
                                          <div class="badge p-2 px-3 rounded bg-secondary">{{ __('Follower') }}</div>
-                                         @elseif($user->permission == 'Hod') 
+                                         @elseif($user->permission == 'Hod')
                                          <div class="badge p-2 px-3 rounded bg-dark">{{ __('Hod') }}</div> --}}
                                          @else
                                             <div class="badge p-2 px-3 rounded bg-warning">{{ __('Member') }}</div>
@@ -246,7 +246,7 @@
                         <a href="#" class="btn-addnew-project" data-ajax-popup="true" data-size="md"
                             data-title="{{ __('Invite New User') }}"
                             data-url="{{ route('users.invite', $currentWorkspace->slug) }}">
-                            <div class="bg-primary proj-add-icon">
+                            <div class="bg-green-500 proj-add-icon">
                                 <i class="ti ti-plus"></i>
                             </div>
                             <h6 class="mt-4 mb-2">Invite New User</h6>
