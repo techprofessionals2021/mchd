@@ -358,7 +358,7 @@
                         </div> --}}
                     </div>
 
-                    {{-- <div class="mt-3 mb-1 row d-sm-flex align-items-center justify-content-end" id="show_filter">
+                    <div class="mt-3 mb-1 row d-sm-flex align-items-center justify-content-end" id="show_filter">
                         @if ($currentWorkspace->permission == 'Owner' || Auth::user()->getGuard() == 'client')
                             <div class="col-sm-6 col-md-3 pb-3">
                                 <select class="select2 form-select" name="all_users" id="all_users">
@@ -436,7 +436,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
             </div>
             <!-- [ sample-page ] end -->

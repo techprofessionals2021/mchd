@@ -8,6 +8,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Models\UserProject;
 use App\Models\UserWorkspace;
+use App\Models\Project;
 use App\Models\WorkspaceType;
 use App\Models\Utility;
 use Illuminate\Support\Facades\Auth;
@@ -86,6 +87,7 @@ class HomeController extends Controller
                     'duration' => 'week',
                 ]);
 
+
                 return view('home', compact('currentWorkspace', 'totalProject', 'totalBugs', 'totalTask', 'totalMembers', 'arrProcessLabel', 'arrProcessPer', 'arrProcessClass', 'completeTask', 'tasks', 'chartData'));
 
             } else {
@@ -105,6 +107,19 @@ class HomeController extends Controller
                         'stages.name as status',
                         'stages.complete',
                     ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->join("stages", "stages.id", "=", "tasks.status")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->orderBy('tasks.id', 'desc')->limit(5)->get();
+
+
+                    $projects = Project::
+                    join("user_projects", "projects.id", "=", "user_projects.project_id")
+                    ->join("projects as p2", "p2.id", "=", "user_projects.project_id") // Change alias here
+                    ->where("user_id", "=", $userObj->id)
+                    ->where('p2.workspace', '=', $currentWorkspace->id) // Use the new alias here
+                    ->orderBy('projects.id', 'desc')
+                    ->limit(5)
+                    ->get();
+                    
+                    // dd($projects);
+
                 } else {
                     $totalBugs = UserProject::join("bug_reports", "bug_reports.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('bug_reports.assign_to', '=', $userObj->id)->count();
                     $totalTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")->count();
@@ -129,6 +144,7 @@ class HomeController extends Controller
                         $arrProcessPer[] = round(($process * 100) / $totalProject, 2);
                     }
                 }
+                // dd($arrProcessPer);
                 $arrProcessClass = [
                     'text-success',
                     'text-primary',
@@ -141,14 +157,16 @@ class HomeController extends Controller
                     'workspace_id' => $currentWorkspace->id,
                     'duration' => 'week',
                 ]);
+
+                // dd( $chartData['stages']);
+
                 // $chartData = app('App\Http\Controllers\ProjectController')->getProjectChart([
                 //     'workspace_id' => $currentWorkspace->id,
                 //     'duration' => 'week',
                 // ]);
 
 
-              
-                // dd($chartData);
+            
                 return view('home', compact('currentWorkspace',
                 'totalProject',
                 'totalBugs',
@@ -164,7 +182,8 @@ class HomeController extends Controller
                 'dueDateProjects',
                 'inProgressTask',
                 'dueDateTask',
-                'workspace_type'
+                'workspace_type',
+                'projects'
 
             ));
             }

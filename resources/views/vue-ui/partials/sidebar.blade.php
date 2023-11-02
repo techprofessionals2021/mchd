@@ -185,6 +185,21 @@
                                     src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
                                 class="dash-mtext side-nav-text">{{ __('Calendar') }}</span></a>
                     </li> 
+                    
+                    {{-- <li
+                    class="dash-item {{ Request::route()->getName() == 'project_report.index' || Request::segment(2) == 'project_report' ? ' active' : '' }}">
+                    <a href="{{ route('project_report.index', $currentWorkspace->slug) }}"
+                        class="dash-link "><span class="dash-micon"><i class="ti ti-chart-line"></i></span><span
+                            class="dash-mtext">{{ __('Project Report') }}</span></a>
+                    </li> --}}
+
+                    {{-- <li class="dash-item dash-hasmenu">
+                        <a href="{{ route('report.index',[$currentWorkspace->slug])}}"
+                            class="dash-link{{ Request::route()->getName() == 'report.index' ? ' active' : '' }} side-item"><span
+                                class="dash-micon mr-3"> <img
+                                    src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
+                                class="dash-mtext side-nav-text">{{ __('Reports') }}</span></a>
+                    </li>  --}}
 
                     @if (Auth::user()->type == 'admin')
                         <li
