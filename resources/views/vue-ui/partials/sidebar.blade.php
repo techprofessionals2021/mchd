@@ -135,6 +135,11 @@
                                 <span>New Space</span>
                             </button>
 
+                            {{-- <a href="{{route('getAllProjectAndTasks',$currentWorkspace->slug)}}" class="btn btn-light space-btn">
+                                <i class="ti ti-plus"></i>
+                                <span>New Space</span>
+                            </a> --}}
+
                             @foreach (auth()->user()->workspace as $workspace)
                             <div class="mt-2 p-l-15">
                                 <div class="d-flex {{ $workspace->id == $currentWorkspace->id ? 'c-slider' : ''}}">

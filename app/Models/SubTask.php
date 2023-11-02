@@ -24,4 +24,9 @@ class SubTask extends Model
     {
         return $this->hasOne('App\Models\Client', 'id', 'created_by');
     }
+
+    public function task()
+    {
+        return $this->belongsTo(Task::class, 'task_id');
+    }
 }

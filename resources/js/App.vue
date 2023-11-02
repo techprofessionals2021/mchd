@@ -46,6 +46,10 @@
                 </a-avatar-group>
             </template>
 
+            <template v-else-if="column.dataIndex === 'status'">
+                <a-tag :color=text?.color>{{ text?.name }}</a-tag>
+            </template>
+
             <template v-else-if="column.dataIndex === 'due_date'">
                 {{ dateFormatter(text) }}
             </template>
@@ -55,7 +59,7 @@
                 <a-tooltip :title="text" placement="top">
                     <!-- <a-avatar style="background-color: #87d068"> -->
                     <!-- <template> -->
-                    <FlagOutlined :style="{ color: text == 'High' ? 'red' : text == 'Low' ? 'green' : 'brown' }" />
+                    <FlagOutlined :style="{ color: text == 'High' ? 'red' : text == 'Low' ? 'green' : text == 'Medium' ? 'brown' : '' }" />
                     <!-- </template> -->
                     <!-- </a-avatar> -->
                 </a-tooltip>
@@ -67,7 +71,7 @@
                     data-title="Task Edit" class="h6 task-title">
                     <h5>      <EditTwoTone style="font-size: 24px;" /></h5>
                                 </a>
-                                <a v-else>{{ 'Edit' }}</a>
+                                <!-- <a v-else>{{ 'Edit' }}</a> -->
 
             </template>
 
@@ -107,6 +111,12 @@ const columns = [
         title: 'Assigne',
         dataIndex: 'assignee',
         key: 'assignee',
+        //   width: '12%',
+    },
+    {
+        title: 'Status',
+        dataIndex: 'status',
+        key: 'status',
         //   width: '12%',
     },
     {
@@ -151,7 +161,7 @@ const rowSelection = ref({
 export default {
     props: ['tasks'],
     setup(props) {
-        console.log(props.tasks)
+        console.log(props.tasks,'tasks')
         return {
             columns,
             data: props.tasks,

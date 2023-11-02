@@ -30,7 +30,7 @@ class Task extends Model
         return User::whereIn('id',explode(',',$this->assign_to))->get();
     }
 
-    
+
     public function user()
     {
         return $this->hasOne('App\Models\User', 'id', 'assign_to');
@@ -75,6 +75,11 @@ class Task extends Model
         $percentageNumber = $percentageNumber > 100 ? 100 : ($percentageNumber < 0 ? 0 : $percentageNumber);
 
         return (int) number_format($percentageNumber);
+    }
+
+    public function stage()
+    {
+        return $this->belongsTo(Stage::class, 'status');
     }
 
 }

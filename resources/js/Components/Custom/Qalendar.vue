@@ -32,7 +32,8 @@
                         </div>
                         <div class="col-8 text-end align-self-end">
                             <span>Time</span>:
-                            <span>{{ convertTo12HourFormat(props?.eventDialogData?.start_time) }}</span>
+                            <span>{{ convertTo12HourFormat(props?.eventDialogData?.start_time) }}</span> to
+                            <span>{{ convertTo12HourFormat(props?.eventDialogData?.end_time) }}</span>
                         </div>
 
 
