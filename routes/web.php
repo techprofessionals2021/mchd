@@ -607,6 +607,7 @@ Route::get('/{slug}/projects/',[ProjectController::class, 'index'])->name('proje
 Route::post('/{slug}/projects/filter',[ProjectController::class, 'filterProducts'])->name('projects.filter')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/create',[ProjectController::class, 'create'])->name('projects.create')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/{id}',[ProjectController::class, 'show'])->name('projects.show')->middleware(['auth','XSS']);
+Route::get('/{slug}/projects/{id}/filterByStatus/{currentStatus?}',[ProjectController::class, 'filterByStatus'])->name('projects.filterByStatus')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/{id}/search',[ProjectController::class, 'searchTasks'])->name('projects.searchTasks')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects',[ProjectController::class, 'store'])->name('projects.store')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/{id}/edit',[ProjectController::class, 'edit'])->name('projects.edit')->middleware(['auth','XSS']);
@@ -684,6 +685,7 @@ Route::delete('/{slug}/projects/{id}/comment/{tid}/{cid}',[ProjectController::cl
 Route::post('/{slug}/projects/{id}/sub-task/update/{stid}',[ProjectController::class, 'subTaskUpdate'])->name('subtask.update');
 Route::post('/{slug}/projects/{id}/sub-task/{tid}/{cid?}',[ProjectController::class, 'subTaskStore'])->name('subtask.store');
 Route::delete('/{slug}/projects/{id}/sub-task/{stid}',[ProjectController::class, 'subTaskDestroy'])->name('subtask.destroy');
+Route::get('/{slug}/projects/{id}/sub-task/{stid}/custom',[ProjectController::class, 'customSubTaskDestroy'])->name('subtask.destroy.custom');
 
 // todo
 //Route::get('/{slug}/todo',['as' => 'todos.index','uses' =>'TodoController@index'])->middleware(['auth','XSS']);
@@ -868,6 +870,9 @@ Route::post('/meeting/store',[MeetingController::class,'store'])->name('meeting.
 Route::post('/meeting/cancel',[MeetingController::class,'cancelMeeting'])->name('meeting.cancel');
 Route::get('/meeting/confirmation/{meeting_id}/{decision}',[MeetingController::class,'acceptOrReject'])->name('meeting.decision');
 
+//=================================== All Workspaces page with project and tasks =============================================================//
+
+Route::get('{slug}/allworkspace-data',[WorkspaceController::class,'getAllWorkSpacesProjectsAndTasks'])->name('getAllProjectAndTasks');
 //=================================== slack=============================================================//
 
 Route::post('/workspace/{slug}/settingsss',[WorkspaceController::class, 'settingsSlack'])->name('workspace.settings.Slack')->middleware(['auth','XSS']);

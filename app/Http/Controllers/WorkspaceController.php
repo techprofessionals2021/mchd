@@ -29,7 +29,7 @@ class WorkspaceController extends Controller
 
     public function store(Request $request)
     {
-    
+
         $objUser = Auth::user();
 
         $validator = \Validator::make(
@@ -1272,11 +1272,11 @@ class WorkspaceController extends Controller
     }
 
 
-    
+
     public function changeCurrentWorkspacePermission($workspace_id, $slug, $user_id)
     {
 
-       
+
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         // dd('sad');
         $workspace = Workspace::find($workspace_id);
@@ -1293,13 +1293,13 @@ class WorkspaceController extends Controller
 
     public function workspacePermissionStore($workspace_id, $slug, $user_id, Request $request)
     {
-    
+
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         // dd($currentWorkspace);
         $userProject = UserWorkspace::where('user_id', '=', $user_id)->where('workspace_id', '=', $workspace_id)->first();
         // dd($workspace_id , $slug ,$user_id);
         $userProject->workspace_permission = json_encode($request->permissions);
-       
+
         $userProject->save();
 
         return redirect()->route('users.index',$slug)->with('success', __('Permission Updated Successfully!'));
@@ -1362,5 +1362,23 @@ class WorkspaceController extends Controller
                 })
                 ->make(true);
         }
+    }
+
+    public function getAllWorkSpacesProjectsAndTasks($slug)
+    {
+        dd($slug);
+        $userObj = Auth::user();
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+
+        if ($userObj->getGuard() == 'client') {
+            $projects = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
+        } else {
+            $projects = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
+        }
+        $stages = Stage::where('workspace_id', '=', $currentWorkspace->id)->orderBy('order')->get();
+        $users = User::select('users.*')->join('user_workspaces', 'user_workspaces.user_id', '=', 'users.id')->where('user_workspaces.workspace_id', '=', $currentWorkspace->id)->get();
+
+        return view('workspaces.index', compact('currentWorkspace', 'projects', 'users', 'stages'));
+        //  return view('workspaces.index');
     }
 }

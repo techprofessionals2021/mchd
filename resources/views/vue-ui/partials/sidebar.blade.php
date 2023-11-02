@@ -101,6 +101,13 @@
 
                     @if (isset($currentWorkspace) && $currentWorkspace)
                         @auth('web')
+                        <li class="dash-item dash-hasmenu">
+                            <a href="{{ route('users.index', $currentWorkspace->slug) }}"
+                                class="dash-link{{ Request::route()->getName() == 'users.index' ? ' active' : '' }} side-item"><span
+                                    class="dash-micon mr-3"> <img
+                                        src="{{ asset('custom-ui/images/user-icon-image2.png') }}" class="icon-image" /></span><span
+                                    class="dash-mtext side-nav-text">{{ __('Users') }}</span></a>
+                        </li>
                             <li class="dash-item dash-hasmenu">
                                 <a href=""
                                     class="dash-link {{ Request::route()->getName() == 'users.index' ? ' active' : '' }} side-item"><span
@@ -116,6 +123,7 @@
                                             src="{{ asset('custom-ui/images/note.svg') }}" class="icon-image" /></span><span
                                         class="dash-mtext side-nav-text">{{ __('Notes') }}</span></a>
                             </li>
+
                         @endauth
                     @endif
 
@@ -134,6 +142,11 @@
                                 <i class="ti ti-plus"></i>
                                 <span>New Space</span>
                             </button>
+
+                            {{-- <a href="{{route('getAllProjectAndTasks',$currentWorkspace->slug)}}" class="btn btn-light space-btn">
+                                <i class="ti ti-plus"></i>
+                                <span>New Space</span>
+                            </a> --}}
 
                             @foreach (auth()->user()->workspace as $workspace)
                             <div class="mt-2 p-l-15">

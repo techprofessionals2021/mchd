@@ -172,10 +172,22 @@
                                                 </a>
 
                                             </div>
-                                            {{-- <div>
+                                            <div class="filterTaskBtn cursor-pointer">
                                                 <img src='{{ asset('custom-ui/images/filter.svg') }}' class="m-r-5" />
                                                 <span class="p-text">Filter</span>
-                                            </div> --}}
+                                            </div>
+                                            <div class="filterDropdown w-25 m-l-10" style="display:none;">
+                                               <select class="form-select status-dropdown" aria-label="Default select example">
+                                                @foreach ($taskStatus as $status)
+                                                   <option value=@if($status == 'In Progress')"In Progress" @else {{$status}} @endif @if($status == $currentStatus) selected @endif>{{$status}}</option>
+                                                @endforeach
+                                                {{-- <option selected>All</option>
+                                                 <option value="In Progress">In Progress</option>
+                                                 <option value="Review">Review</option>
+                                                 <option value="Done">Done</option> --}}
+                                               </select>
+                                            </div>
+
                                         </div>
                                     </div>
                                     <br>
@@ -846,5 +858,18 @@
                 });
             }
         });
+        $('.filterTaskBtn').on('click',function(){
+            $('.filterDropdown').slideToggle(500);
+        })
+
+        $('.status-dropdown').on('change',function(){
+            console.log();
+            let currentWorkSpace = <?php echo json_encode($currentWorkspace->slug); ?>
+
+            let custom_project_id = <?php echo json_encode($project->id); ?>
+        //   console.log(my_variable);
+
+        location.href = window.location.origin +'/'+currentWorkSpace+'/projects/'+custom_project_id +'/filterByStatus/'+$(this).val()
+        })
     </script>
 @endpush
