@@ -1363,7 +1363,7 @@ class ProjectController extends Controller
     {
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         $request->validate(['file' => 'required']);
-        $dir = 'tasks/';
+        $dir = 'app/public/tasks/';
         $fileName = $taskID . time() . "_" . $request->file->getClientOriginalName();
         // $request->file->storeAs('tasks', $fileName);
 

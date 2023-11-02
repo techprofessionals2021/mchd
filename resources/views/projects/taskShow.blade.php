@@ -71,9 +71,9 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
         <li>
             <a  id="comments-tab" data-toggle="tab" href="#comments-data" role="tab" aria-controls="home" aria-selected="false"> {{ __('Comments') }} </a>
         </li>
-        {{-- <li class="annual-billing">
+        <li class="annual-billing">
             <a id="file-tab" data-toggle="tab" href="#file-data" role="tab" aria-controls="profile" aria-selected="false"> {{ __('Files') }} </a>
-        </li> --}}
+        </li>
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade " id="comments-data" role="tabpanel" aria-labelledby="home-tab">
@@ -164,7 +164,7 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
                                 </div>
                                 <div class="col pl-0">
                                     <a href="#" class="text-muted form-control-label">{{$file->name}}</a>
-                                    <p class="mb-0">{{$file->file_size}}</p>
+                                    {{-- <p class="mb-0">{{$file->file_size}}</p> --}}
                                 </div>
                                 <div class="col-auto">
                                     <!-- Button -->
