@@ -198,13 +198,14 @@ class WorkspaceController extends Controller
                 return redirect()->route('client.home')->with('success', __('Workspace Change Successfully!'));
             } else {
 
-                return redirect()->route('getWorkSpaces', $objWorkspace->slug)->with('success', __('Workspace Change Successfully!'));
+                // return redirect()->back()->with('success', __('Workspace Change Successfully!'));
+                return redirect()->route('home')->with('success', __('Workspace Change Successfully!'));
             }
         } else {
             return redirect()->back()->with('error', __('Workspace is locked'));
         }
     }
-
+ 
     public function changeLangAdmin($lang)
     {
         if (Auth::user()->type == 'admin' && app('App\Http\Controllers\SettingsController')->setEnvironmentValue(['DEFAULT_ADMIN_LANG' => $lang])) {

@@ -152,7 +152,16 @@
                             <div class="mt-2 p-l-15">
                                 <div class="d-flex {{ $workspace->id == $currentWorkspace->id ? 'c-slider' : ''}}">
                                     <div class="ws-li-block"></div>
+                                    @if ($workspace->id == $currentWorkspace->id)
                                     <p class="m-l-5 side-nav-text cursor-pointer overflow-hiddenn {{ $workspace->id == $currentWorkspace->id ? 'font-extrabold' : ''}}">{{ $workspace->name}} {!! $workspace->id == $currentWorkspace->id ? '<span class="badge badge-success">Current</span>' : ''!!} </p>
+                                    @else
+
+                                    <a href={{route('change-workspace', $workspace->id)}}>
+                                        <p class="m-l-5 side-nav-text cursor-pointer overflow-hiddenn {{ $workspace->id == $currentWorkspace->id ? 'font-extrabold' : ''}}">{{ $workspace->name}} {!! $workspace->id == $currentWorkspace->id ? '<span class="badge badge-success">Current</span>' : ''!!} </p>
+                                      </a>
+
+                                    @endif
+
                                 </div>
                                 <div class="c-slided" style="display: none">
                                     <ul class='project-list'>
