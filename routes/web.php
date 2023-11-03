@@ -609,7 +609,7 @@ Route::post('/{slug}/projects/filter',[ProjectController::class, 'filterProducts
 Route::get('/{slug}/projects/create',[ProjectController::class, 'create'])->name('projects.create')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/{id}',[ProjectController::class, 'show'])->name('projects.show')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/{id}/filterByStatus/{currentStatus?}',[ProjectController::class, 'filterByStatus'])->name('projects.filterByStatus')->middleware(['auth','XSS']);
-Route::get('/{slug}/projects/{id}/search',[ProjectController::class, 'searchTasks'])->name('projects.searchTasks')->middleware(['auth','XSS']);
+Route::get('/{slug}/projects/{id}/search/{currentStatus?}',[ProjectController::class, 'searchTasks'])->name('projects.searchTasks')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects',[ProjectController::class, 'store'])->name('projects.store')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/{id}/edit',[ProjectController::class, 'edit'])->name('projects.edit')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects/{id}/update',[ProjectController::class, 'update'])->name('projects.update')->middleware(['auth','XSS']);
@@ -883,6 +883,7 @@ Route::get('/meeting/confirmation/{meeting_id}/{decision}',[MeetingController::c
 //=================================== All Workspaces page with project and tasks =============================================================//
 
 Route::get('{slug}/allworkspace-data',[WorkspaceController::class,'getAllWorkSpacesProjectsAndTasks'])->name('getAllProjectAndTasks');
+Route::post('{slug}/searchAllTasks',[WorkspaceController::class,'searchAllTasks'])->name('searchAllTasks');
 //=================================== slack=============================================================//
 
 Route::post('/workspace/{slug}/settingsss',[WorkspaceController::class, 'settingsSlack'])->name('workspace.settings.Slack')->middleware(['auth','XSS']);

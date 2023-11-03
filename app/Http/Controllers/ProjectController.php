@@ -623,7 +623,7 @@ class ProjectController extends Controller
         }
     }
 
-    public function searchTasks(Request $request, $slug,$projectID){
+    public function searchTasks(Request $request, $slug,$projectID,$currentStatus='All'){
         $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         $workspace_type = WorkspaceType::get();
@@ -654,12 +654,23 @@ class ProjectController extends Controller
 
                 $tags = json_decode($project->tags);
 
-                $tasks = Task::with('sub_tasks')->where('project_id', '=', $projectID)
-                ->where('title','LIKE',"%{$request->search}%")->get();
+
+
+                if($currentStatus == 'All'){
+                    // dd('if');
+                    $tasks = Task::with('sub_tasks','stage')->where('project_id', '=', $projectID)
+                    ->where('title','LIKE',"%{$request->search}%")->get();
+                }else{
+                    // dd('else');
+                    $tasks = Task::with('sub_tasks','stage')->where('project_id', '=', $projectID)
+                    ->where('title','LIKE',"%{$request->search}%")->whereHas('stage',function($query) use($currentStatus){
+                        $query->where('name',$currentStatus);
+                    })->get();
+                }
 
                $taskResource = TaskResource::collection($tasks);
-
-                return view('vue-ui.pages.project.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type','taskResource'));
+               $taskStatus = ['All','Todo','In Progress','Review','Done'];
+                return view('vue-ui.pages.project.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type','taskResource','taskStatus','currentStatus'));
                 // return view('projects.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type'));
             } else {
                 return redirect()->back()->with('error', __("Project Not Found."));
@@ -1177,16 +1188,18 @@ class ProjectController extends Controller
         $objUser = Auth::user();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
 
+
         if ($objUser->getGuard() == 'client') {
             $project = Project::select('projects.*')->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
             $projects = Project::select('projects.*')->join('client_projects', 'client_projects.project_id', '=', 'projects.id')->where('client_projects.client_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
         } else {
-            $project = Project::select('projects.*')->join('user_projects', 'user_projects.project_id', '=', 'projects.id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
-            $projects = Project::select('projects.*')->join('user_projects', 'user_projects.project_id', '=', 'projects.id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
+            $project = Project::select('projects.*')->join('user_projects', 'user_projects.project_id', '=', 'projects.id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.id', '=', $projectID)->first();
+            $projects = Project::select('projects.*')->join('user_projects', 'user_projects.project_id', '=', 'projects.id')->where('user_projects.user_id', '=', $objUser->id)->get();
         }
         $users = User::select('users.*')->join('user_projects', 'user_projects.user_id', '=', 'users.id')->where('project_id', '=', $projectID)->get();
         $task = Task::find($taskId);
         $task->assign_to = explode(",", $task->assign_to);
+        // dd($taskId);
         // dd( $project);
         return view('projects.taskEdit', compact('currentWorkspace', 'project', 'projects', 'users', 'task'));
     }
@@ -1210,7 +1223,7 @@ class ProjectController extends Controller
         if ($objUser->getGuard() == 'client') {
             $project = Project::where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $projectID)->first();
         } else {
-            $project = Project::select('projects.*')->join('user_projects', 'user_projects.project_id', '=', 'projects.id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('projects.id', '=', $request->project_id)->first();
+            $project = Project::select('projects.*')->join('user_projects', 'user_projects.project_id', '=', 'projects.id')->where('user_projects.user_id', '=', $objUser->id)->where('projects.id', '=', $request->project_id)->first();
         }
         if ($project) {
             $post = $request->all();

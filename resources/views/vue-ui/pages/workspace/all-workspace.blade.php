@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('page-title')
-    {{ __('Project Detail') }}
+    {{ __('Every Thing') }}
 @endsection
 @section('links')
     @if (\Auth::guard('client')->check())
@@ -15,13 +15,13 @@
         <li class="breadcrumb-item"><a
                 href="{{ route('client.projects.index', $currentWorkspace->slug) }}">{{ __('Project') }}</a></li>
     @else
-        <li class="breadcrumb-item"><a href="{{ route('projects.index', $currentWorkspace->slug) }}">{{ __('Project') }}</a>
+        <li class="breadcrumb-item">{{ __('Spaces') }}
         </li>
     @endif
-    <li class="breadcrumb-item">{{ $project->name }}</li>
+    <li class="breadcrumb-item">Every thing</li>
 @endsection
 @php
-    $permissions = Auth::user()->getPermission($project->id);
+    // $permissions = Auth::user()->getPermission($project->id);
     $client_keyword = Auth::user()->getGuard() == 'client' ? 'client.' : '';
     $logo = \App\Models\Utility::get_file('users-avatar/');
     $logo_project_files = \App\Models\Utility::get_file('project_files/');
@@ -29,65 +29,6 @@
 
 @endphp
 
-{{-- @section('multiple-action-button')
-    @if (isset($currentWorkspace) && $currentWorkspace->permission == 'Owner')
-        <div class="col-md-auto col-sm-4 pb-3">
-            <a href="#" class="btn btn-xs btn-primary btn-icon-only col-12" data-toggle="popover"
-                title="Shared Project Settings" data-ajax-popup="true" data-size="md"
-                data-title="{{ __('Shared Project Settings') }}"
-                data-url="{{ route('projects.copylink.setting.create', [$currentWorkspace->slug, $project->id]) }}"
-                data-toggle="tooltip" title="{{ __('Add Project') }}">
-                <i class="ti ti-settings"></i>
-            </a>
-        </div>
-    @endif
-
-    <div class="col-md-auto col-sm-4 pb-3">
-        <a href="#" class="btn btn-xs btn-primary btn-icon-only col-12 cp_link "
-            data-link="{{ route('projects.link', [$currentWorkspace->slug, \Illuminate\Support\Facades\Crypt::encrypt($project->id)]) }}"
-            data-toggle="popover"  title="Copy Project"
-            ><span
-                class=""></span><span class="btn-inner--text text-white"><i
-                    class="ti ti-copy"></i></span></a>
-        </a>
-    </div>
-    @if (
-        (isset($permissions) && in_array('show timesheet', $permissions)) ||
-            (isset($currentWorkspace) && $currentWorkspace->permission == 'Owner'))
-        <div class="col-md-auto col-sm-4 pb-3">
-            <a href="{{ route($client_keyword . 'projects.timesheet.index', [$currentWorkspace->slug, $project->id]) }}"
-                class="btn btn-xs btn-primary btn-icon-only col-12 ">{{ __('Timesheet') }}</a>
-        </div>
-    @endif
-    @if (
-        (isset($permissions) && in_array('show gantt', $permissions)) ||
-            (isset($currentWorkspace) && $currentWorkspace->permission == 'Owner'))
-        <div class="col-md-auto col-sm-4 pb-3">
-            <a href="{{ route($client_keyword . 'projects.gantt', [$currentWorkspace->slug, $project->id]) }}"
-                class="btn btn-xs btn-primary btn-icon-only col-12 ">{{ __('Gantt Chart') }}</a>
-        </div>
-    @endif
-    @if (
-        (isset($permissions) && in_array('show task', $permissions)) ||
-            (isset($currentWorkspace) && $currentWorkspace->permission == 'Owner'))
-        <div class="col-md-auto col-sm-4 pb-3">
-            <a href="{{ route($client_keyword . 'projects.task.board', [$currentWorkspace->slug, $project->id]) }}"
-                class="btn btn-xs btn-primary btn-icon-only col-12 ">{{ __('Task Board') }}</a>
-        </div>
-    @endif
-    @if (
-        (isset($permissions) && in_array('show bug report', $permissions)) ||
-            (isset($currentWorkspace) && $currentWorkspace->permission == 'Owner'))
-        <div class="col-md-auto col-sm-6 pb-3">
-            <a href="{{ route($client_keyword . 'projects.bug.report', [$currentWorkspace->slug, $project->id]) }}"
-                class="btn btn-xs btn-primary btn-icon-only col-12">{{ __('Bug Report') }}</a>
-        </div>
-    @endif
-    <div class="col-md-auto col-sm-6 pb-3">
-        <a href="{{ route($client_keyword . 'projecttime.tracker', [$currentWorkspace->slug, $project->id]) }}"
-            class="btn btn-xs btn-primary btn-icon-only col-12 ">{{ __('Tracker') }}</a>
-    </div>
-@endsection --}}
 <style type="text/css">
     .fix_img {
         width: 40px !important;
@@ -117,18 +58,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card ">
-                                {{-- <div class="card-header">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h5 class="mb-0">{{ __('Tasks') }}
-                                            </h5>
-                                        </div>
-                                    </div>
-                                </div> --}}
                                 <div class="card-body">
-                                    {{-- <app :tasks='{{ json_encode($project->getTasksWithSubTasks()) }}'></app> --}}
                                     <div class="row grey-border-bottom py-2">
-                                        <div class="col-8 mb-4">
+                                        {{-- <div class="col-8 mb-4">
                                             <custom-avatar></custom-avatar>
                                             <p class="h-text d-inline ms-2 text-primary">Team Space</p>
                                         </div>
@@ -139,12 +71,12 @@
                                             'calender' => route('projects.calender', [$currentWorkspace->slug,'id'=>$project->id]),
                                             'board' => route($client_keyword .'projects.task.board.custom', [$currentWorkspace->slug, $project->id]),
                                             'gantt' => route($client_keyword . 'projects.gantt.custom', [$currentWorkspace->slug, $project->id]) ]) }}"></custom-menu>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     <div class="row grey-border-bottom">
                                         <div class="col-6 ">
 
-                                            <form action="{{route('projects.searchTasks',[$currentWorkspace->slug,$project->id,$currentStatus])}}" method="Get" class="m-t-15">
+                                            <form action="" method="Get" class="m-t-15">
                                                 <div class="input-group w-50">
                                                     <input type="text" class="form-control" placeholder="Search Tasks" aria-label="Search" style="width: 14%" name="search">
                                                     <div class="input-group-append" style="border: 1px solid #ced4da;border-radius: 0px 8px 8px 0px">
@@ -161,7 +93,7 @@
 
                                         </div>
                                         <div class="col-6 my-3 text-end d-flex justify-content-end align-items-center">
-                                            <div class="m-r-10">
+                                            {{-- <div class="m-r-10">
                                                 <a href="#" class=""
                                                 data-url="{{ route('projects.edit', [$currentWorkspace->slug, $project->id]) }}"
                                                 data-ajax-popup="true" data-title="{{ __('Edit Project') }}"
@@ -171,43 +103,40 @@
                                                 <span class="p-text">Edit</span>
                                                 </a>
 
-                                            </div>
-                                            <div class="filterTaskBtn cursor-pointer">
+                                            </div> --}}
+                                            {{-- <div class="filterTaskBtn cursor-pointer">
                                                 <img src='{{ asset('custom-ui/images/filter.svg') }}' class="m-r-5" />
                                                 <span class="p-text">Filter</span>
-                                            </div>
-                                            <div class="filterDropdown w-25 m-l-10" style="display:none;">
+                                            </div> --}}
+                                            {{-- <div class="filterDropdown w-25 m-l-10" style="display:none;">
                                                <select class="form-select status-dropdown" aria-label="Default select example">
                                                 @foreach ($taskStatus as $status)
                                                    <option value=@if($status == 'In Progress')"In Progress" @else {{$status}} @endif @if($status == $currentStatus) selected @endif>{{$status}}</option>
                                                 @endforeach
-                                                {{-- <option selected>All</option>
-                                                 <option value="In Progress">In Progress</option>
-                                                 <option value="Review">Review</option>
-                                                 <option value="Done">Done</option> --}}
                                                </select>
-                                            </div>
+                                            </div> --}}
 
                                         </div>
                                     </div>
                                     <br>
                                     <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="card ">
+                                        @foreach ($projects as $project)
+                                           <div class="col-md-12">
+                                               <div class="card ">
                                                 <div class="card-header">
                                                     <ul class="breadcrumb">
-                                                        <li class="breadcrumb-item text-common"><span href="{{ route('home') }}">{{ __('Project') }}</span></li>
+                                                        <li class="breadcrumb-item text-common"><span href="{{ route('home') }}">{{ $project->workspaceData->name }}</span></li>
                                                         <li class="breadcrumb-item custom-bc text-common"><span href="{{ route('home') }}">{{ $project->name }}</span></li>
                                                     </ul>
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         <div class="d-flex tasks">
                                                             <span class="dash-arrow arrow-style p-1"><i
                                                                 data-feather="chevron-right"></i></span>
-                                                            <h4 class="mb-0 m-l-10">{{ __('Tasks') }}
+                                                            <h4 class="mb-0 m-l-10">{{ $project->name }}
                                                             </h4>
                                                         </div>
                                                         <div>
-                                                            <a href="#" class="btn btn-sm btn-primary" data-ajax-popup="true" data-size="lg" data-title="{{ __('Create New Task') }}" data-url="{{route($client_keyword.'tasks.create',[$currentWorkspace->slug,$project->id])}}" data-toggle="tooltip" title="{{ __('Add Task') }}"><i class="ti ti-plus"></i></a>
+                                                            {{-- <a href="#" class="btn btn-sm btn-primary" data-ajax-popup="true" data-size="lg" data-title="{{ __('Create New Task') }}" data-url="{{route($client_keyword.'tasks.create',[$currentWorkspace->slug,$project->id])}}" data-toggle="tooltip" title="{{ __('Add Task') }}"><i class="ti ti-plus"></i></a> --}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -215,11 +144,12 @@
                                                     style="display:none;
                                                    transform-origin: top;
                                                    transition: transform .4s ease-in-out;">
-                                                    <app :tasks='{{ json_encode($taskResource) }}'>
+                                                    <app :tasks='{{ json_encode($project->custom_user_tasks()) }}'>
                                                     </app>
                                                 </div>
-                                            </div>
-                                        </div>
+                                               </div>
+                                           </div>
+                                        @endforeach
                                     </div>
 
 
@@ -251,99 +181,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>
     <script>
-        (function() {
-            var options = {
-                chart: {
-                    type: 'area',
-                    height: 60,
-                    sparkline: {
-                        enabled: true,
-                    },
-                },
-                colors: {!! json_encode($chartData['color']) !!},
-                dataLabels: {
-                    enabled: false
-                },
-                stroke: {
-                    curve: 'smooth',
-                    width: 2,
-                },
-                series: [
-                    @foreach ($chartData['stages'] as $id => $name)
-                        {
-                            name: "{{ __($name) }}",
-                            // data:
-                            data: {!! json_encode($chartData[$id]) !!},
-                        },
-                    @endforeach
-                ],
-                xaxis: {
-                    type: "category",
-                    categories: {!! json_encode($chartData['label']) !!},
-                    title: {
-                        text: '{{ __('Days') }}'
-                    },
-                    tooltip: {
-                        enabled: false,
-                    }
-                },
-                yaxis: {
-                    show: true,
-                    position: "left",
-                    title: {
-                        text: '{{ __('Tasks') }}'
-                    },
-                },
-                grid: {
-                    show: true,
-                    borderColor: "#EBEBEB",
-                    strokeDashArray: 0,
-                    position: "back",
-                    xaxis: {
-                        show: true,
-                        lines: {
-                            show: true,
-                        },
-                    },
-                    yaxis: {
-                        show: false,
-                        lines: {
-                            show: false,
-                        },
-                    },
-                    row: {
-                        colors: undefined,
-                        opacity: 0.5,
-                    },
-                    column: {
-                        position: "back",
-                        colors: undefined,
-                        opacity: 0.5,
-                    },
-                    padding: {
-                        top: 0,
-                        right: 0,
-                        bottom: 0,
-                        left: 0,
-                    },
-                },
-                tooltip: {
-                    followCursor: false,
-                    fixed: {
-                        enabled: false
-                    },
-                    x: {
-                        format: 'dd/MM/yy HH:mm'
-                    },
 
-                    marker: {
-                        show: false
-                    }
-                }
-            }
-            var chart = new ApexCharts(document.querySelector("#task-chart"), options);
-            chart.render();
-        })();
     </script>
     <script>
         $(document).ready(function() {
@@ -356,140 +194,17 @@
     </script>
     <script src="{{ asset('assets/custom/js/dropzone.min.js') }}"></script>
     <script>
-        Dropzone.autoDiscover = false;
-        myDropzone = new Dropzone("#dropzonewidget", {
-            maxFiles: 20,
-            // maxFilesize: 209715200,
-            parallelUploads: 1,
-            //acceptedFiles: ".jpeg,.jpg,.png,.gif,.svg,.pdf,.txt,.doc,.docx,.zip,.rar",
-            url: "{{ route('projects.file.upload', [$currentWorkspace->slug, $project->id]) }}",
-            success: function(file, response) {
-                if (response.is_success) {
-                    dropzoneBtn(file, response);
-                    show_toastr('{{ __('Success') }}', 'File Successfully Uploaded', 'success');
-                } else {
-                    myDropzone.removeFile(file);
-                    // show_toastr('error', 'File type must be match with Storage setting.');
-                    show_toastr('{{ __('Error') }}',
-                        'File type and size must be match with Storage setting.', 'error');
-                }
-            },
-            error: function(file, response) {
-                myDropzone.removeFile(file);
-                if (response.error) {
-                    show_toastr('{{ __('Error') }}',
-                        'File type and size must be match with Storage setting.', 'error');
-                } else {
-                    show_toastr('{{ __('Error') }}',
-                        'File type and size must be match with Storage setting.', 'error');
-                }
-            }
-        });
-
-        myDropzone.on("sending", function(file, xhr, formData) {
-            formData.append("_token", $('meta[name="csrf-token"]').attr('content'));
-            formData.append("project_id", {{ $project->id }});
-        });
-
-        @if (isset($permisions) && in_array('show uploading', $permisions))
-            $(".dz-hidden-input").prop("disabled", true);
-            myDropzone.removeEventListeners();
-        @endif
-
-        function dropzoneBtn(file, response) {
-
-            var html = document.createElement('span');
-            var download = document.createElement('a');
-            download.setAttribute('href', response.download);
-            download.setAttribute('class', "action-btn btn-primary mx-1  btn btn-sm d-inline-flex align-items-center");
-            download.setAttribute('data-toggle', "popover");
-            download.setAttribute('download', "");
-            download.setAttribute('title', "{{ __('Download') }}");
-            // download.innerHTML = "<i class='fas fa-download mt-2'></i>";
-            download.innerHTML = "<i class='ti ti-download'> </i>";
-            html.appendChild(download);
-
-            @if (isset($permisions) && in_array('show uploading', $permisions))
-            @else
-                var del = document.createElement('a');
-                del.setAttribute('href', response.delete);
-                del.setAttribute('class', "action-btn btn-danger mx-1  btn btn-sm d-inline-flex align-items-center");
-                del.setAttribute('data-toggle', "popover");
-                del.setAttribute('title', "{{ __('Delete') }}");
-                del.innerHTML = "<i class='ti ti-trash '></i>";
-
-                del.addEventListener("click", function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if (confirm("Are you sure ?")) {
-                        var btn = $(this);
-                        $.ajax({
-                            url: btn.attr('href'),
-                            type: 'DELETE',
-                            success: function(response) {
-                                if (response.is_success) {
-                                    btn.closest('.dz-image-preview').remove();
-                                    show_toastr('{{ __('Success') }}', 'File Successfully Deleted',
-                                        'success');
-                                } else {
-                                    show_toastr('{{ __('Error') }}', 'Something Wents Wrong.',
-                                        'error');
-                                }
-                            },
-                            error: function(response) {
-                                response = response.responseJSON;
-                                if (response.is_success) {
-                                    show_toastr('{{ __('Error') }}', 'Something Wents Wrong.',
-                                        'error');
-                                } else {
-                                    show_toastr('{{ __('Error') }}', 'Something Wents Wrong.',
-                                        'error');
-                                }
-                            }
-                        })
-                    }
-                });
-                html.appendChild(del);
-            @endif
-
-            file.previewTemplate.appendChild(html);
-        }
-        @php($setting = App\Models\Utility::getAdminPaymentSettings())
-
-        @php($files = $project->files)
-        @foreach ($files as $file)
-            @php($storage_file = asset($logo_project_files . $file->file_path))
-
-            // Create the mock file:
-            @if (Storage::disk($setting['storage_setting'])->exists('/project_files/' . $file->file_path))
-
-                var mockFile = {
-                    name: "{{ $file->file_name }}",
-                    size: {{ filesize('storage/project_files/' . $file->file_path) }}
-                };
-            @endif
-            // Call the default addedfile event handler
-            myDropzone.emit("addedfile", mockFile);
-            // And optionally show the thumbnail of the file:
-            myDropzone.emit("thumbnail", mockFile, "{{ asset($logo_project_files . $file->file_path) }}");
-            myDropzone.emit("complete", mockFile);
-
-            dropzoneBtn(mockFile, {
-                download: "{{ route($client_keyword . 'projects.file.download', [$currentWorkspace->slug, $project->id, $file->id]) }}",
-                delete: "{{ route($client_keyword . 'projects.file.delete', [$currentWorkspace->slug, $project->id, $file->id]) }}"
-            });
-        @endforeach
     </script>
 @endpush
 
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $('.tasks').on('click', () => {
-                $('.tasks-body').animate({
+            $('.tasks').on('click', function() {
+               $(this).closest('.card').find('.tasks-body').animate({
                     height: 'toggle'
                 });
-                $('.arrow-style').toggleClass('rotate-90');
+                $(this).closest('.card').find('.arrow-style').toggleClass('rotate-90');
 
             })
         });
@@ -497,63 +212,7 @@
     <!-- third party js -->
     <script src="{{ asset('assets/custom/js/dragula.min.js') }}"></script>
     <script>
-        ! function(a) {
-            "use strict";
-            var t = function() {
-                this.$body = a("body")
-            };
-            t.prototype.init = function() {
-                a('[data-toggle="dragula"]').each(function() {
-                    var t = a(this).data("containers"),
-                        n = [];
-                    if (t)
-                        for (var i = 0; i < t.length; i++) n.push(a("#" + t[i])[0]);
-                    else n = [a(this)[0]];
-                    var r = a(this).data("handleclass");
-                    r ? dragula(n, {
-                        moves: function(a, t, n) {
-                            return n.classList.contains(r)
-                        }
-                    }) : dragula(n).on('drop', function(el, target, source, sibling) {
-                        var sort = [];
-                        $("#" + target.id + " > div").each(function(key) {
-                            sort[key] = $(this).attr('id');
-                        });
-                        var id = el.id;
-                        var old_status = $("#" + source.id).data('status');
-                        var new_status = $("#" + target.id).data('status');
-                        var project_id = '{{ $project->id }}';
 
-                        $("#" + source.id).parents('.card-list').find('.count').text($("#" + source.id +
-                            " > div").length);
-                        $("#" + target.id).parents('.card-list').find('.count').text($("#" + target.id +
-                            " > div").length);
-                        $.ajax({
-                            url: '{{ route($client_keyword . 'tasks.update.order', [$currentWorkspace->slug, $project->id]) }}',
-                            type: 'POST',
-                            data: {
-                                id: id,
-                                sort: sort,
-                                new_status: new_status,
-                                old_status: old_status,
-                                project_id: project_id,
-                            },
-                            success: function(data) {
-                                // console.log(data);
-                            }
-                        });
-                    });
-                })
-            }, a.Dragula = new t, a.Dragula.Constructor = t
-        }(window.jQuery),
-        function(a) {
-            "use strict";
-            @if (
-                (isset($permissions) && in_array('move task', $permissions)) ||
-                    ($currentWorkspace && $currentWorkspace->permission == 'Owner'))
-                a.Dragula.init();
-            @endif
-        }(window.jQuery);
     </script>
     <!-- third party js ends -->
     <script>
@@ -862,14 +521,6 @@
             $('.filterDropdown').slideToggle(500);
         })
 
-        $('.status-dropdown').on('change',function(){
-            console.log();
-            let currentWorkSpace = <?php echo json_encode($currentWorkspace->slug); ?>
 
-            let custom_project_id = <?php echo json_encode($project->id); ?>
-        //   console.log(my_variable);
-
-        location.href = window.location.origin +'/'+currentWorkSpace+'/projects/'+custom_project_id +'/filterByStatus/'+$(this).val()
-        })
     </script>
 @endpush

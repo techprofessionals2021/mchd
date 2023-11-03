@@ -138,15 +138,16 @@
                         <div class="dash-link side-item mt-0 space-body "
                             style="border-radius: 0px 0px 12px 12px ; display:none;
                                  text-align: center;">
+                             <a href="{{route('getAllProjectAndTasks',$currentWorkspace->slug)}}" class="btn side-nav-text font-bold">
+                                {{-- <i class="ti ti-plus"></i> --}}
+                                <span>Every Thing</span>
+                            </a>
                             <button class="btn btn-light space-btn openAddWorkSpace">
                                 <i class="ti ti-plus"></i>
                                 <span>New Space</span>
                             </button>
 
-                            {{-- <a href="{{route('getAllProjectAndTasks',$currentWorkspace->slug)}}" class="btn btn-light space-btn">
-                                <i class="ti ti-plus"></i>
-                                <span>New Space</span>
-                            </a> --}}
+
 
                             @foreach (auth()->user()->workspace as $workspace)
                             <div class="mt-2 p-l-15">
