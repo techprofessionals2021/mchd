@@ -227,7 +227,7 @@ class AuthenticatedSessionController extends Controller
 
 
 
- public function showLinkRequestForm($lang = '')
+    public function showLinkRequestForm($lang = '')
     {
         if ($lang == '') {
             $lang = env('DEFAULT_LANG') ?? 'en';
