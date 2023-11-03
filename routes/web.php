@@ -57,6 +57,7 @@ use App\Http\Controllers\SuperAdminProjectController;
 use App\Http\Controllers\SuperAdminPermissionController;
 use App\Http\Controllers\SuperAdminTaskController;
 use App\Http\Controllers\HodDashboardController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -608,7 +609,7 @@ Route::post('/{slug}/projects/filter',[ProjectController::class, 'filterProducts
 Route::get('/{slug}/projects/create',[ProjectController::class, 'create'])->name('projects.create')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/{id}',[ProjectController::class, 'show'])->name('projects.show')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/{id}/filterByStatus/{currentStatus?}',[ProjectController::class, 'filterByStatus'])->name('projects.filterByStatus')->middleware(['auth','XSS']);
-Route::get('/{slug}/projects/{id}/search',[ProjectController::class, 'searchTasks'])->name('projects.searchTasks')->middleware(['auth','XSS']);
+Route::get('/{slug}/projects/{id}/search/{currentStatus?}',[ProjectController::class, 'searchTasks'])->name('projects.searchTasks')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects',[ProjectController::class, 'store'])->name('projects.store')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/{id}/edit',[ProjectController::class, 'edit'])->name('projects.edit')->middleware(['auth','XSS']);
 Route::post('/{slug}/projects/{id}/update',[ProjectController::class, 'update'])->name('projects.update')->middleware(['auth','XSS']);
@@ -700,6 +701,15 @@ Route::post('/{slug}/notes',[NoteController::class, 'store'])->name('notes.store
 Route::get('/{slug}/notes/{id}/edit',[NoteController::class, 'edit'])->name('notes.edit')->middleware(['auth','XSS']);
 Route::post('/{slug}/notes/{id}/update',[NoteController::class, 'update'])->name('notes.update')->middleware(['auth','XSS']);
 Route::delete('/{slug}/notes/{id}',[NoteController::class, 'destroy'])->name('notes.destroy')->middleware(['auth','XSS']);
+
+
+//report
+
+Route::get('/{slug}/report',[ReportController::class, 'index'])->name('report.index')->middleware(['auth','XSS']);
+
+
+
+
 // bug report
 Route::get('/{slug}/projects/{id}/bug_report',[ProjectController::class, 'bugReport'])->name('projects.bug.report')->middleware(['auth','XSS']);
 Route::get('/{slug}/projects/{id}/bug_report/create',[ProjectController::class, 'bugReportCreate'])->name('projects.bug.report.create')->middleware(['auth','XSS']);
@@ -873,6 +883,7 @@ Route::get('/meeting/confirmation/{meeting_id}/{decision}',[MeetingController::c
 //=================================== All Workspaces page with project and tasks =============================================================//
 
 Route::get('{slug}/allworkspace-data',[WorkspaceController::class,'getAllWorkSpacesProjectsAndTasks'])->name('getAllProjectAndTasks');
+Route::post('{slug}/searchAllTasks',[WorkspaceController::class,'searchAllTasks'])->name('searchAllTasks');
 //=================================== slack=============================================================//
 
 Route::post('/workspace/{slug}/settingsss',[WorkspaceController::class, 'settingsSlack'])->name('workspace.settings.Slack')->middleware(['auth','XSS']);

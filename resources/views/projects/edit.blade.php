@@ -22,16 +22,16 @@
                 <textarea rows="3" class="form-control" id="description" name="description" required=""
                     placeholder="{{ __('Add Description') }}">{{ $project->description }}</textarea>
             </div>
-            {{-- <div class="form-group col-md-12">
+            <div class="form-group col-md-12">
                 <label for="status" class="form-label">{{ __('Status') }}</label>
                 <select id="status" name="status" class="form-control select2">
                     <option value="Ongoing">{{ __('Ongoing') }}</option>
                     <option value="Finished" @if ($project->status == 'Finished') selected @endif>{{ __('Finished') }}
                     </option>
-                    <option value="OnHold" @if ($project->status == 'OnHold') selected @endif>{{ __('OnHold') }}
-                    </option>
+                    {{-- <option value="OnHold" @if ($project->status == 'OnHold') selected @endif>{{ __('OnHold') }}
+                    </option> --}}
                 </select>
-            </div> --}}
+            </div>
 
             <div class="col-md-12">
 

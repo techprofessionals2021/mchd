@@ -69,6 +69,22 @@ class Project extends Model
     public function user_tasks($user_id){
         return Task::where('project_id','=',$this->id)->where('assign_to','=',$user_id)->get();
     }
+
+    public function custom_user_tasks(){
+        $user_id = auth()->id();
+        $tasks =  Task::with('project')
+        ->where('project_id', $this->id) // Necessary condition
+        ->where(function ($query) use ($user_id) {
+            $query->whereRaw('FIND_IN_SET(?, assign_to)', [$user_id])
+                  ->orWhereHas('project', function ($subQuery) use ($user_id) {
+                      $subQuery->where('created_by', $user_id);
+                  });
+        })
+        ->get();
+        return TaskResource::collection($tasks);
+
+    }
+
     public function user_done_tasks($user_id){
         return Task::join('stages','stages.id','=','tasks.status')->where('project_id','=',$this->id)->where('assign_to','=',$user_id)->where('stages.complete','=','1')->get();
     }

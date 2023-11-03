@@ -144,7 +144,7 @@
                                     <div class="row grey-border-bottom">
                                         <div class="col-6 ">
 
-                                            <form action="{{route('projects.searchTasks',[$currentWorkspace->slug,$project->id])}}" method="Get" class="m-t-15">
+                                            <form action="{{route('projects.searchTasks',[$currentWorkspace->slug,$project->id,$currentStatus])}}" method="Get" class="m-t-15">
                                                 <div class="input-group w-50">
                                                     <input type="text" class="form-control" placeholder="Search Tasks" aria-label="Search" style="width: 14%" name="search">
                                                     <div class="input-group-append" style="border: 1px solid #ced4da;border-radius: 0px 8px 8px 0px">

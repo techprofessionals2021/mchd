@@ -348,6 +348,10 @@ class ProjectReportController extends Controller
      public function getProjectChart($arrParam)
     {
     
+        $workspace = Workspace::get();
+        $project = Project::get();
+  
+
        
         $arrDuration = [];
         if ($arrParam['duration'] && $arrParam['duration'] == 'week') {
@@ -364,15 +368,11 @@ class ProjectReportController extends Controller
         ];
         $stages = Stage::where('workspace_id', '=', $arrParam['workspace_id'])->orderBy('order');
 
-
-        
-     
-      
       
         foreach ($arrDuration as $date => $label) {
-            // $objProject = Task::select('status', DB::raw('count(*) as total'))->whereDate('updated_at', '=', $date)->groupBy('status');
+        //    $objProject = Task::select('status', DB::raw('count(*) as total'))->whereDate('updated_at', '=', $date)->groupBy('status');
 
-            $objProject = Task::select('status', DB::raw('count(*) as total'))->groupBy('status');
+         $objProject = Task::select('status', DB::raw('count(*) as total'))->groupBy('status');
 
       
             // dd($objProject);
@@ -402,6 +402,28 @@ class ProjectReportController extends Controller
         }
         $arrTask['stages'] = $stages->pluck('name', 'id')->toArray();
         $arrTask['color'] = $stages->pluck('color')->toArray();
+        $arrTask['workspaces'] = $workspace->pluck('name')->toArray();
+       
+        $arrTask['total_projects'] = [];
+        $arrTask['total_ongoing_projects'] = [];
+        $arrTask['total_finished_projects'] = [];
+
+        foreach ($workspace as $w) {
+            $projectCount = $project->where('workspace', $w->id)->count();
+            $ongoingProjectCount = $project->where('workspace', $w->id)->where('status', 'Ongoing')->count();
+            $finishedProjectCount = $project->where('workspace', $w->id)->where('status', 'Finished')->count();
+            $arrTask['total_projects'][] = $projectCount;
+            $arrTask['total_ongoing_projects'][] = $ongoingProjectCount;
+            $arrTask['total_finished_projects'][] = $finishedProjectCount;
+        }
+        
+        $arrTask['total_projects'] = array_values($arrTask['total_projects']);
+        $arrTask['total_ongoing_projects'] = array_values($arrTask['total_ongoing_projects']);
+        $arrTask['total_finished_projects'] = array_values($arrTask['total_finished_projects']);
+     
+
+
+        // dd($arrTask);
 
         return $arrTask;
     }

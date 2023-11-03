@@ -198,7 +198,8 @@ class WorkspaceController extends Controller
                 return redirect()->route('client.home')->with('success', __('Workspace Change Successfully!'));
             } else {
 
-                return redirect()->route('getWorkSpaces', $objWorkspace->slug)->with('success', __('Workspace Change Successfully!'));
+                // return redirect()->back()->with('success', __('Workspace Change Successfully!'));
+                return redirect()->route('home')->with('success', __('Workspace Change Successfully!'));
             }
         } else {
             return redirect()->back()->with('error', __('Workspace is locked'));
@@ -1366,19 +1367,43 @@ class WorkspaceController extends Controller
 
     public function getAllWorkSpacesProjectsAndTasks($slug)
     {
-        dd($slug);
         $userObj = Auth::user();
+       $projects = Project::with('users')->where('created_by',$userObj)
+       ->orWhereHas('users',function($query)use($userObj){
+        $query->where('user_id',$userObj->id);
+       })->get();
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
 
-        if ($userObj->getGuard() == 'client') {
-            $projects = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
-        } else {
-            $projects = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
-        }
-        $stages = Stage::where('workspace_id', '=', $currentWorkspace->id)->orderBy('order')->get();
-        $users = User::select('users.*')->join('user_workspaces', 'user_workspaces.user_id', '=', 'users.id')->where('user_workspaces.workspace_id', '=', $currentWorkspace->id)->get();
+        // if ($userObj->getGuard() == 'client') {
+        //     $projects = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
+        // } else {
+        //     $projects = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
+        // }
+        // $stages = Stage::where('workspace_id', '=', $currentWorkspace->id)->orderBy('order')->get();
+        // $users = User::select('users.*')->join('user_workspaces', 'user_workspaces.user_id', '=', 'users.id')->where('user_workspaces.workspace_id', '=', $currentWorkspace->id)->get();
+        $chartData = [];
+        return view('vue-ui.pages.workspace.all-workspace', compact('currentWorkspace', 'projects','chartData'));
+        //  return view('workspaces.index');
+    }
 
-        return view('workspaces.index', compact('currentWorkspace', 'projects', 'users', 'stages'));
+    public function searchAllTasks(Request $request,$slug)
+    {
+        $userObj = Auth::user();
+       $projects = Project::with('users')->where('created_by',$userObj)
+       ->orWhereHas('users',function($query)use($userObj){
+        $query->where('user_id',$userObj->id);
+       })->get();
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+
+        // if ($userObj->getGuard() == 'client') {
+        //     $projects = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
+        // } else {
+        //     $projects = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
+        // }
+        // $stages = Stage::where('workspace_id', '=', $currentWorkspace->id)->orderBy('order')->get();
+        // $users = User::select('users.*')->join('user_workspaces', 'user_workspaces.user_id', '=', 'users.id')->where('user_workspaces.workspace_id', '=', $currentWorkspace->id)->get();
+        $chartData = [];
+        return view('vue-ui.pages.workspace.all-workspace', compact('currentWorkspace', 'projects','chartData'));
         //  return view('workspaces.index');
     }
 }

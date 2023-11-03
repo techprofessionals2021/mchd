@@ -138,21 +138,31 @@
                         <div class="dash-link side-item mt-0 space-body "
                             style="border-radius: 0px 0px 12px 12px ; display:none;
                                  text-align: center;">
+                             <a href="{{route('getAllProjectAndTasks',$currentWorkspace->slug)}}" class="btn side-nav-text font-bold">
+                                {{-- <i class="ti ti-plus"></i> --}}
+                                <span>Every Thing</span>
+                            </a>
                             <button class="btn btn-light space-btn openAddWorkSpace">
                                 <i class="ti ti-plus"></i>
                                 <span>New Space</span>
                             </button>
 
-                            {{-- <a href="{{route('getAllProjectAndTasks',$currentWorkspace->slug)}}" class="btn btn-light space-btn">
-                                <i class="ti ti-plus"></i>
-                                <span>New Space</span>
-                            </a> --}}
+
 
                             @foreach (auth()->user()->workspace as $workspace)
                             <div class="mt-2 p-l-15">
                                 <div class="d-flex {{ $workspace->id == $currentWorkspace->id ? 'c-slider' : ''}}">
                                     <div class="ws-li-block"></div>
+                                    @if ($workspace->id == $currentWorkspace->id)
                                     <p class="m-l-5 side-nav-text cursor-pointer overflow-hiddenn {{ $workspace->id == $currentWorkspace->id ? 'font-extrabold' : ''}}">{{ $workspace->name}} {!! $workspace->id == $currentWorkspace->id ? '<span class="badge badge-success">Current</span>' : ''!!} </p>
+                                    @else
+
+                                    <a href={{route('change-workspace', $workspace->id)}}>
+                                        <p class="m-l-5 side-nav-text cursor-pointer overflow-hiddenn {{ $workspace->id == $currentWorkspace->id ? 'font-extrabold' : ''}}">{{ $workspace->name}} {!! $workspace->id == $currentWorkspace->id ? '<span class="badge badge-success">Current</span>' : ''!!} </p>
+                                      </a>
+
+                                    @endif
+
                                 </div>
                                 <div class="c-slided" style="display: none">
                                     <ul class='project-list'>
@@ -198,6 +208,22 @@
                                     src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
                                 class="dash-mtext side-nav-text">{{ __('Calendar') }}</span></a>
                     </li>
+                    </li>
+
+                    {{-- <li
+                    class="dash-item {{ Request::route()->getName() == 'project_report.index' || Request::segment(2) == 'project_report' ? ' active' : '' }}">
+                    <a href="{{ route('project_report.index', $currentWorkspace->slug) }}"
+                        class="dash-link "><span class="dash-micon"><i class="ti ti-chart-line"></i></span><span
+                            class="dash-mtext">{{ __('Project Report') }}</span></a>
+                    </li> --}}
+
+                    {{-- <li class="dash-item dash-hasmenu">
+                        <a href="{{ route('report.index',[$currentWorkspace->slug])}}"
+                            class="dash-link{{ Request::route()->getName() == 'report.index' ? ' active' : '' }} side-item"><span
+                                class="dash-micon mr-3"> <img
+                                    src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
+                                class="dash-mtext side-nav-text">{{ __('Reports') }}</span></a>
+                    </li>  --}}
 
                     @if (Auth::user()->type == 'admin')
                         <li

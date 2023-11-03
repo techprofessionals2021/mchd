@@ -59,6 +59,7 @@ class NoteController extends Controller
                                'color' => 'required',
                            ]);
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+        
         $objUser = Auth::user();
         $post = $request->all();
         $post['type'] = $request->type;
