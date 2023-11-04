@@ -70,17 +70,34 @@ class Project extends Model
         return Task::where('project_id','=',$this->id)->where('assign_to','=',$user_id)->get();
     }
 
-    public function custom_user_tasks(){
+    public function custom_user_tasks($searchQuery = '',$currentStatus='All'){
         $user_id = auth()->id();
-        $tasks =  Task::with('project')
-        ->where('project_id', $this->id) // Necessary condition
-        ->where(function ($query) use ($user_id) {
-            $query->whereRaw('FIND_IN_SET(?, assign_to)', [$user_id])
-                  ->orWhereHas('project', function ($subQuery) use ($user_id) {
-                      $subQuery->where('created_by', $user_id);
-                  });
-        })
-        ->get();
+        if ($currentStatus == 'All') {
+            $tasks =  Task::with('project')
+            ->where('project_id', $this->id) // Necessary condition
+            ->where('title','LIKE',"%{$searchQuery}%")
+            ->where(function ($query) use ($user_id) {
+                $query->whereRaw('FIND_IN_SET(?, assign_to)', [$user_id])
+                      ->orWhereHas('project', function ($subQuery) use ($user_id) {
+                          $subQuery->where('created_by', $user_id);
+                      });
+            })
+            ->get();
+        }else{
+            $tasks =  Task::with('project','stage')
+            ->where('project_id', $this->id) // Necessary condition
+            ->where('title','LIKE',"%{$searchQuery}%")
+            ->where(function ($query) use ($user_id) {
+                $query->whereRaw('FIND_IN_SET(?, assign_to)', [$user_id])
+                      ->orWhereHas('project', function ($subQuery) use ($user_id) {
+                          $subQuery->where('created_by', $user_id);
+                      });
+            })->whereHas('stage',function($query) use($currentStatus){
+                $query->where('name',$currentStatus);
+            })
+            ->get();
+        }
+
         return TaskResource::collection($tasks);
 
     }
