@@ -67,10 +67,10 @@
                                     @endif
                                 </h6>
                             </div>
-                            @if (isset($currentWorkspace) &&
+                            {{-- @if (isset($currentWorkspace) &&
                                     $currentWorkspace &&
                                     $currentWorkspace->permission == 'Owner' &&
-                                    Auth::user()->id != $user->id)
+                                    Auth::user()->id != $user->id) --}}
                                 <div class="card-header-right">
                                     <div class="btn-group card-option">
                                         <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
@@ -78,10 +78,10 @@
                                             <i class="feather icon-more-vertical"></i>
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-end">
-                                            @if (isset($currentWorkspace) &&
+                                            {{-- @if (isset($currentWorkspace) &&
                                                     $currentWorkspace &&
                                                     $currentWorkspace->permission == 'Owner' &&
-                                                    Auth::user()->id != $user->id)
+                                                    Auth::user()->id != $user->id) --}}
                                                 {{-- <a href="#" class="dropdown-item" data-ajax-popup="true"
                                                     data-size="md" data-title="{{ __('Edit') }}"
                                                     data-url="{{ route('users.edit', [$currentWorkspace->slug, $user->id]) }}"><i
@@ -113,12 +113,12 @@
                                                     ><i
                                                         class="ti ti-lock"></i></a> --}}
 
-                                            @endif
+                                            {{-- @endif --}}
 
                                         </div>
                                     </div>
                                 </div>
-                            @endif
+                            {{-- @endif --}}
                         </div>
                         @if (Auth::user()->type == 'admin' && Auth::user()->id != $user->id)
                             <div class="text-end"
