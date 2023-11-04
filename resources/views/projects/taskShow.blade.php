@@ -10,7 +10,7 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
 
         <div class="row mb-4">
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-control-label">{{ __('Description')}}:</div>
 
                 <p class="text-muted mb-4">
@@ -18,7 +18,7 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
                 </p>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-control-label ">{{ __('Tags')}}:</div>
 
                 <p class="text-muted mt-1 mb-4">
@@ -29,18 +29,8 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
                     @endisset
                 </p>
             </div>
-        </div>
 
-        <div class="row mb-4">
-            <div class="col-md-3">
-                <div class="form-control-label">{{ __('Create Date')}}</div>
-                <p class="mt-1">{{ \App\Models\Utility::dateFormat($task->created_at) }}</p>
-            </div>
-            <div class="col-md-3">
-                <div class="form-control-label">{{ __('Due Date')}}</div>
-                <p class="mt-1">{{ \App\Models\Utility::dateFormat($task->due_date) }}</p>
-            </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-control-label">{{ __('Assigned')}}</div>
                 @if($users = $task->users())
                     @foreach($users as $user)
@@ -48,7 +38,19 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
                     @endforeach
                 @endif
             </div>
-            <div class="col-md-3">
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="form-control-label">{{ __('Start Date')}}</div>
+                <p class="mt-1">{{ \App\Models\Utility::dateFormat($task->start_date) }}</p>
+            </div>
+            <div class="col-md-4">
+                <div class="form-control-label">{{ __('Due Date')}}</div>
+                <p class="mt-1">{{ \App\Models\Utility::dateFormat($task->due_date) }}</p>
+            </div>
+
+            <div class="col-md-4">
                 <div class="form-control-label">{{ __('Task Progress')}}</div>
                 <div class="progress mt-1" style="height: 20px">
                     <div class="progress-bar" role="progressbar" style="width: {{$completedSubTaskPercentage}}%;" aria-valuenow="{{$completedSubTaskPercentage}}" aria-valuemin="0" aria-valuemax="100">{{$completedSubTaskPercentage}}%</div>
@@ -162,7 +164,7 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
                                 </div>
                                 <div class="col pl-0">
                                     <a href="#" class="text-muted form-control-label">{{$file->name}}</a>
-                                    <p class="mb-0">{{$file->file_size}}</p>
+                                    {{-- <p class="mb-0">{{$file->file_size}}</p> --}}
                                 </div>
                                 <div class="col-auto">
                                     <!-- Button -->

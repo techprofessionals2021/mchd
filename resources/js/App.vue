@@ -13,10 +13,10 @@
             <template v-if="column.key === 'title'">
                 <span>
                     <span class="id-label">
-                        TO DO
+                      Title
                     </span>
                     <span class="m-l-5 text-common">
-                        3 Tasks
+                        {{ data.length }} Tasks
                     </span>
                 </span>
             </template>
@@ -33,7 +33,7 @@
                 <a v-else>{{ text }}</a>
             </template>
 
-            
+
             <template v-else-if="column.dataIndex === 'assignee'">
                 <a-avatar-group :max-count="2" size="large" :max-style="{
                     color: '#f56a00',
@@ -46,6 +46,10 @@
                 </a-avatar-group>
             </template>
 
+            <template v-else-if="column.dataIndex === 'status'">
+                <a-tag :color=text?.color>{{ text?.name }}</a-tag>
+            </template>
+
             <template v-else-if="column.dataIndex === 'due_date'">
                 {{ dateFormatter(text) }}
             </template>
@@ -55,7 +59,7 @@
                 <a-tooltip :title="text" placement="top">
                     <!-- <a-avatar style="background-color: #87d068"> -->
                     <!-- <template> -->
-                    <FlagOutlined :style="{ color: text == 'High' ? 'red' : text == 'Low' ? 'green' : 'brown' }" />
+                    <FlagOutlined :style="{ color: text == 'High' ? 'red' : text == 'Low' ? 'green' : text == 'Medium' ? 'brown' : '' }" />
                     <!-- </template> -->
                     <!-- </a-avatar> -->
                 </a-tooltip>
@@ -67,18 +71,18 @@
                     data-title="Task Edit" class="h6 task-title">
                     <h5>      <EditTwoTone style="font-size: 24px;" /></h5>
                                 </a>
-                                <a v-else>{{ 'Edit' }}</a>
-                              
+                                <!-- <a v-else>{{ 'Edit' }}</a> -->
+
             </template>
 
 
             <template v-else-if="column.dataIndex === 'deletetask'">
-                <a :href="record['modal_url_destory']" 
+                <a :href="record['modal_url_destory']"
                     class="h6">
                     <h5>      <DeleteTwoTone  style="font-size: 24px;" /></h5>
                                 </a>
-                                
-                              
+
+
             </template>
 
         </template>
@@ -110,6 +114,12 @@ const columns = [
         //   width: '12%',
     },
     {
+        title: 'Status',
+        dataIndex: 'status',
+        key: 'status',
+        //   width: '12%',
+    },
+    {
         title: 'DUE DATE',
         dataIndex: 'due_date',
         key: 'due_date',
@@ -130,7 +140,7 @@ const columns = [
         dataIndex: 'deletetask',
         key: 'deletetask',
     },
-  
+
 
 ];
 
@@ -151,7 +161,7 @@ const rowSelection = ref({
 export default {
     props: ['tasks'],
     setup(props) {
-        console.log(props.tasks)
+        console.log(props.tasks,'tasks')
         return {
             columns,
             data: props.tasks,
@@ -162,7 +172,7 @@ export default {
         CalendarOutlined,
         FlagOutlined,
         EditTwoTone,
-        DeleteTwoTone 
+        DeleteTwoTone
     },
     methods: {
         dateFormatter(dateTimeString) {
