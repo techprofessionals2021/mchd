@@ -80,7 +80,7 @@ class CeoDashboardController extends Controller
                     join("user_projects", "projects.id", "=", "user_projects.project_id")
                     ->join("projects as p2", "p2.id", "=", "user_projects.project_id") // Change alias here
                     ->where("user_id", "=", $id)
-                    ->where('p2.workspace', '=', $currentWorkspace->id) // Use the new alias here
+                    // ->where('p2.workspace', '=', $currentWorkspace->id) // Use the new alias here
                     ->orderBy('projects.id', 'desc')
                     ->limit(5)
                     ->get();
@@ -112,7 +112,7 @@ class CeoDashboardController extends Controller
                 join("user_projects", "projects.id", "=", "user_projects.project_id")
                 ->join("projects as p2", "p2.id", "=", "user_projects.project_id") // Change alias here
                 ->where("user_id", "=", $id)
-                ->where('p2.workspace', '=', $currentWorkspace->id) // Use the new alias here
+                // ->where('p2.workspace', '=', $currentWorkspace->id) // Use the new alias here
                 ->orderBy('projects.id', 'desc')
                 ->limit(5)
                 ->get();
