@@ -209,10 +209,14 @@ class SuperAdminController extends Controller
     public function update_user(Request $request)
     {
 
+
+     
+
         $tags = Utility::convertTagsToJsonArray($request->tags);
         $hods = json_encode($request->hods);
         $executives = json_encode($request->executives);
-
+        $workspace = json_encode($request->workspace_id);
+        // dd($workspace);
 
         // dd( $tags , $hods , $executives);
 
@@ -237,7 +241,7 @@ class SuperAdminController extends Controller
            
             $user->assignRole($role);
 
-            $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $request->workspace_id,'hods' => $hods,'executives' => $executives]);
+            $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $workspace,'hods' => $hods,'executives' => $executives]);
     
         
         } else {
@@ -249,7 +253,7 @@ class SuperAdminController extends Controller
                 // The role exists; assign it to the user.
                 $user->assignRole($role);
 
-                $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $request->workspace_id,'hods' => $hods,'executives' => $executives]);
+                $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $workspace,'hods' => $hods,'executives' => $executives]);
                 
             } else {
                 // The role doesn't exist; create it and then assign it to the user.

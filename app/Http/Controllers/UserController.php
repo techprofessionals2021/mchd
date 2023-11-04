@@ -42,7 +42,7 @@ use App\Models\Note;
 use App\Models\ClientProject;
 use App\Models\Milestone;
 use App\Models\Task;
-use App\Models\WorkspaceType;
+
 use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
@@ -115,7 +115,7 @@ class UserController extends Controller
 
         return view('users.index', compact('currentWorkspace', 'users','permissions'));
 
-        dd($request->all());
+
         // dd(json_decode(Utility::convertTagsToJsonArray($request->tags)));
         // $tags =  json_decode(Utility::convertTagsToJsonArray($request->tags));
         // $objUser = Auth::user();
