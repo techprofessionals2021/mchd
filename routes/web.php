@@ -883,7 +883,8 @@ Route::get('/meeting/confirmation/{meeting_id}/{decision}',[MeetingController::c
 //=================================== All Workspaces page with project and tasks =============================================================//
 
 Route::get('{slug}/allworkspace-data',[WorkspaceController::class,'getAllWorkSpacesProjectsAndTasks'])->name('getAllProjectAndTasks');
-Route::post('{slug}/searchAllTasks',[WorkspaceController::class,'searchAllTasks'])->name('searchAllTasks');
+Route::get('{slug}/searchAllTasks/{currentStatus?}',[WorkspaceController::class,'searchAllTasks'])->name('searchAllTasks');
+Route::get('/{slug}/filterAllTasksByStatus/{currentStatus?}',[WorkspaceController::class, 'filterAllTasksByStatus'])->name('filterAllTasksByStatus')->middleware(['auth','XSS']);
 //=================================== slack=============================================================//
 
 Route::post('/workspace/{slug}/settingsss',[WorkspaceController::class, 'settingsSlack'])->name('workspace.settings.Slack')->middleware(['auth','XSS']);

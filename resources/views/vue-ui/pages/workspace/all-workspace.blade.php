@@ -75,10 +75,10 @@
                                     </div>
                                     <div class="row grey-border-bottom">
                                         <div class="col-6 ">
-
-                                            <form action="" method="Get" class="m-t-15">
+                                            {{-- @dd($currentStatus) --}}
+                                            <form action="{{route('searchAllTasks',[$currentWorkspace->slug,$currentStatus])}}" method="Get" class="m-t-15">
                                                 <div class="input-group w-50">
-                                                    <input type="text" class="form-control" placeholder="Search Tasks" aria-label="Search" style="width: 14%" name="search">
+                                                    <input type="text" class="form-control" placeholder="Search Tasks By Task Title" aria-label="Search" style="width: 20%" name="search">
                                                     <div class="input-group-append" style="border: 1px solid #ced4da;border-radius: 0px 8px 8px 0px">
                                                         <button class="btn btn-outline-secondary" style="border: none" type="submit">
                                                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -104,23 +104,23 @@
                                                 </a>
 
                                             </div> --}}
-                                            {{-- <div class="filterTaskBtn cursor-pointer">
+                                            <div class="filterTaskBtn cursor-pointer">
                                                 <img src='{{ asset('custom-ui/images/filter.svg') }}' class="m-r-5" />
                                                 <span class="p-text">Filter</span>
-                                            </div> --}}
-                                            {{-- <div class="filterDropdown w-25 m-l-10" style="display:none;">
+                                            </div>
+                                            <div class="filterDropdown w-25 m-l-10" style="display:none;">
                                                <select class="form-select status-dropdown" aria-label="Default select example">
                                                 @foreach ($taskStatus as $status)
                                                    <option value=@if($status == 'In Progress')"In Progress" @else {{$status}} @endif @if($status == $currentStatus) selected @endif>{{$status}}</option>
                                                 @endforeach
                                                </select>
-                                            </div> --}}
+                                            </div>
 
                                         </div>
                                     </div>
                                     <br>
                                     <div class="row">
-                                        @foreach ($projects as $project)
+                                        @forelse  ($projects as $project)
                                            <div class="col-md-12">
                                                <div class="card ">
                                                 <div class="card-header">
@@ -144,12 +144,23 @@
                                                     style="display:none;
                                                    transform-origin: top;
                                                    transition: transform .4s ease-in-out;">
-                                                    <app :tasks='{{ json_encode($project->custom_user_tasks()) }}'>
-                                                    </app>
+                                                   {{-- @dd($currentStatus) --}}
+                                                   @isset($searchQuery)
+                                                   <app :tasks='{{ json_encode($project->custom_user_tasks($searchQuery,$currentStatus)) }}'>
+                                                   </app>
+                                                   @else
+                                                   <app :tasks='{{ json_encode($project->custom_user_tasks('',$currentStatus)) }}'>
+                                                   </app>
+                                                   @endisset
+
+
+
                                                 </div>
-                                               </div>
-                                           </div>
-                                        @endforeach
+                                            </div>
+                                        </div>
+                                        @empty
+                                        <h1 class="text-center text-secondary">Record Not Found</h1>
+                                        @endforelse
                                     </div>
 
 
@@ -520,6 +531,15 @@
         $('.filterTaskBtn').on('click',function(){
             $('.filterDropdown').slideToggle(500);
         })
+        $('.status-dropdown').on('change',function(){
+            console.log();
+            let currentWorkSpace = <?php echo json_encode($currentWorkspace->slug); ?>
+
+        //   console.log(my_variable);
+
+        location.href = window.location.origin +'/'+currentWorkSpace+'/filterAllTasksByStatus/'+$(this).val()
+        })
+
 
 
     </script>
