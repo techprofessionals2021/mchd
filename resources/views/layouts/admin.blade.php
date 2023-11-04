@@ -300,12 +300,13 @@
                                         <input class="form-control" type="text" id="workspacename" name="name" required="" placeholder="{{ __('Workspace Name') }}">
                                     </div>
 
-                                    <div class="col-md-12">
+                                    <div class="col-md-12 d-none">
                                         <label for="workspacename" class="col-form-label">{{ __('Workspace Type') }}</label>
                                         <select id="status" name="workspace_type_id" class="form-control select2" required>
-                                            @foreach ($workspace_type as $item)
+                                            {{--@foreach ($workspace_type as $item)
                                             <option value="{{$item->id}}">{{ $item->type }} </option>
-                                            @endforeach
+                                            @endforeach --}}
+                                            <option value="depart" selected></option>
 
 
                                             </option>

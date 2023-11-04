@@ -32,7 +32,7 @@
                 <input type="text" class="form-control form-control-light" id="task-title" placeholder="{{ __('Enter Title')}}" name="title" required>
             </div>
             <div class="form-group col-md-4">
-                
+
                 <label class="col-form-label">{{ __('Priority')}}</label>
                 <select class="form-control form-control-light select2" name="priority" id="task-priority" required>
                     <option value="Low">{{ __('Low')}}</option>
@@ -75,7 +75,7 @@
 
             <div class="form-group col-md-12">
                 <label class="col-form-label">{{ __('Description')}}</label>
-                <textarea class="form-control form-control-light" id="task-description" rows="3" name="description"></textarea>
+                <textarea class="form-control form-control-light" id="task-description" rows="3" name="description" required></textarea>
             </div>
             @if($currentWorkspace->is_googlecalendar_enabled == 'on' )
                 <div class="form-group col-md-6">

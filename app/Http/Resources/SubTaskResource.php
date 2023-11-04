@@ -21,6 +21,7 @@ class SubTaskResource extends JsonResource
             'title' => $this->name,
             'due_date' => $this->due_date,
             'priority' => '',
+            'modal_url_destory'=> route('subtask.destroy.custom',[auth()->user()->currentWorkspace->slug,$this->task->project_id,$this->id])
             // 'modal_url' => '/',
 
         ];

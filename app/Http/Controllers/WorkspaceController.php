@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TaskResource;
 use App\Models\BugReport;
 use App\Models\BugStage;
 use App\Models\Project;
@@ -18,6 +19,7 @@ use App\Models\Workspace;
 use App\Models\EmailTemplate;
 use App\Models\Mail\EmailTest;
 use App\Models\User;
+use App\Models\WorkspaceType;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +31,7 @@ class WorkspaceController extends Controller
 
     public function store(Request $request)
     {
-    
+
         $objUser = Auth::user();
 
         $validator = \Validator::make(
@@ -198,7 +200,8 @@ class WorkspaceController extends Controller
                 return redirect()->route('client.home')->with('success', __('Workspace Change Successfully!'));
             } else {
 
-                return redirect()->route('getWorkSpaces', $objWorkspace->slug)->with('success', __('Workspace Change Successfully!'));
+                // return redirect()->back()->with('success', __('Workspace Change Successfully!'));
+                return redirect()->route('home')->with('success', __('Workspace Change Successfully!'));
             }
         } else {
             return redirect()->back()->with('error', __('Workspace is locked'));
@@ -1272,11 +1275,11 @@ class WorkspaceController extends Controller
     }
 
 
-    
+
     public function changeCurrentWorkspacePermission($workspace_id, $slug, $user_id)
     {
 
-       
+
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         // dd('sad');
         $workspace = Workspace::find($workspace_id);
@@ -1293,13 +1296,13 @@ class WorkspaceController extends Controller
 
     public function workspacePermissionStore($workspace_id, $slug, $user_id, Request $request)
     {
-    
+
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         // dd($currentWorkspace);
         $userProject = UserWorkspace::where('user_id', '=', $user_id)->where('workspace_id', '=', $workspace_id)->first();
         // dd($workspace_id , $slug ,$user_id);
         $userProject->workspace_permission = json_encode($request->permissions);
-       
+
         $userProject->save();
 
         return redirect()->route('users.index',$slug)->with('success', __('Permission Updated Successfully!'));
@@ -1362,5 +1365,138 @@ class WorkspaceController extends Controller
                 })
                 ->make(true);
         }
+    }
+
+    public function getAllWorkSpacesProjectsAndTasks($slug)
+    {
+        $userObj = Auth::user();
+       $projects = Project::with('users')->where('created_by',$userObj->id)
+       ->orWhereHas('users',function($query)use($userObj){
+        $query->where('user_id',$userObj->id);
+       })->get();
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+
+        // if ($userObj->getGuard() == 'client') {
+        //     $projects = Project::select('projects.*')->join('client_projects', 'projects.id', '=', 'client_projects.project_id')->where('client_projects.client_id', '=', $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
+        // } else {
+        //     $projects = Project::select('projects.*')->join('user_projects', 'projects.id', '=', 'user_projects.project_id')->where('user_projects.user_id', '=', $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->get();
+        // }
+        // $stages = Stage::where('workspace_id', '=', $currentWorkspace->id)->orderBy('order')->get();
+        // $users = User::select('users.*')->join('user_workspaces', 'user_workspaces.user_id', '=', 'users.id')->where('user_workspaces.workspace_id', '=', $currentWorkspace->id)->get();
+        $chartData = [];
+        $taskStatus = ['All','Todo','In Progress','Review','Done'];
+        $currentStatus='All';
+        return view('vue-ui.pages.workspace.all-workspace', compact('currentStatus','taskStatus','currentWorkspace', 'projects','chartData'));
+        //  return view('workspaces.index');
+    }
+
+    public function searchAllTasks(Request $request,$slug,$currentStatus='All')
+    {
+        // dd($currentStatus);
+        $userObj = Auth::user();
+        $searchQuery = $request->search;
+
+        if(empty($searchQuery)){
+            if($currentStatus == 'All'){
+                $projects = Project::with('users')->where('created_by',$userObj->id)
+                ->orWhereHas('users',function($query)use($userObj){
+                 $query->where('user_id',$userObj->id);
+                })->get();
+            }else{
+                $projects = Project::with('users')->where(function($query) use($userObj) {
+                    $query->where('created_by',$userObj->id)
+                    ->orWhereHas('users',function($query)use($userObj){
+                        $query->where('user_id',$userObj->id);
+                       });
+                   })
+                   ->whereHas('task',function($query) use($currentStatus) {
+                    $query->whereHas('stage',function($subQuery) use($currentStatus){
+                        $subQuery->where('name',$currentStatus);
+                    });
+                   })
+                   ->get();
+
+            }
+
+
+
+        }else{
+            if($currentStatus == 'All'){
+                $projects = Project::with('users')->where(function($query) use($userObj) {
+                    $query->where('created_by',$userObj->id)
+                    ->orWhereHas('users',function($query)use($userObj){
+                        $query->where('user_id',$userObj->id);
+                       });
+                   })
+                   ->whereHas('task',function($query) use($request) {
+                    $query->where('title','LIKE',"%{$request->search}%");
+                   })
+                   ->get();
+
+            }else{
+
+                $projects = Project::with('users')->where(function($query) use($userObj) {
+                    $query->where('created_by',$userObj->id)
+                    ->orWhereHas('users',function($query)use($userObj){
+                        $query->where('user_id',$userObj->id);
+                       });
+                   })
+                   ->whereHas('task',function($query) use($request,$currentStatus) {
+                    $query->whereHas('stage',function($subQuery) use($currentStatus){
+                        $subQuery->where('name',$currentStatus);
+                    })->where('title','LIKE',"%{$request->search}%");
+                   })
+                   ->get();
+
+            }
+
+        }
+
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+        $chartData = [];
+        $taskStatus = ['All','Todo','In Progress','Review','Done'];
+        // $currentStatus='All';
+        return view('vue-ui.pages.workspace.all-workspace', compact('currentStatus','taskStatus','searchQuery','currentWorkspace', 'projects','chartData'));
+        //  return view('workspaces.index');
+    }
+
+    public function filterAllTasksByStatus($slug, $currentStatus='All')
+    {
+
+        $objUser = Auth::user();
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+        $workspace_type = WorkspaceType::get();
+
+                    // dd('else');
+
+
+        if($currentStatus == 'All'){
+            $projects = Project::with('users')->where(function($query) use($objUser) {
+                $query->where('created_by',$objUser->id)
+                ->orWhereHas('users',function($query)use($objUser){
+                    $query->where('user_id',$objUser->id);
+                   });
+               })
+               ->get();
+        }else{
+            $projects = Project::with('users')->where(function($query) use($objUser) {
+                $query->where('created_by',$objUser->id)
+                ->orWhereHas('users',function($query)use($objUser){
+                    $query->where('user_id',$objUser->id);
+                   });
+               })
+               ->whereHas('task',function($query) use($currentStatus) {
+                $query->whereHas('stage',function($subQuery) use($currentStatus){
+                    $subQuery->where('name',$currentStatus);
+                });
+               })
+               ->get();
+        }
+        // dd($projects);
+
+            $taskStatus = ['All','Todo','In Progress','Review','Done'];
+            $chartData = [];
+            // $currentStatus='All';
+            return view('vue-ui.pages.workspace.all-workspace', compact('currentStatus','taskStatus','currentWorkspace', 'projects','chartData'));
     }
 }

@@ -29,7 +29,7 @@
 
 @endphp
 
-@section('multiple-action-button')
+{{-- @section('multiple-action-button')
     @if (isset($currentWorkspace) && $currentWorkspace->permission == 'Owner')
         <div class="col-md-auto col-sm-4 pb-3">
             <a href="#" class="btn btn-xs btn-primary btn-icon-only col-12" data-toggle="popover"
@@ -42,7 +42,7 @@
         </div>
     @endif
 
-    {{-- <div class="col-md-auto col-sm-4 pb-3">
+    <div class="col-md-auto col-sm-4 pb-3">
         <a href="#" class="btn btn-xs btn-primary btn-icon-only col-12 cp_link "
             data-link="{{ route('projects.link', [$currentWorkspace->slug, \Illuminate\Support\Facades\Crypt::encrypt($project->id)]) }}"
             data-toggle="popover"  title="Copy Project"
@@ -50,7 +50,7 @@
                 class=""></span><span class="btn-inner--text text-white"><i
                     class="ti ti-copy"></i></span></a>
         </a>
-    </div> --}}
+    </div>
     @if (
         (isset($permissions) && in_array('show timesheet', $permissions)) ||
             (isset($currentWorkspace) && $currentWorkspace->permission == 'Owner'))
@@ -78,16 +78,16 @@
     @if (
         (isset($permissions) && in_array('show bug report', $permissions)) ||
             (isset($currentWorkspace) && $currentWorkspace->permission == 'Owner'))
-        {{-- <div class="col-md-auto col-sm-6 pb-3">
+        <div class="col-md-auto col-sm-6 pb-3">
             <a href="{{ route($client_keyword . 'projects.bug.report', [$currentWorkspace->slug, $project->id]) }}"
                 class="btn btn-xs btn-primary btn-icon-only col-12">{{ __('Bug Report') }}</a>
-        </div> --}}
+        </div>
     @endif
     <div class="col-md-auto col-sm-6 pb-3">
         <a href="{{ route($client_keyword . 'projecttime.tracker', [$currentWorkspace->slug, $project->id]) }}"
             class="btn btn-xs btn-primary btn-icon-only col-12 ">{{ __('Tracker') }}</a>
     </div>
-@endsection
+@endsection --}}
 <style type="text/css">
     .fix_img {
         width: 40px !important;
@@ -128,20 +128,25 @@
                                 <div class="card-body">
                                     {{-- <app :tasks='{{ json_encode($project->getTasksWithSubTasks()) }}'></app> --}}
                                     <div class="row grey-border-bottom py-2">
-                                        <div class="col-7 mb-4">
+                                        <div class="col-8 mb-4">
                                             <custom-avatar></custom-avatar>
                                             <p class="h-text d-inline ms-2 text-primary">Team Space</p>
                                         </div>
-                                        <div class="col-5">
-                                            <custom-menu :routes="{{ json_encode(['calender' => route('projects.calender', [$currentWorkspace->slug,'id'=>$project->id])]) }}"></custom-menu>
+                                        <div class="col-4">
+                                            <custom-menu
+                                            :routes="{{ json_encode([
+                                            'list' => route('projects.show', [$currentWorkspace->slug,'id'=>$project->id]),
+                                            'calender' => route('projects.calender', [$currentWorkspace->slug,'id'=>$project->id]),
+                                            'board' => route($client_keyword .'projects.task.board.custom', [$currentWorkspace->slug, $project->id]),
+                                            'gantt' => route($client_keyword . 'projects.gantt.custom', [$currentWorkspace->slug, $project->id]) ]) }}"></custom-menu>
                                         </div>
                                     </div>
                                     <div class="row grey-border-bottom">
                                         <div class="col-6 ">
 
-                                            <form action="{{route('projects.searchTasks',[$currentWorkspace->slug,$project->id])}}" method="Get" class="m-t-15">
+                                            <form action="{{route('projects.searchTasks',[$currentWorkspace->slug,$project->id,$currentStatus])}}" method="Get" class="m-t-15">
                                                 <div class="input-group w-50">
-                                                    <input type="text" class="form-control" placeholder="input search text" aria-label="Search" style="width: 14%" name="search">
+                                                    <input type="text" class="form-control" placeholder="Search Tasks" aria-label="Search" style="width: 14%" name="search">
                                                     <div class="input-group-append" style="border: 1px solid #ced4da;border-radius: 0px 8px 8px 0px">
                                                         <button class="btn btn-outline-secondary" style="border: none" type="submit">
                                                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -164,13 +169,25 @@
                                                 <img
                                                 src="{{ asset('custom-ui/images/note.svg') }}" class="m-r-5 icon-image" />
                                                 <span class="p-text">Edit</span>
-                                            </a>
+                                                </a>
 
                                             </div>
-                                            <div>
+                                            <div class="filterTaskBtn cursor-pointer">
                                                 <img src='{{ asset('custom-ui/images/filter.svg') }}' class="m-r-5" />
                                                 <span class="p-text">Filter</span>
                                             </div>
+                                            <div class="filterDropdown w-25 m-l-10" style="display:none;">
+                                               <select class="form-select status-dropdown" aria-label="Default select example">
+                                                @foreach ($taskStatus as $status)
+                                                   <option value=@if($status == 'In Progress')"In Progress" @else {{$status}} @endif @if($status == $currentStatus) selected @endif>{{$status}}</option>
+                                                @endforeach
+                                                {{-- <option selected>All</option>
+                                                 <option value="In Progress">In Progress</option>
+                                                 <option value="Review">Review</option>
+                                                 <option value="Done">Done</option> --}}
+                                               </select>
+                                            </div>
+
                                         </div>
                                     </div>
                                     <br>
@@ -841,5 +858,18 @@
                 });
             }
         });
+        $('.filterTaskBtn').on('click',function(){
+            $('.filterDropdown').slideToggle(500);
+        })
+
+        $('.status-dropdown').on('change',function(){
+            console.log();
+            let currentWorkSpace = <?php echo json_encode($currentWorkspace->slug); ?>
+
+            let custom_project_id = <?php echo json_encode($project->id); ?>
+        //   console.log(my_variable);
+
+        location.href = window.location.origin +'/'+currentWorkSpace+'/projects/'+custom_project_id +'/filterByStatus/'+$(this).val()
+        })
     </script>
 @endpush

@@ -26,6 +26,7 @@ class MeetingResource extends JsonResource
                 'end' => $this->meeting_date.' '.date('H:i', strtotime($this->time_out)),
             ],
             'start_time' => date('H:i', strtotime($this->time_in)),
+            'end_time' => date('H:i', strtotime($this->time_out)),
             'assignee' => UserResource::collection($this->members)
         ];
     }
