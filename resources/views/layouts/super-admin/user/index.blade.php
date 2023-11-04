@@ -62,7 +62,7 @@
                         
                         <div class="form-group" id="workspace-div" style="display: none" >
                             <label for="permission">Workspace</label>
-                            <select name="workspace_id" id="workspace" class="form-control">
+                            <select name="workspace_id[]" id="workspace" class="form-control" multiple>
                                 @foreach ($workspace as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
@@ -356,6 +356,22 @@
                     }
 
                 });
+
+
+                
+                $('#workspace option').each(function () {
+
+                    var optionValue = parseInt($(this).val()); // Convert the value to an integer
+
+                     if (response.model_has_role.workspace_id.includes(optionValue)) {
+                        console.log('true');
+                        $(this).prop("selected", true); // Select the option if its value is in the array
+                    } else {
+                        console.log('false');
+                        $(this).prop("selected", false); 
+                    }
+
+                    });
 
 
                 // $('#executive').select2();

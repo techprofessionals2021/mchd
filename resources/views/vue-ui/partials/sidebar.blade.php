@@ -52,9 +52,114 @@
 {{-- {{dd(auth()->user()->hasRole(('HOD')))}} --}}
 
 
-{{-- @if (auth()->user()->hasRole('HOD'))
+@if (auth()->user()->hasRole('Ceo'))
+<nav class="dash-sidebar light-sidebar {{ isset($cust_theme_bg) && $cust_theme_bg == 'on' ? 'transprent-bg' : '' }}"
+style="border-right: 1px solid ">
+<div class="navbar-wrapper">
+    <div class="m-header main-logo">
+        <a href="{{ route('home') }}" class="b-brand">
+            <!-- ========   change your logo hear   ============ -->
 
-@else --}}
+
+            <img src="{{ asset('custom-auth/uploads/logo/logo/20230320172321.png') }}" alt="logo"
+                class="sidebar_logo_size" />
+        </a>
+    </div>
+    <div class="navbar-content scroll-container">
+        <ul class="dash-navbar content">
+            @if (\Auth::guard('client')->check())
+                <li class="dash-item dash-hasmenu">
+                    <a href="{{ route('client.home') }}"
+                        class="dash-link {{ Request::route()->getName() == 'home' || Request::route()->getName() == null || Request::route()->getName() == 'client.home' ? ' active' : '' }} side-item">
+                        <span class="dash-micon"><i class="ti ti-home"></i></span>
+                        <span class="dash-mtext">{{ __('Dashboard') }}</span>
+
+
+                    </a>
+                </li>
+            @else
+                <li class="dash-item dash-hasmenu">
+                    <a href="{{ route('home') }}"
+                        class="dash-link  {{ Request::route()->getName() == 'home' || Request::route()->getName() == null || Request::route()->getName() == 'client.home' ? ' active' : '' }} side-item">
+                        @if (Auth::user()->type == 'admin')
+                            <span class="dash-micon"><i class="ti ti-user"></i></span>
+                        <span class="dash-mtext">{{ __('Users') }}</span>@else<span
+                                class="dash-micon mr-3 mr-3"><img
+                                    src="{{ asset('custom-ui/images/home.svg') }}" class="icon-image" /></span>
+                            <span class="dash-mtext side-nav-text">{{ __('Home') }}</span>
+                        @endif
+                    </a>
+                </li>
+            @endif
+
+
+            <li class="dash-item dash-hasmenu">
+                <a href="{{ route('ceo.executives',$currentWorkspace->slug) }}"
+                    class="dash-link  {{ Request::route()->getName() == 'home' || Request::route()->getName() == null || Request::route()->getName() == 'client.home' ? ' active' : '' }} side-item">
+                    @if (Auth::user()->type == 'admin')
+                        <span class="dash-micon"><i class="ti ti-user"></i></span>
+                    <span class="dash-mtext">{{ __('Executives') }}</span>@else<span
+                            class="dash-micon mr-3 mr-3"><img
+                                src="{{ asset('custom-ui/images/home.svg') }}" class="icon-image" /></span>
+                        <span class="dash-mtext side-nav-text">{{ __('Executives') }}</span>
+                    @endif
+                </a>
+            </li>
+
+    {{-- <li
+                    class="dash-item {{ Request::route()->getName() == 'project_report.index' || Request::segment(2) == 'project_report' ? ' active' : '' }}">
+                    <a href="{{ route('project_report.index', $currentWorkspace->slug) }}"
+                        class="dash-link "><span class="dash-micon"><i class="ti ti-chart-line"></i></span><span
+                            class="dash-mtext">{{ __('Project Report') }}</span></a>
+                    </li> --}}
+
+            @if (isset($currentWorkspace) && $currentWorkspace)
+                @auth('web')
+                    <li class="dash-item dash-hasmenu">
+                        <a href=""
+                            class="dash-link {{ Request::route()->getName() == 'users.index' ? ' active' : '' }} side-item"><span
+                                class="dash-micon mr-3"> <img
+                                    src="{{ asset('custom-ui/images/notification.svg') }}" class="icon-image" /></span><span
+                                class="dash-mtext side-nav-text">{{ __('Notification') }}</span></a>
+                    </li>
+
+                    <li class="dash-item dash-hasmenu">
+                        <a href="{{ route('notes.index', $currentWorkspace->slug) }}"
+                            class="dash-link{{ Request::route()->getName() == 'notes.index' ? ' active' : '' }} side-item"><span
+                                class="dash-micon mr-3"> <img
+                                    src="{{ asset('custom-ui/images/note.svg') }}" class="icon-image" /></span><span
+                                class="dash-mtext side-nav-text">{{ __('Notes') }}</span></a>
+                    </li>
+                @endauth
+            @endif
+
+          
+
+          
+            
+            {{-- <li
+            class="dash-item {{ Request::route()->getName() == 'project_report.index' || Request::segment(2) == 'project_report' ? ' active' : '' }}">
+            <a href="{{ route('project_report.index', $currentWorkspace->slug) }}"
+                class="dash-link "><span class="dash-micon"><i class="ti ti-chart-line"></i></span><span
+                    class="dash-mtext">{{ __('Project Report') }}</span></a>
+            </li> --}}
+
+            {{-- <li class="dash-item dash-hasmenu">
+                <a href="{{ route('report.index',[$currentWorkspace->slug])}}"
+                    class="dash-link{{ Request::route()->getName() == 'report.index' ? ' active' : '' }} side-item"><span
+                        class="dash-micon mr-3"> <img
+                            src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
+                        class="dash-mtext side-nav-text">{{ __('Reports') }}</span></a>
+            </li>  --}}
+
+
+
+
+    </div>
+</div>
+</nav>
+
+@else
     <nav class="dash-sidebar light-sidebar {{ isset($cust_theme_bg) && $cust_theme_bg == 'on' ? 'transprent-bg' : '' }}"
         style="border-right: 1px solid ">
         <div class="navbar-wrapper">
@@ -258,7 +363,7 @@
             </div>
         </div>
     </nav>
-{{-- @endif --}}
+@endif
 
 
 

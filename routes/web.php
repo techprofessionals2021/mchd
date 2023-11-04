@@ -58,6 +58,7 @@ use App\Http\Controllers\SuperAdminPermissionController;
 use App\Http\Controllers\SuperAdminTaskController;
 use App\Http\Controllers\HodDashboardController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\CeoDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -313,7 +314,12 @@ Route::prefix('hod')->as('hod.')->group(function() {
 
   //end route for hod
 
+//start routes for hod
+Route::prefix('ceo')->as('ceo.')->group(function() {
+  Route::get('/executives', [CeoDashboardController::class, 'executives'])->name('executives')->middleware(['auth']);
+  Route::get('/executive-report-detail/{id}/{slug}', [CeoDashboardController::class, 'executive_report'])->name('executive_report')->middleware(['auth']);
 
+});
 
 
 

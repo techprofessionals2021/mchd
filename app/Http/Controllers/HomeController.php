@@ -131,6 +131,16 @@ class HomeController extends Controller
                     ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->join("stages", "stages.id", "=", "tasks.status")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")->orderBy('tasks.id', 'desc')->limit(5)->get();
                 }
 
+
+                
+                $projects = Project::
+                join("user_projects", "projects.id", "=", "user_projects.project_id")
+                ->join("projects as p2", "p2.id", "=", "user_projects.project_id") // Change alias here
+                ->where("user_id", "=", $userObj->id)
+                ->where('p2.workspace', '=', $currentWorkspace->id) // Use the new alias here
+                ->orderBy('projects.id', 'desc')
+                ->limit(5)
+                ->get();
                 $totalMembers = UserWorkspace::where('workspace_id', '=', $currentWorkspace->id)->count();
 
                 $projectProcess = UserProject::join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->groupBy('projects.status')->selectRaw('count(projects.id) as count, projects.status')->pluck('count', 'projects.status');
