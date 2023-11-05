@@ -495,7 +495,7 @@ Route::prefix('client')->as('client.')->group(function() {
 Route::get('/{slug}/calendar/{id?}',[CalenderController::class, 'index'])->name('calender.index')->middleware(['auth','XSS']);
 Route::any('/{slug}/calendarr/{id?}',[CalenderController::class, 'calendar'])->name('calender.google.calendar')->middleware(['auth','XSS']);
 Route::get('/{slug}/custom-calender',[CalenderController::class, 'customCalender'])->name('custom.calender');
-
+Route::get('/{slug}/custom-huddles-calender',[MeetingController::class,'huddles'])->name('custom.huddles');
 // Chats
 
 Route::get('/{slug}/notification/seen',[UserController::class, 'notificationSeen'])->name('notification.seen');
