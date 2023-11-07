@@ -52,8 +52,8 @@
 {{-- {{dd(auth()->user()->hasRole(('HOD')))}} --}}
 
 
-@if (auth()->user()->hasRole('Ceo'))
-<nav class="dash-sidebar light-sidebar {{ isset($cust_theme_bg) && $cust_theme_bg == 'on' ? 'transprent-bg' : '' }}"
+{{-- @if (auth()->user()->hasRole('Ceo')) --}}
+{{-- <nav class="dash-sidebar light-sidebar {{ isset($cust_theme_bg) && $cust_theme_bg == 'on' ? 'transprent-bg' : '' }}"
 style="border-right: 1px solid ">
 <div class="navbar-wrapper">
     <div class="m-header main-logo">
@@ -106,13 +106,7 @@ style="border-right: 1px solid ">
                 </a>
             </li>
 
-    {{-- <li
-                    class="dash-item {{ Request::route()->getName() == 'project_report.index' || Request::segment(2) == 'project_report' ? ' active' : '' }}">
-                    <a href="{{ route('project_report.index', $currentWorkspace->slug) }}"
-                        class="dash-link "><span class="dash-micon"><i class="ti ti-chart-line"></i></span><span
-                            class="dash-mtext">{{ __('Project Report') }}</span></a>
-                    </li> --}}
-
+ 
             @if (isset($currentWorkspace) && $currentWorkspace)
                 @auth('web')
                     <li class="dash-item dash-hasmenu">
@@ -135,31 +129,13 @@ style="border-right: 1px solid ">
 
           
 
-          
-            
-            {{-- <li
-            class="dash-item {{ Request::route()->getName() == 'project_report.index' || Request::segment(2) == 'project_report' ? ' active' : '' }}">
-            <a href="{{ route('project_report.index', $currentWorkspace->slug) }}"
-                class="dash-link "><span class="dash-micon"><i class="ti ti-chart-line"></i></span><span
-                    class="dash-mtext">{{ __('Project Report') }}</span></a>
-            </li> --}}
-
-            {{-- <li class="dash-item dash-hasmenu">
-                <a href="{{ route('report.index',[$currentWorkspace->slug])}}"
-                    class="dash-link{{ Request::route()->getName() == 'report.index' ? ' active' : '' }} side-item"><span
-                        class="dash-micon mr-3"> <img
-                            src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
-                        class="dash-mtext side-nav-text">{{ __('Reports') }}</span></a>
-            </li>  --}}
-
-
 
 
     </div>
 </div>
-</nav>
+</nav> --}}
 
-@else
+{{-- @else --}}
     <nav class="dash-sidebar light-sidebar {{ isset($cust_theme_bg) && $cust_theme_bg == 'on' ? 'transprent-bg' : '' }}"
         style="border-right: 1px solid ">
         <div class="navbar-wrapper">
@@ -320,6 +296,26 @@ style="border-right: 1px solid ">
                                     src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
                                 class="dash-mtext side-nav-text">{{ __('Huddles Calendar') }}</span></a>
                     </li>
+
+                    @if (auth()->user()->hasRole(('HOD')))
+                    <li class="dash-item dash-hasmenu">
+                        <a href="{{ route('index_workspace_report',[$currentWorkspace->slug]) }}"
+                            class="dash-link{{ Request::route()->getName() == 'custom.calender' ? ' active' : '' }} side-item"><span
+                                class="dash-micon mr-3"> <img
+                                    src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
+                                class="dash-mtext side-nav-text">{{ __('Department Report') }}</span></a>
+                    </li>
+                    @elseif (auth()->user()->hasRole(('Ceo')))
+
+                    <li class="dash-item dash-hasmenu">
+                        <a href="{{ route('index_workspace_report',[$currentWorkspace->slug]) }}"
+                            class="dash-link{{ Request::route()->getName() == 'custom.calender' ? ' active' : '' }} side-item"><span
+                                class="dash-micon mr-3"> <img
+                                    src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
+                                class="dash-mtext side-nav-text">{{ __('Executive Report') }}</span></a>
+                    </li>
+                    @endif
+                    
                     </li>
 
                     {{-- <li
@@ -363,7 +359,7 @@ style="border-right: 1px solid ">
             </div>
         </div>
     </nav>
-@endif
+{{-- @endif --}}
 
 
 
