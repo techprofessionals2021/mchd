@@ -1,4 +1,5 @@
 // import './bootstrap';
+// import './bootstrap';
 // import '../css/app.css';
 
 // import { createApp, h } from 'vue';
@@ -32,6 +33,7 @@ import Menu from './Components/Custom/Menu.vue'
 import InputSearch from './Components/Custom/InputSearch.vue'
 import Calender from './Components/Custom/Calender.vue'
 import Qalendar from './Components/Custom/Qalendar.vue'
+import HuddleQalendar from './Components/Custom/HuddleQalender.vue'
 import Avatar from './Components/Custom/Avatar.vue'
 import STable from '@surely-vue/table';
 import Antd from 'ant-design-vue';
@@ -48,5 +50,6 @@ app.component('custom-input-search', InputSearch)
 app.component('custom-avatar', Avatar)
 app.component('calender', Calender)
 app.component('qalendar', Qalendar)
+app.component('huddle-qalendar', HuddleQalendar)
 app.mount("#app")
 // createApp(App)

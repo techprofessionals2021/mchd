@@ -67,20 +67,24 @@ class Notification extends Model
         $date = $this->created_at->diffForHumans();
 
         $html = '<a href="'.$link.'" class="list-group-item list-group-item-action p-1">
-                    <div class="d-flex align-items-center" data-toggle="tooltip" data-placement="right" data-title="'.$date.'">
-                        <div class="notification_icon_size">
-                            <span class="avatar bg-primary text-white rounded-circle px-2 py-1">'.$name.'</span>
+                    <div class="d-flex" data-toggle="tooltip" data-placement="right" data-title="'.$date.'">
+                        <div class="notification_icon_size m-t-10 ">
+                            <span class="avatar bg-primary text-white rounded-circle px-2 py-2">'.$name.'</span>
                         </div>
-                        <div class="flex-fill ml-3">
-                            <div class="h6 text-sm mb-0">'.$user->name.' <small class="float-right text-muted">'.$date.'</small></div>
-                            <p class="text-sm lh-140 mb-0">
+                        <div class="flex-fill m-l-10">
+
+                            <p class="text-lg lh-140 mb-0">
                                 '.$text.'
                             </p>
+                              <small class="float-right text-muted">'.$date.'</small>
                         </div>
                     </div>
                 </a>';
 
         return $html;
 
+// <div class="h6 text-sm mb-0 text-2xl">'.$user->name.'
+
+// </div>
     }
 }
