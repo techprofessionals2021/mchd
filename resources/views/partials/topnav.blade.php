@@ -271,6 +271,20 @@
 
 
                 @if (\Auth::user()->type == 'user')
+                <li class="dropdown dash-h-item drp-notification">
+                    @if (isset($currentWorkspace) && $currentWorkspace)
+                        @auth('web')
+                            @php($notifications = Auth::user()->notifications($currentWorkspace->id))
+                        {{-- @dd($notifications) --}}
+                            @php($all_notifications = Auth::user()->all_notifications($currentWorkspace->id))
+                            <a class="dash-head-link dropdown-toggle arrow-none me-0" >
+
+                                <i class="ti ti-message"></i>
+                            </a>
+
+                        @endauth
+                    @endif
+                </li>
                     <li class="dropdown dash-h-item drp-notification">
                         @if (isset($currentWorkspace) && $currentWorkspace)
                             @auth('web')

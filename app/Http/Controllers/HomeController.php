@@ -42,7 +42,7 @@ class HomeController extends Controller
     public function index($slug = '')
     {
 
-     
+
 
         $userObj = Auth::user();
         if ($userObj->type == 'admin') {
@@ -107,7 +107,8 @@ class HomeController extends Controller
                         'stages.name as status',
                         'stages.complete',
                     ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->join("stages", "stages.id", "=", "tasks.status")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->orderBy('tasks.id', 'desc')->limit(5)->get();
-
+                    $taskStatistics = $tasks->groupBy('status')->map->count()->values();
+                    // dd($tasks->groupBy('status')->map->count()->values());
 
                     $projects = Project::
                     join("user_projects", "projects.id", "=", "user_projects.project_id")
@@ -117,7 +118,7 @@ class HomeController extends Controller
                     ->orderBy('projects.id', 'desc')
                     ->limit(5)
                     ->get();
-                    
+
                     // dd($projects);
 
                 } else {
@@ -175,8 +176,9 @@ class HomeController extends Controller
                 // ]);
 
 
-            
+
                 return view('home', compact('currentWorkspace',
+                'taskStatistics',
                 'totalProject',
                 'totalBugs',
                 'totalTask',
