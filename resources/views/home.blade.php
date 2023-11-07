@@ -621,13 +621,13 @@
                 var columnChartoptions = {
                     series: [{
                         name: 'Completed Tasks',
-                        data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+                        data: {!! json_encode($result['CompletedTaskArr']) !!}
                     }, {
                         name: 'New Tasks',
-                        data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+                        data: {!! json_encode($result['CreatedTaskArr']) !!}
                     }, {
                         name: 'OnGoing Tasks',
-                        data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
+                        data: {!! json_encode($result['PendingTaskArr']) !!}
                     }],
                     chart: {
                         type: 'bar',
@@ -649,7 +649,7 @@
                         colors: ['transparent']
                     },
                     xaxis: {
-                        categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                        categories: {!! json_encode($result['MonthArr']) !!},
                     },
                     yaxis: {
                         title: {

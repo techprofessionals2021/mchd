@@ -268,6 +268,7 @@ class HomeController extends Controller
                     // dd($projects);
 
                 } else {
+                
                     $totalBugs = UserProject::join("bug_reports", "bug_reports.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('bug_reports.assign_to', '=', $userObj->id)->count();
                     $totalTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")->count();
                     $completeTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")->where('tasks.status', '=', $doneStage->id)->count();
@@ -277,6 +278,7 @@ class HomeController extends Controller
                         'stages.complete',
                     ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->join("stages", "stages.id", "=", "tasks.status")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")->orderBy('tasks.id', 'desc')->limit(5)->get();
                     // $projects = '';
+                    $taskStatistics = $tasks->groupBy('status')->map->count()->values();
                     $projects = Project::
                     join("user_projects", "projects.id", "=", "user_projects.project_id")
                     ->join("projects as p2", "p2.id", "=", "user_projects.project_id") // Change alias here
@@ -412,7 +414,9 @@ class HomeController extends Controller
                 'inProgressTask',
                 'dueDateTask',
                 'workspace_type',
-                'projects'
+                'projects',
+                'taskStatistics',
+                'result'
 
             ));
             // }
