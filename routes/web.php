@@ -994,6 +994,8 @@ Route::post('storage-settings',[SettingsController::class, 'storageSettingStore'
 
 Route::post(
   '/{slug}/Notification/Delete', [UserController::class, 'delete_all_notification',])->name('delete_all.notifications');
+Route::get(
+  '/{slug}/Notification/MarkASRead', [UserController::class, 'mark_as_read_notification',])->name('mark_as_read.notifications');
 
 
 //=============================================Webhook===================================================

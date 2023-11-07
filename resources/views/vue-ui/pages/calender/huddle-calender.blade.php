@@ -26,7 +26,7 @@
     }
 </style>
 @section('page-title')
-    {{ __('Calendar') }}
+    {{ __('Huddle Calendar') }}
 @endsection
 @section('links')
     @if (\Auth::guard('client')->check())
@@ -34,7 +34,7 @@
     @else
         <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
     @endif
-    <li class="breadcrumb-item"> {{ __('Calendar') }}</li>
+    <li class="breadcrumb-item"> {{ __('Huddle Calendar') }}</li>
 @endsection
 
 @php
@@ -58,7 +58,7 @@
 @section('content')
     <div class="row">
         <!-- [ sample-page] start -->
-        <div class="col-lg-9">
+        <div class="col-lg-12">
             <div class="card">
 
                 <div class="card-body tasks-body"
@@ -74,7 +74,7 @@
             </div>
         </div>
 
-        <div class="col-lg-3">
+        {{-- <div class="col-lg-3">
             <div class="card">
                 <div class="card-body">
                     <h4 class="mb-4">{{ __('New Meetings') }}</h4>
@@ -109,7 +109,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> --}}
     @endsection
     @push('scripts')
         <script></script>

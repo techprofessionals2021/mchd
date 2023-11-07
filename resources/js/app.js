@@ -33,7 +33,7 @@ import Menu from './Components/Custom/Menu.vue'
 import InputSearch from './Components/Custom/InputSearch.vue'
 import Calender from './Components/Custom/Calender.vue'
 import Qalendar from './Components/Custom/Qalendar.vue'
-import HuddleQalendar from './Components/Custom/HuddleQalendar.vue'
+import HuddleQalendar from './Components/Custom/HuddleQalender.vue'
 import Avatar from './Components/Custom/Avatar.vue'
 import STable from '@surely-vue/table';
 import Antd from 'ant-design-vue';
