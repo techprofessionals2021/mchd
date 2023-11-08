@@ -106,7 +106,7 @@ style="border-right: 1px solid ">
                 </a>
             </li>
 
- 
+
             @if (isset($currentWorkspace) && $currentWorkspace)
                 @auth('web')
                     <li class="dash-item dash-hasmenu">
@@ -127,7 +127,7 @@ style="border-right: 1px solid ">
                 @endauth
             @endif
 
-          
+
 
 
 
@@ -294,28 +294,29 @@ style="border-right: 1px solid ">
                             class="dash-link{{ Request::route()->getName() == 'custom.huddles' ? ' active' : '' }} side-item"><span
                                 class="dash-micon mr-3"> <img
                                     src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
-                                class="dash-mtext side-nav-text">{{ __('Huddles Calendar') }}</span></a>
+                                class="dash-mtext side-nav-text">{{ __('Committees') }}</span></a>
                     </li>
 
-                    {{-- @if (auth()->user()->hasRole(('HOD')))
+                    @if (auth()->user()->hasRole(('HOD')))
                     <li class="dash-item dash-hasmenu">
-                        <a href="{{ route('index_workspace_report',[$currentWorkspace->slug]) }}"
+                        <a href="{{ route('index_report') }}"
                             class="dash-link{{ Request::route()->getName() == 'custom.calender' ? ' active' : '' }} side-item"><span
                                 class="dash-micon mr-3"> <img
                                     src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
-                                class="dash-mtext side-nav-text">{{ __('Department Report') }}</span></a>
+                                class="dash-mtext side-nav-text">{{ __('Departments Report') }}</span></a>
                     </li>
                     @elseif (auth()->user()->hasRole(('Ceo')))
 
                     <li class="dash-item dash-hasmenu">
-                        <a href="{{ route('index_workspace_report',[$currentWorkspace->slug]) }}"
+                        <a href="{{ route('index_report',[$currentWorkspace->slug]) }}"
                             class="dash-link{{ Request::route()->getName() == 'custom.calender' ? ' active' : '' }} side-item"><span
                                 class="dash-micon mr-3"> <img
                                     src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
                                 class="dash-mtext side-nav-text">{{ __('Executive Report') }}</span></a>
                     </li>
-                    @endif --}}
+                    @endif
                     
+
                     </li>
 
                     {{-- <li
