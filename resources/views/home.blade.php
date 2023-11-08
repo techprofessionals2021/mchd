@@ -265,16 +265,20 @@
                                                      </span>
                                                  </div>
                                              </div> --}}
+                                             @php
+
+                                                 $taskStatisticsColors = ['Todo' => '#008ffb','In Progress' => '#00e396','Review' => '#feb019','Done' => '#ff4560']
+                                             @endphp
 
                                              <div class="row text-center">
 
                                                  @foreach ($taskPercentages as $index => $value)
                                                      <div class="col-6">
                                                          <i class="fas fa-chart {{ $index }}  h3"></i>
-                                                         <h6 class="font-weight-bold">
+                                                         {{-- <span class="font-weight-bold">
                                                              <span>{{ $value }}%</span>
-                                                         </h6>
-                                                         <p class="text-muted">{{ $index }}</p>
+                                                         </span> --}}
+                                                         <span class="status_badge_dash badge  p-2 px-3 rounded  text-whte mt-2" style="background-color: {{$taskStatisticsColors[$index]}}">{{ $index }}</span>
                                                      </div>
                                                  @endforeach
 
