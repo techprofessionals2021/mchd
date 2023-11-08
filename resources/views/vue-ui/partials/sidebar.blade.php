@@ -294,7 +294,7 @@ style="border-right: 1px solid ">
                             class="dash-link{{ Request::route()->getName() == 'custom.huddles' ? ' active' : '' }} side-item"><span
                                 class="dash-micon mr-3"> <img
                                     src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
-                                class="dash-mtext side-nav-text">{{ __('Huddles Calendar') }}</span></a>
+                                class="dash-mtext side-nav-text">{{ __('Committees') }}</span></a>
                     </li>
 
                     @if (auth()->user()->hasRole(('HOD')))
@@ -303,7 +303,7 @@ style="border-right: 1px solid ">
                             class="dash-link{{ Request::route()->getName() == 'custom.calender' ? ' active' : '' }} side-item"><span
                                 class="dash-micon mr-3"> <img
                                     src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
-                                class="dash-mtext side-nav-text">{{ __('Department Report') }}</span></a>
+                                class="dash-mtext side-nav-text">{{ __('Departments Report') }}</span></a>
                     </li>
                     @elseif (auth()->user()->hasRole(('Ceo')))
 
