@@ -130,7 +130,7 @@
                                         </div>
                                         <p class="text-muted text-sm "></p>
                                         <h6 class="">{{ __('In Completed Tasks') }}</h6>
-                                        <h3 class="mb-0">{{ $inProgressTask }} <span class="text-success text-sm"></span>
+                                        <h3 class="mb-0">{{ ($totalTask-$completeTask) }} <span class="text-success text-sm"></span>
                                         </h3>
                                     </div>
                                 </div>
@@ -160,7 +160,7 @@
                                         </div>
                                         <p class="text-muted text-sm"></p>
                                         <h6 class="">{{ __('Over Due Tasks') }}</h6>
-                                        <h3 class="mb-0">{{ $dueDateTask }} <span class="text-success text-sm"></span>
+                                        <h3 class="mb-0">{{ $overDueTasks }} <span class="text-success text-sm"></span>
                                         </h3>
                                     </div>
                                 </div>
@@ -265,16 +265,20 @@
                                                      </span>
                                                  </div>
                                              </div> --}}
+                                             {{-- @php
+
+                                                 $taskStatisticsColors = ['Todo' => '#008ffb','In Progress' => '#00e396','Review' => '#feb019','Done' => '#ff4560']
+                                             @endphp --}}
 
                                              <div class="row text-center">
 
                                                  @foreach ($taskPercentages as $index => $value)
                                                      <div class="col-6">
                                                          <i class="fas fa-chart {{ $index }}  h3"></i>
-                                                         <h6 class="font-weight-bold">
+                                                         {{-- <span class="font-weight-bold">
                                                              <span>{{ $value }}%</span>
-                                                         </h6>
-                                                         <p class="text-muted">{{ $index }}</p>
+                                                         </span> --}}
+                                                         <span class="status_badge_dash badge  p-2 px-3 rounded  text-whte mt-2" style="background-color: {{$taskChartColor[$index]}}">{{ $index }}</span>
                                                      </div>
                                                  @endforeach
 
@@ -344,7 +348,7 @@
                                                     <div class="font-14 mt-1 font-weight-normal">
                                                         {{ $task->project->name }}</div>
                                                 </td>
-                                                @if ($currentWorkspace->permission == 'Owner' || Auth::user()->getGuard() == 'client')
+
                                                     <td>
 
                                                         <div class="font-14 mt-1 font-weight-normal">
@@ -354,7 +358,7 @@
                                                             @endforeach
                                                         </div>
                                                     </td>
-                                                @endif
+
                                                 <td>
 
                                                     <div class="font-14 mt-1 font-weight-normal">
@@ -599,8 +603,9 @@
                     series: {!! json_encode($taskStatistics)!!},
                     // series: [77,11,11],
 
-                    // colors: {!! json_encode($chartData['color']) !!},
-                    labels: ['Todo', 'In Progress', 'Review', 'Done'],
+                    colors: {!! json_encode(collect($taskChartColor)->values()) !!},
+                    // labels: ['Todo', 'In Progress', 'Review', 'Done'],
+                    labels: {!! json_encode($taskStatisticsKeys)!!},
                     grid: {
                         borderColor: '#e7e7e7',
                         row: {

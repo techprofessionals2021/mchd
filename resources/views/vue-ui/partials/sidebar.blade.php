@@ -106,7 +106,7 @@ style="border-right: 1px solid ">
                 </a>
             </li>
 
- 
+
             @if (isset($currentWorkspace) && $currentWorkspace)
                 @auth('web')
                     <li class="dash-item dash-hasmenu">
@@ -127,7 +127,7 @@ style="border-right: 1px solid ">
                 @endauth
             @endif
 
-          
+
 
 
 
@@ -316,6 +316,7 @@ style="border-right: 1px solid ">
                     </li>
                     @endif
                     
+
                     </li>
 
                     {{-- <li

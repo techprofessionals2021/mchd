@@ -255,8 +255,15 @@ class HomeController extends Controller
                     'stages.complete',
                 ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->join("stages", "stages.id", "=", "tasks.status")->where("user_id", "=", $userObj->id)->orderBy('tasks.id', 'desc')->limit(5)->get();
                 $taskStatistics = $tasks->groupBy('status')->map->count()->values();
-                // dd($tasks->groupBy('status')->map->count()->values());
-                // dd($completeTask);
+                $taskStatisticsKeys = $tasks->groupBy('status')->map->count()->keys()->all();
+
+                // $firstArray = ['Todo', 'Review'];
+                $taskStatisticsColors = ['Todo' => '#008ffb','In Progress' => '#00e396','Review' => '#feb019','Done' => '#ff4560'];
+
+                $taskChartColor = array_intersect_key($taskStatisticsColors, array_flip($taskStatisticsKeys));
+
+
+
 
                 $taskCounts = $tasks->groupBy('status')->map->count();
 
@@ -423,6 +430,8 @@ class HomeController extends Controller
 
 
             return view('home', compact(
+                'taskChartColor',
+                'taskStatisticsKeys',
                 'currentWorkspace',
                 'totalProject',
                 'totalBugs',
