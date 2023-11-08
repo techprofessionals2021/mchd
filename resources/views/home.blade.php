@@ -268,13 +268,13 @@
 
                                              <div class="row text-center">
 
-                                                 @foreach ($arrProcessPer as $index => $value)
-                                                     <div class="col-4">
-                                                         <i class="fas fa-chart {{ $arrProcessClass[$index] }}  h3"></i>
+                                                 @foreach ($taskPercentages as $index => $value)
+                                                     <div class="col-6">
+                                                         <i class="fas fa-chart {{ $index }}  h3"></i>
                                                          <h6 class="font-weight-bold">
                                                              <span>{{ $value }}%</span>
                                                          </h6>
-                                                         <p class="text-muted">{{ __($arrProcessLabel[$index]) }}</p>
+                                                         <p class="text-muted">{{ $index }}</p>
                                                      </div>
                                                  @endforeach
 
