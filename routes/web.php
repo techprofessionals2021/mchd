@@ -253,6 +253,7 @@ Route::get('/check',[HomeController::class, 'check'])->middleware(['auth','XSS']
 Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware(['auth','XSS']);
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard')->middleware(['auth','XSS']);
 
+Route::get('/index_workspace_report', [HomeController::class, 'index_workspace_report'])->name('index_workspace_report')->middleware(['auth','XSS']);
 
 
 
@@ -501,7 +502,7 @@ Route::prefix('client')->as('client.')->group(function() {
 Route::get('/{slug}/calendar/{id?}',[CalenderController::class, 'index'])->name('calender.index')->middleware(['auth','XSS']);
 Route::any('/{slug}/calendarr/{id?}',[CalenderController::class, 'calendar'])->name('calender.google.calendar')->middleware(['auth','XSS']);
 Route::get('/{slug}/custom-calender',[CalenderController::class, 'customCalender'])->name('custom.calender');
-
+Route::get('/{slug}/custom-huddles-calender',[MeetingController::class,'huddles'])->name('custom.huddles');
 // Chats
 
 Route::get('/{slug}/notification/seen',[UserController::class, 'notificationSeen'])->name('notification.seen');
@@ -1000,6 +1001,8 @@ Route::post('storage-settings',[SettingsController::class, 'storageSettingStore'
 
 Route::post(
   '/{slug}/Notification/Delete', [UserController::class, 'delete_all_notification',])->name('delete_all.notifications');
+Route::get(
+  '/{slug}/Notification/MarkASRead', [UserController::class, 'mark_as_read_notification',])->name('mark_as_read.notifications');
 
 
 //=============================================Webhook===================================================

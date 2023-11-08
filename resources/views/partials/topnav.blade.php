@@ -271,13 +271,27 @@
 
 
                 @if (\Auth::user()->type == 'user')
+                <li class="dropdown dash-h-item drp-notification">
+                    @if (isset($currentWorkspace) && $currentWorkspace)
+                        @auth('web')
+                            @php($notifications = Auth::user()->notifications($currentWorkspace->id))
+                        {{-- @dd($notifications) --}}
+                            @php($all_notifications = Auth::user()->all_notifications($currentWorkspace->id))
+                            <a class="dash-head-link dropdown-toggle arrow-none me-0" >
+
+                                <i class="ti ti-message"></i>
+                            </a>
+
+                        @endauth
+                    @endif
+                </li>
                     <li class="dropdown dash-h-item drp-notification">
                         @if (isset($currentWorkspace) && $currentWorkspace)
                             @auth('web')
                                 @php($notifications = Auth::user()->notifications($currentWorkspace->id))
-
+                            {{-- @dd($notifications) --}}
                                 @php($all_notifications = Auth::user()->all_notifications($currentWorkspace->id))
-                                <a class="dash-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown"
+                                <a class="dash-head-link dropdown-toggle arrow-none me-0 markAsRead" data-bs-toggle="dropdown"
                                     href="#" role="button" aria-haspopup="false" aria-expanded="false">
 
                                     <i class="ti ti-bell"></i>
@@ -419,5 +433,18 @@
     $(document).ready(function() {
       let current_workplace = $('#current-workplace').text();
       $('#selected-item').text(current_workplace)
+
+      $('.markAsRead').on('click', function () {
+        $.ajax({
+            type: "GET",
+            url: "{{route('mark_as_read.notifications',[$currentWorkspace->slug])}}",
+            // data: "data",
+            // dataType: "dataType",
+            success: function (response) {
+
+            }
+        });
+        $(this).children('span').removeClass('dots');
+      });
     });
 </script>

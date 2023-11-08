@@ -889,4 +889,25 @@ class UserController extends Controller
                 );
 
     }
+
+    public function mark_as_read_notification($slug)
+    {
+
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+
+         $user = Auth::user();
+         $get_notification = Notification::where('user_id',$user->id)->where('workspace_id',$currentWorkspace->id)->update([
+            'is_read' => 1
+         ]);
+
+          // $get_notification->delete();
+
+          return response()->json(
+                    [
+                        'is_success' => true,
+                        // 'success' => __('Notifications successfully deleted!'),
+                    ], 200
+                );
+
+    }
 }
