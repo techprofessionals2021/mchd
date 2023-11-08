@@ -130,7 +130,7 @@
                                         </div>
                                         <p class="text-muted text-sm "></p>
                                         <h6 class="">{{ __('In Completed Tasks') }}</h6>
-                                        <h3 class="mb-0">{{ $inProgressTask }} <span class="text-success text-sm"></span>
+                                        <h3 class="mb-0">{{ ($totalTask-$completeTask) }} <span class="text-success text-sm"></span>
                                         </h3>
                                     </div>
                                 </div>
@@ -160,7 +160,7 @@
                                         </div>
                                         <p class="text-muted text-sm"></p>
                                         <h6 class="">{{ __('Over Due Tasks') }}</h6>
-                                        <h3 class="mb-0">{{ $dueDateTask }} <span class="text-success text-sm"></span>
+                                        <h3 class="mb-0">{{ $overDueTasks }} <span class="text-success text-sm"></span>
                                         </h3>
                                     </div>
                                 </div>
@@ -348,7 +348,7 @@
                                                     <div class="font-14 mt-1 font-weight-normal">
                                                         {{ $task->project->name }}</div>
                                                 </td>
-                                                @if ($currentWorkspace->permission == 'Owner' || Auth::user()->getGuard() == 'client')
+
                                                     <td>
 
                                                         <div class="font-14 mt-1 font-weight-normal">
@@ -358,7 +358,7 @@
                                                             @endforeach
                                                         </div>
                                                     </td>
-                                                @endif
+
                                                 <td>
 
                                                     <div class="font-14 mt-1 font-weight-normal">
