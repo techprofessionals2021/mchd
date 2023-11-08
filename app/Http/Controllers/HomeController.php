@@ -254,7 +254,14 @@ class HomeController extends Controller
                     'stages.complete',
                 ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->join("stages", "stages.id", "=", "tasks.status")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->orderBy('tasks.id', 'desc')->limit(5)->get();
                 $taskStatistics = $tasks->groupBy('status')->map->count()->values();
-                // dd($tasks->groupBy('status')->map->count()->values());
+                $taskStatisticsKeys = $tasks->groupBy('status')->map->count()->keys()->all();
+
+                // $firstArray = ['Todo', 'Review'];
+                $taskStatisticsColors = ['Todo' => '#008ffb','In Progress' => '#00e396','Review' => '#feb019','Done' => '#ff4560'];
+
+                $taskChartColor = array_intersect_key($taskStatisticsColors, array_flip($taskStatisticsKeys));
+
+
 
 
                 $taskCounts = $tasks->groupBy('status')->map->count();
@@ -290,6 +297,12 @@ class HomeController extends Controller
                 ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->join("stages", "stages.id", "=", "tasks.status")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")->orderBy('tasks.id', 'desc')->limit(5)->get();
                 // $projects = '';
                 $taskStatistics = $tasks->groupBy('status')->map->count()->values();
+                $taskStatisticsKeys = $tasks->groupBy('status')->map->count()->keys()->all();
+
+                // $firstArray = ['Todo', 'Review'];
+                $taskStatisticsColors = ['Todo' => '#008ffb','In Progress' => '#00e396','Review' => '#feb019','Done' => '#ff4560'];
+
+                $taskChartColor = array_intersect_key($taskStatisticsColors, array_flip($taskStatisticsKeys));
                 // dd($taskStatistics = $tasks->groupBy('status')->map->count());
                 $projects = Project::join("user_projects", "projects.id", "=", "user_projects.project_id")
                     ->join("projects as p2", "p2.id", "=", "user_projects.project_id") // Change alias here
@@ -409,6 +422,8 @@ class HomeController extends Controller
 
 
             return view('home', compact(
+                'taskChartColor',
+                'taskStatisticsKeys',
                 'currentWorkspace',
                 'totalProject',
                 'totalBugs',

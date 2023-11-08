@@ -265,10 +265,10 @@
                                                      </span>
                                                  </div>
                                              </div> --}}
-                                             @php
+                                             {{-- @php
 
                                                  $taskStatisticsColors = ['Todo' => '#008ffb','In Progress' => '#00e396','Review' => '#feb019','Done' => '#ff4560']
-                                             @endphp
+                                             @endphp --}}
 
                                              <div class="row text-center">
 
@@ -278,7 +278,7 @@
                                                          {{-- <span class="font-weight-bold">
                                                              <span>{{ $value }}%</span>
                                                          </span> --}}
-                                                         <span class="status_badge_dash badge  p-2 px-3 rounded  text-whte mt-2" style="background-color: {{$taskStatisticsColors[$index]}}">{{ $index }}</span>
+                                                         <span class="status_badge_dash badge  p-2 px-3 rounded  text-whte mt-2" style="background-color: {{$taskChartColor[$index]}}">{{ $index }}</span>
                                                      </div>
                                                  @endforeach
 
@@ -603,8 +603,9 @@
                     series: {!! json_encode($taskStatistics)!!},
                     // series: [77,11,11],
 
-                    // colors: {!! json_encode($chartData['color']) !!},
-                    labels: ['Todo', 'In Progress', 'Review', 'Done'],
+                    colors: {!! json_encode(collect($taskChartColor)->values()) !!},
+                    // labels: ['Todo', 'In Progress', 'Review', 'Done'],
+                    labels: {!! json_encode($taskStatisticsKeys)!!},
                     grid: {
                         borderColor: '#e7e7e7',
                         row: {
