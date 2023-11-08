@@ -10,6 +10,7 @@ use App\Models\UserProject;
 use App\Models\UserWorkspace;
 use App\Models\Project;
 use App\Models\WorkspaceType;
+use App\Models\Workspace;
 use App\Models\Utility;
 use DB;
 use App\Models\ModelHasRole;
@@ -245,6 +246,7 @@ class HomeController extends Controller
             $overDueTasks = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->whereDate('tasks.due_date', '<=', date("Y-m-d"))->where('tasks.status', '!=',$doneStage->id)->count();
             $inProgressTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('tasks.status', '=', '82')->count();
             if ($currentWorkspace->permission == 'Owner') {
+             
                 $totalBugs = UserProject::join("bug_reports", "bug_reports.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->count();
                 $totalTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->count();
                 $completeTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('tasks.status', '=', $doneStage->id)->count();
@@ -291,7 +293,14 @@ class HomeController extends Controller
                 $totalBugs = UserProject::join("bug_reports", "bug_reports.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('bug_reports.assign_to', '=', $userObj->id)->count();
                 $totalTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")->count();
                 $completeTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")->where('tasks.status', '=', $doneStage->id)->count();
-             
+                $overDueTasks = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")
+                ->join("projects", "projects.id", "=", "user_projects.project_id")
+                ->where("user_id", "=", $userObj->id)
+                ->where('projects.workspace', '=', $currentWorkspace->id)
+                ->whereDate('tasks.due_date', '<=', date("Y-m-d"))
+                ->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")
+                ->where('tasks.status', '!=',$doneStage->id)->count();
+                
                 $tasks = Task::select([
                     'tasks.*',
                     'stages.name as status',
@@ -486,7 +495,7 @@ class HomeController extends Controller
                 $totalProject = UserProject::whereIn('user_id', $executives_id)->join("projects", "projects.id", "=", "user_projects.project_id")->count();
                 $dueDateProjects = UserProject::whereIn('user_id', $executives_id)->join("projects", "projects.id", "=", "user_projects.project_id")->whereDate('end_date', '=', date("Y-m-d"))->count();
                 $inProgressProjects = UserProject::whereIn('user_id', $executives_id)->join("projects", "projects.id", "=", "user_projects.project_id")->where('status', '=', 'Ongoing')->count();
-                $dueDateTask = UserProject::whereIn('user_id', $executives_id)->join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where('due_date', '<=', date('Y-m-d').' 00:00:00')->where('tasks.status', '!=',$doneStage->id)->count();
+                $overDueTasks = UserProject::whereIn('user_id', $executives_id)->join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where('due_date', '<=', date('Y-m-d').' 00:00:00')->where('tasks.status', '!=',$doneStage->id)->count();
                 $inProgressTask = UserProject::whereIn('user_id', $executives_id)->join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where('tasks.status', '=', '14')->count();
 
                 $totalBugs = UserProject::join("bug_reports", "bug_reports.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('bug_reports.assign_to', '=', $userObj->id)->count();
@@ -521,16 +530,16 @@ class HomeController extends Controller
                 // dd($tasks);
 
                 $taskStatistics = $tasks->groupBy('status')->map->count()->values();
-                // dd($tasks->groupBy('status')->map->count()->values());
-
-
+                $taskStatisticsKeys = $tasks->groupBy('status')->map->count()->keys()->all();
+                // $firstArray = ['Todo', 'Review'];
+                $taskStatisticsColors = ['Todo' => '#008FFB','In Progress' => '#00E396','Review' => '#FEB019','Done' => '#FF4560'];
+                $taskChartColor = array_intersect_key($taskStatisticsColors, array_flip($taskStatisticsKeys));
                 $taskCounts = $tasks->groupBy('status')->map->count();
-
                 $totalCount = $taskCounts->sum();
-
                 $taskPercentages = $taskCounts->map(function ($count) use ($totalCount) {
                     return ($count / $totalCount) * 100;
                 });
+
 
                 $totalMembers = UserWorkspace::where('workspace_id', '=', $currentWorkspace->id)->count();
                 $projectProcess = UserProject::join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->groupBy('projects.status')->selectRaw('count(projects.id) as count, projects.status')->pluck('count', 'projects.status');
@@ -613,7 +622,7 @@ class HomeController extends Controller
                 // dd($chartData);
 
 
-                return view('home', compact('currentWorkspace', 'totalProject', 'totalBugs', 'totalTask', 'totalMembers', 'arrProcessLabel', 'arrProcessPer', 'arrProcessClass', 'completeTask', 'tasks', 'chartData', 'inProgressProjects', 'dueDateProjects', 'dueDateTask', 'projects','inProgressTask','taskPercentages','taskStatistics','result'));
+                return view('home', compact('currentWorkspace', 'totalProject', 'totalBugs', 'totalTask', 'totalMembers', 'arrProcessLabel', 'arrProcessPer', 'arrProcessClass', 'completeTask', 'tasks', 'chartData', 'inProgressProjects', 'dueDateProjects', 'overDueTasks', 'projects','inProgressTask','taskPercentages','taskStatistics','result','taskChartColor','taskStatisticsKeys'));
             }
 
             if (auth()->user()->hasRole('HOD')) {
