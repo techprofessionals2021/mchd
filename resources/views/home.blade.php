@@ -117,7 +117,7 @@
                                         </div>
                                         <p class="text-muted text-sm"></p>
                                         <h6 class="">{{ __('Completed Tasks') }}</h6>
-                                        <h3 class="mb-0">{{ $totalProject }} <span class="text-success text-sm"></span>
+                                        <h3 class="mb-0">{{ $completeTask }} <span class="text-success text-sm"></span>
                                         </h3>
                                     </div>
                                 </div>
@@ -130,7 +130,7 @@
                                         </div>
                                         <p class="text-muted text-sm "></p>
                                         <h6 class="">{{ __('In Completed Tasks') }}</h6>
-                                        <h3 class="mb-0">{{ $totalTask }} <span class="text-success text-sm"></span>
+                                        <h3 class="mb-0">{{ $inProgressTask }} <span class="text-success text-sm"></span>
                                         </h3>
                                     </div>
                                 </div>
@@ -160,7 +160,7 @@
                                         </div>
                                         <p class="text-muted text-sm"></p>
                                         <h6 class="">{{ __('Over Due Tasks') }}</h6>
-                                        <h3 class="mb-0">{{ $totalMembers }} <span class="text-success text-sm"></span>
+                                        <h3 class="mb-0">{{ $dueDateTask }} <span class="text-success text-sm"></span>
                                         </h3>
                                     </div>
                                 </div>
@@ -173,7 +173,7 @@
                                         </div>
                                         <p class="text-muted text-sm"></p>
                                         <h6 class="">{{ __('Total Tasks') }}</h6>
-                                        <h3 class="mb-0">{{ $inProgressProjects }} <span
+                                        <h3 class="mb-0">{{ $totalTask }} <span
                                                 class="text-success text-sm"></span>
                                         </h3>
                                     </div>
