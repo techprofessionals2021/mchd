@@ -291,7 +291,16 @@
 
                     </div>
 
-                    <div class="card ">
+
+                    <div class="row" >
+                      @if ($check_home == 1)
+                      <div class="col-md-8">
+
+                        @elseif($check_home == 0)
+                        <div class="col-md-12">
+                      @endif  
+                    
+                    <div class="card">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-8">
@@ -389,6 +398,122 @@
                             </div>
                         </div>
 
+
+                    </div>
+
+                     </div>
+
+
+                    @if (auth()->user()->hasRole('Ceo'))
+                    <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-9">
+                                    <h5 class="">
+                                        {{ __('My Team List') }}
+                                    </h5>
+                                </div>
+                                {{-- <div class="col-auto d-flex justify-content-end">
+                                    <div class="">
+                                        <small><b>{{ $completeTask }}</b> {{ __('Tasks completed out of') }}
+                                            {{ $totalTask }}</small>
+                                    </div>
+                                </div> --}}
+                            </div>
+                        </div>
+                        <div class="card-body ">
+                            <div class="table-responsive">
+                                <table class="table table-centered table-hover mb-0 animated">
+                                    <thead>
+                                        <th>Name</th>
+
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($executives as $value)
+                                            <tr>
+                                              
+                                                <td>
+                                                    <div class="font-14 mt-1 font-weight-normal">
+                                                        {{-- <a href="{{route('ceo.executive_report',[
+                                                            'id' => $user->id,
+                                                            'slug' => $currentWorkspace->slug
+                                                        ])}}"> --}}
+                                                            {{ $value->name }}
+                                                        {{-- </a> --}}
+                                                    </div>
+                                                </td>
+
+                                        
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    </div>
+                    @elseif(auth()->user()->hasRole('HOD'))
+
+                    @if ($check_home != 0)
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h5 class="">
+                                            {{ __('Workspaces List') }}
+                                        </h5>
+                                    </div>
+                           
+                                </div>
+                            </div>
+                            <div class="card-body ">
+                                <div class="table-responsive">
+                                    <table class="table table-centered table-hover mb-0 animated">
+                                        <thead>
+                                            <th>Workspace Name</th>
+                                            <th>Total Tasks</th>
+    
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($hod_workspaces as $value)
+                                                <tr>
+                                                  
+                                                    <td>
+                                                        <div class="font-14 mt-1 font-weight-normal">
+                                                            <i class="fas fa-circle text-success"></i> <!-- Add your icon here -->
+                                                            <a href="{{route('hod.workspace_report', ['id' => $value->id])}}">
+                                                                {{ $value->name }}
+                                                            </a>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                       
+                                                        <div class="badge badge-pill badge-xs badge-danger rounded">{{$value->tasks_count}}</div>
+                                                    
+                                                    </td>
+                                            
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+    
+    
+                        </div>
+                        </div>
+                    @endif
+        
+
+               
+                        
+                    @endif
+                  
 
                     </div>
 
@@ -645,10 +770,12 @@
                     }, {
                         name: 'New Tasks',
                         data: {!! json_encode($result['CreatedTaskArr']) !!}
-                    }, {
-                        name: 'OnGoing Tasks',
-                        data: {!! json_encode($result['PendingTaskArr']) !!}
-                    }],
+                    },
+                    //  {
+                    //     name: 'OnGoing Tasks',
+                    //     data: {!! json_encode($result['PendingTaskArr']) !!}
+                    // }
+                ],
                     chart: {
                         type: 'bar',
                         height: 350
