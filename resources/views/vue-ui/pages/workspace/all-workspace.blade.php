@@ -76,13 +76,22 @@
                                     <div class="row grey-border-bottom">
                                         <div class="col-6 ">
                                             {{-- @dd($currentStatus) --}}
-                                            <form action="{{route('searchAllTasks',[$currentWorkspace->slug,$currentStatus])}}" method="Get" class="m-t-15">
+                                            <form
+                                                action="{{ route('searchAllTasks', [$currentWorkspace->slug, $currentStatus]) }}"
+                                                method="Get" class="m-t-15">
                                                 <div class="input-group w-50">
-                                                    <input type="text" class="form-control" placeholder="Search Tasks By Task Title" aria-label="Search" style="width: 20%" name="search">
-                                                    <div class="input-group-append" style="border: 1px solid #ced4da;border-radius: 0px 8px 8px 0px">
-                                                        <button class="btn btn-outline-secondary" style="border: none" type="submit">
-                                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                                <path fill-rule="evenodd" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-1.414 0zM10 6.5a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0z"/>
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Search Tasks By Task Title" aria-label="Search"
+                                                        style="width: 20%" name="search">
+                                                    <div class="input-group-append"
+                                                        style="border: 1px solid #ced4da;border-radius: 0px 8px 8px 0px">
+                                                        <button class="btn btn-outline-secondary" style="border: none"
+                                                            type="submit">
+                                                            <svg width="1em" height="1em" viewBox="0 0 16 16"
+                                                                class="bi bi-search" fill="currentColor"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <path fill-rule="evenodd"
+                                                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-1.414 0zM10 6.5a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0z" />
                                                             </svg>
                                                         </button>
                                                     </div>
@@ -109,58 +118,107 @@
                                                 <span class="p-text">Filter</span>
                                             </div>
                                             <div class="filterDropdown w-25 m-l-10" style="display:none;">
-                                               <select class="form-select status-dropdown" aria-label="Default select example">
-                                                @foreach ($taskStatus as $status)
-                                                   <option value=@if($status == 'In Progress')"In Progress" @else {{$status}} @endif @if($status == $currentStatus) selected @endif>{{$status}}</option>
-                                                @endforeach
-                                               </select>
+                                                <select class="form-select status-dropdown"
+                                                    aria-label="Default select example">
+                                                    @foreach ($taskStatus as $status)
+                                                        <option
+                                                            value=@if ($status == 'In Progress') "In Progress" @else {{ $status }} @endif
+                                                            @if ($status == $currentStatus) selected @endif>
+                                                            {{ $status }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
 
                                         </div>
                                     </div>
                                     <br>
                                     <div class="row">
-                                        @forelse  ($projects as $project)
-                                           <div class="col-md-12">
-                                               <div class="card ">
-                                                <div class="card-header">
-                                                    <ul class="breadcrumb">
-                                                        <li class="breadcrumb-item text-common"><span href="{{ route('home') }}">{{ $project->workspaceData->name }}</span></li>
-                                                        <li class="breadcrumb-item custom-bc text-common"><span href="{{ route('home') }}">{{ $project->name }}</span></li>
-                                                    </ul>
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <div class="d-flex tasks">
-                                                            <span class="dash-arrow arrow-style p-1"><i
-                                                                data-feather="chevron-right"></i></span>
-                                                            <h4 class="mb-0 m-l-10">{{ $project->name }}
-                                                            </h4>
-                                                        </div>
-                                                        <div>
-                                                            {{-- <a href="#" class="btn btn-sm btn-primary" data-ajax-popup="true" data-size="lg" data-title="{{ __('Create New Task') }}" data-url="{{route($client_keyword.'tasks.create',[$currentWorkspace->slug,$project->id])}}" data-toggle="tooltip" title="{{ __('Add Task') }}"><i class="ti ti-plus"></i></a> --}}
+                                        @foreach ($projects->groupBy('workspaceData.name') as  $key=>$singleWPProjects)
+                                            <div class="col-md-12">
+                                                <div class="card ">
+                                                    <div class="card-header">
+                                                        {{-- <ul class="breadcrumb">
+                                                            <li class="breadcrumb-item text-common"><span
+                                                                    href="{{ route('home') }}">{{ $key }}</span>
+                                                            </li>
+                                                            <li class="breadcrumb-item custom-bc text-common"><span
+                                                                    href="{{ route('home') }}">{{ $key }}</span>
+                                                            </li>
+                                                        </ul> --}}
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div class="d-flex tasks">
+                                                                <span class="dash-arrow arrow-style p-1"><i
+                                                                        data-feather="chevron-right"></i></span>
+                                                                <h4 class="mb-0 m-l-10">{{ $key }}
+                                                                </h4>
+                                                            </div>
+                                                            <div>
+                                                                {{-- <a href="#" class="btn btn-sm btn-primary" data-ajax-popup="true" data-size="lg" data-title="{{ __('Create New Task') }}" data-url="{{route($client_keyword.'tasks.create',[$currentWorkspace->slug,$project->id])}}" data-toggle="tooltip" title="{{ __('Add Task') }}"><i class="ti ti-plus"></i></a> --}}
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="card-body tasks-body"
-                                                    style="display:none;
-                                                   transform-origin: top;
-                                                   transition: transform .4s ease-in-out;">
-                                                   {{-- @dd($currentStatus) --}}
-                                                   @isset($searchQuery)
-                                                   <app :tasks='{{ json_encode($project->custom_user_tasks($searchQuery,$currentStatus)) }}'>
-                                                   </app>
-                                                   @else
-                                                   <app :tasks='{{ json_encode($project->custom_user_tasks('',$currentStatus)) }}'>
-                                                   </app>
-                                                   @endisset
+                                                    <div class="card-body tasks-body"
+                                                        style="display:none;
+                                                    transform-origin: top;
+                                                    transition: transform .4s ease-in-out;">
+
+                                                        @forelse  ($singleWPProjects as $project)
+                                                            <div class="col-md-12">
+                                                                <div class="card ">
+                                                                    <div class="card-header">
+                                                                        <ul class="breadcrumb">
+                                                                            <li class="breadcrumb-item text-common"><span
+                                                                                    href="{{ route('home') }}">{{ $project->workspaceData->name }}</span>
+                                                                            </li>
+                                                                            <li
+                                                                                class="breadcrumb-item custom-bc text-common">
+                                                                                <span
+                                                                                    href="{{ route('home') }}">{{ $project->name }}</span>
+                                                                            </li>
+                                                                        </ul>
+                                                                        <div
+                                                                            class="d-flex justify-content-between align-items-center">
+                                                                            <div class="d-flex tasks">
+                                                                                <span class="dash-arrow arrow-style p-1"><i
+                                                                                        data-feather="chevron-right"></i></span>
+                                                                                <h4 class="mb-0 m-l-10">
+                                                                                    {{ $project->name }}
+                                                                                </h4>
+                                                                            </div>
+                                                                            <div>
+                                                                                {{-- <a href="#" class="btn btn-sm btn-primary" data-ajax-popup="true" data-size="lg" data-title="{{ __('Create New Task') }}" data-url="{{route($client_keyword.'tasks.create',[$currentWorkspace->slug,$project->id])}}" data-toggle="tooltip" title="{{ __('Add Task') }}"><i class="ti ti-plus"></i></a> --}}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="card-body tasks-body"
+                                                                        style="display:none;
+            transform-origin: top;
+            transition: transform .4s ease-in-out;">
+                                                                        {{-- @dd($currentStatus) --}}
+                                                                        @isset($searchQuery)
+                                                                            <app
+                                                                                :tasks='{{ json_encode($project->custom_user_tasks($searchQuery, $currentStatus)) }}'>
+                                                                            </app>
+                                                                        @else
+                                                                            <app
+                                                                                :tasks='{{ json_encode($project->custom_user_tasks('', $currentStatus)) }}'>
+                                                                            </app>
+                                                                        @endisset
 
 
 
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @empty
+                                                            <h1 class="text-center text-secondary">Record Not Found</h1>
+                                                        @endforelse
+
+
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        @empty
-                                        <h1 class="text-center text-secondary">Record Not Found</h1>
-                                        @endforelse
+                                        @endforeach
                                     </div>
 
 
@@ -186,14 +244,12 @@
 @endpush
 @push('scripts')
     <!--
-            <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-             -->
+                     -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>
-    <script>
-
-    </script>
+    <script></script>
     <script>
         $(document).ready(function() {
             if ($(".top-10-scroll").length) {
@@ -204,27 +260,25 @@
         });
     </script>
     <script src="{{ asset('assets/custom/js/dropzone.min.js') }}"></script>
-    <script>
-    </script>
+    <script></script>
 @endpush
 
 @push('scripts')
     <script>
         $(document).ready(function() {
             $('.tasks').on('click', function() {
-               $(this).closest('.card').find('.tasks-body').animate({
+                // console.log($(this).closest('.card').find('.tasks-body:first-child'));
+                $(this).closest('.card').find('.tasks-body:first').animate({
                     height: 'toggle'
                 });
-                $(this).closest('.card').find('.arrow-style').toggleClass('rotate-90');
+                $(this).closest('.card').find('.arrow-style:first').toggleClass('rotate-90');
 
             })
         });
     </script>
     <!-- third party js -->
     <script src="{{ asset('assets/custom/js/dragula.min.js') }}"></script>
-    <script>
-
-    </script>
+    <script></script>
     <!-- third party js ends -->
     <script>
         $(document).on('click', '#form-comment button', function(e) {
@@ -528,19 +582,17 @@
                 });
             }
         });
-        $('.filterTaskBtn').on('click',function(){
+        $('.filterTaskBtn').on('click', function() {
             $('.filterDropdown').slideToggle(500);
         })
-        $('.status-dropdown').on('change',function(){
+        $('.status-dropdown').on('change', function() {
             console.log();
             let currentWorkSpace = <?php echo json_encode($currentWorkspace->slug); ?>
 
-        //   console.log(my_variable);
+            //   console.log(my_variable);
 
-        location.href = window.location.origin +'/'+currentWorkSpace+'/filterAllTasksByStatus/'+$(this).val()
+            location.href = window.location.origin + '/' + currentWorkSpace + '/filterAllTasksByStatus/' + $(this)
+                .val()
         })
-
-
-
     </script>
 @endpush
