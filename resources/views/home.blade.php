@@ -294,15 +294,30 @@
                     <div class="card ">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-9">
+                                <div class="col-8">
                                     <h5 class="">
                                         {{ __('Recent Tasks') }}
                                     </h5>
                                 </div>
-                                <div class="col-auto d-flex justify-content-end">
-                                    <div class="">
+                                <div class="col-4 d-flex  justify-content-end align-items-center ">
+                                    {{-- <div class="">
                                         <small><b>{{ $completeTask }}</b> {{ __('Tasks completed out of') }}
                                             {{ $totalTask }}</small>
+                                    </div> --}}
+                                    <div class="filterTaskBtn cursor-pointer">
+                                        <img src='{{ asset('custom-ui/images/filter.svg') }}' class="m-r-5" />
+                                        <span class="p-text">Filter</span>
+                                    </div>
+                                    <div class="filterDropdown w-25 m-l-10" style="display:none;">
+                                       <select class="form-select status-dropdown" aria-label="Default select example">
+                                        @foreach ($taskStatus as $status)
+                                           <option value=@if($status == 'In Progress')"In Progress" @else {{$status}} @endif @if($status == $currentStatus) selected @endif>{{$status}}</option>
+                                        @endforeach
+                                        {{-- <option selected>All</option>
+                                         <option value="In Progress">In Progress</option>
+                                         <option value="Review">Review</option>
+                                         <option value="Done">Done</option> --}}
+                                       </select>
                                     </div>
                                 </div>
                             </div>
@@ -965,4 +980,26 @@
             })();
         </script>
     @endif
+
+    <script>
+        $('.filterTaskBtn').on('click',function(){
+            $('.filterDropdown').slideToggle(500);
+        })
+
+        $('.status-dropdown').on('change',function(){
+            console.log();
+            let currentWorkSpace = <?php echo json_encode($currentWorkspace->slug); ?>;
+            let blade_typee = <?php echo json_encode($blade_type); ?>;
+
+
+          console.log(blade_typee,'HOD type');
+          if(blade_typee == 'HOD'){
+// alert('sdsds')
+          location.href = window.location.origin +'/index_report/'+ currentWorkSpace +'/'+$(this).val()
+        return;
+        }
+
+        location.href = window.location.origin +'/home/'+ currentWorkSpace +'/'+$(this).val()
+        })
+    </script>
 @endpush
