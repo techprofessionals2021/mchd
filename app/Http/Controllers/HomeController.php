@@ -42,10 +42,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index($slug = '')
+    public function index($slug = '',$currentStatus='All')
     {
 
-
+        // dd($currentStatus);
 
         $userObj = Auth::user();
         if ($userObj->type == 'admin') {
@@ -260,11 +260,33 @@ class HomeController extends Controller
                 $totalTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->count();
                 $completeTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('tasks.status', '=', $doneStage->id)->count();
                 // dd($doneStage->id);
-                $tasks = Task::select([
-                    'tasks.*',
-                    'stages.name as status',
-                    'stages.complete',
-                ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->join("stages", "stages.id", "=", "tasks.status")->where("user_id", "=", $userObj->id)->orderBy('tasks.id', 'desc')->limit(5)->get();
+
+                if($currentStatus == 'All'){
+                    $tasks = Task::select([
+                        'tasks.*',
+                        'stages.name as status',
+                        'stages.complete',
+                    ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")
+                    ->join("projects", "projects.id", "=", "user_projects.project_id")
+                    ->join("stages", "stages.id", "=", "tasks.status")
+                    ->where("user_id", "=", $userObj->id)
+                    ->orderBy('tasks.id', 'desc')
+                    ->get();
+                }else{
+                    $tasks = Task::select([
+                        'tasks.*',
+                        'stages.name as status',
+                        'stages.complete',
+                    ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")
+                    ->join("projects", "projects.id", "=", "user_projects.project_id")
+                    ->join("stages", "stages.id", "=", "tasks.status")
+                    ->where("user_id", "=", $userObj->id)
+                    ->orderBy('tasks.id', 'desc')
+                    ->whereHas('stage',function($query) use($currentStatus){
+                        $query->where('name',$currentStatus);
+                    })
+                    ->get();
+                }
                 $taskStatistics = $tasks->groupBy('status')->map->count()->values();
                 $taskStatisticsKeys = $tasks->groupBy('status')->map->count()->keys()->all();
 
@@ -319,12 +341,37 @@ class HomeController extends Controller
                     ->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")
                     ->where('tasks.status', '!=', $doneStage->id)->count();
 
-                $tasks = Task::select([
-                    'tasks.*',
-                    'stages.name as status',
-                    'stages.complete',
-                ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->join("stages", "stages.id", "=", "tasks.status")->where("user_id", "=", $userObj->id)->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")->orderBy('tasks.id', 'desc')->limit(5)->get();
-                // $projects = '';
+
+                if($currentStatus == 'All'){
+                    $tasks = Task::select([
+                        'tasks.*',
+                        'stages.name as status',
+                        'stages.complete',
+                    ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")
+                    ->join("projects", "projects.id", "=", "user_projects.project_id")
+                    ->join("stages", "stages.id", "=", "tasks.status")
+                    ->where("user_id", "=", $userObj->id)
+                    ->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")
+                    ->orderBy('tasks.id', 'desc')
+                    ->get();
+                }else{
+                    $tasks = Task::select([
+                        'tasks.*',
+                        'stages.name as status',
+                        'stages.complete',
+                    ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")
+                    ->join("projects", "projects.id", "=", "user_projects.project_id")
+                    ->join("stages", "stages.id", "=", "tasks.status")
+                    ->where("user_id", "=", $userObj->id)
+                    ->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")
+                    ->orderBy('tasks.id', 'desc')
+                    ->whereHas('stage',function($query) use($currentStatus){
+                        $query->where('name',$currentStatus);
+                    })
+                    ->get();
+
+
+                }
                 $taskStatistics = $tasks->groupBy('status')->map->count()->values();
                 $taskStatisticsKeys = $tasks->groupBy('status')->map->count()->keys()->all();
                 // $firstArray = ['Todo', 'Review'];
@@ -453,10 +500,13 @@ class HomeController extends Controller
             // dd($MonthArr)->values();
 
             // dd($CompletedTaskArr->values());
-
-
-
+            // $currentStatus = 'All';
+            $taskStatus = ['All','Todo','In Progress','Review','Done'];
+            $blade_type = '';
             return view('home', compact(
+                'blade_type',
+                'currentStatus',
+                'taskStatus',
                 'taskChartColor',
                 'taskStatisticsKeys',
                 'currentWorkspace',
@@ -492,7 +542,7 @@ class HomeController extends Controller
     }
 
 
-    public function index_report($slug = '')
+    public function index_report($slug = '',$currentStatus='All')
     {
 
         $userObj = Auth::user();
@@ -698,14 +748,32 @@ class HomeController extends Controller
                             return $project->task->where('due_date', '<=', date('Y-m-d') . ' 00:00:00')->where('status', '!=', $doneStage->id);
                         })->count();
                     }
-                    $tasks = Task::with('project', 'stage')->select([
-                        'tasks.*',
-                        'stages.name as status',
-                        'stages.complete',
-                    ])->join("stages", "stages.id", "=", "tasks.status")
-                        ->whereHas('project', function ($query) use ($workspace_id) {
+
+                    //
+                    if($currentStatus == 'All'){
+                        $tasks = Task::with('project','stage')->select([
+                            'tasks.*',
+                            'stages.name as status',
+                            'stages.complete',
+                        ])->join("stages", "stages.id", "=", "tasks.status")
+                        ->whereHas('project',function($query)use($workspace_id){
                             $query->whereIn('workspace', $workspace_id);
                         })->orderBy('tasks.id', 'desc')->get();
+                    }else{
+                        $tasks = Task::with('project','stage')->select([
+                            'tasks.*',
+                            'stages.name as status',
+                            'stages.complete',
+                        ])->join("stages", "stages.id", "=", "tasks.status")
+                        ->whereHas('project',function($query)use($workspace_id){
+                            $query->whereIn('workspace', $workspace_id);
+                        })->orderBy('tasks.id', 'desc')
+                        ->whereHas('stage',function($query) use($currentStatus){
+                            $query->where('name',$currentStatus);
+                        })
+                        ->get();
+                    }
+                    //
                     $taskStatistics = $tasks->groupBy('status')->map->count()->values();
                     $taskStatisticsKeys = $tasks->groupBy('status')->map->count()->keys()->all();
                     $taskStatisticsColors = ['Todo' => '#008FFB', 'In Progress' => '#00E396', 'Review' => '#FEB019', 'Done' => '#FF4560'];
@@ -804,10 +872,15 @@ class HomeController extends Controller
                         'workspace_id' => $currentWorkspace->id,
                         'duration' => 'week',
                     ]);
-                    // dd($chartData);
+
+                    $blade_type = 'HOD';
+                    $taskStatus = ['All','Todo','In Progress','Review','Done'];
                     return view('home', compact(
                         'taskChartColor',
-                        'taskStatisticsKeys',
+                        'currentStatus',
+                    'taskStatus',
+                    'blade_type',
+                    'taskStatisticsKeys',
                         'currentWorkspace',
                         'totalProject',
                         'totalTask',
