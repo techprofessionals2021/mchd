@@ -250,10 +250,10 @@ Route::prefix('client')->as('client.')->group(function () {
 Route::group(['middleware' => ['verified']], function (){
 
 Route::get('/check',[HomeController::class, 'check'])->middleware(['auth','XSS']);
-Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware(['auth','XSS']);
+Route::get('/home/{slug?}/{currentStatus?}', [HomeController::class, 'index'])->name('home')->middleware(['auth','XSS']);
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard')->middleware(['auth','XSS']);
 
-Route::get('/index_report', [HomeController::class, 'index_report'])->name('index_report')->middleware(['auth','XSS']);
+Route::get('/index_report/{slug?}/{currentStatus?}', [HomeController::class, 'index_report'])->name('index_report')->middleware(['auth','XSS']);
 
 
 
