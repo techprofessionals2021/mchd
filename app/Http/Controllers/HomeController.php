@@ -56,189 +56,7 @@ class HomeController extends Controller
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         if ($currentWorkspace) {
             $doneStage = Stage::where('workspace_id', '=', $currentWorkspace->id)->where('complete', '=', '1')->first();
-            // if (auth()->user()->hasRole('Ceo')) {
 
-            //     $model_has_role = ModelHasRole::where('model_id',Auth::id())->first();
-
-            //     $executives = $model_has_role->executives;
-            //     $executives_id = json_decode($executives);
-
-
-            //     $totalProject = UserProject::whereIn('user_id', $executives_id)->join("projects", "projects.id", "=", "user_projects.project_id")->count();
-            //     $dueDateProjects = UserProject::whereIn('user_id', $executives_id)->join("projects", "projects.id", "=", "user_projects.project_id")->whereDate('end_date', '=', date("Y-m-d"))->count();
-            //     $inProgressProjects = UserProject::whereIn('user_id', $executives_id)->join("projects", "projects.id", "=", "user_projects.project_id")->where('status', '=', 'Ongoing')->count();
-            //     $dueDateTask = UserProject::whereIn('user_id', $executives_id)->join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->whereDate('due_date', '=', date("Y-m-d"))->count();
-            //     $inProgressTask = UserProject::whereIn('user_id', $executives_id)->join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where('tasks.status','=','82')->count();
-
-            //     $totalBugs = UserProject::join("bug_reports", "bug_reports.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('bug_reports.assign_to', '=', $userObj->id)->count();
-            //     $totalTask = UserProject::whereIn('user_id', $executives_id)->join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->count();
-            //     $completeTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")->where('tasks.status', '=', $doneStage->id)->count();
-
-
-            //     $projects = Project::whereIn('user_id', $executives_id)->
-            //     join("user_projects", "projects.id", "=", "user_projects.project_id")
-            //     ->join("projects as p2", "p2.id", "=", "user_projects.project_id") // Change alias here
-
-            //     ->orderBy('projects.id', 'desc')
-            //     ->limit(5)
-            //     ->get();
-            //     // dd('ceo');
-
-            //     $tasks = Task::select([
-            //         'tasks.*',
-            //         'stages.name as status',
-            //         'stages.complete',
-            //     ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->join("stages", "stages.id", "=", "tasks.status")->whereIn('user_id', $executives_id)->orderBy('tasks.id', 'desc')->limit(5)->get();
-
-            //     $totalMembers = UserWorkspace::where('workspace_id', '=', $currentWorkspace->id)->count();
-            //     $projectProcess = UserProject::join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->groupBy('projects.status')->selectRaw('count(projects.id) as count, projects.status')->pluck('count', 'projects.status');
-
-            //     $arrProcessPer = [];
-            //     $arrProcessLabel = [];
-            //     foreach ($projectProcess as $lable => $process) {
-            //         $arrProcessLabel[] = $lable;
-            //         if ($totalProject == 0) {
-            //             $arrProcessPer[] = 0.00;
-            //         } else {
-            //             $arrProcessPer[] = round(($process * 100) / $totalProject, 2);
-            //         }
-            //     }
-            //     $arrProcessClass = [
-            //         'text-success',
-            //         'text-primary',
-            //         'text-danger',
-            //     ];
-            //     $projectController = new ProjectReportController();
-
-            //     $chartData = $projectController->getProjectChart([
-            //         'workspace_id' => $currentWorkspace->id,
-            //         'duration' => 'week',
-            //     ]);
-
-            //     // dd($chartData);
-
-
-            //     return view('home', compact('currentWorkspace', 'totalProject', 'totalBugs', 'totalTask', 'totalMembers', 'arrProcessLabel', 'arrProcessPer', 'arrProcessClass', 'completeTask', 'tasks', 'chartData','inProgressProjects','dueDateProjects','dueDateTask','projects'));
-
-            // }
-
-            // if (auth()->user()->hasRole('HOD')) {
-
-            //     $model_has_role = ModelHasRole::where('model_id',Auth::id())->first();
-
-            //     $workspaces = $model_has_role->workspace_id;
-
-            //     $workspace_id = json_decode($workspaces);
-
-
-            //     // $totalProject = UserProject::whereIn('user_id', $executives_id)->join("projects", "projects.id", "=", "user_projects.project_id")->count();
-
-            //     // $totalProjects = UserWorkspace::
-            //     // whereIn('workspace_id', $workspace_id)
-            //     // ->join('user_projects', 'user_projects.user_id', '=', 'user_workspaces.user_id')
-            //     // ->count();
-
-            //     $totalProject = Project::
-            //     whereIn('workspace', $workspace_id)
-            //     ->count();
-
-
-            //     $dueDateProjects = Project::
-            //     whereIn('workspace', $workspace_id)
-            //     ->whereDate('end_date', '=', date("Y-m-d"))->count();
-
-            //     $inProgressProjects = Project::
-            //     whereIn('workspace', $workspace_id)
-            //     ->where('status', '=', 'Ongoing')->count();
-
-            //     $dueDateTask = UserWorkspace::whereIn('workspace_id', $workspace_id)
-            //     ->join('user_projects', 'user_workspaces.user_id', '=', 'user_projects.user_id')
-            //     ->join('projects', 'projects.id', '=', 'user_projects.project_id')
-            //     ->join('tasks', 'tasks.project_id', '=', 'user_projects.project_id')
-            //     ->whereDate('due_date', '=', date('Y-m-d'))
-            //     ->count();
-
-            //     // dd($dueDateTask);
-            //     // $dueDateTask = UserProject::whereIn('user_id', $executives_id)->join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->whereDate('due_date', '=', date("Y-m-d"))->count();
-            //     $inProgressTask = Task::whereIn('projects.workspace', $workspace_id)
-            //     ->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")
-            //     ->join("projects", "projects.id", "=", "user_projects.project_id")
-            //     ->where('tasks.status','=','82')->count();
-
-            //     // dd($inProgressTask);
-            //     // $totalBugs = UserProject::join("bug_reports", "bug_reports.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('bug_reports.assign_to', '=', $userObj->id)->count();
-            //     $totalTask = Task::whereIn('projects.workspace', $workspace_id)
-            //     ->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")
-            //     ->join("projects", "projects.id", "=", "user_projects.project_id")
-            //     ->join("stages", "stages.id", "=", "tasks.status")->count();
-
-            //     // dd($totalTask);
-            //     $completeTask = Task::whereIn('projects.workspace', $workspace_id)
-            //     ->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")
-            //     ->join("projects", "projects.id", "=", "user_projects.project_id")->where('tasks.status', '=', $doneStage->id)->count();
-
-
-
-            //     $projects = Project::whereIn('workspace', $workspace_id)
-            //     ->orderBy('projects.id', 'desc')
-            //     ->limit(5)
-            //     ->get();
-            //     // dd('ceo');
-
-            //     // $tasks = Task::select([
-            //     //     'tasks.*',
-            //     //     'stages.name as status',
-            //     //     'stages.complete',
-            //     // ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->join("stages", "stages.id", "=", "tasks.status")->orderBy('tasks.id', 'desc')->limit(5)->get();
-
-            //     $tasks = Task::select([
-            //         'tasks.*',
-            //         'stages.name as status',
-            //         'stages.complete',
-            //     ])
-            //     ->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")
-            //     ->join("projects", "projects.id", "=", "user_projects.project_id")
-            //     ->join("stages", "stages.id", "=", "tasks.status")
-            //     ->whereIn('projects.workspace', $workspace_id)
-            //     ->orderBy('tasks.id', 'desc')
-            //     ->limit(5)
-            //     ->get();
-            //     // dd($tasks);
-
-            //     $totalMembers = UserWorkspace::where('workspace_id', '=', $currentWorkspace->id)->count();
-            //     $projectProcess = UserProject::join("projects", "projects.id", "=", "user_projects.project_id")->whereIn('projects.workspace', $workspace_id)->groupBy('projects.status')->selectRaw('count(projects.id) as count, projects.status')->pluck('count', 'projects.status');
-
-            //     $arrProcessPer = [];
-            //     $arrProcessLabel = [];
-            //     foreach ($projectProcess as $lable => $process) {
-            //         $arrProcessLabel[] = $lable;
-            //         if ($totalProject == 0) {
-            //             $arrProcessPer[] = 0.00;
-            //         } else {
-            //             $arrProcessPer[] = round(($process * 100) / $totalProject, 2);
-            //         }
-            //     }
-            //     $arrProcessClass = [
-            //         'text-success',
-            //         'text-primary',
-            //         'text-danger',
-            //     ];
-            //     $projectController = new ProjectReportController();
-
-            //     $chartData = $projectController->getProjectChart([
-            //         'workspace_id' => $currentWorkspace->id,
-            //         'duration' => 'week',
-            //     ]);
-
-            //     // dd($chartData);
-
-
-            //     return view('home', compact('currentWorkspace', 'totalProject', 'totalTask', 'totalMembers', 'arrProcessLabel', 'arrProcessPer', 'arrProcessClass', 'completeTask', 'tasks', 'chartData','inProgressProjects','dueDateProjects','dueDateTask','projects'));
-
-            // }
-
-            // else {
-            // dd(date("Y-m-d"));
             $check_home = 0;
             $workspace_type = WorkspaceType::get();
             $totalProject = UserProject::join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->count();
@@ -249,6 +67,13 @@ class HomeController extends Controller
             if ($currentWorkspace->permission == 'Owner') {
 
                 $model_has_role = ModelHasRole::where('model_id', Auth::id())->first();
+
+                $workspaces = $model_has_role->workspace_id;
+                $workspace_id = json_decode($workspaces);
+
+
+
+                $hod_workspaces = Workspace::whereIn('id', $workspace_id)->get();
 
                 // $executives = $model_has_role->executives;
                 // $executives_id = json_decode($executives);
@@ -317,7 +142,8 @@ class HomeController extends Controller
                     ->limit(5)
                     ->get();
 
-              
+
+
 
             } else {
 
@@ -325,7 +151,7 @@ class HomeController extends Controller
 
                 $workspaces = $model_has_role->workspace_id;
                 $workspace_id = json_decode($workspaces);
-                
+
 
 
                 $hod_workspaces = Workspace::whereIn('id', $workspace_id)->get();
@@ -810,7 +636,7 @@ class HomeController extends Controller
                         DB::raw('SUM(CASE WHEN tasks.status = "10" THEN 1 ELSE 0 END) as total_pending_task'),
                         DB::raw('COUNT(*) as total_created_task')
                     )
-                  
+
                     // ->where('projects.workspace', $id)
                     ->whereIn('projects.workspace', $workspace_id)
                     ->groupBy('projects.workspace', 'month')
