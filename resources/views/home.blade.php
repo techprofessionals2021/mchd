@@ -291,7 +291,10 @@
 
                     </div>
 
-                    <div class="card ">
+
+                    <div class="row" >
+                    <div class="col-md-8">
+                    <div class="card">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-9">
@@ -374,6 +377,67 @@
                             </div>
                         </div>
 
+
+                    </div>
+
+                     </div>
+
+
+                    @if (auth()->user()->hasRole('Ceo'))
+                    <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-9">
+                                    <h5 class="">
+                                        {{ __('My Team List') }}
+                                    </h5>
+                                </div>
+                                {{-- <div class="col-auto d-flex justify-content-end">
+                                    <div class="">
+                                        <small><b>{{ $completeTask }}</b> {{ __('Tasks completed out of') }}
+                                            {{ $totalTask }}</small>
+                                    </div>
+                                </div> --}}
+                            </div>
+                        </div>
+                        <div class="card-body ">
+                            <div class="table-responsive">
+                                <table class="table table-centered table-hover mb-0 animated">
+                                    <thead>
+                                        <th>Name</th>
+
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($executives as $value)
+                                            <tr>
+                                              
+                                                <td>
+                                                    <div class="font-14 mt-1 font-weight-normal">
+                                                        {{-- <a href="{{route('ceo.executive_report',[
+                                                            'id' => $user->id,
+                                                            'slug' => $currentWorkspace->slug
+                                                        ])}}"> --}}
+                                                            {{ $value->name }}
+                                                        {{-- </a> --}}
+                                                    </div>
+                                                </td>
+
+                                        
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    </div>
+                    @else
+                        
+                    @endif
+                  
 
                     </div>
 

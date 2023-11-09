@@ -246,6 +246,14 @@ class HomeController extends Controller
             $overDueTasks = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->whereDate('tasks.due_date', '<=', date("Y-m-d"))->where('tasks.status', '!=',$doneStage->id)->count();
             $inProgressTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('tasks.status', '=', '82')->count();
             if ($currentWorkspace->permission == 'Owner') {
+
+                $model_has_role = ModelHasRole::where('model_id', Auth::id())->first();
+
+                $executives = $model_has_role->executives;
+                $executives_id = json_decode($executives);
+
+
+                $executives = User::whereIn('id', $executives_id)->get();
              
                 $totalBugs = UserProject::join("bug_reports", "bug_reports.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->count();
                 $totalTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->count();
@@ -289,6 +297,14 @@ class HomeController extends Controller
                 // dd($projects);
 
             } else {
+
+                $model_has_role = ModelHasRole::where('model_id', Auth::id())->first();
+
+                $executives = $model_has_role->executives;
+                $executives_id = json_decode($executives);
+
+
+                $executives = User::whereIn('id', $executives_id)->get();
 
                 $totalBugs = UserProject::join("bug_reports", "bug_reports.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('bug_reports.assign_to', '=', $userObj->id)->count();
                 $totalTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")->count();
@@ -460,7 +476,8 @@ class HomeController extends Controller
                 'projects',
                 'taskStatistics',
                 'result',
-                'taskPercentages'
+                'taskPercentages',
+                'executives'
 
             ));
             // }
@@ -490,6 +507,13 @@ class HomeController extends Controller
 
                 $executives = $model_has_role->executives;
                 $executives_id = json_decode($executives);
+
+
+                $executives = User::whereIn('id', $executives_id)->get();
+
+                // dd($Executives);
+
+
 
 
                 $totalProject = UserProject::whereIn('user_id', $executives_id)->join("projects", "projects.id", "=", "user_projects.project_id")->count();
@@ -622,7 +646,7 @@ class HomeController extends Controller
                 // dd($chartData);
 
 
-                return view('home', compact('currentWorkspace', 'totalProject', 'totalBugs', 'totalTask', 'totalMembers', 'arrProcessLabel', 'arrProcessPer', 'arrProcessClass', 'completeTask', 'tasks', 'chartData', 'inProgressProjects', 'dueDateProjects', 'overDueTasks', 'projects','inProgressTask','taskPercentages','taskStatistics','result','taskChartColor','taskStatisticsKeys'));
+                return view('home', compact('currentWorkspace', 'totalProject', 'totalBugs', 'totalTask', 'totalMembers', 'arrProcessLabel', 'arrProcessPer', 'arrProcessClass', 'completeTask', 'tasks', 'chartData', 'inProgressProjects', 'dueDateProjects', 'overDueTasks', 'projects','inProgressTask','taskPercentages','taskStatistics','result','taskChartColor','taskStatisticsKeys','executives'));
             }
 
             if (auth()->user()->hasRole('HOD')) {
