@@ -239,6 +239,7 @@ class HomeController extends Controller
 
             // else {
             // dd(date("Y-m-d"));
+            $check_home = 0;
             $workspace_type = WorkspaceType::get();
             $totalProject = UserProject::join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->count();
             $dueDateProjects = UserProject::join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->whereDate('end_date', '=', date("Y-m-d"))->count();
@@ -294,19 +295,18 @@ class HomeController extends Controller
                     ->limit(5)
                     ->get();
 
-                // dd($projects);
+              
 
             } else {
 
                 $model_has_role = ModelHasRole::where('model_id', Auth::id())->first();
 
-                // $executives = $model_has_role->executives;
-                // $executives_id = json_decode($executives);
-                
+                $workspaces = $model_has_role->workspace_id;
+                $workspace_id = json_decode($workspaces);
                 
 
 
-                // $executives = User::whereIn('id', $executives_id)->get();
+                $hod_workspaces = Workspace::whereIn('id', $workspace_id)->get();
 
                 $totalBugs = UserProject::join("bug_reports", "bug_reports.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('bug_reports.assign_to', '=', $userObj->id)->count();
                 $totalTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")->count();
@@ -479,6 +479,8 @@ class HomeController extends Controller
                 'taskStatistics',
                 'result',
                 'taskPercentages',
+                'hod_workspaces',
+                'check_home'
                 // 'executives'
 
             )
@@ -657,9 +659,25 @@ class HomeController extends Controller
             }
 
             if (auth()->user()->hasRole('HOD')) {
+
+                // dd('asd');
+                $check_home = 1;
                 $model_has_role = ModelHasRole::where('model_id', Auth::id())->first();
                 $workspaces = $model_has_role->workspace_id;
                 $workspace_id = json_decode($workspaces);
+
+                // $hod_workspaces = Workspace::whereIn('id', $workspace_id)->get();
+
+                $hod_workspaces = Workspace::select('workspaces.*', DB::raw('COUNT(tasks.id) as tasks_count'))
+                ->whereIn('workspaces.id', $workspace_id)
+                ->leftJoin('projects', 'workspaces.id', '=', 'projects.workspace')
+                ->leftJoin('tasks', 'projects.id', '=', 'tasks.project_id')
+                ->leftJoin('user_projects', 'projects.id', '=', 'user_projects.project_id')
+                ->leftJoin('users', 'user_projects.user_id', '=', 'users.id')
+                ->groupBy('workspaces.id')
+                ->get();
+
+                // dd($hod_workspaces);
                 if (is_array($workspace_id)) {
                     $workspaces_model = Workspace::whereIn('id', $workspace_id)->get();
                     $totalTask = 0;
@@ -702,19 +720,37 @@ class HomeController extends Controller
                     $CompletedTaskArr = [];
                     $PendingTaskArr = [];
                     $CreatedTaskArr = [];
+                    // $report = DB::table('tasks')
+                    //     ->select(
+                    //         DB::raw('YEAR(created_at) as year'),
+                    //         // DB::raw('MONTH(created_at) as month'),
+                    //         DB::raw('DATE_FORMAT(created_at, "%b") as month'),
+                    //         DB::raw('SUM(CASE WHEN status = "16" THEN 1 ELSE 0 END) as total_completed_task'),
+                    //         DB::raw('SUM(CASE WHEN status = "10" THEN 1 ELSE 0 END) as total_pending_task'),
+                    //         DB::raw('COUNT(*) as total_created_task')
+                    //     )
+                    //     // ->where('created_at', '>=', $currentMonth)
+                    //     ->groupBy('month')->where('assign_to', $userObj->id)
+                    //     // ->orderBy('a', 'month')
+                    //     ->get();
+
                     $report = DB::table('tasks')
-                        ->select(
-                            DB::raw('YEAR(created_at) as year'),
-                            // DB::raw('MONTH(created_at) as month'),
-                            DB::raw('DATE_FORMAT(created_at, "%b") as month'),
-                            DB::raw('SUM(CASE WHEN status = "16" THEN 1 ELSE 0 END) as total_completed_task'),
-                            DB::raw('SUM(CASE WHEN status = "10" THEN 1 ELSE 0 END) as total_pending_task'),
-                            DB::raw('COUNT(*) as total_created_task')
-                        )
-                        // ->where('created_at', '>=', $currentMonth)
-                        ->groupBy('month')->where('assign_to', $userObj->id)
-                        // ->orderBy('a', 'month')
-                        ->get();
+                    ->join('projects', 'tasks.project_id', '=', 'projects.id')
+                    ->select(
+                        DB::raw('DATE_FORMAT(tasks.created_at, "%b") as month'),
+                        DB::raw('SUM(CASE WHEN tasks.status = "16" THEN 1 ELSE 0 END) as total_completed_task'),
+                        DB::raw('SUM(CASE WHEN tasks.status = "10" THEN 1 ELSE 0 END) as total_pending_task'),
+                        DB::raw('COUNT(*) as total_created_task')
+                    )
+                  
+                    // ->where('projects.workspace', $id)
+                    ->whereIn('projects.workspace', $workspace_id)
+                    ->groupBy('projects.workspace', 'month')
+                    ->orderBy('projects.workspace')
+                    ->orderBy('month')
+                    ->get();
+
+                    // dd($report);
                     $report = $report->map(function ($item) use (&$MonthArr, &$CompletedTaskArr, &$PendingTaskArr, &$CreatedTaskArr) {
                         array_push($MonthArr, $item->month);
                         array_push($CompletedTaskArr, $item->total_completed_task);
@@ -790,7 +826,9 @@ class HomeController extends Controller
                         'projects',
                         'taskStatistics',
                         'result',
-                        'taskPercentages'
+                        'taskPercentages',
+                        'hod_workspaces',
+                        'check_home'
                     )
                     );
                 } else {
