@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
@@ -301,7 +302,13 @@ Route::post('/update-permission-status/{permission}', [SuperAdminPermissionContr
 Route::post('permission/delete/{id}', [SuperAdminPermissionController::class, 'delete'])->name('permission.delete');
 
 
+Route::get('/depart-user-role', [DepartmentController::class, 'index'])->name('depart.role')->middleware(['auth']);
+Route::post('/depart-user-store', [DepartmentController::class, 'store'])->name('depart.role.store')->middleware(['auth']);
 
+
+Route::get('/department', [DepartmentController::class, 'department_index'])->name('department')->middleware(['auth']);
+
+Route::post('/department-store', [DepartmentController::class, 'department_store'])->name('department.store')->middleware(['auth']);
 
 });
 //end routes for superadmin

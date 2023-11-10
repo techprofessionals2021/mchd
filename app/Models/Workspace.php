@@ -100,6 +100,12 @@ class Workspace extends Model
     }
 
 
+    public function departments()
+    {
+        return $this->belongsToMany(Department::class, 'workspace_depart_pivots');
+    }
+
+
     public function owner($id)
     {
         $owner1 = UserWorkspace::where('workspace_id', $id)->where('permission', 'Owner')->first();
