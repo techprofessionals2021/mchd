@@ -66,14 +66,14 @@ class HomeController extends Controller
             $inProgressTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('tasks.status', '=', '82')->count();
             if ($currentWorkspace->permission == 'Owner') {
 
-                $model_has_role = ModelHasRole::where('model_id', Auth::id())->first();
+                // $model_has_role = ModelHasRole::where('model_id', Auth::id())->first();
 
-                $workspaces = $model_has_role->workspace_id;
-                $workspace_id = json_decode($workspaces);
+                // $workspaces = $model_has_role->workspace_id;
+                // $workspace_id = json_decode($workspaces);
 
 
 
-                $hod_workspaces = Workspace::whereIn('id', $workspace_id)->get();
+                // $hod_workspaces = Workspace::whereIn('id', $workspace_id)->get();
 
                 // $executives = $model_has_role->executives;
                 // $executives_id = json_decode($executives);
@@ -81,9 +81,14 @@ class HomeController extends Controller
 
                 // $executives = User::whereIn('id', $executives_id)->get();
 
+                // $totalBugs = UserProject::join("bug_reports", "bug_reports.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->count();
+                // $totalTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->count();
+                // $completeTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('tasks.status', '=', $doneStage->id)->count();
                 $totalBugs = UserProject::join("bug_reports", "bug_reports.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->count();
-                $totalTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->count();
-                $completeTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('tasks.status', '=', $doneStage->id)->count();
+                $totalTask = Task::whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")->count();
+                $completeTask = Task::whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")->whereHas('stage',function($query){
+                    $query->where('complete',1);
+                })->count();
                 // dd($doneStage->id);
 
                 if($currentStatus == 'All'){
@@ -91,25 +96,30 @@ class HomeController extends Controller
                         'tasks.*',
                         'stages.name as status',
                         'stages.complete',
-                    ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")
-                    ->join("projects", "projects.id", "=", "user_projects.project_id")
+                    ])
+                    // ->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")
+                    // ->join("projects", "projects.id", "=", "user_projects.project_id")
                     ->join("stages", "stages.id", "=", "tasks.status")
-                    ->where("user_id", "=", $userObj->id)
+                    // ->where("user_id", "=", $userObj->id)
+                   ->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")
                     ->orderBy('tasks.id', 'desc')
                     ->get();
+
                 }else{
                     $tasks = Task::select([
                         'tasks.*',
                         'stages.name as status',
                         'stages.complete',
-                    ])->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")
-                    ->join("projects", "projects.id", "=", "user_projects.project_id")
+                    ])
+                    // ->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")
+                    // ->join("projects", "projects.id", "=", "user_projects.project_id")
                     ->join("stages", "stages.id", "=", "tasks.status")
-                    ->where("user_id", "=", $userObj->id)
+                    // ->where("user_id", "=", $userObj->id)
                     ->orderBy('tasks.id', 'desc')
                     ->whereHas('stage',function($query) use($currentStatus){
                         $query->where('name',$currentStatus);
                     })
+                    ->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")
                     ->get();
                 }
                 $taskStatistics = $tasks->groupBy('status')->map->count()->values();
@@ -355,7 +365,7 @@ class HomeController extends Controller
                 'taskStatistics',
                 'result',
                 'taskPercentages',
-                'hod_workspaces',
+                // 'hod_workspaces',
                 'check_home'
                 // 'executives'
 
