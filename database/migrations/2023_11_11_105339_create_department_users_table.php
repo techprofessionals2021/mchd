@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('workspace_depart_pivots', function (Blueprint $table) {
+        Schema::create('department_users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('workspace_id')->nullable();
-            // $table->foreign('workspace_id')->references('id')->on('workspaces');
-
-            $table->unsignedBigInteger('department_id')->nullable();
-            // $table->foreign('department_id')->references('id')->on('departments');
+            $table->integer('user_id');
+            $table->integer('department_id');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('workspace_depart_pivots');
+        Schema::dropIfExists('department_users');
     }
 };

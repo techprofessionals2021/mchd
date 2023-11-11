@@ -157,14 +157,14 @@ class HomeController extends Controller
 
             } else {
 
-                $model_has_role = ModelHasRole::where('model_id', Auth::id())->first();
+                // $model_has_role = ModelHasRole::where('model_id', Auth::id())->first();
 
-                $workspaces = $model_has_role->workspace_id;
-                $workspace_id = json_decode($workspaces);
+                // $workspaces = $model_has_role->workspace_id;
+                // $workspace_id = json_decode($workspaces);
 
 
 
-                $hod_workspaces = Workspace::whereIn('id', $workspace_id)->get();
+                // $hod_workspaces = Workspace::whereIn('id', $workspace_id)->get();
 
                 $totalBugs = UserProject::join("bug_reports", "bug_reports.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->where('projects.workspace', '=', $currentWorkspace->id)->where('bug_reports.assign_to', '=', $userObj->id)->count();
                 $totalTask = UserProject::join("tasks", "tasks.project_id", "=", "user_projects.project_id")->join("projects", "projects.id", "=", "user_projects.project_id")->where("user_id", "=", $userObj->id)->whereRaw("find_in_set('" . $userObj->id . "',tasks.assign_to)")->count();

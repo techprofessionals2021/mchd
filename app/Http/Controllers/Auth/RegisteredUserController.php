@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Department;
 use App\Models\User;
 use App\Models\Workspace;
 use App\Models\Utility;
@@ -50,16 +51,17 @@ class RegisteredUserController extends Controller
 
   public function showRegistrationForm($lang = '')
     {
-
+       $departments = Department::get();
+    //    dd($departments->workspaces->first()->id);
         // $workspace_type = Workspace::where('workspace_type_id','2')->get();
 
-        $workspace_type = Workspace::whereHas('workspaceType', function ($query) {
-            $query->where('slug', 'depart');
-        })->get();
+        // $workspace_type = Workspace::whereHas('workspaceType', function ($query) {
+        //     $query->where('slug', 'depart');
+        // })->get();
 
 
         $depart_user_role = DepartUserRole::get();
-        
+
         // dd('asd');
         if ($lang == '') {
             $lang = env('DEFAULT_ADMIN_LANG') ?? 'en';
@@ -72,31 +74,29 @@ class RegisteredUserController extends Controller
         // }else{
         //     return abort('404', 'Page not found');
         // }
-        return view('custom-auth.register', compact('lang','workspace_type','depart_user_role'));
+        return view('custom-auth.register', compact('lang','depart_user_role','departments'));
     }
 
     public function store(Request $request)
     {
         // dd($request->all());
-        // if(env('RECAPTCHA_MODULE') == 'on')
-        // {
-        //     $validation['g-recaptcha-response'] = 'required|captcha';
-        // }else{
-        //     $validation = [];
-        // }
-        // $this->validate($request, $validation);
-        // try {
+
         $request->validate([
             'name' => 'required|string|max:255',
-            'workspace' => 'required', 'string', 'max:255',
+            'department_id' => 'required',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required','string', 'min:8', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // get workspace id by using depart id
+        $workspace_id = Department::find($request->department_id)->workspaces->first()->id;
+        // dd($workspace_id);
+
+        // create user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'workspace'=>$request->workspace,
+            // 'workspace'=>$request->workspace,
             'password' => Hash::make($request->password),
             'plan'=>1,
             'lang'      => env('DEFAULT_ADMIN_LANG') ?? 'en',
@@ -110,7 +110,7 @@ class RegisteredUserController extends Controller
 
         $userWorkspace               =   new UserWorkspace();
         $userWorkspace->user_id      =     $user->id;
-        $userWorkspace->workspace_id =    $request->workspace_id;
+        $userWorkspace->workspace_id =    $workspace_id;
         $userWorkspace->permission   = 'Member';
 
         if(empty($userWorkspace))
@@ -125,49 +125,20 @@ class RegisteredUserController extends Controller
 
         }
 
-            $user->currant_workspace = $request->workspace_id;
+            $user->currant_workspace = $workspace_id;
+
+            // assigned depart to a user
+            $user->departments()->attach($request->department_id,['role_id' => $request->depart_user_role_id]);
+
             User::userDefaultDataRegister($user);
 
             Auth::login($user);
 
-            // if($setting['email_verification'] == 'on'){
-
-
-            //     try{
-
-            //         $user->save();
-            //         event(new Registered($user));
-            //         UserWorkspace::create(['user_id'=> $user->id,'workspace_id'=>$objWorkspace->id,'permission'=>'Owner']);
-            //         if(empty($lang))
-            //         {
-            //             $lang = env('default_language');
-            //         }
-            //         \App::setLocale($lang);
-
-
-            //     }catch(\Exception $e){
-
-            //         $user->delete();
-            //         $userWorkspace->delete();
-
-            //         // dd($user);
-            //         return redirect('/register/lang?')->with('statuss', __('Email SMTP settings does not configure so please contact to your site admin.'));
-            //     }
-
-            //     return view('auth.verify-email', compact('lang'));
-            // }else{
 
                 $user->email_verified_at = date('h:i:s');
 
                 $user->save();
                 return redirect(RouteServiceProvider::HOME);
-            // }
-
-        // } catch (\Exception $e) {
-        //     dd($e->getMessage());
-        //     return redirect()->back('error','Some thing went wrong');
-        //     //throw $th;
-        // }
     }
 }
 
