@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class WorkspaceDepartPivot extends Model
 {
     use HasFactory;
+
+
+    public function departments()
+    {
+        return $this->belongsToMany(Department::class, 'workspace_depart_pivots', 'id', 'department_id');
+    }
+
+
 }

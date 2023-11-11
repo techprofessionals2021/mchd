@@ -277,6 +277,9 @@ Route::post('/{slug}/projects/{id}/task-board/{tid}/update',[SuperAdminTaskContr
 Route::get('/user', [SuperAdminController::class, 'user'])->name('user')->middleware(['auth']);
 Route::post('/get-user-role/{id}', [SuperAdminController::class, 'get_user_role'])->name('get_user_role')->middleware(['auth']);
 
+Route::post('/get-department/{id}', [SuperAdminController::class, 'get_department'])->name('get_department')->middleware(['auth']);
+
+
 Route::post('/user/delete/{id}',[SuperAdminController::class, 'delete_user'])->name('delete-user-superadmin')->middleware(['auth']);
 
 Route::post('/user/update', [SuperAdminController::class, 'update_user'])->name('update_user')->middleware(['auth']);
