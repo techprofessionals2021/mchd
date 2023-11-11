@@ -14,10 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('model_has_roles', function (Blueprint $table) {
-            $table->unsignedBigInteger('workspace_id')->nullable();
-            // $table->foreign('workspace_id')->references('id')->on('workspaces')->onDelete('cascade');
-
-
+            $table->string('department_id')->nullable();
+            $table->string('depart_user_role_id')->nullable();
         });
     }
 
@@ -29,10 +27,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('model_has_roles', function (Blueprint $table) {
-            $table->unsignedBigInteger('workspace_id')->nullable();
-            // $table->foreign('workspace_id')->references('id')->on('workspaces')->onDelete('cascade');
-
-
+            //
         });
     }
 };
