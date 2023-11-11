@@ -298,8 +298,8 @@
 
                         @elseif($check_home == 0)
                         <div class="col-md-12">
-                      @endif  
-                    
+                      @endif
+
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
@@ -432,7 +432,7 @@
                                     <tbody>
                                         @foreach ($executives as $value)
                                             <tr>
-                                              
+
                                                 <td>
                                                     <div class="font-14 mt-1 font-weight-normal">
                                                         {{-- <a href="{{route('ceo.executive_report',[
@@ -444,7 +444,7 @@
                                                     </div>
                                                 </td>
 
-                                        
+
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -467,7 +467,7 @@
                                             {{ __('Workspaces List') }}
                                         </h5>
                                     </div>
-                           
+
                                 </div>
                             </div>
                             <div class="card-body ">
@@ -476,44 +476,44 @@
                                         <thead>
                                             <th>Workspace Name</th>
                                             <th>Total Tasks</th>
-    
+
                                         </thead>
                                         <tbody>
-                                            @foreach ($hod_workspaces as $value)
+                                            @foreach ($departmentList as $depart)
                                                 <tr>
-                                                  
+
                                                     <td>
                                                         <div class="font-14 mt-1 font-weight-normal">
                                                             <i class="fas fa-circle text-success"></i> <!-- Add your icon here -->
-                                                            <a href="{{route('hod.workspace_report', ['id' => $value->id])}}">
-                                                                {{ $value->name }}
+                                                            <a href="{{route('hod.workspace_report', ['id' => $depart->id])}}">
+                                                                {{ $depart->name }}
                                                             </a>
                                                         </div>
                                                     </td>
 
                                                     <td>
-                                                       
-                                                        <div class="badge badge-pill badge-xs badge-danger rounded">{{$value->tasks_count}}</div>
-                                                    
+
+                                                        <div class="badge badge-pill badge-xs badge-danger rounded">{{$depart->tasks_count}}</div>
+
                                                     </td>
-                                            
+
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-    
-    
-                        </div>
-                        </div>
-                    @endif
-        
 
-               
-                        
+
+                        </div>
+                        </div>
                     @endif
-                  
+
+
+
+
+                    @endif
+
 
                     </div>
 
@@ -666,65 +666,6 @@
             (function() {
 
 
-                //workspace chart
-
-                var workspaceChartoptions = {
-                    chart: {
-                        type: 'bar', // Specify the type of chart (e.g., 'bar', 'line', etc.)
-                    },
-                    series: [{
-                        name: 'Total Projects',
-                        data: {!! json_encode($chartData['total_projects']) !!}, // Your report data here
-
-                    }, ],
-                    xaxis: {
-                        categories: {!! json_encode($chartData['workspaces']) !!},
-                    },
-                };
-
-                var chart = new ApexCharts(document.querySelector('#workspace-chart'), workspaceChartoptions);
-                chart.render();
-
-                //workspace chart
-
-
-                // var projectsChartoptions = {
-                //     chart: {
-                //         height: 280,
-                //         type: 'pie',
-                //     },
-                //     dataLabels: {
-                //         enabled: false,
-                //     },
-                //     // plotOptions: {
-                //     //     pie: {
-                //     //         donut: {
-                //     //             size: '100%',
-                //     //         }
-                //     //     }
-                //     // },
-                //     series: {!! json_encode($arrProcessPer) !!},
-                //     // series: [77,11,11],
-
-                //     colors: {!! json_encode($chartData['color']) !!},
-                //     labels: {!! json_encode($arrProcessLabel) !!},
-                //     grid: {
-                //         borderColor: '#e7e7e7',
-                //         row: {
-                //             colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-                //             opacity: 0.5
-                //         },
-                //     },
-                //     markers: {
-                //         size: 1
-                //     },
-                //     legend: {
-                //         show: false
-                //     }
-                // };
-                // var chart = new ApexCharts(document.querySelector("#projects-chart"), projectsChartoptions);
-                // chart.render();
-
                 var projectsChartoptions = {
                     chart: {
                         height: 280,
@@ -824,35 +765,7 @@
                 taskAreaChart.render();
             }, 100);
 
-            var projectStatusOptions = {
-                series: {!! json_encode($arrProcessPer) !!},
 
-                chart: {
-                    height: '350px',
-                    width: '450px',
-                    type: 'pie',
-                },
-                colors: ["#00B8D9", "#36B37E", "#2359ee"],
-                labels: {!! json_encode($arrProcessLabel) !!},
-
-                plotOptions: {
-                    pie: {
-                        dataLabels: {
-                            offset: -5
-                        }
-                    }
-                },
-                title: {
-                    text: ""
-                },
-                dataLabels: {},
-                legend: {
-                    display: false
-                },
-
-            };
-            var projectStatusChart = new ApexCharts(document.querySelector("#project-status-chart"), projectStatusOptions);
-            projectStatusChart.render();
         </script>
     @endif
 
@@ -909,202 +822,16 @@
         </script>
     @elseif(isset($currentWorkspace) && $currentWorkspace)
         <script>
-            (function() {
 
-                //project status chart
-                var options = {
-                    series: [{
-                        name: 'Ongoing Projects',
-                        data: {!! json_encode($chartData['total_ongoing_projects']) !!}
-                    }, {
-                        name: 'Finished Projects',
-                        data: {!! json_encode($chartData['total_finished_projects']) !!}
-                    }],
-                    chart: {
-                        type: 'bar',
-                        height: 430
-                    },
-                    plotOptions: {
-                        bar: {
-                            horizontal: true,
-                            dataLabels: {
-                                position: 'top',
-                            },
-                        }
-                    },
-                    dataLabels: {
-                        enabled: true,
-                        offsetX: -6,
-                        style: {
-                            fontSize: '12px',
-                            colors: ['#fff']
-                        }
-                    },
-                    stroke: {
-                        show: true,
-                        width: 1,
-                        colors: ['#fff']
-                    },
-                    tooltip: {
-                        shared: true,
-                        intersect: false
-                    },
-                    xaxis: {
-                        categories: [2017, 2018, 2019, 2020, 2021, 2022, 2023],
-                    },
-                };
 
-                var chart = new ApexCharts(document.querySelector("#project-status"), options);
-                chart.render();
+
 
                 //project status chart
 
-                var options = {
-                    chart: {
-                        height: 150,
-                        type: 'area',
-                        toolbar: {
-                            show: false,
-                        },
-                    },
-                    dataLabels: {
-                        enabled: false
-                    },
-                    stroke: {
-                        width: 2,
-                        curve: 'smooth'
-                    },
-                    // series: [
-                    //     @foreach ($chartData['stages'] as $id => $name)
-                    //         {
-                    //             name: "{{ __($name) }}",
-                    //             data: {!! json_encode($chartData[$id]) !!}
-                    //         },
-                    //     @endforeach
-                    // ],
-
-                    series: [{
-                            name: 'todo',
-                            data: [20, 50, 30, 60, 40, 50, 40]
-                        },
-                        {
-                            name: 'In Progress',
-                            data: [30, 60, 40, 70, 50, 60, 50]
-                        },
-                        {
-                            name: 'Review',
-                            data: [40, 70, 50, 80, 60, 70, 60]
-                        }, {
-                            name: 'Done',
-                            data: [50, 80, 60, 90, 70, 80, 70]
-                        }
-                    ],
-                    xaxis: {
-                        categories: {!! json_encode($chartData['label']) !!},
-                        title: {
-                            text: '{{ __('Days') }}'
-                        }
-                    },
-                    colors: {!! json_encode($chartData['color']) !!},
-
-                    grid: {
-                        strokeDashArray: 4,
-                    },
-                    legend: {
-                        show: false,
-                    },
-                    markers: {
-                        size: 4,
-                        colors: ['#ffa21d', '#FF3A6E'],
-                        opacity: 0.9,
-                        strokeWidth: 2,
-                        hover: {
-                            size: 7,
-                        }
-                    },
-                    yaxis: {
-                        tickAmount: 3,
-                        min: 10,
-                        max: 70,
-                    },
-                    title: {
-                        text: '{{ __('Tasks') }}'
-                    },
-                };
-                var chart = new ApexCharts(document.querySelector("#task-area-chart"), options);
-                chart.render();
 
 
 
-                var options = {
-                    chart: {
-                        height: 150,
-                        type: 'area',
-                        toolbar: {
-                            show: false,
-                        },
-                    },
-                    dataLabels: {
-                        enabled: false
-                    },
-                    stroke: {
-                        width: 2,
-                        curve: 'smooth'
-                    },
-                    // series: [
-                    //     @foreach ($chartData['stages'] as $id => $name)
-                    //         {
-                    //             name: "{{ __($name) }}",
-                    //             data: {!! json_encode($chartData[$id]) !!}
-                    //         },
-                    //     @endforeach
-                    // ],
 
-                    series: [{
-                            name: 'Ongoing',
-                            data: [20, 50, 30, 60, 40, 50, 40]
-                        },
-                        {
-                            name: 'Finished',
-                            data: [30, 60, 40, 70, 50, 60, 50]
-                        }
-
-                    ],
-                    xaxis: {
-                        categories: {!! json_encode($chartData['label']) !!},
-                        title: {
-                            text: '{{ __('Days') }}'
-                        }
-                    },
-                    colors: {!! json_encode($chartData['color']) !!},
-
-                    grid: {
-                        strokeDashArray: 4,
-                    },
-                    legend: {
-                        show: false,
-                    },
-                    markers: {
-                        size: 4,
-                        colors: ['#ffa21d', '#FF3A6E'],
-                        opacity: 0.9,
-                        strokeWidth: 2,
-                        hover: {
-                            size: 7,
-                        }
-                    },
-                    yaxis: {
-                        tickAmount: 3,
-                        min: 10,
-                        max: 70,
-                    },
-                    title: {
-                        text: '{{ __('Projects') }}'
-                    },
-                };
-                var chart = new ApexCharts(document.querySelector("#project-area-chart"), options);
-                chart.render();
-            })();
         </script>
     @endif
 
