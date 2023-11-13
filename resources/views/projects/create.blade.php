@@ -28,6 +28,26 @@
                         class="feather icon-calendar"></i></span>
                 </div>
         </div>
+
+        <div class="col-md-12" style="display: none">
+            <label class="col-form-label">{{ __('Department') }}</label>
+            <select  class="form-control"  name="department_id" data-placeholder="{{ __('Select Department ...') }}">
+                @foreach($currentWorkspace->departments as $department)
+                    <option value="{{$department->id }}" {{$department->id == auth()->user()->departments()->first()->id ? 'selected': ''}}>{{$department->name}}</option>
+                @endforeach
+            </select>
+        </div>
+        {{--  --}}
+        {{-- <div class="form-group" id="workspace-div" >
+            <label for="permission">Department</label>
+            <select name="workspace_id[]" id="workspace" class="form-control">
+                @foreach($currentWorkspace->departments as $department)
+                   <option value="{{$department->id}}">{{$department->name}}</option>
+                @endforeach
+            </select>
+        </div> --}}
+
+        {{--  --}}
         <div class="col-md-12">
             <label for="users_list" class="col-form-label">{{ __('Users') }}</label>
             <select class=" multi-select" id="users_list" name="users_list[]" data-toggle="select2" multiple="multiple" data-placeholder="{{ __('Select Users ...') }}">

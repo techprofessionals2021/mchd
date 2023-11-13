@@ -974,6 +974,7 @@ class ProjectController extends Controller
 
     public function taskStore(Request $request, $slug, $projectID)
     {
+        // dd($request->all());
         $request->validate(
             [
                 'project_id' => 'required',
@@ -1004,7 +1005,7 @@ class ProjectController extends Controller
                 $post['assign_to'] = implode(",", $request->assign_to);
                 $post['tags'] = Utility::convertTagsToJsonArray($request->tags);
                 $task = Task::create($post);
-
+                $task->assignees()->attach($request->assign_to);
                 if ($request->get('synchronize_type') == 'google_calender') {
 
                     $type = 'task';
@@ -1231,7 +1232,7 @@ class ProjectController extends Controller
             $post['tags'] = Utility::convertTagsToJsonArray($request->tags);
             $task = Task::find($taskID);
             $task->update($post);
-
+            $task->assignees()->sync($request->assign_to);
             return redirect()->back()->with('success', __('Task Updated Successfully!'));
         } else {
             return redirect()->back()->with('error', __("You can't Edit Task!"));

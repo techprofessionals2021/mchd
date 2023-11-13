@@ -20,6 +20,18 @@ class Task extends Model
         'tags'
     ];
 
+    public function getAssignedUsersAttribute()
+    {
+        $userIds = explode(',', $this->attributes['assign_to']);
+
+        // Assuming your User model is in the 'App\Models' namespace
+        return User::whereIn('id', $userIds)->get();
+    }
+
+    public function assignees(){
+        return $this->belongsToMany(User::class,'task_users');
+    }
+
     public function project()
     {
         return $this->hasOne('App\Models\Project', 'id', 'project_id');
@@ -28,6 +40,14 @@ class Task extends Model
     public function users()
     {
         return User::whereIn('id',explode(',',$this->assign_to))->get();
+    }
+    public function filterTaskUsersByRoles($depart_id,$role_ids)
+    {
+        return User::whereIn('id',explode(',',$this->assign_to))->whereHas('departments',function($query)use(&$depart_id,&$role_ids){
+            $query->where('department_id', $depart_id)
+            ->whereIn('role_id', $role_ids);
+        })
+        ->get();
     }
 
 

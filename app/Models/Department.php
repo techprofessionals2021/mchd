@@ -15,4 +15,7 @@ class Department extends Model
     public function users(){
         return $this->belongsToMany(User::class,'department_users');
     }
+    public function projects(){
+        return $this->hasMany(Project::class);
+    }
 }
