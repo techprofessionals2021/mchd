@@ -72,14 +72,14 @@
 
                         <div class="form-group" id="department-div" style="display: none" >
                             <label for="permission">Department</label>
-                            <select name="department_id[]" id="department" class="form-control" multiple >
+                            <select name="department_id[]" id="department_name" class="form-control" multiple >
                       
                             </select>
                         </div>
 
                         <div class="form-group" id="depart-role-div" style="display: none" >
                             <label for="permission">Depart Role</label>
-                            <select name="depart_user_role" id="depart_user_role" class="form-control" >
+                            <select name="depart_user_role[]" id="depart_user_role" class="form-control" multiple >
                                 @foreach ($depart_user_role as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
@@ -274,7 +274,7 @@
                      $('#exampleModal').find('#role').val(response.role.name);
                      $('#exampleModal').find('#tag-assign-user').val(response.model_has_role.tag);
                      $('#exampleModal').find('#workspace').val(response.model_has_role.workspace_id);
-                     $('#exampleModal').find('#depart_user_role').val(response.model_has_role.depart_user_role_id);
+                    //  $('#exampleModal').find('#depart_user_role').val(response.model_has_role.depart_user_role_id);
                     
                      
                     //  var selectedDepartmentIds = response.model_has_role.department_id;
@@ -430,6 +430,32 @@
                     });
 
 
+                               
+                $('#depart_user_role option').each(function () {
+
+                var optionValue = parseInt($(this).val()); // Convert the value to an integer
+
+                if (response.model_has_role.depart_user_role_id.includes(optionValue)) {
+                    $(this).prop("selected", true); // Select the option if its value is in the array
+                } else {
+                    $(this).prop("selected", false); 
+                }
+
+                });
+
+                $('#department_name option').each(function () {
+
+                    var optionValue = parseInt($(this).val()); // Convert the value to an integer
+                    
+                    if (response.model_has_role.department_id.includes(optionValue)) {
+                        $(this).prop("selected", true); // Select the option if its value is in the array
+                    } else {
+                        $(this).prop("selected", false); 
+                    }
+
+                    });
+
+
             
 
 
@@ -465,7 +491,7 @@
 
             const workspace_id = $(this).val();
 
-            var select = $('#department');
+            var select = $('#department_name');
 
             select.empty(); // Clear existing options
 
@@ -483,8 +509,8 @@
 
                 $.each(response, function (index, item) {
 
-            select.append('<option value="' + item.id + '">' + item.name + '</option>');
-            });
+                select.append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
 
 
             },
@@ -513,6 +539,16 @@
                         selectElement1.append($("<option></option>")
                             .attr("value", user.id)
                             .text(user.name));
+                    });
+
+
+                               // Populate the "executive" select element
+                  var Departments = @json($department);
+                    var select = $("#department_name");
+                    $.each(Departments, function (index, Departments) {
+                        select.append($("<option></option>")
+                            .attr("value", Departments.id)
+                            .text(Departments.name));
                     });
       
         $('#role').change(function() {

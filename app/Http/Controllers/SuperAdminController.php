@@ -15,6 +15,7 @@ use App\Models\UserWorkspace;
 use App\Models\Workspace;
 use App\Models\WorkspacePermission;
 use App\Models\Utility;
+use App\Models\Department;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\RolehasPermission;
@@ -147,6 +148,9 @@ class SuperAdminController extends Controller
 
         $depart_user_role = DepartUserRole::get();
 
+        $department = Department::get();
+
+
         $workspace = Workspace::where('is_active','1')->get();
 
         $hodRole = Role::where('name', 'hod')->first();
@@ -162,7 +166,7 @@ class SuperAdminController extends Controller
 
         // dd($workspace);
 
-        return view('layouts.super-admin.user.index',compact('user','role','workspace','hodUsers','executiveUsers','depart_user_role'));
+        return view('layouts.super-admin.user.index',compact('user','role','workspace','hodUsers','executiveUsers','depart_user_role','department'));
     }
 
 
@@ -253,6 +257,8 @@ class SuperAdminController extends Controller
         $executives = json_encode($request->executives);
         $workspace = json_encode($request->workspace_id);
         $department = json_encode($request->department_id);
+        $depart_user_role = json_encode($request->depart_user_role);
+
         
         // dd($department);
         
@@ -279,7 +285,7 @@ class SuperAdminController extends Controller
            
             $user->assignRole($role);
 
-            $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $workspace,'hods' => $hods,'executives' => $executives,'department_id' => $department,'depart_user_role_id' => $request->depart_user_role]);
+            $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $workspace,'hods' => $hods,'executives' => $executives,'department_id' => $department,'depart_user_role_id' => $depart_user_role]);
     
         
         } else {
@@ -291,7 +297,7 @@ class SuperAdminController extends Controller
                 // The role exists; assign it to the user.
                 $user->assignRole($role);
 
-                $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $workspace,'hods' => $hods,'executives' => $executives,'department_id' => $department,'depart_user_role_id' => $request->depart_user_role]);
+                $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $workspace,'hods' => $hods,'executives' => $executives,'department_id' => $department,'depart_user_role_id' => $depart_user_role]);
                 
             } else {
                 // The role doesn't exist; create it and then assign it to the user.
