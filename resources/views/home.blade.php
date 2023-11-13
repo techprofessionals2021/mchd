@@ -422,7 +422,7 @@
                                 </div> --}}
                             </div>
                         </div>
-                        <div class="card-body ">
+                        {{-- <div class="card-body ">
                             <div class="table-responsive">
                                 <table class="table table-centered table-hover mb-0 animated">
                                     <thead>
@@ -435,12 +435,12 @@
 
                                                 <td>
                                                     <div class="font-14 mt-1 font-weight-normal">
-                                                        {{-- <a href="{{route('ceo.executive_report',[
+                                                        <a href="{{route('ceo.executive_report',[
                                                             'id' => $user->id,
                                                             'slug' => $currentWorkspace->slug
-                                                        ])}}"> --}}
+                                                        ])}}">
                                                             {{ $value->name }}
-                                                        {{-- </a> --}}
+                                                        </a>
                                                     </div>
                                                 </td>
 
@@ -450,7 +450,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> --}}
 
 
                     </div>
@@ -847,7 +847,7 @@
 
 
           console.log(blade_typee,'HOD type');
-          if(blade_typee == 'HOD'){
+          if(blade_typee == 'HOD' || blade_typee == 'Executive'|| blade_typee == 'Ceo'){
 // alert('sdsds')
           location.href = window.location.origin +'/index_report/'+ currentWorkSpace +'/'+$(this).val()
         return;

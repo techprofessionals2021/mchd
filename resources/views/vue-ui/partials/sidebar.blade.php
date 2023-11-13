@@ -297,7 +297,7 @@ style="border-right: 1px solid ">
                                 class="dash-mtext side-nav-text">{{ __('Committees') }}</span></a>
                     </li>
 
-                    @if (auth()->user()->hasRole(('HOD')))
+                @if (auth()->user()->hasRole(('HOD')) )
                     <li class="dash-item dash-hasmenu">
                         <a href="{{ route('index_report') }}"
                             class="dash-link{{ Request::route()->getName() == 'custom.calender' ? ' active' : '' }} side-item"><span
@@ -305,7 +305,16 @@ style="border-right: 1px solid ">
                                     src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
                                 class="dash-mtext side-nav-text">{{ __('Departments Report') }}</span></a>
                     </li>
-                    @elseif (auth()->user()->hasRole(('Ceo')))
+                @elseif (auth()->user()->hasRole(('Executive')))
+
+                    <li class="dash-item dash-hasmenu">
+                        <a href="{{ route('index_report',[$currentWorkspace->slug]) }}"
+                            class="dash-link{{ Request::route()->getName() == 'custom.calender' ? ' active' : '' }} side-item"><span
+                                class="dash-micon mr-3"> <img
+                                    src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
+                                class="dash-mtext side-nav-text">{{ __('HODS Report') }}</span></a>
+                    </li>
+                @elseif (auth()->user()->hasRole(('Ceo')))
 
                     <li class="dash-item dash-hasmenu">
                         <a href="{{ route('index_report',[$currentWorkspace->slug]) }}"
@@ -314,8 +323,9 @@ style="border-right: 1px solid ">
                                     src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
                                 class="dash-mtext side-nav-text">{{ __('Executive Report') }}</span></a>
                     </li>
-                    @endif
-                    
+
+                @endif
+
 
                     </li>
 
