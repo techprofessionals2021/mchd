@@ -1009,6 +1009,8 @@ class HomeController extends Controller
                 $check_home = 1;
                 $model_has_role_executive = ModelHasRole::where('model_id', auth()->id())->first();
                 $HODs_id = json_decode($model_has_role_executive->hods);
+                $HODs = User::whereIn('id',$HODs_id)->get();
+                // dd($HODs);
                 if (is_array($HODs_id)) {
                     # code...
 
@@ -1260,7 +1262,8 @@ class HomeController extends Controller
                             'taskPercentages',
                             // 'hod_workspaces',
                             'check_home',
-                            // 'departmentList'
+                            // 'departmentList',
+                            'HODs'
                         )
                     );
                 } else {
@@ -1381,6 +1384,316 @@ class HomeController extends Controller
             // }
         } else {
             return view('home', compact('currentWorkspace'));
+        }
+    }
+
+    public function single_depart_report($depart_id,$slug = '', $currentStatus = 'All'){
+        // dd('asd');
+        $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+
+        $check_home = 1;
+        $model_has_role = ModelHasRole::where('model_id', Auth::id())->first();
+        $workspaces = $model_has_role->workspace_id;
+        $workspace_id = json_decode($workspaces);
+        $department_id = json_decode($model_has_role->department_id);
+        $depart_user_role_id = json_decode($model_has_role->depart_user_role_id);
+        // dd($depart_user_role_id);
+
+
+
+        if (is_array($workspace_id) && is_array($department_id)) {
+
+            if (is_null($depart_user_role_id)) {
+
+                $workspace = Workspace::whereIn('id', $workspace_id)->first();
+                // $departments = Department::whereIn('id', $department_id)->get();
+                $department = Department::whereIn('id', $depart_id)->get();
+                $totalTask = 0;
+                $completeTask = 0;
+                $overDueTasks = 0;
+
+                //completed tasks
+                $doneStage = Stage::where('workspace_id', '=', $workspace->id)->where('complete', '=', '1')->first();
+                //   dd($doneStage);
+                $completeTask += $department->projects->flatMap(function ($project) use ($doneStage) {
+                    return $project->task->where('status', $doneStage->id);
+                })->count();
+                //
+                $totalTask += $department->projects->flatMap(function ($project) {
+                    return $project->task;
+                })->count();
+                $overDueTasks += $department->projects->flatMap(function ($project) use ($doneStage) {
+                    return $project->task->where('due_date', '<=', date('Y-m-d') . ' 00:00:00')->where('status', '!=', $doneStage->id);
+                })->count();
+
+
+                //
+                if ($currentStatus == 'All') {
+                    $tasks = Task::with('project', 'stage')->select([
+                        'tasks.*',
+                        'stages.name as status',
+                        'stages.complete',
+                    ])->join("stages", "stages.id", "=", "tasks.status")
+                        ->whereHas('project', function ($query) use ($workspace_id, $depart_id) {
+                            $query->where('department_id', $depart_id);
+                            // $query->whereIn('workspace', $workspace_id);
+                        })->orderBy('tasks.id', 'desc')->get();
+                } else {
+                    $tasks = Task::with('project', 'stage')->select([
+                        'tasks.*',
+                        'stages.name as status',
+                        'stages.complete',
+                    ])->join("stages", "stages.id", "=", "tasks.status")
+                        ->whereHas('project', function ($query) use ($workspace_id, $depart_id) {
+                            $query->whereIn('department_id', $depart_id);
+                            // $query->whereIn('workspace', $workspace_id);
+                        })->orderBy('tasks.id', 'desc')
+                        ->whereHas('stage', function ($query) use ($currentStatus) {
+                            $query->where('name', $currentStatus);
+                        })
+                        ->get();
+                }
+
+                $taskStatistics = $tasks->groupBy('status')->map->count()->values();
+                $taskStatisticsKeys = $tasks->groupBy('status')->map->count()->keys()->all();
+                $taskStatisticsColors = ['Todo' => '#008FFB', 'In Progress' => '#00E396', 'Review' => '#FEB019', 'Done' => '#FF4560'];
+                $taskChartColor = array_intersect_key($taskStatisticsColors, array_flip($taskStatisticsKeys));
+                $taskCounts = $tasks->groupBy('status')->map->count();
+                $totalCount = $taskCounts->sum();
+                $taskPercentages = $taskCounts->map(function ($count) use ($totalCount) {
+                    return ($count / $totalCount) * 100;
+                });
+                //
+                $MonthArr = [];
+                $CompletedTaskArr = [];
+                $PendingTaskArr = [];
+                $CreatedTaskArr = [];
+
+
+                $report = DB::table('tasks')
+                    ->join('projects', 'tasks.project_id', '=', 'projects.id')
+                    ->select(
+                        DB::raw('DATE_FORMAT(tasks.created_at, "%b") as month'),
+                        DB::raw('SUM(CASE WHEN tasks.status = "16" THEN 1 ELSE 0 END) as total_completed_task'),
+                        DB::raw('SUM(CASE WHEN tasks.status = "10" THEN 1 ELSE 0 END) as total_pending_task'),
+                        DB::raw('COUNT(*) as total_created_task')
+                    )
+
+                    // ->where('projects.workspace', $id)
+                    // ->whereIn('projects.workspace', $workspace_id)
+                    ->where('projects.department_id', $depart_id)
+                    // ->groupBy('projects.workspace', 'month')
+                    ->groupBy('projects.department_id', 'month')
+                    // ->orderBy('projects.workspace')
+                    ->orderBy('projects.department_id')
+                    ->orderBy('month')
+                    ->get();
+
+                // dd($report);
+                $report = $report->map(function ($item) use (&$MonthArr, &$CompletedTaskArr, &$PendingTaskArr, &$CreatedTaskArr) {
+                    array_push($MonthArr, $item->month);
+                    array_push($CompletedTaskArr, $item->total_completed_task);
+                    array_push($PendingTaskArr, $item->total_pending_task);
+                    array_push($CreatedTaskArr, $item->total_created_task);
+                });
+                $reportData = $report->values()->all();
+                $result = [
+                    'MonthArr' => $MonthArr,
+                    'CompletedTaskArr' => $CompletedTaskArr,
+                    'PendingTaskArr' => $PendingTaskArr,
+                    'CreatedTaskArr' => $CreatedTaskArr,
+                ];
+                $inProgressTask = Task::whereIn('projects.workspace', $workspace_id)
+                    ->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")
+                    ->join("projects", "projects.id", "=", "user_projects.project_id")
+                    ->where('tasks.status', '=', '82')->count();
+            } else {
+                $workspace = Workspace::whereIn('id', $workspace_id)->first();
+                // $departments = Department::whereIn('id', $department_id)->get();
+                $department = Department::where('id', $depart_id)->first();
+                $totalTask = 0;
+                $completeTask = 0;
+                $overDueTasks = 0;
+
+                //completed tasks
+                $doneStage = Stage::where('workspace_id', '=', $workspace->id)->where('complete', '=', '1')->first();
+                //   dd($doneStage);
+                $completeTask += $department->projects->flatMap(function ($project) use ($doneStage,&$depart_id,&$depart_user_role_id) {
+                    return $project->task->where('status', $doneStage->id)
+                    ->filter(function($task)use($depart_id,&$depart_user_role_id){
+                        return $task->assignees()->whereHas('departments',function($query)use(&$depart_id,&$depart_user_role_id){
+                            $query->where('department_id', $depart_id)
+                            ->whereIn('role_id', $depart_user_role_id);
+                        })
+                        ->get()->isNotEmpty();
+                     });
+                })->count();
+                //
+                $totalTask +=  $department->projects->flatMap(function ($project) use($depart_id,&$depart_user_role_id){
+                      return  $project->task->filter(function($task)use($depart_id,&$depart_user_role_id){
+                        //
+                           return $task->assignees()->whereHas('departments',function($query)use(&$depart_id,&$depart_user_role_id){
+                                $query->where('department_id', $depart_id)
+                                ->whereIn('role_id', $depart_user_role_id);
+                            })
+                            ->get()->isNotEmpty();
+                        //
+                        });
+                })->count();
+                // dd($totalTask);
+                $overDueTasks += $department->projects->flatMap(function ($project) use ($doneStage,&$depart_id,&$depart_user_role_id) {
+                        return $project->task->where('due_date', '<=', date('Y-m-d') . ' 00:00:00')->where('status', '!=', $doneStage->id)
+                        ->filter(function($task)use($depart_id,&$depart_user_role_id){
+                            return $task->assignees()->whereHas('departments',function($query)use(&$depart_id,&$depart_user_role_id){
+                                $query->where('department_id', $depart_id)
+                                ->whereIn('role_id', $depart_user_role_id);
+                            })
+                            ->get()->isNotEmpty();
+                         });
+                })->count();
+
+
+                // dd($totalTask);
+
+
+                //
+                if ($currentStatus == 'All') {
+                    $tasks = Task::with('project', 'stage')->select([
+                        'tasks.*',
+                        'stages.name as status',
+                        'stages.complete',
+                    ])->join("stages", "stages.id", "=", "tasks.status")
+                        ->whereHas('project', function ($query) use ($workspace_id,&$depart_id) {
+                            $query->where('department_id', $depart_id);
+                            // $query->whereIn('workspace', $workspace_id);
+                        })
+                        ->whereHas('assignees', function ($query) use ($depart_id, &$depart_user_role_id) {
+                            $query->whereHas('departments',function($q)use(&$depart_id,&$depart_user_role_id){
+                                $q->where('department_id', $depart_id)
+                                ->whereIn('role_id', $depart_user_role_id);
+                            });
+                            // $query->whereIn('department_id', $department_id)
+                            //     ->whereIn('role_id', $depart_user_role_id);
+                        })
+                        ->orderBy('tasks.id', 'desc')->get();
+
+                } else {
+                    $tasks = Task::with('project', 'stage')->select([
+                        'tasks.*',
+                        'stages.name as status',
+                        'stages.complete',
+                    ])->join("stages", "stages.id", "=", "tasks.status")
+                        ->whereHas('project', function ($query) use ($workspace_id, $depart_id) {
+                            $query->where('department_id', $depart_id);
+                            // $query->whereIn('workspace', $workspace_id);
+                        })->orderBy('tasks.id', 'desc')
+                        ->whereHas('stage', function ($query) use ($currentStatus) {
+                            $query->where('name', $currentStatus);
+                        })
+                        ->whereHas('assignees', function ($query) use ($depart_id, &$depart_user_role_id) {
+                            $query->whereHas('departments',function($q)use(&$depart_id,&$depart_user_role_id){
+                                $q->where('department_id', $depart_id)
+                                ->whereIn('role_id', $depart_user_role_id);
+                            });
+                            // $query->whereIn('department_id', $department_id)
+                            //     ->whereIn('role_id', $depart_user_role_id);
+                        })
+                        ->get();
+                }
+
+                $taskStatistics = $tasks->groupBy('status')->map->count()->values();
+                $taskStatisticsKeys = $tasks->groupBy('status')->map->count()->keys()->all();
+                $taskStatisticsColors = ['Todo' => '#008FFB', 'In Progress' => '#00E396', 'Review' => '#FEB019', 'Done' => '#FF4560'];
+                $taskChartColor = array_intersect_key($taskStatisticsColors, array_flip($taskStatisticsKeys));
+                $taskCounts = $tasks->groupBy('status')->map->count();
+                $totalCount = $taskCounts->sum();
+                $taskPercentages = $taskCounts->map(function ($count) use ($totalCount) {
+                    return ($count / $totalCount) * 100;
+                });
+                //
+                $MonthArr = [];
+                $CompletedTaskArr = [];
+                $PendingTaskArr = [];
+                $CreatedTaskArr = [];
+
+
+                $report = DB::table('tasks')
+                    ->join('projects', 'tasks.project_id', '=', 'projects.id')
+                    ->select(
+                        DB::raw('DATE_FORMAT(tasks.created_at, "%b") as month'),
+                        DB::raw('SUM(CASE WHEN tasks.status = "16" THEN 1 ELSE 0 END) as total_completed_task'),
+                        DB::raw('SUM(CASE WHEN tasks.status = "10" THEN 1 ELSE 0 END) as total_pending_task'),
+                        DB::raw('COUNT(*) as total_created_task')
+                    )
+
+                    // ->where('projects.workspace', $id)
+                    // ->whereIn('projects.workspace', $workspace_id)
+                    ->where('projects.department_id', $depart_id)
+                    // ->groupBy('projects.workspace', 'month')
+                    ->groupBy('projects.department_id', 'month')
+                    // ->orderBy('projects.workspace')
+                    ->orderBy('projects.department_id')
+                    ->orderBy('month')
+                    ->get();
+
+                // dd($report);
+                $report = $report->map(function ($item) use (&$MonthArr, &$CompletedTaskArr, &$PendingTaskArr, &$CreatedTaskArr) {
+                    array_push($MonthArr, $item->month);
+                    array_push($CompletedTaskArr, $item->total_completed_task);
+                    array_push($PendingTaskArr, $item->total_pending_task);
+                    array_push($CreatedTaskArr, $item->total_created_task);
+                });
+                $reportData = $report->values()->all();
+                $result = [
+                    'MonthArr' => $MonthArr,
+                    'CompletedTaskArr' => $CompletedTaskArr,
+                    'PendingTaskArr' => $PendingTaskArr,
+                    'CreatedTaskArr' => $CreatedTaskArr,
+                ];
+                $inProgressTask = Task::whereIn('projects.workspace', $workspace_id)
+                    ->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")
+                    ->join("projects", "projects.id", "=", "user_projects.project_id")
+                    ->where('tasks.status', '=', '82')->count();
+            }
+            $chartData = [];
+            $blade_type = 'SingleDepart';
+            $taskStatus = ['All', 'Todo', 'In Progress', 'Review', 'Done'];
+
+            return view(
+                'home',
+                compact(
+                    'taskChartColor',
+                    'currentStatus',
+                    'taskStatus',
+                    'blade_type',
+                    'taskStatisticsKeys',
+                    'currentWorkspace',
+                    // 'totalProject',
+                    'totalTask',
+                    // 'totalMembers',
+                    // 'arrProcessLabel',
+                    // 'arrProcessPer',
+                    // 'arrProcessClass',
+                    'completeTask',
+                    'tasks',
+                    'chartData',
+                    // 'inProgressProjects',
+                    // 'dueDateProjects',
+                    'inProgressTask',
+                    'overDueTasks',
+                    // 'workspace_type',
+                    // 'projects',
+                    'taskStatistics',
+                    'result',
+                    'taskPercentages',
+                    // 'hod_workspaces',
+                    'check_home',
+                    // 'departmentList',
+                    'depart_id'
+                )
+            );
+        } else {
+            return redirect()->back()->with('error', __("No Department Found Under This HOD "));
         }
     }
 }

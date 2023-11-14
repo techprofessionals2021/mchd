@@ -255,6 +255,7 @@ Route::get('/home/{slug?}/{currentStatus?}', [HomeController::class, 'index'])->
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard')->middleware(['auth','XSS']);
 
 Route::get('/index_report/{slug?}/{currentStatus?}', [HomeController::class, 'index_report'])->name('index_report')->middleware(['auth','XSS']);
+Route::get('/single_depart_report/{depart_id}/{slug?}/{currentStatus?}', [HomeController::class, 'single_depart_report'])->name('single_depart_report')->middleware(['auth','XSS']);
 
 
 
@@ -322,7 +323,7 @@ Route::prefix('hod')->as('hod.')->group(function() {
   Route::get('/', [HodDashboardController::class, 'index'])->name('home')->middleware(['auth']);
 
   Route::get('/workspace_report/{id}', [HodDashboardController::class, 'workspace_report'])->name('workspace_report')->middleware(['auth']);
-  
+
 });
 
   //end route for hod
