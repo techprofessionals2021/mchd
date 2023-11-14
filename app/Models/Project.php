@@ -19,6 +19,7 @@ class Project extends Model
         'tags',
         'budget',
         'workspace',
+        'department_id',
         'created_by',
         'is_active',
     ];

@@ -120,6 +120,22 @@
                             
                            </li>
 
+                           <li class="dash-item dash-hasmenu">
+                            <a href="{{route('superadmin.depart.role')}}"
+                                class="dash-link {{ Request::route()->getName() == 'superadmin.depart.role' ? ' active' : '' }}"><span
+                                    class="dash-micon"> <i data-feather="key"></i></span><span
+                                    class="dash-mtext">{{ __('Depart Role') }}</span></a>
+                           </li>
+
+                           <li class="dash-item dash-hasmenu">
+                            <a href="{{route('superadmin.department')}}"
+                                class="dash-link {{ Request::route()->getName() == 'superadmin.department' ? ' active' : '' }}"><span
+                                    class="dash-micon"> <i data-feather="briefcase"></i></span><span
+                                    class="dash-mtext">{{ __('Department') }}</span></a>
+                           </li>
+
+                           
+
 
      
         </div>

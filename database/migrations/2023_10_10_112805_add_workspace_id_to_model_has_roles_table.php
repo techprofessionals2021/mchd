@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::table('model_has_roles', function (Blueprint $table) {
             $table->unsignedBigInteger('workspace_id')->nullable();
-            $table->foreign('workspace_id')->references('id')->on('workspaces')->onDelete('cascade');
+            // $table->foreign('workspace_id')->references('id')->on('workspaces')->onDelete('cascade');
 
-            
+
         });
     }
 
@@ -30,7 +30,7 @@ return new class extends Migration
     {
         Schema::table('model_has_roles', function (Blueprint $table) {
             $table->unsignedBigInteger('workspace_id')->nullable();
-            $table->foreign('workspace_id')->references('id')->on('workspaces')->onDelete('cascade');
+            // $table->foreign('workspace_id')->references('id')->on('workspaces')->onDelete('cascade');
 
 
         });

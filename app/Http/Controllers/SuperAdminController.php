@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DepartUserRole;
+use App\Models\WorkspaceDepartPivot;
 use Illuminate\Http\Request;
 
 use App\Models\ClientProject;
@@ -13,6 +15,7 @@ use App\Models\UserWorkspace;
 use App\Models\Workspace;
 use App\Models\WorkspacePermission;
 use App\Models\Utility;
+use App\Models\Department;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\RolehasPermission;
@@ -142,6 +145,12 @@ class SuperAdminController extends Controller
 
         $role = Role::all();
 
+
+        $depart_user_role = DepartUserRole::get();
+
+        $department = Department::get();
+
+
         $workspace = Workspace::where('is_active','1')->get();
 
         $hodRole = Role::where('name', 'hod')->first();
@@ -157,7 +166,7 @@ class SuperAdminController extends Controller
 
         // dd($workspace);
 
-        return view('layouts.super-admin.user.index',compact('user','role','workspace','hodUsers','executiveUsers'));
+        return view('layouts.super-admin.user.index',compact('user','role','workspace','hodUsers','executiveUsers','depart_user_role','department'));
     }
 
 
@@ -206,6 +215,37 @@ class SuperAdminController extends Controller
         return response()->json($data);
     }
 
+
+    public function get_department($id)
+    {
+
+        // dd($id);
+        $workspace_depart = WorkspaceDepartPivot::with('departments')->where('workspace_id', $id)->get();
+
+
+        // dd($firstRole);
+
+
+    // Initialize an empty array to store departments
+        $departmentsArray = [];
+
+        foreach ($workspace_depart as $pivotInstance) {
+            // Access the departments relationship for each individual pivot instance
+            foreach ($pivotInstance->departments as $department) {
+                // Add department details to the array
+                $departmentsArray[] = [
+                    'id' => $department->id,
+                    'name' => $department->name,
+                    // Add other department properties as needed
+                ];
+            }
+        }
+
+        // dd($departmentsArray);
+
+        return response()->json($departmentsArray);
+    }
+
     public function update_user(Request $request)
     {
 
@@ -216,8 +256,12 @@ class SuperAdminController extends Controller
         $hods = json_encode($request->hods);
         $executives = json_encode($request->executives);
         $workspace = json_encode($request->workspace_id);
-        // dd($workspace);
+        $department = json_encode($request->department_id);
+        $depart_user_role = json_encode($request->depart_user_role);
 
+        
+        // dd($department);
+        
         // dd( $tags , $hods , $executives);
 
  
@@ -241,7 +285,7 @@ class SuperAdminController extends Controller
            
             $user->assignRole($role);
 
-            $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $workspace,'hods' => $hods,'executives' => $executives]);
+            $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $workspace,'hods' => $hods,'executives' => $executives,'department_id' => $department,'depart_user_role_id' => $depart_user_role]);
     
         
         } else {
@@ -253,7 +297,7 @@ class SuperAdminController extends Controller
                 // The role exists; assign it to the user.
                 $user->assignRole($role);
 
-                $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $workspace,'hods' => $hods,'executives' => $executives]);
+                $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $workspace,'hods' => $hods,'executives' => $executives,'department_id' => $department,'depart_user_role_id' => $depart_user_role]);
                 
             } else {
                 // The role doesn't exist; create it and then assign it to the user.
