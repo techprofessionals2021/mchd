@@ -422,7 +422,7 @@
                                 </div> --}}
                             </div>
                         </div>
-                        <div class="card-body ">
+                        {{-- <div class="card-body ">
                             <div class="table-responsive">
                                 <table class="table table-centered table-hover mb-0 animated">
                                     <thead>
@@ -435,12 +435,12 @@
 
                                                 <td>
                                                     <div class="font-14 mt-1 font-weight-normal">
-                                                        {{-- <a href="{{route('ceo.executive_report',[
+                                                        <a href="{{route('ceo.executive_report',[
                                                             'id' => $user->id,
                                                             'slug' => $currentWorkspace->slug
-                                                        ])}}"> --}}
+                                                        ])}}">
                                                             {{ $value->name }}
-                                                        {{-- </a> --}}
+                                                        </a>
                                                     </div>
                                                 </td>
 
@@ -450,14 +450,14 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> --}}
 
 
                     </div>
                     </div>
                     @elseif(auth()->user()->hasRole('HOD'))
 
-                    @if ($check_home != 0)
+                    @if ($check_home != 0 && $blade_type != 'SingleDepart' )
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-header">
@@ -485,7 +485,7 @@
                                                     <td>
                                                         <div class="font-14 mt-1 font-weight-normal">
                                                             <i class="fas fa-circle text-success"></i> <!-- Add your icon here -->
-                                                            <a href="{{route('hod.workspace_report', ['id' => $depart->id])}}">
+                                                            <a href="{{route('single_depart_report', ['depart_id' => $depart->id])}}">
                                                                 {{ $depart->name }}
                                                             </a>
                                                         </div>
@@ -511,6 +511,59 @@
 
 
 
+                    @elseif (auth()->user()->hasRole('Executive'))
+
+                    @if ($check_home != 0)
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h5 class="">
+                                            {{ __('HODs') }}
+                                        </h5>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="card-body ">
+                                <div class="table-responsive">
+                                    <table class="table table-centered table-hover mb-0 animated">
+                                        {{-- <thead>
+                                            <th>Workspace Name</th>
+                                            <th>Total Tasks</th>
+
+                                        </thead> --}}
+                                        <tbody>
+                                            @foreach ($HODs as $HOD)
+                                                <tr>
+
+                                                    <td>
+                                                        <div class="font-14 mt-1 font-weight-normal">
+                                                            <i class="fas fa-circle text-success"></i> <!-- Add your icon here -->
+                                                            {{-- <a href="{{route('single_depart_report', ['depart_id' => $depart->id])}}"> --}}
+                                                                {{ $HOD->name }}
+                                                            {{-- </a> --}}
+                                                        </div>
+                                                    </td>
+
+                                                    {{-- <td>
+
+                                                        <div class="badge badge-pill badge-xs badge-danger rounded">{{$depart->tasks_count}}</div>
+
+                                                    </td> --}}
+
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        </div>
+                    @endif
 
                     @endif
 
@@ -844,12 +897,18 @@
             console.log();
             let currentWorkSpace = <?php echo json_encode($currentWorkspace->slug); ?>;
             let blade_typee = <?php echo json_encode($blade_type); ?>;
+            let depart_id = <?php echo json_encode(@$depart_id); ?>;
 
 
           console.log(blade_typee,'HOD type');
-          if(blade_typee == 'HOD'){
+          if(blade_typee == 'HOD' || blade_typee == 'Executive'|| blade_typee == 'Ceo'){
 // alert('sdsds')
           location.href = window.location.origin +'/index_report/'+ currentWorkSpace +'/'+$(this).val()
+        return;
+        }
+          if(blade_typee == 'SingleDepart'){
+// alert('sdsds')
+          location.href = window.location.origin +'/single_depart_report/'+ depart_id +'/'+ currentWorkSpace +'/'+$(this).val()
         return;
         }
 
