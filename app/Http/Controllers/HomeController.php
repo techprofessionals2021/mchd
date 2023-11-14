@@ -2116,7 +2116,7 @@ class HomeController extends Controller
 
                     // ->where('projects.workspace', $id)
                     // ->whereIn('projects.workspace', $workspace_id)
-                    ->whereIn('projects.department_id', $department_id)
+                    // ->whereIn('projects.department_id', $department_id)
                     // ->groupBy('projects.workspace', 'month')
                     ->groupBy('projects.department_id', 'month')
                     // ->orderBy('projects.workspace')
