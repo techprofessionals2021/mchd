@@ -126,9 +126,11 @@ class RegisteredUserController extends Controller
         }
 
             $user->currant_workspace = $workspace_id;
-
+          
             // assigned depart to a user
             $user->departments()->attach($request->department_id,['role_id' => $request->depart_user_role_id]);
+            // dd($user->departments()->attach($request->department_id,['role_id' => $request->depart_user_role_id]));
+          
 
             User::userDefaultDataRegister($user);
 

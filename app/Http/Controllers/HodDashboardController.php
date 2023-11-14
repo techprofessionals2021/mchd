@@ -37,6 +37,7 @@ class HodDashboardController extends Controller
         $userObj  = Auth::user();
         $workspace = Workspace::where('id',$id)->first();
 
+  
         $currentWorkspace =  Workspace::where('id',$id)->first();
 
         // if (is_array($workspace_id)) {
@@ -47,7 +48,7 @@ class HodDashboardController extends Controller
             // foreach ($workspaces_model as $workspace) {
                 //completed tasks
 
-                $doneStage = Stage::where('workspace_id', '=', $workspace->id)->where('complete', '=', '1')->first();
+                $doneStage = Stage::where('workspace_id', '=', $id)->where('complete', '=', '1')->first();
                 //   dd($doneStage);
                 $completeTask += $workspace->projects->flatMap(function ($project) use ($doneStage) {
                     return $project->task->where('status', $doneStage->id);
