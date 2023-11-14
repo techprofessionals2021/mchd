@@ -569,8 +569,8 @@ class HomeController extends Controller
 
             if (auth()->user()->hasRole('HOD')) {
 
-             
-            
+
+
                 $check_home = 1;
                 $model_has_role = ModelHasRole::where('model_id', Auth::id())->first();
                 $workspaces = $model_has_role->workspace_id;
@@ -581,11 +581,11 @@ class HomeController extends Controller
 
 
                 // dd($department_id);
-           
+
                 if (is_array($workspace_id) && is_array($department_id)) {
-                 
+
                     if (is_null($depart_user_role_id)) {
-                  
+
                         $hod_workspaces = Workspace::select('workspaces.*', DB::raw('COUNT(tasks.id) as tasks_count'))
                             ->whereIn('workspaces.id', $workspace_id)
                             ->leftJoin('projects', 'workspaces.id', '=', 'projects.workspace')
@@ -715,7 +715,7 @@ class HomeController extends Controller
                             ->leftJoin('users', 'user_projects.user_id', '=', 'users.id')
                             ->groupBy('workspaces.id')
                             ->get();
-                    
+
                         $departmentList = Department::select(
                             'departments.*',
                             DB::raw('COUNT(tasks.id) as tasks_count')
@@ -866,7 +866,7 @@ class HomeController extends Controller
                         ->get();
 
 
-                          
+
 
                             // dd($report);
 
@@ -1315,7 +1315,7 @@ class HomeController extends Controller
         // dd('asd');
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
 
-        $check_home = 1;
+        $check_home = 0;
         $model_has_role = ModelHasRole::where('model_id', Auth::id())->first();
         $workspaces = $model_has_role->workspace_id;
         $workspace_id = json_decode($workspaces);
@@ -1882,7 +1882,7 @@ class HomeController extends Controller
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
 
 
-        $check_home = 1;
+        $check_home = 0;
         // $model_has_role_ceo = ModelHasRole::where('model_id', auth()->id())->first();
         // $executives_id = json_decode($model_has_role_ceo->executives);
 

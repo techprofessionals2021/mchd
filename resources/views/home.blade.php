@@ -456,7 +456,7 @@
                     </div>
                     @elseif(auth()->user()->hasRole('HOD'))
 
-                    @if ($check_home != 0 && $blade_type != 'SingleDepart' )
+                    @if ($check_home != 0  )
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-header">
