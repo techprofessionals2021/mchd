@@ -1370,7 +1370,7 @@ class HomeController extends Controller
 
                 $workspace = Workspace::whereIn('id', $workspace_id)->first();
                 // $departments = Department::whereIn('id', $department_id)->get();
-                $department = Department::whereIn('id', $depart_id)->get();
+                $department = Department::where('id', $depart_id)->get();
                 $totalTask = 0;
                 $completeTask = 0;
                 $overDueTasks = 0;
@@ -1408,7 +1408,7 @@ class HomeController extends Controller
                         'stages.complete',
                     ])->join("stages", "stages.id", "=", "tasks.status")
                         ->whereHas('project', function ($query) use ($workspace_id, $depart_id) {
-                            $query->whereIn('department_id', $depart_id);
+                            $query->where('department_id', $depart_id);
                             // $query->whereIn('workspace', $workspace_id);
                         })->orderBy('tasks.id', 'desc')
                         ->whereHas('stage', function ($query) use ($currentStatus) {
