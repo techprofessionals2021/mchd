@@ -540,6 +540,7 @@ class HomeController extends Controller
             if (auth()->user()->hasRole('HOD')) {
 
              
+            
                 $check_home = 1;
                 $model_has_role = ModelHasRole::where('model_id', Auth::id())->first();
                 $workspaces = $model_has_role->workspace_id;
@@ -550,11 +551,11 @@ class HomeController extends Controller
 
 
                 // dd($department_id);
-
+           
                 if (is_array($workspace_id) && is_array($department_id)) {
-
+                 
                     if (is_null($depart_user_role_id)) {
-                      
+                  
                         $hod_workspaces = Workspace::select('workspaces.*', DB::raw('COUNT(tasks.id) as tasks_count'))
                             ->whereIn('workspaces.id', $workspace_id)
                             ->leftJoin('projects', 'workspaces.id', '=', 'projects.workspace')
@@ -641,12 +642,11 @@ class HomeController extends Controller
 
                         $report = DB::table('tasks')
                             ->join('projects', 'tasks.project_id', '=', 'projects.id')
-                            ->select(
-                                DB::raw('DATE_FORMAT(tasks.created_at, "%b") as month'),
-                                DB::raw('SUM(CASE WHEN tasks.status = "16" THEN 1 ELSE 0 END) as total_completed_task'),
-                                DB::raw('SUM(CASE WHEN tasks.status = "10" THEN 1 ELSE 0 END) as total_pending_task'),
-                                DB::raw('COUNT(*) as total_created_task')
-                            )
+                            ->join('stages', 'tasks.status', '=', 'stages.id')
+                            ->selectRaw('DATE_FORMAT(tasks.created_at, "%b") as month')
+                            ->selectRaw('SUM(CASE WHEN stages.name = "Done" THEN 1 ELSE 0 END) as total_completed_task')
+                            ->selectRaw('SUM(CASE WHEN stages.name = "In Progress" THEN 1 ELSE 0 END) as total_pending_task')
+                            ->selectRaw('COUNT(*) as total_created_task')
 
                             // ->where('projects.workspace', $id)
                             // ->whereIn('projects.workspace', $workspace_id)
@@ -685,7 +685,7 @@ class HomeController extends Controller
                             ->leftJoin('users', 'user_projects.user_id', '=', 'users.id')
                             ->groupBy('workspaces.id')
                             ->get();
-
+                    
                         $departmentList = Department::select(
                             'departments.*',
                             DB::raw('COUNT(tasks.id) as tasks_count')
@@ -808,26 +808,38 @@ class HomeController extends Controller
                         $CreatedTaskArr = [];
 
 
-                        $report = DB::table('tasks')
-                            ->join('projects', 'tasks.project_id', '=', 'projects.id')
-                            ->select(
-                                DB::raw('DATE_FORMAT(tasks.created_at, "%b") as month'),
-                                DB::raw('SUM(CASE WHEN tasks.status = "16" THEN 1 ELSE 0 END) as total_completed_task'),
-                                DB::raw('SUM(CASE WHEN tasks.status = "10" THEN 1 ELSE 0 END) as total_pending_task'),
-                                DB::raw('COUNT(*) as total_created_task')
-                            )
+                        // $report = DB::table('tasks')
+                        //     ->join('projects', 'tasks.project_id', '=', 'projects.id')
+                        //     ->select(
+                        //         DB::raw('DATE_FORMAT(tasks.created_at, "%b") as month'),
+                        //         DB::raw('SUM(CASE WHEN tasks.status = "16" THEN 1 ELSE 0 END) as total_completed_task'),
+                        //         DB::raw('SUM(CASE WHEN tasks.status = "10" THEN 1 ELSE 0 END) as total_pending_task'),
+                        //         DB::raw('COUNT(*) as total_created_task')
+                        //     )
+                        //     ->whereIn('projects.department_id', $department_id)
+                        //     ->groupBy('projects.department_id', 'month')
 
-                            // ->where('projects.workspace', $id)
-                            // ->whereIn('projects.workspace', $workspace_id)
-                            ->whereIn('projects.department_id', $department_id)
-                            // ->groupBy('projects.workspace', 'month')
-                            ->groupBy('projects.department_id', 'month')
-                            // ->orderBy('projects.workspace')
-                            ->orderBy('projects.department_id')
-                            ->orderBy('month')
-                            ->get();
+                        //     ->orderBy('projects.department_id')
+                        //     ->orderBy('month')
+                        //     ->get();
 
-                        // dd($report);
+                        $report = Task::join('projects', 'tasks.project_id', '=', 'projects.id')
+                        ->join('stages', 'tasks.status', '=', 'stages.id')
+                        ->whereIn('projects.department_id', $department_id)
+                        ->selectRaw('DATE_FORMAT(tasks.created_at, "%b") as month')
+                        ->selectRaw('SUM(CASE WHEN stages.name = "Done" THEN 1 ELSE 0 END) as total_completed_task')
+                        ->selectRaw('SUM(CASE WHEN stages.name = "In Progress" THEN 1 ELSE 0 END) as total_pending_task')
+                        ->selectRaw('COUNT(*) as total_created_task')
+                        ->groupBy('projects.department_id', 'month')
+                        ->orderBy('projects.department_id')
+                        ->orderBy('month')
+                        ->get();
+
+
+                          
+
+                            // dd($report);
+
                         $report = $report->map(function ($item) use (&$MonthArr, &$CompletedTaskArr, &$PendingTaskArr, &$CreatedTaskArr) {
                             array_push($MonthArr, $item->month);
                             array_push($CompletedTaskArr, $item->total_completed_task);
