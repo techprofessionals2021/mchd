@@ -1370,7 +1370,7 @@ class HomeController extends Controller
 
                 $workspace = Workspace::whereIn('id', $workspace_id)->first();
                 // $departments = Department::whereIn('id', $department_id)->get();
-                $department = Department::where('id', $depart_id)->get();
+                $department = Department::where('id', $depart_id)->first();
                 $totalTask = 0;
                 $completeTask = 0;
                 $overDueTasks = 0;
