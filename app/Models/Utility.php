@@ -136,7 +136,7 @@ class Utility
             }
             else
             {
-                dd('second if');
+                // dd('second if');
                 $rs = Workspace::select([
                                             'workspaces.*',
                                             'user_workspaces.permission',
