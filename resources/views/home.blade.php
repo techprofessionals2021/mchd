@@ -404,56 +404,55 @@
                      </div>
 
 
-                    @if (auth()->user()->hasRole('Ceo'))
+                    @if (auth()->user()->hasRole('Ceo') && $check_home == 1)
                     <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-9">
-                                    <h5 class="">
-                                        {{ __('My Team List') }}
-                                    </h5>
-                                </div>
-                                {{-- <div class="col-auto d-flex justify-content-end">
-                                    <div class="">
-                                        <small><b>{{ $completeTask }}</b> {{ __('Tasks completed out of') }}
-                                            {{ $totalTask }}</small>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h5 class="">
+                                            {{ __('Executives') }}
+                                        </h5>
                                     </div>
-                                </div> --}}
+
+                                </div>
                             </div>
+                            <div class="card-body ">
+                                <div class="table-responsive">
+                                    <table class="table table-centered table-hover mb-0 animated">
+                                        {{-- <thead>
+                                            <th>Workspace Name</th>
+                                            <th>Total Tasks</th>
+
+                                        </thead> --}}
+                                        <tbody>
+                                            @foreach ($Executives as $Executive)
+                                                <tr>
+
+                                                    <td>
+                                                        <div class="font-14 mt-1 font-weight-normal">
+                                                            <i class="fas fa-circle text-success"></i> <!-- Add your icon here -->
+                                                            <a href="{{route('single_executive_report', ['executive_id' => $Executive->id])}}">
+                                                                {{ $Executive->name }}
+                                                            </a>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+
+                                                        {{-- <div class="badge badge-pill badge-xs badge-danger rounded">{{$depart->tasks_count}}</div> --}}
+
+                                                    </td>
+
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
                         </div>
-                        {{-- <div class="card-body ">
-                            <div class="table-responsive">
-                                <table class="table table-centered table-hover mb-0 animated">
-                                    <thead>
-                                        <th>Name</th>
-
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($executives as $value)
-                                            <tr>
-
-                                                <td>
-                                                    <div class="font-14 mt-1 font-weight-normal">
-                                                        <a href="{{route('ceo.executive_report',[
-                                                            'id' => $user->id,
-                                                            'slug' => $currentWorkspace->slug
-                                                        ])}}">
-                                                            {{ $value->name }}
-                                                        </a>
-                                                    </div>
-                                                </td>
-
-
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div> --}}
-
-
-                    </div>
                     </div>
                     @elseif(auth()->user()->hasRole('HOD'))
 
@@ -541,9 +540,9 @@
                                                     <td>
                                                         <div class="font-14 mt-1 font-weight-normal">
                                                             <i class="fas fa-circle text-success"></i> <!-- Add your icon here -->
-                                                            {{-- <a href="{{route('single_depart_report', ['depart_id' => $depart->id])}}"> --}}
+                                                            <a href="{{route('single_hod_report', ['hod_id' => $HOD->id])}}">
                                                                 {{ $HOD->name }}
-                                                            {{-- </a> --}}
+                                                            </a>
                                                         </div>
                                                     </td>
 
@@ -562,7 +561,7 @@
 
 
                         </div>
-                        </div>
+                    </div>
                     @endif
 
                     @endif
@@ -898,6 +897,8 @@
             let currentWorkSpace = <?php echo json_encode($currentWorkspace->slug); ?>;
             let blade_typee = <?php echo json_encode($blade_type); ?>;
             let depart_id = <?php echo json_encode(@$depart_id); ?>;
+            let hod_id = <?php echo json_encode(@$hod_id); ?>;
+            let executive_id = <?php echo json_encode(@$executive_id); ?>;
 
 
           console.log(blade_typee,'HOD type');
@@ -907,8 +908,15 @@
         return;
         }
           if(blade_typee == 'SingleDepart'){
-// alert('sdsds')
           location.href = window.location.origin +'/single_depart_report/'+ depart_id +'/'+ currentWorkSpace +'/'+$(this).val()
+        return;
+        }
+          if(blade_typee == 'SingleHOD'){
+          location.href = window.location.origin +'/single_hod_report/'+ hod_id +'/'+ currentWorkSpace +'/'+$(this).val()
+        return;
+        }
+          if(blade_typee == 'SingleExecutive'){
+          location.href = window.location.origin +'/single_executive_report/'+ executive_id +'/'+ currentWorkSpace +'/'+$(this).val()
         return;
         }
 
