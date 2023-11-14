@@ -568,7 +568,7 @@
                                         </div>
                                         <div class="row text-center">
                                                 <div class="col-12">
-                                                    <h3>Your Team Perfomance is <span class="text-dribbble"> {{ ($completeTask * 100) / $totalTask}}% </span></h3>
+                                                    <h3>Your Team Perfomance is <span class="text-dribbble"> {{ $totalTask != 0  ? ($completeTask * 100) / $totalTask : 0}}% </span></h3>
                                                 </div>
                                         </div>
                                     </div>
