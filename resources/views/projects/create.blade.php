@@ -31,6 +31,7 @@
 
         <div class="col-md-12" style="display: none">
             <label class="col-form-label">{{ __('Department') }}</label>
+          
             <select  class="form-control"  name="department_id" data-placeholder="{{ __('Select Department ...') }}">
                 @foreach($currentWorkspace->departments as $department)
                     <option value="{{$department->id }}" {{$department->id == auth()->user()->departments()->first()->id ? 'selected': ''}}>{{$department->name}}</option>

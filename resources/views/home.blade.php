@@ -250,26 +250,6 @@
                                              <div class="col-sm-12">
                                                  <div id="projects-chart"></div>
                                              </div>
-                                             {{-- <div class="col-sm-6  pb-5 px-3">
-                                                 <div class="col-12 col-sm-10">
-                                                     <span class="d-flex justify-content-center align-items-center mb-2">
-                                                         <i class="f-10 lh-1 fas fa-circle" style="color:#3cb8d9"></i>
-                                                         <span class="ms-2 text-sm">On Going</span>
-                                                     </span>
-                                                 </div>
-
-                                                 <div class="col-12 col-sm-10">
-                                                     <span class="d-flex justify-content-center align-items-center mb-2">
-                                                         <i class="f-10 lh-1 fas fa-circle" style="color: #3d5a72; "></i>
-                                                         <span class="ms-2 text-sm">Finished</span>
-                                                     </span>
-                                                 </div>
-                                             </div> --}}
-                                             {{-- @php
-
-                                                 $taskStatisticsColors = ['Todo' => '#008ffb','In Progress' => '#00e396','Review' => '#feb019','Done' => '#ff4560']
-                                             @endphp --}}
-
                                              <div class="row text-center">
 
                                                  @foreach ($taskPercentages as $index => $value)
@@ -404,60 +384,59 @@
                      </div>
 
 
-                    @if (auth()->user()->hasRole('Ceo'))
+                    @if (auth()->user()->hasRole('Ceo') && $check_home == 1)
                     <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-9">
-                                    <h5 class="">
-                                        {{ __('My Team List') }}
-                                    </h5>
-                                </div>
-                                {{-- <div class="col-auto d-flex justify-content-end">
-                                    <div class="">
-                                        <small><b>{{ $completeTask }}</b> {{ __('Tasks completed out of') }}
-                                            {{ $totalTask }}</small>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h5 class="">
+                                            {{ __('Executives') }}
+                                        </h5>
                                     </div>
-                                </div> --}}
+
+                                </div>
                             </div>
+                            <div class="card-body ">
+                                <div class="table-responsive">
+                                    <table class="table table-centered table-hover mb-0 animated">
+                                        {{-- <thead>
+                                            <th>Workspace Name</th>
+                                            <th>Total Tasks</th>
+
+                                        </thead> --}}
+                                        <tbody>
+                                            @foreach ($Executives as $Executive)
+                                                <tr>
+
+                                                    <td>
+                                                        <div class="font-14 mt-1 font-weight-normal">
+                                                            <i class="fas fa-circle text-success"></i> <!-- Add your icon here -->
+                                                            <a href="{{route('single_executive_report', ['executive_id' => $Executive->id])}}">
+                                                                {{ $Executive->name }}
+                                                            </a>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+
+                                                        {{-- <div class="badge badge-pill badge-xs badge-danger rounded">{{$depart->tasks_count}}</div> --}}
+
+                                                    </td>
+
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
                         </div>
-                        {{-- <div class="card-body ">
-                            <div class="table-responsive">
-                                <table class="table table-centered table-hover mb-0 animated">
-                                    <thead>
-                                        <th>Name</th>
-
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($executives as $value)
-                                            <tr>
-
-                                                <td>
-                                                    <div class="font-14 mt-1 font-weight-normal">
-                                                        <a href="{{route('ceo.executive_report',[
-                                                            'id' => $user->id,
-                                                            'slug' => $currentWorkspace->slug
-                                                        ])}}">
-                                                            {{ $value->name }}
-                                                        </a>
-                                                    </div>
-                                                </td>
-
-
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div> --}}
-
-
-                    </div>
                     </div>
                     @elseif(auth()->user()->hasRole('HOD'))
 
-                    @if ($check_home != 0)
+                    @if ($check_home != 0  )
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-header">
@@ -485,7 +464,7 @@
                                                     <td>
                                                         <div class="font-14 mt-1 font-weight-normal">
                                                             <i class="fas fa-circle text-success"></i> <!-- Add your icon here -->
-                                                            <a href="{{route('hod.workspace_report', ['id' => $depart->id])}}">
+                                                            <a href="{{route('single_depart_report', ['depart_id' => $depart->id])}}">
                                                                 {{ $depart->name }}
                                                             </a>
                                                         </div>
@@ -512,9 +491,92 @@
 
 
 
+
+                    @elseif (auth()->user()->hasRole('Executive'))
+
+                    @if ($check_home != 0)
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h5 class="">
+                                            {{ __('HODs') }}
+                                        </h5>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="card-body ">
+                                <div class="table-responsive">
+                                    <table class="table table-centered table-hover mb-0 animated">
+                                        {{-- <thead>
+                                            <th>Workspace Name</th>
+                                            <th>Total Tasks</th>
+
+                                        </thead> --}}
+                                        <tbody>
+                                            @foreach ($HODs as $HOD)
+                                                <tr>
+
+                                                    <td>
+                                                        <div class="font-14 mt-1 font-weight-normal">
+                                                            <i class="fas fa-circle text-success"></i> <!-- Add your icon here -->
+                                                            <a href="{{route('single_hod_report', ['hod_id' => $HOD->id])}}">
+                                                                {{ $HOD->name }}
+                                                            </a>
+                                                        </div>
+                                                    </td>
+
+                                                    {{-- <td>
+
+                                                        <div class="badge badge-pill badge-xs badge-danger rounded">{{$depart->tasks_count}}</div>
+
+                                                    </td> --}}
+
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
                     @endif
 
+                    @endif
+                    <div class="col-lg-8"></div>
+                    @if ($check_home != 0)
+                    <div class="col-lg-4 ">
 
+                        <div >
+                            <div class="card" >
+                                <div class="card-header">
+                                    <div class="float-end">
+                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="Refferals"><i class=""></i></a>
+                                    </div>
+
+                                    <h5>{{ __('Team Performance') }}</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-sm-12">
+                                            <div id="completion-report"></div>
+                                        </div>
+                                        <div class="row text-center">
+                                                <div class="col-12">
+                                                    <h3>Your Team Perfomance is <span class="text-dribbble"> {{ ($completeTask * 100) / $totalTask}}% </span></h3>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                     </div>
 
 
@@ -664,6 +726,38 @@
     @elseif(isset($currentWorkspace) && $currentWorkspace)
         <script>
             (function() {
+
+                var options = {
+                   series: [{{$totalTask}},{{$completeTask}}],
+                   chart: {
+                    height: 200,
+                   type: 'donut',
+
+                },
+                labels:['Total Tasks','Completed Tasks'],
+                dataLabels: {
+                enabled: false
+              },
+              legend: {
+                formatter: function(val, opts) {
+                  return null;
+                }
+              },
+                 responsive: [{
+                   breakpoint: 480,
+                   options: {
+                     chart: {
+                       width: 200
+                     },
+                     legend: {
+                       position: 'bottom'
+                     }
+                   }
+                 }]
+                };
+
+                var chart = new ApexCharts(document.querySelector("#completion-report"), options);
+                chart.render();
 
 
                 var projectsChartoptions = {
@@ -844,12 +938,27 @@
             console.log();
             let currentWorkSpace = <?php echo json_encode($currentWorkspace->slug); ?>;
             let blade_typee = <?php echo json_encode($blade_type); ?>;
+            let depart_id = <?php echo json_encode(@$depart_id); ?>;
+            let hod_id = <?php echo json_encode(@$hod_id); ?>;
+            let executive_id = <?php echo json_encode(@$executive_id); ?>;
 
 
           console.log(blade_typee,'HOD type');
           if(blade_typee == 'HOD' || blade_typee == 'Executive'|| blade_typee == 'Ceo'){
 // alert('sdsds')
           location.href = window.location.origin +'/index_report/'+ currentWorkSpace +'/'+$(this).val()
+        return;
+        }
+          if(blade_typee == 'SingleDepart'){
+          location.href = window.location.origin +'/single_depart_report/'+ depart_id +'/'+ currentWorkSpace +'/'+$(this).val()
+        return;
+        }
+          if(blade_typee == 'SingleHOD'){
+          location.href = window.location.origin +'/single_hod_report/'+ hod_id +'/'+ currentWorkSpace +'/'+$(this).val()
+        return;
+        }
+          if(blade_typee == 'SingleExecutive'){
+          location.href = window.location.origin +'/single_executive_report/'+ executive_id +'/'+ currentWorkSpace +'/'+$(this).val()
         return;
         }
 
