@@ -62,13 +62,31 @@
                         
                         <div class="form-group" id="workspace-div" style="display: none" >
                             <label for="permission">Workspace</label>
-                            <select name="workspace_id[]" id="workspace" class="form-control" multiple>
+                            <select name="workspace_id[]" id="workspace" class="form-control" >
                                 @foreach ($workspace as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </div>
 
+
+                        <div class="form-group" id="department-div" style="display: none" >
+                            <label for="permission">Department</label>
+                            <select name="department_id[]" id="department_name" class="form-control" multiple >
+                      
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="depart-role-div" style="display: none" >
+                            <label for="permission">Depart Role</label>
+                            <select name="depart_user_role[]" id="depart_user_role" class="form-control" multiple >
+                                @foreach ($depart_user_role as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        
                         <div class="form-group" id="hod-div" style="display: none" >
                             <label for="permission">Hods</label>
                             <select name="hods[]" id="hod"  class="form-control" multiple>
@@ -224,6 +242,9 @@
   
     $('.modal-id').on('click', function () {
 
+
+  
+
             const user_id = $(this).data('id');
 
 
@@ -244,16 +265,45 @@
                 success: function(response) {
 
 
-                 
+
+                              
+             
+
                      $('#exampleModal').find('#name').val(response.user.name);
                      $('#exampleModal').find('#email').val(response.user.email);
                      $('#exampleModal').find('#role').val(response.role.name);
                      $('#exampleModal').find('#tag-assign-user').val(response.model_has_role.tag);
                      $('#exampleModal').find('#workspace').val(response.model_has_role.workspace_id);
+                    //  $('#exampleModal').find('#depart_user_role').val(response.model_has_role.depart_user_role_id);
+                    
+                     
+                    //  var selectedDepartmentIds = response.model_has_role.department_id;
+
+                    // // Clear existing selections
+                    // // $('#exampleModal').find('#department').val(null);
+
+                    // // // Iterate over the options and mark them as selected if their value is in the array
+                    // $('#exampleModal').find('#department option').each(function() {
+                    //     var optionValue = $(this).val();
+
+                    //     alert(optionValue);
+
+                    //     if (selectedDepartmentIds.includes(optionValue)) {
+                    //         $(this).prop("selected", true);
+                    //     } else {
+                    //         $(this).prop("selected", false);
+                    //     }
+                    // });
+
+
+
+
 
                     if (response.role.name == "HOD") {
                         // Show the second div when "hod" is selected
                         $('#workspace-div').show();
+                        $('#department-div').show();
+                        $('#depart-role-div').show();
                         $('#executive-div').hide();
                         $('#hod-div').hide();
                         
@@ -261,6 +311,10 @@
                     if (response.role.name == "Executive") {
                         // Show the second div when "hod" is selected
                         $('#workspace-div').hide();
+                        $('#department-div').hide();
+                        $('#depart-role-div').hide();
+
+
                         $('#hod-div').show();
                         $('#executive-div').hide();
                     }
@@ -268,12 +322,16 @@
                     if (response.role.name == "Ceo") {
                         // Show the second div when "hod" is selected
                         $('#workspace-div').hide();
+                        $('#department-div').hide();
+                        $('#depart-role-div').hide();
+
+
                         $('#hod-div').hide();
                         $('#executive-div').show();
                     }
 
 
-               
+           
 
 
 
@@ -320,6 +378,8 @@
                     });
 
 
+          
+
 
                 //     $('#hod option').each(function () {
                 //     var optionValue = $(this).val();
@@ -348,10 +408,8 @@
                     }
 
                     else if (response.model_has_role.executives.includes(optionValue)) {
-                        console.log('true');
                         $(this).prop("selected", true); // Select the option if its value is in the array
                     } else {
-                        console.log('false');
                         $(this).prop("selected", false); 
                     }
 
@@ -364,14 +422,41 @@
                     var optionValue = parseInt($(this).val()); // Convert the value to an integer
 
                      if (response.model_has_role.workspace_id.includes(optionValue)) {
-                        console.log('true');
                         $(this).prop("selected", true); // Select the option if its value is in the array
                     } else {
-                        console.log('false');
                         $(this).prop("selected", false); 
                     }
 
                     });
+
+
+                               
+                $('#depart_user_role option').each(function () {
+
+                var optionValue = parseInt($(this).val()); // Convert the value to an integer
+
+                if (response.model_has_role.depart_user_role_id.includes(optionValue)) {
+                    $(this).prop("selected", true); // Select the option if its value is in the array
+                } else {
+                    $(this).prop("selected", false); 
+                }
+
+                });
+
+                $('#department_name option').each(function () {
+
+                    var optionValue = parseInt($(this).val()); // Convert the value to an integer
+                    
+                    if (response.model_has_role.department_id.includes(optionValue)) {
+                        $(this).prop("selected", true); // Select the option if its value is in the array
+                    } else {
+                        $(this).prop("selected", false); 
+                    }
+
+                    });
+
+
+            
 
 
                 // $('#executive').select2();
@@ -399,6 +484,45 @@
             
         });
 
+
+        
+
+        $('#workspace').change(function() {
+
+            const workspace_id = $(this).val();
+
+            var select = $('#department_name');
+
+            select.empty(); // Clear existing options
+
+            $.ajax({
+            type: 'POST',
+            url: '{{ route('superadmin.get_department', ['id' => 'workspace_id']) }}'.replace('workspace_id', workspace_id), // Replace 'permissionId' with the actual permission ID
+
+            data: {
+                _token: '{{ csrf_token() }}',
+                workspace_id: workspace_id
+            
+            },
+            success: function(response) {
+
+
+                $.each(response, function (index, item) {
+
+                select.append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+
+
+            },
+            error: function(error) {
+                // Handle error if needed
+                console.error('AJAX request error', error);
+            }
+            });
+
+
+            });
+
  
         var hodUsers = @json($hodUsers);
                     var selectElement = $("#hod");
@@ -416,6 +540,16 @@
                             .attr("value", user.id)
                             .text(user.name));
                     });
+
+
+                               // Populate the "executive" select element
+                  var Departments = @json($department);
+                    var select = $("#department_name");
+                    $.each(Departments, function (index, Departments) {
+                        select.append($("<option></option>")
+                            .attr("value", Departments.id)
+                            .text(Departments.name));
+                    });
       
         $('#role').change(function() {
 
@@ -424,12 +558,18 @@
             if ($(this).val() === 'HOD') {
                 // Show the second div when "hod" is selected
                 $('#workspace-div').show();
+                $('#department-div').show();
+                $('#depart-role-div').show();
+
                 $('#executive-div').hide();
                 $('#hod-div').hide();
             }
             if ($(this).val() === 'Executive') {
                 // Show the second div when "hod" is selected
                 $('#workspace-div').hide();
+                $('#department-div').hide();
+                $('#depart-role-div').hide();
+
                 $('#hod-div').show();
                 $('#executive-div').hide();
             }
@@ -437,6 +577,10 @@
             if ($(this).val() === 'Ceo') {
                 // Show the second div when "hod" is selected
                 $('#workspace-div').hide();
+                $('#department-div').hide();
+                $('#depart-role-div').hide();
+
+
                 $('#hod-div').hide();
                 $('#executive-div').show();
             }
