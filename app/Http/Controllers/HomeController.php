@@ -2144,8 +2144,8 @@ class HomeController extends Controller
                     'PendingTaskArr' => $PendingTaskArr,
                     'CreatedTaskArr' => $CreatedTaskArr,
             ];
-            $inProgressTask = Task::whereIn('projects.workspace', $workspace_id)
-                ->join("user_projects", "tasks.project_id", "=", "user_projects.project_id")
+            $inProgressTask = Task::
+                  join("user_projects", "tasks.project_id", "=", "user_projects.project_id")
                 ->join("projects", "projects.id", "=", "user_projects.project_id")
                 ->where('tasks.status', '=', '82')->count();
 
