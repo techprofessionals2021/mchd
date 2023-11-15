@@ -315,7 +315,7 @@ class HomeController extends Controller
                             $executiveTasks = new Collection();
                             if(!is_null($HODs_id)) {
 
-                         
+
                             foreach ($HODs_id as $key => $hod_id) {
                                 $model_has_role = ModelHasRole::where('model_id', $hod_id)->first();
                                 $workspaces = $model_has_role->workspace_id;
@@ -571,8 +571,8 @@ class HomeController extends Controller
 
             if (auth()->user()->hasRole('HOD')) {
 
-             
-            
+
+
                 $check_home = 1;
                 $model_has_role = ModelHasRole::where('model_id', Auth::id())->first();
                 $workspaces = $model_has_role->workspace_id;
@@ -583,11 +583,11 @@ class HomeController extends Controller
 
 
                 // dd($department_id);
-           
+
                 if (is_array($workspace_id) && is_array($department_id)) {
-                 
+
                     if (is_null($depart_user_role_id)) {
-                  
+
                         $hod_workspaces = Workspace::select('workspaces.*', DB::raw('COUNT(tasks.id) as tasks_count'))
                             ->whereIn('workspaces.id', $workspace_id)
                             ->leftJoin('projects', 'workspaces.id', '=', 'projects.workspace')
@@ -672,7 +672,7 @@ class HomeController extends Controller
                         $CreatedTaskArr = [];
 
 
-                   
+
                         if (is_null($depart_user_role_id)) {
                             $report = Task::join('projects', 'tasks.project_id', '=', 'projects.id')
                             ->join('stages', 'tasks.status', '=', 'stages.id')
@@ -685,7 +685,7 @@ class HomeController extends Controller
                             ->orderBy('projects.department_id')
                             ->orderBy('month')
                             ->get();
-    
+
                         }
 
                         else{
@@ -704,7 +704,7 @@ class HomeController extends Controller
                             ->get();
                         }
 
-          
+
                         $report = $report->map(function ($item) use (&$MonthArr, &$CompletedTaskArr, &$PendingTaskArr, &$CreatedTaskArr) {
                             array_push($MonthArr, $item->month);
                             array_push($CompletedTaskArr, $item->total_completed_task);
@@ -731,7 +731,7 @@ class HomeController extends Controller
                             ->leftJoin('users', 'user_projects.user_id', '=', 'users.id')
                             ->groupBy('workspaces.id')
                             ->get();
-                    
+
                         $departmentList = Department::select(
                             'departments.*',
                             DB::raw('COUNT(tasks.id) as tasks_count')
@@ -882,7 +882,7 @@ class HomeController extends Controller
                             ->orderBy('projects.department_id')
                             ->orderBy('month')
                             ->get();
-    
+
                         }
 
                         else{
@@ -901,7 +901,8 @@ class HomeController extends Controller
                             ->get();
                         }
 
-                
+
+
 
                         // dd($report);
 
@@ -1353,7 +1354,7 @@ class HomeController extends Controller
         // dd('asd');
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
 
-        $check_home = 1;
+        $check_home = 0;
         $model_has_role = ModelHasRole::where('model_id', Auth::id())->first();
         $workspaces = $model_has_role->workspace_id;
         $workspace_id = json_decode($workspaces);
@@ -1369,7 +1370,7 @@ class HomeController extends Controller
 
                 $workspace = Workspace::whereIn('id', $workspace_id)->first();
                 // $departments = Department::whereIn('id', $department_id)->get();
-                $department = Department::whereIn('id', $depart_id)->get();
+                $department = Department::where('id', $depart_id)->first();
                 $totalTask = 0;
                 $completeTask = 0;
                 $overDueTasks = 0;
@@ -1407,7 +1408,7 @@ class HomeController extends Controller
                         'stages.complete',
                     ])->join("stages", "stages.id", "=", "tasks.status")
                         ->whereHas('project', function ($query) use ($workspace_id, $depart_id) {
-                            $query->whereIn('department_id', $depart_id);
+                            $query->where('department_id', $depart_id);
                             // $query->whereIn('workspace', $workspace_id);
                         })->orderBy('tasks.id', 'desc')
                         ->whereHas('stage', function ($query) use ($currentStatus) {
@@ -1917,7 +1918,7 @@ class HomeController extends Controller
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
 
 
-        $check_home = 1;
+        $check_home = 0;
         // $model_has_role_ceo = ModelHasRole::where('model_id', auth()->id())->first();
         // $executives_id = json_decode($model_has_role_ceo->executives);
 

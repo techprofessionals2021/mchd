@@ -250,26 +250,6 @@
                                              <div class="col-sm-12">
                                                  <div id="projects-chart"></div>
                                              </div>
-                                             {{-- <div class="col-sm-6  pb-5 px-3">
-                                                 <div class="col-12 col-sm-10">
-                                                     <span class="d-flex justify-content-center align-items-center mb-2">
-                                                         <i class="f-10 lh-1 fas fa-circle" style="color:#3cb8d9"></i>
-                                                         <span class="ms-2 text-sm">On Going</span>
-                                                     </span>
-                                                 </div>
-
-                                                 <div class="col-12 col-sm-10">
-                                                     <span class="d-flex justify-content-center align-items-center mb-2">
-                                                         <i class="f-10 lh-1 fas fa-circle" style="color: #3d5a72; "></i>
-                                                         <span class="ms-2 text-sm">Finished</span>
-                                                     </span>
-                                                 </div>
-                                             </div> --}}
-                                             {{-- @php
-
-                                                 $taskStatisticsColors = ['Todo' => '#008ffb','In Progress' => '#00e396','Review' => '#feb019','Done' => '#ff4560']
-                                             @endphp --}}
-
                                              <div class="row text-center">
 
                                                  @foreach ($taskPercentages as $index => $value)
@@ -456,7 +436,7 @@
                     </div>
                     @elseif(auth()->user()->hasRole('HOD'))
 
-                    @if ($check_home != 0 && $blade_type != 'SingleDepart' )
+                    @if ($check_home != 0  )
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-header">
@@ -507,6 +487,8 @@
                         </div>
                         </div>
                     @endif
+
+
 
 
 
@@ -565,8 +547,36 @@
                     @endif
 
                     @endif
+                    <div class="col-lg-8"></div>
+                    @if ($check_home != 0)
+                    <div class="col-lg-4 ">
 
+                        <div >
+                            <div class="card" >
+                                <div class="card-header">
+                                    <div class="float-end">
+                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="Refferals"><i class=""></i></a>
+                                    </div>
 
+                                    <h5>{{ __('Team Performance') }}</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-sm-12">
+                                            <div id="completion-report"></div>
+                                        </div>
+                                        <div class="row text-center">
+                                                <div class="col-12">
+                                                    <h3>Your Team Perfomance is <span class="text-dribbble"> {{ $totalTask != 0  ? ($completeTask * 100) / $totalTask : 0}}% </span></h3>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                     </div>
 
 
@@ -716,6 +726,38 @@
     @elseif(isset($currentWorkspace) && $currentWorkspace)
         <script>
             (function() {
+
+                var options = {
+                   series: [{{$totalTask}},{{$completeTask}}],
+                   chart: {
+                    height: 200,
+                   type: 'donut',
+
+                },
+                labels:['Total Tasks','Completed Tasks'],
+                dataLabels: {
+                enabled: false
+              },
+              legend: {
+                formatter: function(val, opts) {
+                  return null;
+                }
+              },
+                 responsive: [{
+                   breakpoint: 480,
+                   options: {
+                     chart: {
+                       width: 200
+                     },
+                     legend: {
+                       position: 'bottom'
+                     }
+                   }
+                 }]
+                };
+
+                var chart = new ApexCharts(document.querySelector("#completion-report"), options);
+                chart.render();
 
 
                 var projectsChartoptions = {
