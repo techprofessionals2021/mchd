@@ -51,7 +51,8 @@
 
                           <div class="form-group">
                             <label for="permission">Role</label>
-                            <select name="role" id="role" class="form-control">
+                            <select name="role" id="role" class="form-control" required>
+                                <option value="">- Select Role -</option>
                                 @foreach ($role as $roles)
                                     <option value="{{ $roles->name }}">{{ $roles->name }}</option>
                                 @endforeach
@@ -62,7 +63,7 @@
                         
                         <div class="form-group" id="workspace-div" style="display: none" >
                             <label for="permission">Workspace</label>
-                            <select name="workspace_id[]" id="workspace" class="form-control" >
+                            <select name="workspace_id[]" id="workspace" class="form-control" multiple >
                                 @foreach ($workspace as $item)
                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
@@ -271,7 +272,7 @@
 
                      $('#exampleModal').find('#name').val(response.user.name);
                      $('#exampleModal').find('#email').val(response.user.email);
-                     $('#exampleModal').find('#role').val(response.role.name);
+                    //  $('#exampleModal').find('#role').val(response.role.name);
                      $('#exampleModal').find('#tag-assign-user').val(response.model_has_role.tag);
                      $('#exampleModal').find('#workspace').val(response.model_has_role.workspace_id);
                     //  $('#exampleModal').find('#depart_user_role').val(response.model_has_role.depart_user_role_id);
@@ -487,41 +488,41 @@
 
         
 
-        $('#workspace').change(function() {
+        // $('#workspace').change(function() {
 
-            const workspace_id = $(this).val();
+        //     const workspace_id = $(this).val();
 
-            var select = $('#department_name');
+        //     var select = $('#department_name');
 
-            select.empty(); // Clear existing options
+        //     select.empty(); // Clear existing options
 
-            $.ajax({
-            type: 'POST',
-            url: '{{ route('superadmin.get_department', ['id' => 'workspace_id']) }}'.replace('workspace_id', workspace_id), // Replace 'permissionId' with the actual permission ID
+        //     $.ajax({
+        //     type: 'POST',
+        //     url: '{{ route('superadmin.get_department', ['id' => 'workspace_id']) }}'.replace('workspace_id', workspace_id), // Replace 'permissionId' with the actual permission ID
 
-            data: {
-                _token: '{{ csrf_token() }}',
-                workspace_id: workspace_id
+        //     data: {
+        //         _token: '{{ csrf_token() }}',
+        //         workspace_id: workspace_id
             
-            },
-            success: function(response) {
+        //     },
+        //     success: function(response) {
 
 
-                $.each(response, function (index, item) {
+        //         $.each(response, function (index, item) {
 
-                select.append('<option value="' + item.id + '">' + item.name + '</option>');
-                });
-
-
-            },
-            error: function(error) {
-                // Handle error if needed
-                console.error('AJAX request error', error);
-            }
-            });
+        //         select.append('<option value="' + item.id + '">' + item.name + '</option>');
+        //         });
 
 
-            });
+        //     },
+        //     error: function(error) {
+        //         // Handle error if needed
+        //         console.error('AJAX request error', error);
+        //     }
+        //     });
+
+
+        //     });
 
  
         var hodUsers = @json($hodUsers);

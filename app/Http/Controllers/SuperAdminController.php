@@ -143,8 +143,9 @@ class SuperAdminController extends Controller
 
         // dd($user);
 
-        $role = Role::all();
+        $role = Role::get();
 
+   
 
         $depart_user_role = DepartUserRole::get();
 
