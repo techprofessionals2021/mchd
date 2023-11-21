@@ -785,6 +785,7 @@ class HomeController extends Controller
                                 });  
                             })
                             ->whereHas('stage', function($query) use ($doneStage){
+                                // dd($doneStage->id);
                                $query->where('status',$doneStage->id);
                             })->count();
     
