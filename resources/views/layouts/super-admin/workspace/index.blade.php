@@ -4,7 +4,7 @@
     {{ __('Workspaces') }}
 @endsection
 @section('links')
-   
+
     <li class="breadcrumb-item"> {{ __('Workspaces') }}</li>
 @endsection
 @push('css-page')
@@ -32,32 +32,38 @@
                                     <th>No</th>
                                     <th>Workspace Name</th>
                                     <th>Action</th>
-                                
+
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($workspace as $item)
                                 <tr>
-                                    
-                                <td>{{$item->id}} </td>   
-                                <td>{{$item->name}} </td>   
-                                <td> 
+
+                                <td>{{$item->id}} </td>
+                                <td>{{$item->name}} @if ($item->is_default == 1) <span class="status_badge_dash badge bg-success p-2 m-l-10 px-3 rounded">Default</span> @endif  </td>
+                                <td>
                                     <button type="button" class="btn btn-danger btn-delete btn-sm" data-record-id="{{ $item->id }}">
-                                        <i class="fas fa-trash"></i> 
+                                        <i class="fas fa-trash"></i>
                                     </button>
 
                                     {{-- <a data-url="{{route('superadmin.tasks.edit',[$get_workspace_slug,$project_id,$item->id])}}" data-ajax-popup="true" data-toggle="tooltip" class="btn btn-primary btn-sm" style="color: white" >
-                                        <i class="fas fa-edit"></i> 
+                                        <i class="fas fa-edit"></i>
                                     </a> --}}
                                     <a href="{{route('superadmin.workspace_projects', ['workspace_id' => $item->id])}}" class="btn btn-light btn-sm">
-                                        <i class="fas fa-eye"></i> 
+                                        <i class="fas fa-eye"></i>
                                     </a>
-        
+                                    @if ($item->is_default == 0)
+                                    <a href="{{route('superadmin.select_default_workspace', ['workspace_id' => $item->id])}}" class="btn btn-light btn-sm">
+                                        <i class="fas fa-check-circle"></i>
+                                    </a>
+                                    @endif
+
+
                                 </td>
 
-                               
+
                                 </tr>
-                                @endforeach 
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -113,7 +119,7 @@
                     data: {
                         _token: '{{ csrf_token() }}',
                         id: workspace_id
-                     
+
                     },
                     success: function(response) {
                         // Handle success response if needed

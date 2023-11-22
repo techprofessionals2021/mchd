@@ -89,8 +89,10 @@ class RegisteredUserController extends Controller
         ]);
 
         // get workspace id by using depart id
-        $workspace_id = Department::find($request->department_id)->workspaces->first()->id;
-        // dd($workspace_id);
+        // $workspace_id = Department::find($request->department_id)->workspaces->first()->id;
+        $workspace_id = WorkSpace::where('is_default',1)->first()->id;
+
+        // dd($workspace);
 
         // create user
         $user = User::create([
@@ -121,16 +123,16 @@ class RegisteredUserController extends Controller
         {
             $userWorkspace->save();
 
-            $userWorkspace->departUserRoles()->attach($request->depart_user_role_id);
+            // $userWorkspace->departUserRoles()->attach($request->depart_user_role_id);
 
         }
 
             $user->currant_workspace = $workspace_id;
-          
+
             // assigned depart to a user
             $user->departments()->attach($request->department_id,['role_id' => $request->depart_user_role_id]);
             // dd($user->departments()->attach($request->department_id,['role_id' => $request->depart_user_role_id]));
-          
+
 
             User::userDefaultDataRegister($user);
 
