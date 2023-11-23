@@ -99,7 +99,7 @@
     <link rel="stylesheet" href="{{asset('assets/css/plugins/animate.min.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/custom/libs/summernote/summernote-bs4.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
- 
+
 
     <!-- vendor css -->
     @stack('css-page')
@@ -324,6 +324,23 @@
     </div>
 </div>
 
+
+
+
+<div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">All Permissions</h5>
+
+        </div>
+        <div class="modal-body mediumModalBody">
+
+        </div>
+
+      </div>
+    </div>
+  </div>
 
 @php
     \App::setLocale(env('DEFAULT_LANG'));

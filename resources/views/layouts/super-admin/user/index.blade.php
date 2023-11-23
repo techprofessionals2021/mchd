@@ -4,7 +4,7 @@
     {{ __('Users') }}
 @endsection
 @section('links')
-   
+
     <li class="breadcrumb-item"> {{ __('Users') }}</li>
 @endsection
 @push('css-page')
@@ -39,7 +39,7 @@
                           <label for="recipient-name" class="col-form-label">Name:</label>
                           <input type="text" required class="form-control" name="name" id="name">
                         </div>
-                      
+
 
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Email:</label>
@@ -59,8 +59,8 @@
                             </select>
                          </div>
 
-                    
-                        
+
+
                         <div class="form-group" id="workspace-div" style="display: none" >
                             <label for="permission">Workspace</label>
                             <select name="workspace_id[]" id="workspace" class="form-control" multiple >
@@ -74,7 +74,7 @@
                         <div class="form-group" id="department-div" style="display: none" >
                             <label for="permission">Department</label>
                             <select name="department_id[]" id="department_name" class="form-control" multiple >
-                      
+
                             </select>
                         </div>
 
@@ -87,7 +87,7 @@
                             </select>
                         </div>
 
-                        
+
                         <div class="form-group" id="hod-div" style="display: none" >
                             <label for="permission">Hods</label>
                             <select name="hods[]" id="hod"  class="form-control" multiple>
@@ -100,14 +100,14 @@
                         <div class="form-group" id="executive-div" style="display: none">
                             <label for="permission">Executives</label>
                             <select name="executives[]" id="executive" class="form-control" multiple >
-                          
+
                             </select>
                         </div>
 
                         {{-- <div class="form-group" id="executive-div" style="display: none">
                             <label for="permission">Executives</label>
                             <select name="executives[]" id="executive" class="form-control multi-select" multiple>
-            
+
                             </select>
                         </div> --}}
 
@@ -119,7 +119,7 @@
                                 ...
                               <option value="WY">Wyoming</option>
                             </select> --}}
-                  
+
                         {{-- </div> --}}
 
 
@@ -132,8 +132,8 @@
                             <strong class="text-danger">{{ $errors->first('tags') }}</strong>
                             @endif --}}
                         </div>
-                        
-                     
+
+
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -154,16 +154,16 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Action</th>
-                                
+
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($user as $item)
                                 <tr>
-                                    
-                                <td>{{$item->id}} </td>   
-                                <td>{{$item->name}} </td>   
-                                <td>{{$item->email}} </td>   
+
+                                <td>{{$item->id}} </td>
+                                <td>{{$item->name}} </td>
+                                <td>{{$item->email}} </td>
 
                                 <td>
                                     <div class="dropdown">
@@ -173,6 +173,9 @@
                                         <div class="dropdown-menu" aria-labelledby="submenuDropdown">
                                             <button type="submit" class="dropdown-item btn btn-danger btn-delete" data-record-id="{{ $item->id }}">
                                                 <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                            <button type="button" class="dropdown-item btn btn-danger btn-permission" data-user-id="{{ $item->id }}">
+                                                <i class="fas fa-trash"></i> Permissions
                                             </button>
                                             {{-- <form method="POST" action="{{ route('superadmin.delete-user-superadmin', ['id' => $item->id]) }}">
                                                 @csrf
@@ -186,9 +189,9 @@
                                         </div>
                                     </div>
                                 </td>
-                               
+
                                 </tr>
-                                @endforeach 
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -239,19 +242,36 @@
                     );
             });
        }
+
+       $('.btn-permission').click(function (e) {
+            e.preventDefault();
+            const userId = $(this).data('user-id');
+            $.ajax({
+            type: "GET",
+            url: "{{route('superadmin.user.permission-modal.show')}}",
+            data: {
+                userId
+            },
+            dataType: "json",
+            success: function (response) {
+                $('.mediumModalBody').html(response.html);
+                $('#mediumModal').modal('show')
+            }
+       });
+       });
 });
-  
+
     $('.modal-id').on('click', function () {
 
 
-  
+
 
             const user_id = $(this).data('id');
 
 
             // Update the modal content with the data
             $('#exampleModal').find('.modal-title').text('Edit User');
-     
+
             $('#exampleModal').find('#user_id').val(user_id);
 
             $.ajax({
@@ -261,14 +281,14 @@
                 data: {
                     _token: '{{ csrf_token() }}',
                     user_id: user_id
-                  
+
                 },
                 success: function(response) {
 
 
 
-                              
-             
+
+
 
                      $('#exampleModal').find('#name').val(response.user.name);
                      $('#exampleModal').find('#email').val(response.user.email);
@@ -276,8 +296,8 @@
                      $('#exampleModal').find('#tag-assign-user').val(response.model_has_role.tag);
                      $('#exampleModal').find('#workspace').val(response.model_has_role.workspace_id);
                     //  $('#exampleModal').find('#depart_user_role').val(response.model_has_role.depart_user_role_id);
-                    
-                     
+
+
                     //  var selectedDepartmentIds = response.model_has_role.department_id;
 
                     // // Clear existing selections
@@ -307,7 +327,7 @@
                         $('#depart-role-div').show();
                         $('#executive-div').hide();
                         $('#hod-div').hide();
-                        
+
                     }
                     if (response.role.name == "Executive") {
                         // Show the second div when "hod" is selected
@@ -332,12 +352,12 @@
                     }
 
 
-           
+
 
 
 
                     var hodUsers = @json($hodUsers->pluck('id')->toArray());
-                    
+
 
                     var executiveUsers = @json($executiveUsers->pluck('id')->toArray());
 
@@ -345,8 +365,8 @@
                     //     return String(id);
                     // });
 
-              
-                 
+
+
                     // console.log(executiveUsers);
 
 
@@ -379,7 +399,7 @@
                     });
 
 
-          
+
 
 
                 //     $('#hod option').each(function () {
@@ -397,7 +417,7 @@
                 //         $(this).prop("selected", false);
                 //     }
 
-                  
+
                 // });
 
                 $('#executive option').each(function () {
@@ -411,13 +431,13 @@
                     else if (response.model_has_role.executives.includes(optionValue)) {
                         $(this).prop("selected", true); // Select the option if its value is in the array
                     } else {
-                        $(this).prop("selected", false); 
+                        $(this).prop("selected", false);
                     }
 
                 });
 
 
-                
+
                 $('#workspace option').each(function () {
 
                     var optionValue = parseInt($(this).val()); // Convert the value to an integer
@@ -425,13 +445,13 @@
                      if (response.model_has_role.workspace_id.includes(optionValue)) {
                         $(this).prop("selected", true); // Select the option if its value is in the array
                     } else {
-                        $(this).prop("selected", false); 
+                        $(this).prop("selected", false);
                     }
 
                     });
 
 
-                               
+
                 $('#depart_user_role option').each(function () {
 
                 var optionValue = parseInt($(this).val()); // Convert the value to an integer
@@ -439,7 +459,7 @@
                 if (response.model_has_role.depart_user_role_id.includes(optionValue)) {
                     $(this).prop("selected", true); // Select the option if its value is in the array
                 } else {
-                    $(this).prop("selected", false); 
+                    $(this).prop("selected", false);
                 }
 
                 });
@@ -447,17 +467,17 @@
                 $('#department_name option').each(function () {
 
                     var optionValue = parseInt($(this).val()); // Convert the value to an integer
-                    
+
                     if (response.model_has_role.department_id.includes(optionValue)) {
                         $(this).prop("selected", true); // Select the option if its value is in the array
                     } else {
-                        $(this).prop("selected", false); 
+                        $(this).prop("selected", false);
                     }
 
                     });
 
 
-            
+
 
 
                 // $('#executive').select2();
@@ -471,7 +491,7 @@
             });
 
 
-    
+
 
 
             // var hodUsers = @json($hodUsers);
@@ -482,11 +502,11 @@
 
 
 
-            
+
         });
 
 
-        
+
 
         // $('#workspace').change(function() {
 
@@ -503,7 +523,7 @@
         //     data: {
         //         _token: '{{ csrf_token() }}',
         //         workspace_id: workspace_id
-            
+
         //     },
         //     success: function(response) {
 
@@ -524,7 +544,7 @@
 
         //     });
 
- 
+
         var hodUsers = @json($hodUsers);
                     var selectElement = $("#hod");
                     $.each(hodUsers, function (index, user) {
@@ -551,11 +571,11 @@
                             .attr("value", Departments.id)
                             .text(Departments.name));
                     });
-      
+
         $('#role').change(function() {
 
 
-    
+
             if ($(this).val() === 'HOD') {
                 // Show the second div when "hod" is selected
                 $('#workspace-div').show();
@@ -585,7 +605,7 @@
                 $('#hod-div').hide();
                 $('#executive-div').show();
             }
-            
+
             else {
                 // Hide the second div for other role selections
                 // $('#workspace-div').hide();
@@ -616,7 +636,7 @@
                         data: {
                             _token: '{{ csrf_token() }}',
                             id: user_id
-                        
+
                         },
                         success: function(response) {
                             // Handle success response if needed
@@ -632,7 +652,7 @@
                     }
                 });
             });
- 
+
   </script>
 
 

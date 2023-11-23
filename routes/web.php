@@ -287,6 +287,10 @@ Route::post('/get-department/{id}', [SuperAdminController::class, 'get_departmen
 Route::post('/user/delete/{id}',[SuperAdminController::class, 'delete_user'])->name('delete-user-superadmin')->middleware(['auth']);
 
 Route::post('/user/update', [SuperAdminController::class, 'update_user'])->name('update_user')->middleware(['auth']);
+Route::get('/user/permission', [SuperAdminController::class, 'showUserPermissionModal'])->name('user.permission-modal.show')->middleware(['auth']);
+Route::post('grant-permission', [SuperAdminController::class, 'grandUserPermission'])->name('user.grand-permission')->middleware(['auth']);
+Route::post('revoke-permission', [SuperAdminController::class, 'revokeUserPermission'])->name('user.revoke-permission')->middleware(['auth']);
+
 
 Route::get('/project', [SuperAdminController::class, 'project'])->name('project')->middleware(['auth']);
 Route::get('/task', [SuperAdminController::class, 'task'])->name('task')->middleware(['auth']);
