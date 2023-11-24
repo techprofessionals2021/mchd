@@ -535,11 +535,24 @@ class ProjectController extends Controller
                 $currentStatus='All';
                 if($currentStatus == 'All'){
                     $tasks = Task::with('sub_tasks','stage')->where('project_id', '=', $projectID)
+                    ->where(function ($query) use ($objUser) {
+                        $query->whereRaw('FIND_IN_SET(?, assign_to)', [$objUser->id])
+                              ->orWhereHas('project', function ($subQuery) use ($objUser) {
+                                  $subQuery->where('created_by', $objUser->id);
+                              });
+                    })
                     ->get();
                 }else{
                     $tasks = Task::with('sub_tasks','stage')->where('project_id', '=', $projectID)->whereHas('stage',function($query) use($currentStatus){
                         $query->where('name',$currentStatus);
-                    })->get();
+                    })
+                    ->where(function ($query) use ($objUser) {
+                        $query->whereRaw('FIND_IN_SET(?, assign_to)', [$objUser->id])
+                              ->orWhereHas('project', function ($subQuery) use ($objUser) {
+                                  $subQuery->where('created_by', $objUser->id);
+                              });
+                    })
+                    ->get();
                 }
 
                 $taskResource = TaskResource::collection($tasks);
@@ -598,12 +611,26 @@ class ProjectController extends Controller
 
                 if($currentStatus == 'All'){
                     // dd('if');
-                    $tasks = Task::with('sub_tasks','stage')->where('project_id', '=', $projectID)->get();
+                    $tasks = Task::with('sub_tasks','stage')->where('project_id', '=', $projectID)
+                    ->where(function ($query) use ($objUser) {
+                        $query->whereRaw('FIND_IN_SET(?, assign_to)', [$objUser->id])
+                              ->orWhereHas('project', function ($subQuery) use ($objUser) {
+                                  $subQuery->where('created_by', $objUser->id);
+                              });
+                    })
+                    ->get();
                 }else{
                     // dd('else');
                     $tasks = Task::with('sub_tasks','stage')->where('project_id', '=', $projectID)->whereHas('stage',function($query) use($currentStatus){
                         $query->where('name',$currentStatus);
-                    })->get();
+                    })
+                    ->where(function ($query) use ($objUser) {
+                        $query->whereRaw('FIND_IN_SET(?, assign_to)', [$objUser->id])
+                              ->orWhereHas('project', function ($subQuery) use ($objUser) {
+                                  $subQuery->where('created_by', $objUser->id);
+                              });
+                    })
+                    ->get();
                 }
 
                 // dd($tasks);
@@ -660,13 +687,27 @@ class ProjectController extends Controller
                 if($currentStatus == 'All'){
                     // dd('if');
                     $tasks = Task::with('sub_tasks','stage')->where('project_id', '=', $projectID)
-                    ->where('title','LIKE',"%{$request->search}%")->get();
+                    ->where('title','LIKE',"%{$request->search}%")
+                    ->where(function ($query) use ($objUser) {
+                        $query->whereRaw('FIND_IN_SET(?, assign_to)', [$objUser->id])
+                              ->orWhereHas('project', function ($subQuery) use ($objUser) {
+                                  $subQuery->where('created_by', $objUser->id);
+                              });
+                    })
+                    ->get();
                 }else{
                     // dd('else');
                     $tasks = Task::with('sub_tasks','stage')->where('project_id', '=', $projectID)
                     ->where('title','LIKE',"%{$request->search}%")->whereHas('stage',function($query) use($currentStatus){
                         $query->where('name',$currentStatus);
-                    })->get();
+                    })
+                    ->where(function ($query) use ($objUser) {
+                        $query->whereRaw('FIND_IN_SET(?, assign_to)', [$objUser->id])
+                              ->orWhereHas('project', function ($subQuery) use ($objUser) {
+                                  $subQuery->where('created_by', $objUser->id);
+                              });
+                    })
+                    ->get();
                 }
 
                $taskResource = TaskResource::collection($tasks);
