@@ -16,8 +16,10 @@ return new class extends Migration
         Schema::create('huddle_meetings', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('description');
-            $table->date('date');
+            $table->longText('description');
+            $table->bigInteger('meeting_cundocter_id');
+            $table->string('color');
+            $table->date('meeting_date');
             $table->timestamps();
         });
     }

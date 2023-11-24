@@ -1,8 +1,11 @@
 <template>
-    <div class="m-10 text-end">
-        <a href="#" class="btn btn-sm btn-primary" title="Add Meeting" @click="handleOpenModal"><i
-                class="ti ti-plus"></i></a>
+    <div v-if="hasPermission('create-meeting')"> <!-- Replace 'view_data' with your actual permission name -->
+        <div class="m-10 text-end">
+            <a href="#" class="btn btn-sm btn-primary" title="Add Meeting" @click="handleOpenModal"><i
+                    class="ti ti-plus"></i></a>
+        </div>
     </div>
+
     <Qalendar :events="events" :config="config" @date-was-clicked="handleDateClicked"
         @event-was-clicked="handleEventClicked">
         <template #eventDialog="props">
@@ -39,9 +42,10 @@
 
                     </div>
                     <div class="mt-2">
-                            <a-popconfirm title="Are you sure？" ok-text="Yes" cancel-text="No"  @confirm="handleCancelMeeting(props?.eventDialogData?.id)">
-                                <a-button class="mt-2 w-100" danger>Cancel Meeting</a-button>
-                            </a-popconfirm>
+                        <a-popconfirm title="Are you sure？" ok-text="Yes" cancel-text="No"
+                            @confirm="handleCancelMeeting(props?.eventDialogData?.id)">
+                            <a-button class="mt-2 w-100" danger>Cancel Meeting</a-button>
+                        </a-popconfirm>
                     </div>
                 </div>
             </div>
@@ -164,7 +168,7 @@ export default {
         handleOpenModal() {
             open.value = true;
         },
-        handleCancelMeeting(meetingId){
+        handleCancelMeeting(meetingId) {
             axios.post('/meeting/cancel', {
                 id: meetingId,
             }
@@ -176,8 +180,16 @@ export default {
                 .catch(function (error) {
                     currentObj.output = error;
                 });
-            console.log(meetingId,'meetingId');
+            console.log(meetingId, 'meetingId');
+        },
+        hasPermission(permission) {
+            // Get user permissions from the meta tag
+            const userPermissions = JSON.parse(document.querySelector('meta[name="user-permissions"]').content);
+
+            // Check if the user has the specified permission
+            return userPermissions.includes(permission);
         }
+
     },
 
     data(props) {

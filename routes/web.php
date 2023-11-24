@@ -268,6 +268,7 @@ Route::get('/workspace', [SuperAdminWorkspaceController::class, 'workspace'])->n
 Route::post('/workspace/delete/{id}',[SuperAdminWorkspaceController::class, 'delete_workspace'])->name('delete-workspace-superadmin')->middleware(['auth']);
 Route::get('/workspace/projects/{workspace_id}', [SuperAdminWorkspaceController::class, 'workspace_projects'])->name('workspace_projects')->middleware(['auth']);
 Route::get('/workspace/tasks/{project_id}', [SuperAdminWorkspaceController::class, 'workspace_tasks'])->name('workspace_tasks')->middleware(['auth']);
+Route::get('/workspace/default/{workspace_id}', [SuperAdminWorkspaceController::class, 'selectDefaultWorkspace'])->name('select_default_workspace')->middleware(['auth']);
 
 //projects
 Route::get('/{slug}/projects/{id}/edit',[SuperAdminProjectController::class, 'edit'])->name('projects.edit')->middleware(['auth']);
@@ -286,6 +287,10 @@ Route::post('/get-department/{id}', [SuperAdminController::class, 'get_departmen
 Route::post('/user/delete/{id}',[SuperAdminController::class, 'delete_user'])->name('delete-user-superadmin')->middleware(['auth']);
 
 Route::post('/user/update', [SuperAdminController::class, 'update_user'])->name('update_user')->middleware(['auth']);
+Route::get('/user/permission', [SuperAdminController::class, 'showUserPermissionModal'])->name('user.permission-modal.show')->middleware(['auth']);
+Route::post('grant-permission', [SuperAdminController::class, 'grandUserPermission'])->name('user.grand-permission')->middleware(['auth']);
+Route::post('revoke-permission', [SuperAdminController::class, 'revokeUserPermission'])->name('user.revoke-permission')->middleware(['auth']);
+
 
 Route::get('/project', [SuperAdminController::class, 'project'])->name('project')->middleware(['auth']);
 Route::get('/task', [SuperAdminController::class, 'task'])->name('task')->middleware(['auth']);
@@ -902,6 +907,7 @@ Route::post('/meeting/store',[MeetingController::class,'store'])->name('meeting.
 Route::post('/meeting/cancel',[MeetingController::class,'cancelMeeting'])->name('meeting.cancel');
 Route::get('/meeting/confirmation/{meeting_id}/{decision}',[MeetingController::class,'acceptOrReject'])->name('meeting.decision');
 
+Route::post('/huddle-meeting/store',[MeetingController::class,'huddleMeetingStore'])->name('huddle-meeting.store');
 //=================================== All Workspaces page with project and tasks =============================================================//
 
 Route::get('{slug}/allworkspace-data',[WorkspaceController::class,'getAllWorkSpacesProjectsAndTasks'])->name('getAllProjectAndTasks');

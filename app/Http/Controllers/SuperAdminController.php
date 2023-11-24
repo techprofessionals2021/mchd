@@ -36,18 +36,18 @@ class SuperAdminController extends Controller
         $task = Task::count();
         $project = Project::count();
 
-        
+
         return view('layouts.super-admin.home',compact('user','workspace','task','project'));
     }
 
 
- 
+
 
 
     public function delete_user($id)
     {
         $user = User::find($id);
-        
+
         $user->delete();
 
 
@@ -74,7 +74,7 @@ class SuperAdminController extends Controller
 
     }
 
-    
+
     public function role_store(Request $request)
     {
 
@@ -84,7 +84,7 @@ class SuperAdminController extends Controller
             return redirect()->back()->withErrors(['error' => 'Role Already Exists']);
         }
 
-        
+
         $role = New Role;
 
         $role->name = $request->name;
@@ -97,7 +97,7 @@ class SuperAdminController extends Controller
     }
 
 
-       
+
     public function assign_permission(Request $request)
     {
 
@@ -107,10 +107,10 @@ class SuperAdminController extends Controller
         // Get the role and permissions models
         $role = Role::find($roleId);
         $permissions = Permission::find($permissionIds);
-    
+
         // Attach permissions to the role
         $role->permissions()->sync($permissions);
-    
+
 
 
         return redirect()->route('superadmin.role')->with('success', 'Permission Assigned Successfully.');
@@ -118,7 +118,7 @@ class SuperAdminController extends Controller
     }
 
 
-    
+
     public function get_permission_by_role($role_id)
     {
         // Retrieve permissions based on the provided role_id
@@ -130,7 +130,7 @@ class SuperAdminController extends Controller
         return response()->json($permissions);
     }
 
-    
+
 
 
 
@@ -143,7 +143,8 @@ class SuperAdminController extends Controller
 
         // dd($user);
 
-        $role = Role::all();
+        $role = Role::get();
+
 
 
         $depart_user_role = DepartUserRole::get();
@@ -170,7 +171,7 @@ class SuperAdminController extends Controller
     }
 
 
-  
+
     public function get_user_role($id)
     {
         $user = User::where('id', $id)->first(); // Retrieve a single user by their ID
@@ -192,11 +193,11 @@ class SuperAdminController extends Controller
 
         $hodUsers = User::role($hodRole)->where('id','!=',$id)->get();
 
-    
+
 
         $executiveUsers = User::role($executiveRole)->where('id','!=',$id)->get();
 
-        
+
         // dd($executiveUsers);
 
         // dd($model_has_role);
@@ -207,9 +208,9 @@ class SuperAdminController extends Controller
             'model_has_role' => $model_has_role,
             'hodUsers' => $hodUsers,
             'executiveUsers' => $executiveUsers,
-         
+
         ];
-        
+
         // dd($firstRole);
 
         return response()->json($data);
@@ -250,7 +251,7 @@ class SuperAdminController extends Controller
     {
 
 
-     
+
 
         $tags = Utility::convertTagsToJsonArray($request->tags);
         $hods = json_encode($request->hods);
@@ -259,56 +260,56 @@ class SuperAdminController extends Controller
         $department = json_encode($request->department_id);
         $depart_user_role = json_encode($request->depart_user_role);
 
-        
+
         // dd($department);
-        
+
         // dd( $tags , $hods , $executives);
 
- 
 
-       
+
+
         $user = User::find($request->user_id);
-       
+
         $user->name = $request->name;
         $user->email = $request->email;
         $user->save();
 
 
 
-        
+
         $roleName = $request->role;
 
         // Check if the user already has the role
         $model_role  = ModelHasRole::where('model_id',$request->user_id)->delete();
-        
+
         if (isset($existingRole)) {
-           
+
             $user->assignRole($role);
 
             $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $workspace,'hods' => $hods,'executives' => $executives,'department_id' => $department,'depart_user_role_id' => $depart_user_role]);
-    
-        
+
+
         } else {
-      
+
             $role = Role::where('name', $roleName)->first();
-        
+
             if (isset($role)) {
-              
+
                 // The role exists; assign it to the user.
                 $user->assignRole($role);
 
                 $user->roles()->updateExistingPivot($role->id, ['tag' => $tags,'workspace_id' => $workspace,'hods' => $hods,'executives' => $executives,'department_id' => $department,'depart_user_role_id' => $depart_user_role]);
-                
+
             } else {
                 // The role doesn't exist; create it and then assign it to the user.
                 $role = Role::create(['name' => $roleName]);
                 $user->assignRole($role);
             }
         }
-        
+
         // dd($role);
 
-      
+
         return redirect()->route('superadmin.user')->with('success', 'User Updated Successfully and Role Assigned.');
 
     }
@@ -328,5 +329,39 @@ class SuperAdminController extends Controller
         return view('layouts.super-admin.task.index',compact('task'));
     }
 
+    public function showUserPermissionModal(Request $request)
+    {
+        $user = User::find($request->userId);
+        $permissions = Permission::get();
+        // dd($user->permissions->pluck('id'));
+        $html = view('layouts.super-admin.user.permission', compact('permissions','user'))->render();
+
+        return response()->json([
+            'html' => $html
+        ]);
+    }
+    public function grandUserPermission(Request $request)
+    {
+        $user = User::find($request->userId);
+        $permission = Permission::find($request->permissionId);
+        $user->givePermissionTo($permission);
+
+
+        return response()->json([
+            'message' => 'Permission granted successfully'
+        ]);
+    }
+
+    public function revokeUserPermission(Request $request)
+    {
+        $user = User::find($request->userId);
+        $permission = Permission::find($request->permissionId);
+        $user->revokePermissionTo($permission);
+
+
+        return response()->json([
+            'message' => 'Permission revoked  successfully'
+        ]);
+    }
 
 }

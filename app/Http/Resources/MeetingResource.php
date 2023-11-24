@@ -21,12 +21,22 @@ class MeetingResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'colorScheme' => $this->color,
-            'time' => [
-                'start' => $this->meeting_date.' '.date('H:i', strtotime($this->time_in)),
-                'end' => $this->meeting_date.' '.date('H:i', strtotime($this->time_out)),
-            ],
-            'start_time' => date('H:i', strtotime($this->time_in)),
-            'end_time' => date('H:i', strtotime($this->time_out)),
+
+            $this->mergeWhen(isset($this->time_in), [
+                'time' => [
+                    'start' => $this->meeting_date.' '.date('H:i', strtotime($this->time_in)),
+                    'end' => $this->meeting_date.' '.date('H:i', strtotime($this->time_out)),
+                ],
+                'start_time' => date('H:i', strtotime($this->time_in)),
+                'end_time' => date('H:i', strtotime($this->time_out)),
+            ]),
+            $this->mergeWhen(!isset($this->time_in), [
+                'time' => [
+                    'start' => $this->meeting_date,
+                    'end' => $this->meeting_date,
+                ],
+            ]),
+
             'assignee' => UserResource::collection($this->members)
         ];
     }
