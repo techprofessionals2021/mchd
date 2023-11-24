@@ -907,6 +907,7 @@ Route::post('/meeting/store',[MeetingController::class,'store'])->name('meeting.
 Route::post('/meeting/cancel',[MeetingController::class,'cancelMeeting'])->name('meeting.cancel');
 Route::get('/meeting/confirmation/{meeting_id}/{decision}',[MeetingController::class,'acceptOrReject'])->name('meeting.decision');
 
+Route::post('/huddle-meeting/store',[MeetingController::class,'huddleMeetingStore'])->name('huddle-meeting.store');
 //=================================== All Workspaces page with project and tasks =============================================================//
 
 Route::get('{slug}/allworkspace-data',[WorkspaceController::class,'getAllWorkSpacesProjectsAndTasks'])->name('getAllProjectAndTasks');

@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('huddle_meetings', function (Blueprint $table) {
+        Schema::create('huddle_meeting_users', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->longText('description');
-            $table->bigInteger('meeting_cundocter_id');
-            $table->string('color');
-            $table->date('meeting_date');
+            $table->bigInteger('huddle_meeting_id');
+            $table->bigInteger('member_id');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('huddle_meetings');
+        Schema::dropIfExists('huddle_meeting_users');
     }
 };

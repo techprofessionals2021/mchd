@@ -174,9 +174,9 @@
                                             <button type="submit" class="dropdown-item btn btn-danger btn-delete" data-record-id="{{ $item->id }}">
                                                 <i class="fas fa-trash"></i> Delete
                                             </button>
-                                            <button type="button" class="dropdown-item btn btn-danger btn-permission" data-user-id="{{ $item->id }}">
+                                            <a  href="#"  class="dropdown-item btn btn-danger btn-permission" data-user-id="{{ $item->id }}">
                                                 <i class="fas fa-trash"></i> Permissions
-                                            </button>
+                                            </a>
                                             {{-- <form method="POST" action="{{ route('superadmin.delete-user-superadmin', ['id' => $item->id]) }}">
                                                 @csrf
                                                 @method('DELETE')
@@ -229,6 +229,25 @@
 
       var table = $('.data-table').DataTable();
 
+      $('.data-table').on('draw.dt', function() {
+        $('.btn-permission').on('click',function (e) {
+            // e.preventDefault();
+            const userId = $(this).data('user-id');
+            $.ajax({
+            type: "GET",
+            url: "{{route('superadmin.user.permission-modal.show')}}",
+            data: {
+                userId
+            },
+            dataType: "json",
+            success: function (response) {
+                $('.mediumModalBody').html(response.html);
+                $('#mediumModal').modal('show')
+            }
+       });
+       });
+        }).DataTable();
+
     });
 
     $(document).ready(function() {
@@ -243,8 +262,9 @@
             });
        }
 
-       $('.btn-permission').click(function (e) {
-            e.preventDefault();
+       $('.btn-permission').on('click',function (e) {
+            // e.preventDefault();
+
             const userId = $(this).data('user-id');
             $.ajax({
             type: "GET",
