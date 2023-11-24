@@ -1519,17 +1519,41 @@ class HomeController extends Controller
                 //completed tasks
                 $doneStage = Stage::where('workspace_id', '=', $workspace->id)->where('complete', '=', '1')->first();
                 //   dd($doneStage);
-                $completeTask += $department->projects->flatMap(function ($project) use ($doneStage) {
-                    return $project->task->where('status', $doneStage->id);
-                })->count();
-                //
-                $totalTask += $department->projects->flatMap(function ($project) {
-                    return $project->task;
-                })->count();
-                $overDueTasks += $department->projects->flatMap(function ($project) use ($doneStage) {
-                    return $project->task->where('due_date', '<=', date('Y-m-d') . ' 00:00:00')->where('status', '!=', $doneStage->id);
+      
+                $completeTask = Task::whereHas('project' , function($query) use (&$workspace_id , &$department_id , &$depart_id){
+                    $query->where('workspace',$depart_id)->whereIn('department_id',$department_id);
+                })
+                ->whereHas('assignees', function($query) use ($depart_user_role_id){
+                    $query->whereHas('departments',function($query) use ($depart_user_role_id){
+                        $query->whereIn('role_id',$depart_user_role_id); 
+                    });  
+                })
+                ->whereHas('stage', function($query) use ($doneStage){
+                   $query->whereIn('status',$doneStage);
                 })->count();
 
+
+
+                $totalTask = Task::whereHas('project' , function($query) use (&$workspace_id , &$department_id ,&$depart_id){
+                    $query->where('workspace',$depart_id)->whereIn('department_id',$department_id);
+                })
+                ->whereHas('assignees', function($query) use ($depart_user_role_id){
+                    $query->whereHas('departments',function($query) use ($depart_user_role_id){
+                        $query->whereIn('role_id',$depart_user_role_id); 
+                    });  
+                })
+               ->count();
+               
+    
+                $overDueTasks = Task::whereHas('project' , function($query) use (&$workspace_id , &$department_id , &$depart_id){
+                    $query->where('workspace',$depart_id)->whereIn('department_id',$department_id);
+                })
+                ->whereHas('assignees', function($query) use ($depart_user_role_id){
+                    $query->whereHas('departments',function($query) use ($depart_user_role_id){
+                        $query->whereIn('role_id',$depart_user_role_id); 
+                    });  
+                })
+                ->where('due_date', '<=', date('Y-m-d') . ' 00:00:00')->count();
 
                 //
                 if ($currentStatus == 'All') {
@@ -1538,10 +1562,19 @@ class HomeController extends Controller
                         'stages.name as status',
                         'stages.complete',
                     ])->join("stages", "stages.id", "=", "tasks.status")
-                        ->whereHas('project', function ($query) use ($workspace_id, $depart_id) {
-                            $query->where('department_id', $depart_id);
-                            // $query->whereIn('workspace', $workspace_id);
-                        })->orderBy('tasks.id', 'desc')->get();
+                        ->whereHas('project', function ($query) use ($workspace_id,&$department_id,&$depart_id) {
+                            $query->whereIn('department_id', $department_id);
+                            $query->where('workspace', $depart_id);
+                        })
+                        ->whereHas('assignees', function ($query) use ($department_id, &$depart_user_role_id) {
+                            $query->whereHas('departments',function($q)use(&$department_id,&$depart_user_role_id){
+                                $q->where('department_id', $department_id)
+                                ->whereIn('role_id', $depart_user_role_id);
+                            });
+                            // $query->whereIn('department_id', $department_id)
+                            //     ->whereIn('role_id', $depart_user_role_id);
+                        })
+                        ->orderBy('tasks.id', 'desc')->get();
                 } else {
                     $tasks = Task::with('project', 'stage')->select([
                         'tasks.*',
