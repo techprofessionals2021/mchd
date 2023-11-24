@@ -3590,7 +3590,14 @@ class ProjectController extends Controller
                             }
                         }
                         $task->orderBy('order');
-                        $status['tasks'] = $task->where('status', '=', $status->id)->get();
+                        $status['tasks'] = $task->where('status', '=', $status->id)
+                        ->where(function ($query) use ($objUser) {
+                            $query->whereRaw('FIND_IN_SET(?, assign_to)', [$objUser->id])
+                                  ->orWhereHas('project', function ($subQuery) use ($objUser) {
+                                      $subQuery->where('created_by', $objUser->id);
+                                  });
+                        })
+                        ->get();
                     }
                 }
                 // dd('sdsd');
@@ -3621,9 +3628,23 @@ class ProjectController extends Controller
 
         if ($project && (isset($permissions) && in_array('show gantt', $permissions)) || (isset($currentWorkspace) && $currentWorkspace->permission == 'Owner')) {
             if ($objUser->getGuard() == 'client' || $currentWorkspace->permission == 'Owner') {
-                $tasksobj = Task::where('project_id', '=', $project->id)->orderBy('start_date')->get();
+                $tasksobj = Task::where('project_id', '=', $project->id)->orderBy('start_date')
+                ->where(function ($query) use ($objUser) {
+                    $query->whereRaw('FIND_IN_SET(?, assign_to)', [$objUser->id])
+                          ->orWhereHas('project', function ($subQuery) use ($objUser) {
+                              $subQuery->where('created_by', $objUser->id);
+                          });
+                })
+                ->get();
             } else {
-                $tasksobj = Task::where('project_id', '=', $project->id)->where('assign_to', '=', $objUser->id)->orderBy('start_date')->get();
+                $tasksobj = Task::where('project_id', '=', $project->id)->where('assign_to', '=', $objUser->id)->orderBy('start_date')
+                ->where(function ($query) use ($objUser) {
+                    $query->whereRaw('FIND_IN_SET(?, assign_to)', [$objUser->id])
+                          ->orWhereHas('project', function ($subQuery) use ($objUser) {
+                              $subQuery->where('created_by', $objUser->id);
+                          });
+                })
+                ->get();
             }
             foreach ($tasksobj as $task) {
                 $tmp = [];
