@@ -175,7 +175,7 @@
                                                 <i class="fas fa-trash"></i> Delete
                                             </button>
                                             <a  href="#"  class="dropdown-item btn btn-danger btn-permission" data-user-id="{{ $item->id }}">
-                                                <i class="fas fa-trash"></i> Permissions
+                                                <i class="fas fa-volleyball-ball"></i> Permissions
                                             </a>
                                             {{-- <form method="POST" action="{{ route('superadmin.delete-user-superadmin', ['id' => $item->id]) }}">
                                                 @csrf
