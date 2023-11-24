@@ -445,7 +445,7 @@
                                 <div class="row">
                                     <div class="col-9">
                                         <h5 class="">
-                                            {{ __('Department List') }}
+                                            {{ __('Workspace List') }}
                                         </h5>
                                     </div>
 
@@ -455,12 +455,12 @@
                                 <div class="table-responsive">
                                     <table class="table table-centered table-hover mb-0 animated">
                                         <thead>
-                                            <th>Department Name</th>
+                                            <th>Workspace Name</th>
                                             <th>Total Tasks</th>
 
                                         </thead>
                                         <tbody>
-                                            @foreach ($departmentList as $depart)
+                                            {{-- @foreach ($departmentList as $depart)
                                                 <tr>
 
                                                     <td>
@@ -479,7 +479,29 @@
                                                     </td>
 
                                                 </tr>
-                                            @endforeach
+                                            @endforeach --}}
+
+
+                                                  @foreach ($hod_workspaces as $depart)
+                                                <tr>
+
+                                                    <td>
+                                                        <div class="font-14 mt-1 font-weight-normal">
+                                                            <i class="fas fa-circle text-success"></i> <!-- Add your icon here -->
+                                                            <a href="{{route('single_depart_report', ['depart_id' => $depart->id])}}">
+                                                                {{ $depart->name }}
+                                                            </a>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+
+                                                        <div class="badge badge-pill badge-xs badge-danger rounded">{{$depart->tasks_count}}</div>
+
+                                                    </td>
+
+                                                </tr>
+                                            @endforeach 
                                         </tbody>
                                     </table>
                                 </div>
