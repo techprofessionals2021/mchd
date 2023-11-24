@@ -534,7 +534,8 @@ class ProjectController extends Controller
 
                 $currentStatus='All';
                 if($currentStatus == 'All'){
-                    $tasks = Task::with('sub_tasks','stage')->where('project_id', '=', $projectID)->get();
+                    $tasks = Task::with('sub_tasks','stage')->where('project_id', '=', $projectID)
+                    ->get();
                 }else{
                     $tasks = Task::with('sub_tasks','stage')->where('project_id', '=', $projectID)->whereHas('stage',function($query) use($currentStatus){
                         $query->where('name',$currentStatus);
