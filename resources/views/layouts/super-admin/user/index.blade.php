@@ -49,7 +49,7 @@
                           <input type="hidden" name="user_id" id="user_id">
 
 
-                          <div class="form-group">
+                        <div class="form-group">
                             <label for="permission">Role</label>
                             <select name="role" id="role" class="form-control" required>
                                 <option value="">- Select Role -</option>
