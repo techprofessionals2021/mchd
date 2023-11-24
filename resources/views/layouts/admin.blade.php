@@ -75,6 +75,9 @@
     <meta property="twitter:description" content="{{ $meta_setting['meta_description'] }}">
     <meta property="twitter:image" content="{{ asset($meta_images . $meta_setting['meta_image']) }}">
 
+    {{-- permissions --}}
+    <meta name="user-permissions" content="{{ json_encode(auth()->user()->permissions->pluck('name')) }}">
+    
     <title>
         @if(trim($__env->yieldContent('page-title')) && Auth::user()->type == 'admin')
             {{ config('app.name', 'mchd') }} -@yield('page-title')

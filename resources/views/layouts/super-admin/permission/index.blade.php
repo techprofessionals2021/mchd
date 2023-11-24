@@ -4,7 +4,7 @@
     {{ __('Permissions') }}
 @endsection
 @section('links')
-   
+
     <li class="breadcrumb-item"> {{ __('Permissions') }}</li>
 @endsection
 @push('css-page')
@@ -38,8 +38,8 @@
               <label for="recipient-name" class="col-form-label">Permission Name:</label>
               <input type="text" required class="form-control" name="name" id="recipient-name">
             </div>
-          
-         
+
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -50,9 +50,9 @@
     </div>
   </div>
 
-  {{-- <div class="col-md-10 text-left mb-4">
+  <div class="col-md-10 text-left mb-4">
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Permission</button>
-</div> --}}
+</div>
     <div class="card">
         @if($errors->has('error'))
         <div class="alert alert-danger">
@@ -60,49 +60,49 @@
         </div>
       @endif
         <div class="card-body mt-3 mx-2">
-        
+
             <div class="row">
-             
+
                 <div class="col-md-12 mt-2">
 
                     <div class="table-responsive">
-                     
+
                         <table class="table table-bordered data-table" style="width: 100%">
-                          
+
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Permission</th>
                                     <th>Status</th>
                                     {{-- <th>Action</th> --}}
-                               
-                                
+
+
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($permissions as $item)
                                 <tr>
-                                    
-                                <td>{{$item->id}} </td>   
-                                <td>{{$item->name}} </td>   
 
-                              
+                                <td>{{$item->id}} </td>
+                                <td>{{$item->name}} </td>
+
+
                                 <td>
                                   <div class="form-check form-switch d-inline-block col">
                                   <input class="form-check-input permission-toggle" id="is_active" name="is_active" type="checkbox" value="{{$item->id }}"  {{ $item->is_active == 1 ? 'checked' : '' }}>
                                   </div>
-                                </td>   
+                                </td>
 
                                 {{-- <td>
                                     <button type="button" class="btn btn-danger btn-delete" data-record-id="{{ $item->id }}">
                                         <i class="fas fa-trash"></i> Delete
                                     </button>
                                   </td>    --}}
-                               
-                              
- 
+
+
+
                                 </tr>
-                                @endforeach 
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -141,7 +141,7 @@
       $('.permission-toggle').click(function() {
             var isChecked = $(this).prop('checked');
             var permissionId = $(this).val(); // Get the value attribute, which contains the permission ID
-            
+
             // Define your AJAX request
             $.ajax({
                 type: 'POST',
@@ -187,7 +187,7 @@
                     data: {
                         _token: '{{ csrf_token() }}',
                         id: permission_id
-                    
+
                     },
                     success: function(response) {
                         // Handle success response if needed

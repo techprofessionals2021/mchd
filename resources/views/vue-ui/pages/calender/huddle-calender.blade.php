@@ -24,6 +24,10 @@
     .calendar-root{
         border: 3px solid rgb(224 224 224) !important;
     }
+
+    .calendar-week__event{
+        height: auto !important;
+    }
 </style>
 @section('page-title')
     {{ __('Huddle Calendar') }}
@@ -112,5 +116,6 @@
         </div> --}}
     @endsection
     @push('scripts')
-        <script></script>
+        <script>
+        </script>
     @endpush

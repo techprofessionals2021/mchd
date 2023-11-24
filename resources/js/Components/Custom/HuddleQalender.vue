@@ -1,10 +1,13 @@
 <template>
+
+    <div v-if="hasPermission('create-meeting')"> <!-- Replace 'view_data' with your actual permission name -->
     <div class="m-10 text-end">
         <a href="#" class="btn btn-sm btn-primary" title="Add Meeting" @click="handleOpenModal"><i
                 class="ti ti-plus"></i></a>
     </div>
+    </div>
     <Qalendar :events="events" :config="config" @date-was-clicked="handleDateClicked"
-        @event-was-clicked="handleEventClicked">
+        @event-was-clicked="handleEventClicked" :show-time="false">
         <template #eventDialog="props">
             <div v-if="props.eventDialogData && props.eventDialogData.title">
                 <h3 :style="{ marginBottom: '8px' }" class="text-center mt-2">Meeting Details</h3>
@@ -14,7 +17,7 @@
                         <span>{{ props?.eventDialogData?.title }}</span>
                     </div>
                     <div class="mt-2">
-                        <span class="font-bold">Description</span>:
+                        <span class="font-bold">Huddles</span>:
                         <span>{{ props?.eventDialogData?.description }}</span>
                     </div>
                     <div class="row mt-2">
@@ -30,19 +33,8 @@
                                 </template>
                             </a-avatar-group>
                         </div>
-                        <div class="col-8 text-end align-self-end">
-                            <span>Time</span>:
-                            <span>{{ convertTo12HourFormat(props?.eventDialogData?.start_time) }}</span> to
-                            <span>{{ convertTo12HourFormat(props?.eventDialogData?.end_time) }}</span>
-                        </div>
-
-
                     </div>
-                    <div class="mt-2">
-                            <a-popconfirm title="Are you sure？" ok-text="Yes" cancel-text="No"  @confirm="handleCancelMeeting(props?.eventDialogData?.id)">
-                                <a-button class="mt-2 w-100" danger>Cancel Meeting</a-button>
-                            </a-popconfirm>
-                    </div>
+
                 </div>
             </div>
         </template>
@@ -57,17 +49,13 @@
     <div>
         <a-modal v-model:open="open" width="22rem" title="Create Meeting" :footer="null">
             <div>
-                <a-input v-model:value="form.title" placeholder="Enter Meeting Title" allow-clear class="mt-3" />
-                <a-textarea v-model:value="form.description" placeholder="Enter Meeting Description" allow-clear
+                <a-input v-model:value="form.title" placeholder="Enter Title" allow-clear class="mt-3" />
+                <a-textarea v-model:value="form.description" placeholder="Enter Huddles" allow-clear
                     class="mt-2" />
                 <br />
 
                 <div class="mt-3">
-                    <a-date-picker v-model:value="form.date" class="w-100" />
-                </div>
-                <div class="mt-3">
-                    <a-time-picker v-model:value="form.time_in" format="HH:mm" placeholder="Time In" />
-                    <a-time-picker v-model:value="form.time_out" format="HH:mm" placeholder="Time Out" class="m-l-20" />
+                    <a-date-picker v-model:value="form.meeting_date" class="w-100" />
                 </div>
 
                 <a-select v-model:value="form.assignee" mode="multiple" style="width: 100%" placeholder="Select Members"
@@ -128,15 +116,12 @@ export default {
         onSubmit(e) {
             e.preventDefault();
             let currentObj = this;
-            axios.post('/meeting/store', {
+            axios.post('/huddle-meeting/store', {
                 title: this.form.title,
                 description: this.form.description,
-                time_in: this.form.time_in.format("hh:mm a"),
-                time_out: this.form.time_out.format("hh:mm a"),
                 assignee: this.form.assignee,
                 color: this.form.color,
                 meeting_date: this.form.meeting_date,
-                date: this.form.date.format("YYYY-MM-DD"),
             }
 
             )
@@ -177,6 +162,13 @@ export default {
                     currentObj.output = error;
                 });
             console.log(meetingId,'meetingId');
+        },
+        hasPermission(permission) {
+            // Get user permissions from the meta tag
+            const userPermissions = JSON.parse(document.querySelector('meta[name="user-permissions"]').content);
+
+            // Check if the user has the specified permission
+            return userPermissions.includes(permission);
         }
     },
 
@@ -193,11 +185,12 @@ export default {
         return {
             events: meetings,
             config: {
-                dayBoundaries: {
-                    start: 6,
-                    end: 18,
-                },
                 // see configuration section
+                dayBoundaries: {
+                    start: 0,
+                    end: 1,
+                },
+
                 eventDialog: {
                     isCustom: true
                 },
@@ -226,18 +219,18 @@ export default {
                         },
                     }
                 },
-                // defaultMode: 'month',
+                showTime : false,
+                defaultMode: 'month',
+                disableModes:['week'],
+                showCurrentTime: false,
             },
             visible: false,
             form: {
                 title: '',
                 description: '',
-                time_in: null,
-                time_out: null,
                 assignee: [],
                 color: 'green',
                 meeting_date: null,
-                date: null
             },
             open,
             moment,
