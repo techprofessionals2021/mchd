@@ -436,44 +436,16 @@
                     </div>
                     @elseif(auth()->user()->hasRole('HOD'))
 
-                    @if ($check_home != 0)
-                    <div class="col-lg-4 ">
+        
 
-                        <div >
-                            <div class="card" >
-                                <div class="card-header">
-                                    <div class="float-end">
-                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="Refferals"><i class=""></i></a>
-                                    </div>
-
-                                    <h5>{{ __('Team Performance') }}</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-sm-12">
-                                            <div id="completion-report"></div>
-                                        </div>
-                                        <div class="row text-center">
-                                                <div class="col-12">
-                                                    <h3>Your Team Perfomance is <span class="text-dribbble"> {{ $totalTask != 0  ? ($completeTask * 100) / $totalTask : 0}}% </span></h3>
-                                                </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
-
-                    {{-- @if ($check_home != 0  )
+                    @if ($check_home != 0  )
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-9">
                                         <h5 class="">
-                                            {{ __('Workspaces List') }}
+                                            {{ __('Department List') }}
                                         </h5>
                                     </div>
 
@@ -483,7 +455,7 @@
                                 <div class="table-responsive">
                                     <table class="table table-centered table-hover mb-0 animated">
                                         <thead>
-                                            <th>Workspace Name</th>
+                                            <th>Department Name</th>
                                             <th>Total Tasks</th>
 
                                         </thead>
@@ -516,7 +488,39 @@
 
                         </div>
                      </div>
-                    @endif --}}
+                    @endif
+
+
+                    @if ($check_home != 0)
+                    <div class="col-lg-8"></div>
+                    <div class="col-lg-4 ">
+
+                        <div >
+                            <div class="card" >
+                                <div class="card-header">
+                                    <div class="float-end">
+                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="Refferals"><i class=""></i></a>
+                                    </div>
+
+                                    <h5>{{ __('Team Performance') }}</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-sm-12">
+                                            <div id="completion-report"></div>
+                                        </div>
+                                        <div class="row text-center">
+                                                <div class="col-12">
+                                                    <h3>Your Team Perfomance is <span class="text-dribbble"> {{ $totalTask != 0  ? ($completeTask * 100) / $totalTask : 0}}% </span></h3>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
 
 
 
