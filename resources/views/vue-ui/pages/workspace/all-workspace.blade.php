@@ -168,7 +168,7 @@
                                                                     <div class="card-header">
                                                                         <ul class="breadcrumb">
                                                                             <li class="breadcrumb-item text-common"><span
-                                                                                    href="{{ route('home') }}">{{ $project->workspaceData->name }}</span>
+                                                                                    href="{{ route('home') }}">{{ @$project->workspaceData->name }}</span>
                                                                             </li>
                                                                             <li
                                                                                 class="breadcrumb-item custom-bc text-common">
