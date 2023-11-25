@@ -79,10 +79,10 @@ class DepartmentController extends Controller
         $department->save();
 
 
-        $workspace = new Workspace;
+        // $workspace = new Workspace;
 
 
-        $workspace->departments()->attach($department->id,['workspace_id' => $request->workspace_id]);
+        // $workspace->departments()->attach($department->id,['workspace_id' => $request->workspace_id]);
 
 
         return redirect()->route('superadmin.department');

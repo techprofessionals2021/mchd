@@ -37,14 +37,14 @@
               <input type="text" required class="form-control" name="name" id="recipient-name">
             </div>
 
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="recipient-name" class="col-form-label">Workspace:</label>
                 <select name="workspace_id" id="role" class="form-control" required>
                     @foreach ($workspace as $value)
                         <option value="{{ $value->id }}">{{ $value->name }}</option>
                     @endforeach
                 </select>
-              </div>
+              </div> --}}
         
          
         </div>
