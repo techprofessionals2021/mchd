@@ -129,7 +129,7 @@
                                             <i class="fas fa-adjust  text-white"></i>
                                         </div>
                                         <p class="text-muted text-sm "></p>
-                                        <h6 class="">{{ __('In Completed Tasks') }}</h6>
+                                        <h6 class="">{{ __('In Progress Tasks') }}</h6>
                                         <h3 class="mb-0">{{ ($totalTask-$completeTask) }} <span class="text-success text-sm"></span>
                                         </h3>
                                     </div>
@@ -293,10 +293,10 @@
                                         <small><b>{{ $completeTask }}</b> {{ __('Tasks completed out of') }}
                                             {{ $totalTask }}</small>
                                     </div> --}}
-                                    <div class="filterTaskBtn cursor-pointer">
+                                    {{-- <div class="filterTaskBtn cursor-pointer">
                                         <img src='{{ asset('custom-ui/images/filter.svg') }}' class="m-r-5" />
                                         <span class="p-text">Filter</span>
-                                    </div>
+                                    </div> --}}
                                     <div class="filterDropdown w-25 m-l-10" style="display:none;">
                                        <select class="form-select status-dropdown" aria-label="Default select example">
                                         @foreach ($taskStatus as $status)
@@ -436,7 +436,85 @@
                     </div>
                     @elseif(auth()->user()->hasRole('HOD'))
 
+        
+
+                    @if ($check_home != 0  )
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h5 class="">
+                                            {{ __('Workspace List') }}
+                                        </h5>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="card-body ">
+                                <div class="table-responsive">
+                                    <table class="table table-centered table-hover mb-0 animated">
+                                        <thead>
+                                            <th>Workspace Name</th>
+                                            {{-- <th>Total Tasks</th> --}}
+
+                                        </thead>
+                                        <tbody>
+                                            {{-- @foreach ($departmentList as $depart)
+                                                <tr>
+
+                                                    <td>
+                                                        <div class="font-14 mt-1 font-weight-normal">
+                                                            <i class="fas fa-circle text-success"></i> <!-- Add your icon here -->
+                                                            <a href="{{route('single_depart_report', ['depart_id' => $depart->id])}}">
+                                                                {{ $depart->name }}
+                                                            </a>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+
+                                                        <div class="badge badge-pill badge-xs badge-danger rounded">{{$depart->tasks_count}}</div>
+
+                                                    </td>
+
+                                                </tr>
+                                            @endforeach --}}
+
+
+                                                  @foreach ($hod_workspaces as $workspace)
+                                                <tr>
+
+                                                    <td>
+                                                        <div class="font-14 mt-1 font-weight-normal">
+                                                            <i class="fas fa-circle text-success"></i> <!-- Add your icon here -->
+                                                            <a href="{{route('single_workspace_report', ['workspace_id' => $workspace->id])}}">
+                                                                {{ $workspace->name }}
+                                                            </a>
+                                                        </div>
+                                                    </td>
+
+                                                    {{-- <td>
+
+                                                        <div class="badge badge-pill badge-xs badge-danger rounded">{{$depart->tasks_count}}</div>
+
+                                                    </td> --}}
+
+                                                </tr>
+                                            @endforeach 
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                        </div>
+                     </div>
+                    @endif
+
+
                     @if ($check_home != 0)
+                    <div class="col-lg-8"></div>
                     <div class="col-lg-4 ">
 
                         <div >
@@ -465,58 +543,6 @@
                         </div>
                     </div>
                     @endif
-
-                    {{-- @if ($check_home != 0  )
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="row">
-                                    <div class="col-9">
-                                        <h5 class="">
-                                            {{ __('Workspaces List') }}
-                                        </h5>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="card-body ">
-                                <div class="table-responsive">
-                                    <table class="table table-centered table-hover mb-0 animated">
-                                        <thead>
-                                            <th>Workspace Name</th>
-                                            <th>Total Tasks</th>
-
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($departmentList as $depart)
-                                                <tr>
-
-                                                    <td>
-                                                        <div class="font-14 mt-1 font-weight-normal">
-                                                            <i class="fas fa-circle text-success"></i> <!-- Add your icon here -->
-                                                            <a href="{{route('single_depart_report', ['depart_id' => $depart->id])}}">
-                                                                {{ $depart->name }}
-                                                            </a>
-                                                        </div>
-                                                    </td>
-
-                                                    <td>
-
-                                                        <div class="badge badge-pill badge-xs badge-danger rounded">{{$depart->tasks_count}}</div>
-
-                                                    </td>
-
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-
-                        </div>
-                     </div>
-                    @endif --}}
 
 
 
@@ -758,13 +784,13 @@
             (function() {
 
                 var options = {
-                   series: [{{$totalTask}},{{$completeTask}}],
+                   series: [{{$totalTask-$completeTask}},{{$completeTask}}],
                    chart: {
                     height: 200,
                    type: 'donut',
 
                 },
-                labels:['Total Tasks','Completed Tasks'],
+                labels:['In Progress Tasks','Completed Tasks'],
                 dataLabels: {
                 enabled: false
               },

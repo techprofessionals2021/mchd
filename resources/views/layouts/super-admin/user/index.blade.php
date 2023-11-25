@@ -52,7 +52,7 @@
                         <div class="form-group">
                             <label for="permission">Role</label>
                             <select name="role" id="role" class="form-control" required>
-                                <option value="">- Select Role -</option>
+                                <option value="" disabled>- Select Role -</option>
                                 @foreach ($role as $roles)
                                     <option value="{{ $roles->name }}">{{ $roles->name }}</option>
                                 @endforeach
@@ -306,13 +306,25 @@
                 success: function(response) {
 
 
+                    // console.log(response.role);
+
+                    if (response.role === null) {
+                        $('#exampleModal').find('#role option[value=""]').prop('selected', true);
+
+                        $('#workspace-div').hide();
+                        $('#department-div').hide();
+                        $('#depart-role-div').hide();
 
 
-
+                        $('#hod-div').hide();
+                        $('#executive-div').hide();
+                    }
+                              
+             
 
                      $('#exampleModal').find('#name').val(response.user.name);
                      $('#exampleModal').find('#email').val(response.user.email);
-                    //  $('#exampleModal').find('#role').val(response.role.name);
+                     $('#exampleModal').find('#role').val(response.role.name);
                      $('#exampleModal').find('#tag-assign-user').val(response.model_has_role.tag);
                      $('#exampleModal').find('#workspace').val(response.model_has_role.workspace_id);
                     //  $('#exampleModal').find('#depart_user_role').val(response.model_has_role.depart_user_role_id);
@@ -370,6 +382,21 @@
                         $('#hod-div').hide();
                         $('#executive-div').show();
                     }
+
+                    if (response.role.name == "Member") {
+                        // Show the second div when "hod" is selected
+
+                        $('#depart_user_role').empty();
+                        $('#workspace').empty();
+                        $('#workspace-div').hide();
+                        $('#department-div').hide();
+                        $('#depart-role-div').hide();
+
+
+                        $('#hod-div').hide();
+                        $('#executive-div').hide();
+                    }
+
 
 
 
@@ -624,6 +651,21 @@
 
                 $('#hod-div').hide();
                 $('#executive-div').show();
+            }
+
+
+            if ($(this).val() === 'Member') {
+
+                $('#depart_user_role').empty();
+                $('#workspace').empty();
+                
+                $('#workspace-div').hide();
+                $('#department-div').hide();
+                $('#depart-role-div').hide();
+
+
+                $('#hod-div').hide();
+                $('#executive-div').hide();
             }
 
             else {

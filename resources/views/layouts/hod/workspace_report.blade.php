@@ -33,7 +33,7 @@
                                         <i class="fas fa-adjust  text-white"></i>
                                     </div>
                                     <p class="text-muted text-sm "></p>
-                                    <h6 class="">{{ __('In Completed Tasks') }}</h6>
+                                    <h6 class="">{{ __('In Progress Tasks') }}</h6>
                                     <h3 class="mb-0">{{ ($totalTask-$completeTask) }} <span class="text-success text-sm"></span>
                                     </h3>
                                 </div>
