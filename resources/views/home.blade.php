@@ -293,10 +293,10 @@
                                         <small><b>{{ $completeTask }}</b> {{ __('Tasks completed out of') }}
                                             {{ $totalTask }}</small>
                                     </div> --}}
-                                    <div class="filterTaskBtn cursor-pointer">
+                                    {{-- <div class="filterTaskBtn cursor-pointer">
                                         <img src='{{ asset('custom-ui/images/filter.svg') }}' class="m-r-5" />
                                         <span class="p-text">Filter</span>
-                                    </div>
+                                    </div> --}}
                                     <div class="filterDropdown w-25 m-l-10" style="display:none;">
                                        <select class="form-select status-dropdown" aria-label="Default select example">
                                         @foreach ($taskStatus as $status)
