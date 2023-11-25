@@ -383,6 +383,21 @@
                         $('#executive-div').show();
                     }
 
+                    if (response.role.name == "Member") {
+                        // Show the second div when "hod" is selected
+
+                        $('#depart_user_role').empty();
+                        $('#workspace').empty();
+                        $('#workspace-div').hide();
+                        $('#department-div').hide();
+                        $('#depart-role-div').hide();
+
+
+                        $('#hod-div').hide();
+                        $('#executive-div').hide();
+                    }
+
+
 
 
 
@@ -636,6 +651,21 @@
 
                 $('#hod-div').hide();
                 $('#executive-div').show();
+            }
+
+
+            if ($(this).val() === 'Member') {
+
+                $('#depart_user_role').empty();
+                $('#workspace').empty();
+                
+                $('#workspace-div').hide();
+                $('#department-div').hide();
+                $('#depart-role-div').hide();
+
+
+                $('#hod-div').hide();
+                $('#executive-div').hide();
             }
 
             else {

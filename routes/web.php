@@ -255,7 +255,7 @@ Route::get('/home/{slug?}/{currentStatus?}', [HomeController::class, 'index'])->
 Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard')->middleware(['auth','XSS']);
 
 Route::get('/index_report/{slug?}/{currentStatus?}', [HomeController::class, 'index_report'])->name('index_report')->middleware(['auth','XSS']);
-Route::get('/single_depart_report/{depart_id}/{slug?}/{currentStatus?}', [HomeController::class, 'single_depart_report'])->name('single_depart_report')->middleware(['auth','XSS']);
+Route::get('/single_workspace_report/{workspace_id}/{slug?}/{currentStatus?}', [HomeController::class, 'single_workspace_report'])->name('single_workspace_report')->middleware(['auth','XSS']);
 Route::get('/single_hod_report/{hod_id}/{slug?}/{currentStatus?}', [HomeController::class, 'single_hod_report'])->name('single_hod_report')->middleware(['auth','XSS']);
 Route::get('/single_executive_report/{executive_id}/{slug?}/{currentStatus?}', [HomeController::class, 'single_executive_report'])->name('single_executive_report')->middleware(['auth','XSS']);
 

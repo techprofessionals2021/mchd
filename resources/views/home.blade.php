@@ -456,7 +456,7 @@
                                     <table class="table table-centered table-hover mb-0 animated">
                                         <thead>
                                             <th>Workspace Name</th>
-                                            <th>Total Tasks</th>
+                                            {{-- <th>Total Tasks</th> --}}
 
                                         </thead>
                                         <tbody>
@@ -482,23 +482,23 @@
                                             @endforeach --}}
 
 
-                                                  @foreach ($hod_workspaces as $depart)
+                                                  @foreach ($hod_workspaces as $workspace)
                                                 <tr>
 
                                                     <td>
                                                         <div class="font-14 mt-1 font-weight-normal">
                                                             <i class="fas fa-circle text-success"></i> <!-- Add your icon here -->
-                                                            <a href="{{route('single_depart_report', ['depart_id' => $depart->id])}}">
-                                                                {{ $depart->name }}
+                                                            <a href="{{route('single_workspace_report', ['workspace_id' => $workspace->id])}}">
+                                                                {{ $workspace->name }}
                                                             </a>
                                                         </div>
                                                     </td>
 
-                                                    <td>
+                                                    {{-- <td>
 
                                                         <div class="badge badge-pill badge-xs badge-danger rounded">{{$depart->tasks_count}}</div>
 
-                                                    </td>
+                                                    </td> --}}
 
                                                 </tr>
                                             @endforeach 
@@ -784,13 +784,13 @@
             (function() {
 
                 var options = {
-                   series: [{{$totalTask}},{{$completeTask}}],
+                   series: [{{$totalTask-$completeTask}},{{$completeTask}}],
                    chart: {
                     height: 200,
                    type: 'donut',
 
                 },
-                labels:['Total Tasks','Completed Tasks'],
+                labels:['In Progress Tasks','Completed Tasks'],
                 dataLabels: {
                 enabled: false
               },
