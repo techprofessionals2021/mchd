@@ -604,7 +604,7 @@
 
                     @endif
                     <div class="col-lg-8"></div>
-                    {{-- @if ($check_home != 0)
+                    @if ($check_home != 0)
                     <div class="col-lg-4 ">
 
                         <div >
@@ -632,7 +632,7 @@
                             </div>
                         </div>
                     </div>
-                    @endif --}}
+                    @endif
                     </div>
 
 
