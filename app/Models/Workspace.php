@@ -35,6 +35,7 @@ class Workspace extends Model
         'invoice_footer_notes',
         'is_active',
         'workspace_type_id',
+        'is_default'
     ];
 
     public static function create($data)
