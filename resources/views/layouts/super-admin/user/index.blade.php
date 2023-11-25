@@ -319,8 +319,8 @@
                         $('#hod-div').hide();
                         $('#executive-div').hide();
                     }
-                              
-             
+
+
 
                      $('#exampleModal').find('#name').val(response.user.name);
                      $('#exampleModal').find('#email').val(response.user.email);
@@ -361,7 +361,7 @@
                         $('#hod-div').hide();
 
                     }
-                    if (response.role.name == "Executive") {
+                    if (response.role.name == "EXECUTIVE") {
                         // Show the second div when "hod" is selected
                         $('#workspace-div').hide();
                         $('#department-div').hide();
@@ -372,7 +372,7 @@
                         $('#executive-div').hide();
                     }
 
-                    if (response.role.name == "Ceo") {
+                    if (response.role.name == "CEO") {
                         // Show the second div when "hod" is selected
                         $('#workspace-div').hide();
                         $('#department-div').hide();
@@ -632,7 +632,7 @@
                 $('#executive-div').hide();
                 $('#hod-div').hide();
             }
-            if ($(this).val() === 'Executive') {
+            if ($(this).val() === 'EXECUTIVE') {
                 // Show the second div when "hod" is selected
                 $('#workspace-div').hide();
                 $('#department-div').hide();
@@ -642,7 +642,7 @@
                 $('#executive-div').hide();
             }
 
-            if ($(this).val() === 'Ceo') {
+            if ($(this).val() === 'CEO') {
                 // Show the second div when "hod" is selected
                 $('#workspace-div').hide();
                 $('#department-div').hide();
@@ -658,7 +658,7 @@
 
                 $('#depart_user_role').empty();
                 $('#workspace').empty();
-                
+
                 $('#workspace-div').hide();
                 $('#department-div').hide();
                 $('#depart-role-div').hide();

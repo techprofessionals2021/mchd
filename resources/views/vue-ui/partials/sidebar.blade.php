@@ -305,7 +305,7 @@ style="border-right: 1px solid ">
                                     src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
                                 class="dash-mtext side-nav-text">{{ __('Workspace Report') }}</span></a>
                     </li>
-                @elseif (auth()->user()->hasRole(('Executive')))
+                @elseif (auth()->user()->hasRole(('EXECUTIVE')))
 
                     <li class="dash-item dash-hasmenu">
                         <a href="{{ route('index_report',[$currentWorkspace->slug]) }}"
@@ -314,7 +314,7 @@ style="border-right: 1px solid ">
                                     src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
                                 class="dash-mtext side-nav-text">{{ __('HODS Report') }}</span></a>
                     </li>
-                @elseif (auth()->user()->hasRole(('Ceo')))
+                @elseif (auth()->user()->hasRole(('CEO')))
 
                     <li class="dash-item dash-hasmenu">
                         <a href="{{ route('index_report',[$currentWorkspace->slug]) }}"

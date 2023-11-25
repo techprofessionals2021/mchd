@@ -436,7 +436,7 @@
                     </div>
                     @elseif(auth()->user()->hasRole('HOD'))
 
-        
+
 
                     @if ($check_home != 0  )
                     <div class="col-md-4">
@@ -501,7 +501,7 @@
                                                     </td> --}}
 
                                                 </tr>
-                                            @endforeach 
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -548,7 +548,7 @@
 
 
 
-                    @elseif (auth()->user()->hasRole('Executive'))
+                    @elseif (auth()->user()->hasRole('EXECUTIVE'))
 
                     @if ($check_home != 0)
                     <div class="col-md-4">
