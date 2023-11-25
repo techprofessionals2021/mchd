@@ -513,36 +513,7 @@
                     @endif
 
 
-                    @if ($check_home != 0)
-                    <div class="col-lg-8"></div>
-                    <div class="col-lg-4 ">
 
-                        <div >
-                            <div class="card" >
-                                <div class="card-header">
-                                    <div class="float-end">
-                                        <a href="#" data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="Refferals"><i class=""></i></a>
-                                    </div>
-
-                                    <h5>{{ __('Team Performance') }}</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-sm-12">
-                                            <div id="completion-report"></div>
-                                        </div>
-                                        <div class="row text-center">
-                                                <div class="col-12">
-                                                    <h3>Your Team Perfomance is <span class="text-dribbble"> {{ $totalTask != 0  ? ($completeTask * 100) / $totalTask : 0}}% </span></h3>
-                                                </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
 
 
 
@@ -624,7 +595,7 @@
                                         </div>
                                         <div class="row text-center">
                                                 <div class="col-12">
-                                                    <h3>Your Team Perfomance is <span class="text-dribbble"> {{ $totalTask != 0  ? ($completeTask * 100) / $totalTask : 0}}% </span></h3>
+                                                    <h3>Your Team Perfomance is <span class="text-dribbble"> {{ $totalTask != 0  ? number_format((float)($completeTask * 100) / $totalTask, 2, '.', '')  : 0}}% </span></h3>
                                                 </div>
                                         </div>
                                     </div>
