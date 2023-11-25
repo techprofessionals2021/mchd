@@ -90,7 +90,7 @@ class RegisteredUserController extends Controller
 
         // get workspace id by using depart id
         // $workspace_id = Department::find($request->department_id)->workspaces->first()->id;
-        $workspace_id = WorkSpace::where('is_default',1)->first()->id;
+        $workspace = WorkSpace::where('is_default',1)->first();
 
         // dd($workspace);
 
@@ -105,30 +105,55 @@ class RegisteredUserController extends Controller
         ]);
 
 
-        // $objWorkspace = Workspace::create(['created_by'=>$user->id,'name'=>$request->workspace, 'currency_code' => 'USD', 'paypal_mode' => 'sandbox']);
-        $setting = Utility::getAdminPaymentSettings();
+        if(is_null($workspace)){
+            $objUser = $user;
+            $objWorkspace = Workspace::create(
+                [
+                    'created_by' => $objUser->id,
+                    'name' => 'Default',
+                    'currency_code' => 'USD',
+                    'paypal_mode' => 'sandbox',
+                    'is_default' => 1,
+                    // 'workspace_type_id' => ,
+                ]
+            );
+
+            UserWorkspace::create(
+                [
+                    'user_id' => $objUser->id,
+                    'workspace_id' => $objWorkspace->id,
+                    'permission' => 'Owner',
+                ]
+            );
+
+            $objUser->currant_workspace = $objWorkspace->id;
+            $objUser->save();
+           }else{
+
+            $workspace_id = $workspace->id;
+            $userWorkspace               =   new UserWorkspace();
+            $userWorkspace->user_id      =     $user->id;
+            $userWorkspace->workspace_id =    $workspace_id;
+            $userWorkspace->permission   = 'Member';
+
+            if(empty($userWorkspace))
+            {
+                $errorArray[] = $userWorkspace;
+            }
+            else
+            {
+                $userWorkspace->save();
+
+                // $userWorkspace->departUserRoles()->attach($request->depart_user_role_id);
+
+            }
+
+                $user->currant_workspace = $workspace_id;
+           }
 
 
-
-        $userWorkspace               =   new UserWorkspace();
-        $userWorkspace->user_id      =     $user->id;
-        $userWorkspace->workspace_id =    $workspace_id;
-        $userWorkspace->permission   = 'Member';
-
-        if(empty($userWorkspace))
-        {
-            $errorArray[] = $userWorkspace;
-        }
-        else
-        {
-            $userWorkspace->save();
-
-            // $userWorkspace->departUserRoles()->attach($request->depart_user_role_id);
-
-        }
-
-            $user->currant_workspace = $workspace_id;
-
+             // $objWorkspace = Workspace::create(['created_by'=>$user->id,'name'=>$request->workspace, 'currency_code' => 'USD', 'paypal_mode' => 'sandbox']);
+            $setting = Utility::getAdminPaymentSettings();
             // assigned depart to a user
             $user->departments()->attach($request->department_id,['role_id' => $request->depart_user_role_id]);
             // dd($user->departments()->attach($request->department_id,['role_id' => $request->depart_user_role_id]));
