@@ -182,6 +182,9 @@ style="border-right: 1px solid ">
 
                     @if (isset($currentWorkspace) && $currentWorkspace)
                         @auth('web')
+
+                        @if ($currentWorkspace->created_by ===  Auth::id()  && $currentWorkspace->is_default == 1  )
+
                         <li class="dash-item dash-hasmenu">
                             <a href="{{ route('users.index', $currentWorkspace->slug) }}"
                                 class="dash-link{{ Request::route()->getName() == 'users.index' ? ' active' : '' }} side-item"><span
@@ -189,6 +192,8 @@ style="border-right: 1px solid ">
                                         src="{{ asset('custom-ui/images/user-icon-image2.png') }}" class="icon-image" /></span><span
                                     class="dash-mtext side-nav-text">{{ __('Users') }}</span></a>
                         </li>
+                        @endif
+
                             <li class="dash-item dash-hasmenu">
                                 <a href=""
                                     class="dash-link {{ Request::route()->getName() == 'users.index' ? ' active' : '' }} side-item"><span

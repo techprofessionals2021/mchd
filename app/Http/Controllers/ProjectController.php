@@ -1143,22 +1143,28 @@ class ProjectController extends Controller
     }
     public function taskOrderUpdate(Request $request, $slug, $projectID)
     {
+        // dd($request->all());
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+
+        // dd($currentWorkspace->id);
         $project_name = Project::where('id', $projectID)->first();
         $user1 = $currentWorkspace->id;
-        if (isset($request->sort)) {
-            foreach ($request->sort as $index => $taskID) {
-                $task = Task::find($taskID);
-                $task->order = $index;
-                $task->save();
-            }
-        }
+        // if (isset($request->sort)) {
+        //     foreach ($request->sort as $index => $taskID) {
+        //         $task = Task::find($taskID);
+        //         $task->order = $index;
+        //         $task->save();
+        //     }
+        // }
 
         if ($request->new_status != $request->old_status) {
+        // if ($request->new_status) {
             $new_status = Stage::find($request->new_status);
             $old_status = Stage::find($request->old_status);
+      
             $user = Auth::user();
             $task = Task::find($request->id);
+            // dd($task);
             $task->status = $request->new_status;
             $task->save();
 
