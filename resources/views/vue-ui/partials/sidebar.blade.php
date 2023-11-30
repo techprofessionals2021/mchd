@@ -183,8 +183,11 @@ style="border-right: 1px solid ">
                     @if (isset($currentWorkspace) && $currentWorkspace)
                         @auth('web')
 
-                        @if ($currentWorkspace->created_by ===  Auth::id()  && $currentWorkspace->is_default == 1  )
-
+                        {{-- @if ($currentWorkspace->created_by ===  Auth::id()  && $currentWorkspace->is_default == 1  ) --}}
+                        @if ($currentWorkspace->created_by !=  Auth::id()  && $currentWorkspace->is_default == 1  )
+                 
+                        
+                        @else
                         <li class="dash-item dash-hasmenu">
                             <a href="{{ route('users.index', $currentWorkspace->slug) }}"
                                 class="dash-link{{ Request::route()->getName() == 'users.index' ? ' active' : '' }} side-item"><span
@@ -193,6 +196,8 @@ style="border-right: 1px solid ">
                                     class="dash-mtext side-nav-text">{{ __('Users') }}</span></a>
                         </li>
                         @endif
+
+
 
                             <li class="dash-item dash-hasmenu">
                                 <a href=""

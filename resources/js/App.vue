@@ -65,10 +65,20 @@
                 <a-tag :color=text?.color>{{ text?.name }}</a-tag>
                
             </template> -->
-
+<!-- 
             <template v-else-if="column.dataIndex === 'status'">
             <div>
                 <a-select v-model:value="selectedStatus" style="width: 120px"  @change="updateStatus" >
+                <a-select-option v-for="status in record['all_status']" :key="status.id" :value="status.id">
+                    <a-tag :color="status.color">{{ status.name }}</a-tag>
+                </a-select-option>
+                </a-select>
+            </div>
+            </template> -->
+
+            <template v-else-if="column.dataIndex === 'status'">
+            <div>
+                <a-select v-model:value="record.selectedStatus" style="width: 120px" @change="updateStatus(record,$event)">
                 <a-select-option v-for="status in record['all_status']" :key="status.id" :value="status.id">
                     <a-tag :color="status.color">{{ status.name }}</a-tag>
                 </a-select-option>
@@ -184,6 +194,7 @@ const rowSelection = ref({
 });
 
 
+import { message } from 'ant-design-vue';
 
 
 export default {
@@ -192,6 +203,7 @@ export default {
 
 
         const selectedStatus = ref(null);
+        
 
         
         return {
@@ -220,18 +232,15 @@ export default {
             return formattedDate;
         },
 
-        updateStatus(value){
-       
+        updateStatus(record, selectedStatus) {
             
-            if (value) {
+            if (selectedStatus) {
 
-        //   console.log(this.tasks);
-
-           const taskUpdateUrl = this.tasks[0]['url_update_task_status'];
-           const id = this.tasks[0]['id'];
-           const old_status = this.tasks[0]['old_status'];
-           const new_status = value;
-           const project_id = this.tasks[0]['project_id'];
+                const taskUpdateUrl = record['url_update_task_status'];
+                const id = record['id'];
+                const old_status = record['old_status'];
+                const new_status = selectedStatus;
+                const project_id = record['project_id'];
        
            
  
@@ -243,8 +252,7 @@ export default {
             })
             .then(response => {
          
-            this.updateSuccessMessage = 'Status updated successfully';
-            console.log( this.updateSuccessMessage);
+            message.success('Status Updated Successfully');
             })
             .catch(error => {
             console.error(error);
@@ -257,12 +265,14 @@ export default {
     mounted() {
 
         if (this.tasks.length > 0) {
-
-       
-         this.selectedStatus = ref(this.tasks[0]['old_status']);
+      // Loop through each task and set the selectedStatus using ref
+        this.tasks.forEach(task => {
+            // Assuming you want to set the default value to the old status of each task
+            task.selectedStatus = ref(task.old_status);
+        });
         } else {
-            // Provide a default value if tasks is empty
-            this.selectedStatus = null;
+        // Provide a default value if tasks is empty
+        this.selectedStatus.value = null; // or any other default value you prefer
         }
 
     },
