@@ -548,12 +548,12 @@
 
                     if (data) {
                         show_toastr('{{ __('Error') }}',
-                            'File type and size must be match with Storage setting.', 'error');
+                            'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                         //show_toastr('{{ __('Error') }}', data.message, 'error');
                         $('#file-error').text(data.errors.file[0]).show();
                     } else {
                         show_toastr('{{ __('Error') }}',
-                            'File type and size must be match with Storage setting.', 'error');
+                            'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                     }
                 }
             });

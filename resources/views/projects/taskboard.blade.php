@@ -536,8 +536,8 @@
                             "                                </div>" +
                             "                                <div class='col pl-0'>" +
                             "                                    <a href='#' class='text-muted form-control-label'>" +
-                            data.name + "</a>" +
-                            "                                    <p class='mb-0'>" + data.file_size +
+                          //  data.name + "</a>" +
+                           // "                                    <p class='mb-0'>" + data.file_size +
                             "</p>" +
                             "                                </div>" +
                             "                                <div class='col-auto'>" +
@@ -573,13 +573,13 @@
                         data = data.responseJSON;
 
                         if (data) {
-                            show_toastr('{{ __('Error') }}',
-                                'File type and size must be match with Storage setting.', 'error');
+                            // show_toastr('{{ __('Error') }}',
+                            //     'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                             //show_toastr('{{ __('Error') }}', data.message, 'error');
                             $('#file-error').text(data.errors.file[0]).show();
                         } else {
-                            show_toastr('{{ __('Error') }}',
-                                'File type and size must be match with Storage setting.', 'error');
+                            // show_toastr('{{ __('Error') }}',
+                            //     'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                         }
                     }
                 });

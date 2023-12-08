@@ -1423,18 +1423,25 @@ class ProjectController extends Controller
 
     public function commentStoreFile(Request $request, $slug, $projectID, $taskID, $clientID = '')
     {
+     
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
-        $request->validate(['file' => 'required']);
+        // $request->validate(['file' => 'required']);
         $dir = 'app/public/tasks/';
         $fileName = $taskID . time() . "_" . $request->file->getClientOriginalName();
         // $request->file->storeAs('tasks', $fileName);
 
+        // dd($fileName);
+
+
         $path = Utility::upload_file($request, 'file', $fileName, $dir, []);
+        // dd($path);
         if ($path['flag'] == 1) {
             // Utility::upload_file($request,'file',$fileName,$dir,[]);
             $file = $path['url'];
         } else {
-            return redirect()->back()->with('error', __($path['msg']));
+            
+            // return redirect()->back()->with('error', __($path['msg']));
+            // return redirect()->back()->with('error', __('The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.'));
         }
 
         $post['task_id'] = $taskID;
