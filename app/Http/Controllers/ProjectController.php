@@ -1143,22 +1143,28 @@ class ProjectController extends Controller
     }
     public function taskOrderUpdate(Request $request, $slug, $projectID)
     {
+        // dd($request->all());
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+
+        // dd($currentWorkspace->id);
         $project_name = Project::where('id', $projectID)->first();
         $user1 = $currentWorkspace->id;
-        if (isset($request->sort)) {
-            foreach ($request->sort as $index => $taskID) {
-                $task = Task::find($taskID);
-                $task->order = $index;
-                $task->save();
-            }
-        }
+        // if (isset($request->sort)) {
+        //     foreach ($request->sort as $index => $taskID) {
+        //         $task = Task::find($taskID);
+        //         $task->order = $index;
+        //         $task->save();
+        //     }
+        // }
 
         if ($request->new_status != $request->old_status) {
+        // if ($request->new_status) {
             $new_status = Stage::find($request->new_status);
             $old_status = Stage::find($request->old_status);
+      
             $user = Auth::user();
             $task = Task::find($request->id);
+            // dd($task);
             $task->status = $request->new_status;
             $task->save();
 
@@ -1417,18 +1423,25 @@ class ProjectController extends Controller
 
     public function commentStoreFile(Request $request, $slug, $projectID, $taskID, $clientID = '')
     {
+     
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
-        $request->validate(['file' => 'required']);
+        // $request->validate(['file' => 'required']);
         $dir = 'app/public/tasks/';
         $fileName = $taskID . time() . "_" . $request->file->getClientOriginalName();
         // $request->file->storeAs('tasks', $fileName);
 
+        // dd($fileName);
+
+
         $path = Utility::upload_file($request, 'file', $fileName, $dir, []);
+        // dd($path);
         if ($path['flag'] == 1) {
             // Utility::upload_file($request,'file',$fileName,$dir,[]);
             $file = $path['url'];
         } else {
-            return redirect()->back()->with('error', __($path['msg']));
+            
+            // return redirect()->back()->with('error', __($path['msg']));
+            // return redirect()->back()->with('error', __('The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.'));
         }
 
         $post['task_id'] = $taskID;

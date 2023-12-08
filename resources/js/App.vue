@@ -9,6 +9,18 @@
     }">
 
 
+       <template>
+        <div>
+            <!-- Your select element and other components -->
+
+            <!-- Display a message if status is updated successfully -->
+            <div v-if="updateSuccessMessage" class="success-message">
+            Status Updated: {{ updateSuccessMessage }}
+            </div>
+        </div>
+        </template>
+
+
         <template #headerCell="{ column }">
             <template v-if="column.key === 'title'">
                 <span>
@@ -22,6 +34,9 @@
             </template>
         </template>
 
+
+
+ 
         <template #bodyCell="{ column, text, record }">
 
             <template v-if="column.dataIndex === 'title'">
@@ -46,8 +61,29 @@
                 </a-avatar-group>
             </template>
 
-            <template v-else-if="column.dataIndex === 'status'">
+            <!-- <template v-else-if="column.dataIndex === 'status'">
                 <a-tag :color=text?.color>{{ text?.name }}</a-tag>
+               
+            </template> -->
+<!-- 
+            <template v-else-if="column.dataIndex === 'status'">
+            <div>
+                <a-select v-model:value="selectedStatus" style="width: 120px"  @change="updateStatus" >
+                <a-select-option v-for="status in record['all_status']" :key="status.id" :value="status.id">
+                    <a-tag :color="status.color">{{ status.name }}</a-tag>
+                </a-select-option>
+                </a-select>
+            </div>
+            </template> -->
+
+            <template v-else-if="column.dataIndex === 'status'">
+            <div>
+                <a-select v-model:value="record.selectedStatus" style="width: 120px" @change="updateStatus(record,$event)">
+                <a-select-option v-for="status in record['all_status']" :key="status.id" :value="status.id">
+                    <a-tag :color="status.color">{{ status.name }}</a-tag>
+                </a-select-option>
+                </a-select>
+            </div>
             </template>
 
             <template v-else-if="column.dataIndex === 'due_date'">
@@ -158,14 +194,25 @@ const rowSelection = ref({
 });
 
 
+import { message } from 'ant-design-vue';
+
+
 export default {
     props: ['tasks'],
     setup(props) {
-        console.log(props.tasks,'tasks')
+
+
+        const selectedStatus = ref(null);
+        
+
+        
         return {
             columns,
             data: props.tasks,
-            rowSelection
+            rowSelection,
+            selectedStatus,
+            updateSuccessMessage: '', 
+
         }
     },
     components: {
@@ -183,8 +230,54 @@ export default {
             // Format the date in the desired format
             const formattedDate = parsedDate.format("MMM, DD YYYY");
             return formattedDate;
+        },
+
+        updateStatus(record, selectedStatus) {
+            
+            if (selectedStatus) {
+
+                const taskUpdateUrl = record['url_update_task_status'];
+                const id = record['id'];
+                const old_status = record['old_status'];
+                const new_status = selectedStatus;
+                const project_id = record['project_id'];
+       
+           
+ 
+            axios.post(taskUpdateUrl, {
+                id: id,
+                new_status: new_status,
+                old_status: old_status,
+                project_id: project_id,
+            })
+            .then(response => {
+         
+            message.success('Status Updated Successfully');
+            })
+            .catch(error => {
+            console.error(error);
+            });
         }
-    }
+
+        }
+    },
+
+    mounted() {
+
+        if (this.tasks.length > 0) {
+      // Loop through each task and set the selectedStatus using ref
+        this.tasks.forEach(task => {
+            // Assuming you want to set the default value to the old status of each task
+            task.selectedStatus = ref(task.old_status);
+        });
+        } else {
+        // Provide a default value if tasks is empty
+        this.selectedStatus.value = null; // or any other default value you prefer
+        }
+
+    },
+
+
 }
 </script>
 
@@ -195,6 +288,12 @@ export default {
     color: white;
     border-radius: 5px 5px 0px 0px;
     padding: 1px 0px 0px 5px;
+}
+
+
+.success-message {
+  color: green;
+  margin-top: 10px;
 }
 
 .ant-table-wrapper .ant-table-thead>tr>th {

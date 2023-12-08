@@ -1388,17 +1388,17 @@
                         myDropzone.removeFile(file);
                         // show_toastr('error', 'File type must be match with Storage setting.');
                         show_toastr('{{ __('Error') }}',
-                            'File type and size must be match with Storage setting.', 'error');
+                            'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                     }
                 },
                 error: function(file, response) {
                     myDropzone.removeFile(file);
                     if (response.error) {
                         show_toastr('{{ __('Error') }}',
-                            'File type and size must be match with Storage setting.', 'error');
+                            'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                     } else {
                         show_toastr('{{ __('Error') }}',
-                            'File type and size must be match with Storage setting.', 'error');
+                            'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                     }
                 }
             });

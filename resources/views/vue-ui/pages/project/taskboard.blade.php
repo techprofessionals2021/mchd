@@ -538,8 +538,8 @@
                             "                                <div class='col pl-0'>" +
                             "                                    <a href='#' class='text-muted form-control-label'>" +
                             data.name + "</a>" +
-                            "                                    <p class='mb-0'>" + data.file_size +
-                            "</p>" +
+                         //   "                                    <p class='mb-0'>" + data.file_size +
+                           // "</p>" +
                             "                                </div>" +
                             "                                <div class='col-auto'>" +
                             "                                    <a download href='{{ $logo_tasks }}/" +
@@ -573,14 +573,16 @@
                     error: function(data) {
                         data = data.responseJSON;
 
+                        console.log(data);
+
                         if (data) {
                             show_toastr('{{ __('Error') }}',
-                                'File type and size must be match with Storage setting.', 'error');
+                                // 'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                             //show_toastr('{{ __('Error') }}', data.message, 'error');
                             $('#file-error').text(data.errors.file[0]).show();
                         } else {
                             show_toastr('{{ __('Error') }}',
-                                'File type and size must be match with Storage setting.', 'error');
+                                // 'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                         }
                     }
                 });
