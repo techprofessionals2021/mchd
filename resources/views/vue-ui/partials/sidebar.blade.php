@@ -1,4 +1,5 @@
 @php
+  use App\Models\Project;
     $logo = \App\Models\Utility::get_file('logo/');
     if (Auth::user()->type == 'admin') {
         $setting = App\Models\Utility::getAdminPaymentSettings();
@@ -48,6 +49,13 @@
     if ($SITE_RTL == '' || $SITE_RTL == null) {
         $SITE_RTL = env('SITE_RTL');
     }
+
+
+    $userObj = Auth::user();
+       $projects = Project::with('users')->where('created_by',$userObj->id)
+       ->orWhereHas('users',function($query)use($userObj){
+        $query->where('user_id',$userObj->id);
+       })->get();
 @endphp
 {{-- {{dd(auth()->user()->hasRole(('HOD')))}} --}}
 
@@ -256,8 +264,18 @@ style="border-right: 1px solid ">
 
                                 </div>
                                 <div class="c-slided" style="display: none">
-                                    <ul class='project-list'>
+                                    {{-- <ul class='project-list'>
                                         @foreach ($workspace->projects as $project)
+                                        <li ><a href="{{route('projects.show',[$workspace->slug,$project->id])}}" class="side-nav-project-text">{{$project->name}} </a></li>
+                                        @endforeach
+                                        <a class="btn btn-light add-project-btn-sidebar m-t-10" href="#" data-ajax-popup="true" data-size="md" data-title="{{ __('Create New Project') }}" data-url="{{route('projects.create',$currentWorkspace->slug)}}">
+                                            <i class="ti ti-plus"></i>
+                                            <span>Add Project</span>
+                                        </a>
+                                    </ul> --}}
+
+                                         <ul class='project-list'>
+                                        @foreach ($projects as $project)
                                         <li ><a href="{{route('projects.show',[$workspace->slug,$project->id])}}" class="side-nav-project-text">{{$project->name}} </a></li>
                                         @endforeach
                                         <a class="btn btn-light add-project-btn-sidebar m-t-10" href="#" data-ajax-popup="true" data-size="md" data-title="{{ __('Create New Project') }}" data-url="{{route('projects.create',$currentWorkspace->slug)}}">
