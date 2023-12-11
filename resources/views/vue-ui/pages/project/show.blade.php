@@ -171,6 +171,14 @@
                                                 <span class="p-text">Edit</span>
                                                 </a>
 
+                                                {{-- <a href="#"
+                                                class="action-btn btn-primary mx-1  btn btn-sm d-inline-flex align-items-center"
+                                                data-ajax-popup="true" data-size="lg"
+                                                data-toggle="popover" title="{{ __('Permission') }}"
+                                                data-title="{{ __('Edit Permission') }}"
+                                                data-url="{{ route('projects.user.permission', [$currentWorkspace->slug, $project->id, Auth::id()]) }}"><i
+                                                    class="ti ti-lock"></i></a> --}}
+
                                             </div>
                                             <div class="filterTaskBtn cursor-pointer">
                                                 <img src='{{ asset('custom-ui/images/filter.svg') }}' class="m-r-5" />
