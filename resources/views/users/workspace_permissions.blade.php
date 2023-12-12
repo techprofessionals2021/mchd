@@ -110,6 +110,36 @@
 
 </tr>
 
+
+
+<td>{{__('Task')}}</td>
+<td>
+    {{-- {{dd(in_array('invite user',$permissions))}} --}}
+    <div class="row">
+
+
+        <div class="form-check form-switch d-inline-block col">
+            <input class="form-check-input" id="permission1" @if(in_array('add task',$permissions)) checked="checked" @endif name="permissions[]" type="checkbox" value="add task">
+            <label for="permission1" class="custom-control-label">{{__('Add')}}</label><br>
+        </div>
+
+        
+        <div class="form-check form-switch d-inline-block col">
+            <input class="form-check-input" id="permission1" @if(in_array('edit task',$permissions)) checked="checked" @endif name="permissions[]" type="checkbox" value="edit task">
+            <label for="permission1" class="custom-control-label">{{__('Edit')}}</label><br>
+        </div>
+
+            
+        <div class="form-check form-switch d-inline-block col">
+            <input class="form-check-input" id="permission1" @if(in_array('delete task',$permissions)) checked="checked" @endif name="permissions[]" type="checkbox" value="delete task">
+            <label for="permission1" class="custom-control-label">{{__('Delete')}}</label><br>
+        </div>
+    
+    </div>
+</td>
+
+</tr>
+
   
       
     

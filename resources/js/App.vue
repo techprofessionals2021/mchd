@@ -39,6 +39,8 @@
  
         <template #bodyCell="{ column, text, record }">
 
+
+
             <template v-if="column.dataIndex === 'title'">
 
                 <a v-if="record['modal_url']" href="#" data-size="lg" :data-url="record['modal_url']" data-ajax-popup="true"
@@ -137,47 +139,101 @@ import {
 } from '@ant-design/icons-vue';
 import moment from 'moment';
 
+// const workspacePermissions = ['edit task'];
+
+    // const workspacePermissions = this.record['workspace_permissions'];
+
+
+
+// const columns = [
+//   {
+//     title: 'Title',
+//     dataIndex: 'title',
+//     key: 'title',
+//   },
+//   {
+//     title: 'Assignee',
+//     dataIndex: 'assignee',
+//     key: 'assignee',
+//   },
+//   {
+//     title: 'Status',
+//     dataIndex: 'status',
+//     key: 'status',
+//   },
+//   {
+//     title: 'DUE DATE',
+//     dataIndex: 'due_date',
+//     key: 'due_date',
+//   },
+//   {
+//     title: 'Priority',
+//     dataIndex: 'priority',
+//     key: 'priority',
+//   },
+//   ...(workspacePermissions.includes('edit task')
+//     ? [
+//         {
+//           title: 'Edit Task',
+//           dataIndex: 'edittask',
+//           key: 'edittask',
+//         },
+//       ]
+//     : []
+//   ),
+//   ...(workspacePermissions.includes('delete task')
+//     ? [
+//         {
+//           title: 'Delete Task',
+//           dataIndex: 'deletetask',
+//           key: 'deletetask',
+//         },
+//       ]
+//     : []
+//   ),
+// ];
+
+
 const columns = [
-    {
-        title: 'Title',
-        dataIndex: 'title',
-        key: 'title',
-    },
-    {
-        title: 'Assigne',
-        dataIndex: 'assignee',
-        key: 'assignee',
-        //   width: '12%',
-    },
-    {
-        title: 'Status',
-        dataIndex: 'status',
-        key: 'status',
-        //   width: '12%',
-    },
-    {
-        title: 'DUE DATE',
-        dataIndex: 'due_date',
-        key: 'due_date',
-    },
-    {
-        title: 'Priority',
-        dataIndex: 'priority',
-        key: 'priority',
-    },
-    {
-        title: 'Edit Task',
-        dataIndex: 'edittask',
-        key: 'edittask',
-    },
-
-    {
-        title: 'Delete Task',
-        dataIndex: 'deletetask',
-        key: 'deletetask',
-    },
-
-
+  {
+    title: 'Title',
+    dataIndex: 'title',
+    key: 'title',
+  },
+  {
+    title: 'Assignee',
+    dataIndex: 'assignee',
+    key: 'assignee',
+  },
+  {
+    title: 'Status',
+    dataIndex: 'status',
+    key: 'status',
+  },
+  {
+    title: 'DUE DATE',
+    dataIndex: 'due_date',
+    key: 'due_date',
+  },
+  {
+    title: 'Priority',
+    dataIndex: 'priority',
+    key: 'priority',
+  },
+  
+     {
+          title: 'Edit Task',
+          dataIndex: 'edittask',
+          key: 'edittask',
+      },
+  
+  
+        {
+          title: 'Delete Task',
+          dataIndex: 'deletetask',
+          key: 'deletetask',
+        },
+   
 ];
 
 const rowSelection = ref({
