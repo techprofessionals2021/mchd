@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Auth;
 
 class TaskResource extends JsonResource
 {
@@ -30,10 +31,10 @@ class TaskResource extends JsonResource
             'modal_url_edit' => route('tasks.edit',[auth()->user()->currentWorkspace->slug,$this->project_id,$this->id]),
             'modal_url_destory' => route('tasks.destroy',[auth()->user()->currentWorkspace->slug, $this->project_id, $this->id]),
             'url_update_task_status' => route('tasks.update.order',[auth()->user()->currentWorkspace->slug, $this->project_id]),
-
             'children' => SubTaskResource::collection($this->sub_tasks),
             'project_id' => $this->project_id,
             'old_status' => $this->stage->id,
+            'workspace_permissions' => Auth::user()->getPermissionWorkspace(auth()->user()->currentWorkspace->id),
 
         ];
     }
