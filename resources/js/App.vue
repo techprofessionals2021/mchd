@@ -105,7 +105,7 @@
 
 
             <template v-else-if="column.dataIndex === 'edittask'">
-                <a v-if="record['modal_url_edit']" href="#" data-size="lg" :data-url="record['modal_url_edit']" data-ajax-popup="true"
+                <a v-if="record['modal_url_edit'] && record['workspace_permissions'].includes('edit task')" href="#" data-size="lg" :data-url="record['modal_url_edit']" data-ajax-popup="true"
                     data-title="Task Edit" class="h6 task-title">
                     <h5>      <EditTwoTone style="font-size: 24px;" /></h5>
                                 </a>
@@ -114,7 +114,7 @@
             </template>
 
 
-            <template v-else-if="column.dataIndex === 'deletetask'">
+            <template v-else-if="column.dataIndex === 'deletetask' && record['workspace_permissions'].includes('delete task')">
                 <a :href="record['modal_url_destory']"
                     class="h6">
                     <h5>      <DeleteTwoTone  style="font-size: 24px;" /></h5>
@@ -256,6 +256,8 @@ import { message } from 'ant-design-vue';
 export default {
     props: ['tasks'],
     setup(props) {
+
+        console.log(props.tasks);
 
 
         const selectedStatus = ref(null);
