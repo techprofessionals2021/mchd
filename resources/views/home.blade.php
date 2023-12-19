@@ -6,6 +6,37 @@
 @php
     $client_keyword = Auth::user()->getGuard() == 'client' ? 'client.' : '';
 @endphp
+
+@section('action-button')
+<div class="row justify-content-end">
+    <div class="col-auto">
+        <input type='text' class=" form-control form-control-light" id="duration" name="duration" required autocomplete="off"
+                     placeholder="Select date range" style="display: none" />
+    </div>
+    <div class="filterMonthlyTaskBtn cursor-pointer col-auto">
+        <img src='{{ asset('custom-ui/images/filter.svg') }}' class="m-r-5" />
+        <span class="p-text">Filter</span>
+    </div>
+</div>
+{{-- <div class="d-flex"> --}}
+
+
+             {{-- <div class='input-group form-group'> --}}
+                {{-- <input type='text' class=" form-control form-control-light w-25" id="duration" name="duration" required autocomplete="off"
+                     placeholder="Select date range" /> --}}
+                     <input type="hidden" name="start_date">
+                     <input type="hidden" name="end_date">
+                    {{-- <span class="input-group-text"><i
+                    class="feather icon-calendar"></i></span> --}}
+            {{-- </div> --}}
+            {{-- <div>
+                <div class="filterTaskBtn cursor-pointer">
+                    <img src='{{ asset('custom-ui/images/filter.svg') }}' class="m-r-5" />
+                    <span class="p-text">Filter</span>
+                </div>
+            </div>
+        </div> --}}
+@endsection
 @section('content')
 
     <section class="section">
@@ -293,10 +324,10 @@
                                         <small><b>{{ $completeTask }}</b> {{ __('Tasks completed out of') }}
                                             {{ $totalTask }}</small>
                                     </div> --}}
-                                    {{-- <div class="filterTaskBtn cursor-pointer">
+                                    <div class="filterTaskBtn cursor-pointer">
                                         <img src='{{ asset('custom-ui/images/filter.svg') }}' class="m-r-5" />
                                         <span class="p-text">Filter</span>
-                                    </div> --}}
+                                    </div>
                                     <div class="filterDropdown w-25 m-l-10" style="display:none;">
                                        <select class="form-select status-dropdown" aria-label="Default select example">
                                         @foreach ($taskStatus as $status)
@@ -747,8 +778,9 @@
 
 
 @push('scripts')
+<link rel="stylesheet" href="{{ asset('assets/custom/libs/bootstrap-daterangepicker/daterangepicker.css') }}">
     <script src="{{ asset('assets/custom/js/apexcharts.min.js') }}"></script>
-
+    <script src="{{ asset('assets/custom/libs/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
     @if (Auth::user()->type == 'admin')
     @elseif(isset($currentWorkspace) && $currentWorkspace)
         <script>
@@ -965,19 +997,18 @@
             console.log();
             let currentWorkSpace = <?php echo json_encode($currentWorkspace->slug); ?>;
             let blade_typee = <?php echo json_encode($blade_type); ?>;
-            let depart_id = <?php echo json_encode(@$depart_id); ?>;
+            let workspace_id = <?php echo json_encode(@$workspace_id); ?>;
             let hod_id = <?php echo json_encode(@$hod_id); ?>;
             let executive_id = <?php echo json_encode(@$executive_id); ?>;
 
 
           console.log(blade_typee,'HOD type');
           if(blade_typee == 'HOD' || blade_typee == 'Executive'|| blade_typee == 'Ceo'){
-// alert('sdsds')
           location.href = window.location.origin +'/index_report/'+ currentWorkSpace +'/'+$(this).val()
         return;
         }
-          if(blade_typee == 'SingleDepart'){
-          location.href = window.location.origin +'/single_depart_report/'+ depart_id +'/'+ currentWorkSpace +'/'+$(this).val()
+          if(blade_typee == 'SingleWorkspace'){
+          location.href = window.location.origin +'/single_workspace_report/'+ workspace_id +'/'+ currentWorkSpace +'/'+$(this).val()
         return;
         }
           if(blade_typee == 'SingleHOD'){
@@ -991,5 +1022,79 @@
 
         location.href = window.location.origin +'/home/'+ currentWorkSpace +'/'+$(this).val()
         })
+
+        // working on monthly tasks report
+
+        $('.filterMonthlyTaskBtn').on('click',function(){
+            $('#duration').slideToggle(500);
+        })
+
+        $(function () {
+       var start = moment('{{ date('Y-m-d') }}', 'YYYY-MM-DD HH:mm:ss');
+       var end = moment('{{ date('Y-m-d') }}', 'YYYY-MM-DD HH:mm:ss');
+
+       function cb(start, end) {
+        alert(end.format('YYYY-MM-DD'))
+           $("#duration").val(start.format('MMM D, YY') + ' - ' + end.format('MMM D, YY'));
+
+            var startDate = start.format('YYYY-MM-DD');
+            var endDate = end.format('YYYY-MM-DD');
+
+            // Construct the URL for the new route
+            var newRoute = "{{ route('index_report_monthly',['startDate' => ':startDate', 'endDate' => ':endDate']) }}"
+            .replace(':startDate', startDate)
+            .replace(':endDate', endDate);
+            // Navigate to the new route
+            window.location.href = newRoute;
+
+       }
+
+       $('#duration').daterangepicker({
+           /*autoApply: true,
+           autoclose: true,*/
+           autoApply: true,
+           timePicker: true,
+           autoUpdateInput: false,
+           startDate: start,
+           endDate: end,
+           /*startDate: start,
+           endDate: end,
+           autoApply: true,
+           autoclose: true,
+           autoUpdateInput: false,*/
+           locale: {
+               format: 'MMMM D, YYYY hh:mm A',
+               applyLabel: "{{__('Apply')}}",
+               cancelLabel: "{{__('Cancel')}}",
+               fromLabel: "{{__('From')}}",
+               toLabel: "{{__('To')}}",
+               daysOfWeek: [
+                   "{{__('Sun')}}",
+                   "{{__('Mon')}}",
+                   "{{__('Tue')}}",
+                   "{{__('Wed')}}",
+                   "{{__('Thu')}}",
+                   "{{__('Fri')}}",
+                   "{{__('Sat')}}"
+               ],
+               monthNames: [
+                   "{{__('January')}}",
+                   "{{__('February')}}",
+                   "{{__('March')}}",
+                   "{{__('April')}}",
+                   "{{__('May')}}",
+                   "{{__('June')}}",
+                   "{{__('July')}}",
+                   "{{__('August')}}",
+                   "{{__('September')}}",
+                   "{{__('October')}}",
+                   "{{__('November')}}",
+                   "{{__('December')}}"
+               ],
+           }
+       }, cb);
+
+    //    cb(start, end);
+   });
     </script>
 @endpush
