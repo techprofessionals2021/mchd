@@ -278,10 +278,14 @@ style="border-right: 1px solid ">
                                         @foreach ($projects as $project)
                                         <li ><a href="{{route('projects.show',[$workspace->slug,$project->id])}}" class="side-nav-project-text">{{$project->name}} </a></li>
                                         @endforeach
+
+                                        @if (in_array('create project',$permissions))
                                         <a class="btn btn-light add-project-btn-sidebar m-t-10" href="#" data-ajax-popup="true" data-size="md" data-title="{{ __('Create New Project') }}" data-url="{{route('projects.create',$currentWorkspace->slug)}}">
                                             <i class="ti ti-plus"></i>
                                             <span>Add Project</span>
                                         </a>
+                                        @endif
+                                   
                                     </ul>
                                 </div>
                             </div>
