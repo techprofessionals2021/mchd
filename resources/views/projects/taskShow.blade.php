@@ -132,13 +132,13 @@ $logo_tasks=\App\Models\Utility::get_file('tasks/');
                              <div class="logo-content">
                                     <img src="{{asset($logo_tasks.'sample.jpg')}}" class="preview_img_size" id="task_file"/>
                                 </div>
-                            <div class=" bg-primary"> <i class="ti ti-upload px-1"></i>{{__('Choose file here')}}</div>
-                            <input type="file" class="form-control choose_file_custom" name="file" id="file" data-filename="file_create">
+                            <div class=""> <i class="ti ti-upload px-1"></i>{{__('Choose file here')}}</div>
+                            <input type="file" class="form-control " required name="file" id="file" data-filename="file_create">
                             <span class="invalid-feedback" id="file-error" role="alert">
                                 <strong></strong>
                             </span>
                         </label>
-                       <!--  <p class="file_create"></p> -->
+                         <p class="file_create"></p> 
                     </div>
 
                     <div class="text-end">

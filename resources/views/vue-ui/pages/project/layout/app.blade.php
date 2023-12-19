@@ -333,17 +333,17 @@
                     myDropzone.removeFile(file);
                     // show_toastr('error', 'File type must be match with Storage setting.');
                     show_toastr('{{ __('Error') }}',
-                        'File type and size must be match with Storage setting.', 'error');
+                        'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                 }
             },
             error: function(file, response) {
                 myDropzone.removeFile(file);
                 if (response.error) {
                     show_toastr('{{ __('Error') }}',
-                        'File type and size must be match with Storage setting.', 'error');
+                        'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                 } else {
                     show_toastr('{{ __('Error') }}',
-                        'File type and size must be match with Storage setting.', 'error');
+                        'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                 }
             }
         });
@@ -751,8 +751,8 @@
                         "                                <div class='col pl-0'>" +
                         "                                    <a href='#' class='text-muted form-control-label'>" +
                         data.name + "</a>" +
-                        "                                    <p class='mb-0'>" + data.file_size +
-                        "</p>" +
+                      //  "                                    <p class='mb-0'>" + data.file_size +
+                     //   "</p>" +
                         "                                </div>" +
                         "                                <div class='col-auto'>" +
                         "                                    <a download href='{{ $logo_tasks }}/" +
@@ -788,12 +788,12 @@
 
                     if (data) {
                         show_toastr('{{ __('Error') }}',
-                            'File type and size must be match with Storage setting.', 'error');
+                            'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                         //show_toastr('{{ __('Error') }}', data.message, 'error');
                         $('#file-error').text(data.errors.file[0]).show();
                     } else {
                         show_toastr('{{ __('Error') }}',
-                            'File type and size must be match with Storage setting.', 'error');
+                            'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                     }
                 }
             });

@@ -1,4 +1,5 @@
 @php
+  use App\Models\Project;
     $logo = \App\Models\Utility::get_file('logo/');
     if (Auth::user()->type == 'admin') {
         $setting = App\Models\Utility::getAdminPaymentSettings();
@@ -48,6 +49,13 @@
     if ($SITE_RTL == '' || $SITE_RTL == null) {
         $SITE_RTL = env('SITE_RTL');
     }
+
+
+    $userObj = Auth::user();
+       $projects = Project::with('users')->where('created_by',$userObj->id)
+       ->orWhereHas('users',function($query)use($userObj){
+        $query->where('user_id',$userObj->id);
+       })->get();
 @endphp
 {{-- {{dd(auth()->user()->hasRole(('HOD')))}} --}}
 
@@ -182,6 +190,12 @@ style="border-right: 1px solid ">
 
                     @if (isset($currentWorkspace) && $currentWorkspace)
                         @auth('web')
+
+                        {{-- @if ($currentWorkspace->created_by ===  Auth::id()  && $currentWorkspace->is_default == 1  ) --}}
+                        @if ($currentWorkspace->created_by !=  Auth::id()  && $currentWorkspace->is_default == 1  )
+                 
+                        
+                        @else
                         <li class="dash-item dash-hasmenu">
                             <a href="{{ route('users.index', $currentWorkspace->slug) }}"
                                 class="dash-link{{ Request::route()->getName() == 'users.index' ? ' active' : '' }} side-item"><span
@@ -189,6 +203,10 @@ style="border-right: 1px solid ">
                                         src="{{ asset('custom-ui/images/user-icon-image2.png') }}" class="icon-image" /></span><span
                                     class="dash-mtext side-nav-text">{{ __('Users') }}</span></a>
                         </li>
+                        @endif
+
+
+
                             <li class="dash-item dash-hasmenu">
                                 <a href=""
                                     class="dash-link {{ Request::route()->getName() == 'users.index' ? ' active' : '' }} side-item"><span
@@ -246,8 +264,18 @@ style="border-right: 1px solid ">
 
                                 </div>
                                 <div class="c-slided" style="display: none">
-                                    <ul class='project-list'>
+                                    {{-- <ul class='project-list'>
                                         @foreach ($workspace->projects as $project)
+                                        <li ><a href="{{route('projects.show',[$workspace->slug,$project->id])}}" class="side-nav-project-text">{{$project->name}} </a></li>
+                                        @endforeach
+                                        <a class="btn btn-light add-project-btn-sidebar m-t-10" href="#" data-ajax-popup="true" data-size="md" data-title="{{ __('Create New Project') }}" data-url="{{route('projects.create',$currentWorkspace->slug)}}">
+                                            <i class="ti ti-plus"></i>
+                                            <span>Add Project</span>
+                                        </a>
+                                    </ul> --}}
+
+                                         <ul class='project-list'>
+                                        @foreach ($projects as $project)
                                         <li ><a href="{{route('projects.show',[$workspace->slug,$project->id])}}" class="side-nav-project-text">{{$project->name}} </a></li>
                                         @endforeach
                                         <a class="btn btn-light add-project-btn-sidebar m-t-10" href="#" data-ajax-popup="true" data-size="md" data-title="{{ __('Create New Project') }}" data-url="{{route('projects.create',$currentWorkspace->slug)}}">

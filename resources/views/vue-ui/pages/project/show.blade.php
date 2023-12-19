@@ -171,6 +171,14 @@
                                                 <span class="p-text">Edit</span>
                                                 </a>
 
+                                                {{-- <a href="#"
+                                                class="action-btn btn-primary mx-1  btn btn-sm d-inline-flex align-items-center"
+                                                data-ajax-popup="true" data-size="lg"
+                                                data-toggle="popover" title="{{ __('Permission') }}"
+                                                data-title="{{ __('Edit Permission') }}"
+                                                data-url="{{ route('projects.user.permission', [$currentWorkspace->slug, $project->id, Auth::id()]) }}"><i
+                                                    class="ti ti-lock"></i></a> --}}
+
                                             </div>
                                             <div class="filterTaskBtn cursor-pointer">
                                                 <img src='{{ asset('custom-ui/images/filter.svg') }}' class="m-r-5" />
@@ -206,9 +214,16 @@
                                                             <h4 class="mb-0 m-l-10">{{ __('Tasks') }}
                                                             </h4>
                                                         </div>
+                                                        @if(in_array('add task',$permissions_workspace))
                                                         <div>
                                                             <a href="#" class="btn btn-sm btn-primary" data-ajax-popup="true" data-size="lg" data-title="{{ __('Create New Task') }}" data-url="{{route($client_keyword.'tasks.create',[$currentWorkspace->slug,$project->id])}}" data-toggle="tooltip" title="{{ __('Add Task') }}"><i class="ti ti-plus"></i></a>
                                                         </div>
+
+                                                        @elseif($currentWorkspace->permission == "Owner")
+                                                        <div>
+                                                            <a href="#" class="btn btn-sm btn-primary" data-ajax-popup="true" data-size="lg" data-title="{{ __('Create New Task') }}" data-url="{{route($client_keyword.'tasks.create',[$currentWorkspace->slug,$project->id])}}" data-toggle="tooltip" title="{{ __('Add Task') }}"><i class="ti ti-plus"></i></a>
+                                                        </div>
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <div class="card-body tasks-body"
@@ -371,17 +386,17 @@
                     myDropzone.removeFile(file);
                     // show_toastr('error', 'File type must be match with Storage setting.');
                     show_toastr('{{ __('Error') }}',
-                        'File type and size must be match with Storage setting.', 'error');
+                        'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                 }
             },
             error: function(file, response) {
                 myDropzone.removeFile(file);
                 if (response.error) {
                     show_toastr('{{ __('Error') }}',
-                        'File type and size must be match with Storage setting.', 'error');
+                        'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                 } else {
                     show_toastr('{{ __('Error') }}',
-                        'File type and size must be match with Storage setting.', 'error');
+                        'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                 }
             }
         });
@@ -787,8 +802,8 @@
                         "                                <div class='col pl-0'>" +
                         "                                    <a href='#' class='text-muted form-control-label'>" +
                         data.name + "</a>" +
-                        "                                    <p class='mb-0'>" + data.file_size +
-                        "</p>" +
+                       // "                                    <p class='mb-0'>" + data.file_size +
+                      //  "</p>" +
                         "                                </div>" +
                         "                                <div class='col-auto'>" +
                         "                                    <a download href='{{ $logo_tasks }}/" +
@@ -824,12 +839,12 @@
 
                     if (data) {
                         show_toastr('{{ __('Error') }}',
-                            'File type and size must be match with Storage setting.', 'error');
+                            'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                         //show_toastr('{{ __('Error') }}', data.message, 'error');
                         $('#file-error').text(data.errors.file[0]).show();
                     } else {
                         show_toastr('{{ __('Error') }}',
-                            'File type and size must be match with Storage setting.', 'error');
+                            'The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.', 'error');
                     }
                 }
             });

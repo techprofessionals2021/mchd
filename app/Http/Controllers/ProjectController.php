@@ -503,6 +503,7 @@ class ProjectController extends Controller
         $workspace_type = WorkspaceType::get();
 
 
+        // dd('asd');
 
 
 
@@ -529,6 +530,26 @@ class ProjectController extends Controller
                 $daysleft = round((((strtotime($project->end_date) - strtotime(date('Y-m-d'))) / 24) / 60) / 60);
 
                 $permissions = Auth::user()->getPermission($project->id);
+
+                $permissions_workspace = Auth::user()->getPermissionWorkspace($currentWorkspace->id);
+                
+                // dd($currentWorkspace->permission == "Owner");
+                
+                if (is_null($permissions_workspace)) {
+                    // Set default permissions
+                    $default_permissions = [];
+                    $permissions_workspace = $default_permissions;
+                }
+
+                // else if($currentWorkspace->permission == "Owner"){
+                //     $default_permissions = ["invite user", "create project", "show calendar", "project report" ,"add task","edit task","delete task"];
+
+                //     $permissions_workspace = $default_permissions;
+                // }
+              
+                
+
+                // dd($permissions_workspace);
 
                 $tags = json_decode($project->tags);
 
@@ -561,7 +582,7 @@ class ProjectController extends Controller
 
 
 
-                return view('vue-ui.pages.project.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type','taskResource','currentStatus','taskStatus'));
+                return view('vue-ui.pages.project.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type','taskResource','currentStatus','taskStatus','permissions_workspace'));
                 // return view('projects.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type'));
             } else {
                 return redirect()->back()->with('error', __("Project Not Found."));
@@ -1143,22 +1164,28 @@ class ProjectController extends Controller
     }
     public function taskOrderUpdate(Request $request, $slug, $projectID)
     {
+        // dd($request->all());
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
+
+        // dd($currentWorkspace->id);
         $project_name = Project::where('id', $projectID)->first();
         $user1 = $currentWorkspace->id;
-        if (isset($request->sort)) {
-            foreach ($request->sort as $index => $taskID) {
-                $task = Task::find($taskID);
-                $task->order = $index;
-                $task->save();
-            }
-        }
+        // if (isset($request->sort)) {
+        //     foreach ($request->sort as $index => $taskID) {
+        //         $task = Task::find($taskID);
+        //         $task->order = $index;
+        //         $task->save();
+        //     }
+        // }
 
         if ($request->new_status != $request->old_status) {
+        // if ($request->new_status) {
             $new_status = Stage::find($request->new_status);
             $old_status = Stage::find($request->old_status);
+      
             $user = Auth::user();
             $task = Task::find($request->id);
+            // dd($task);
             $task->status = $request->new_status;
             $task->save();
 
@@ -1417,18 +1444,25 @@ class ProjectController extends Controller
 
     public function commentStoreFile(Request $request, $slug, $projectID, $taskID, $clientID = '')
     {
+     
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
-        $request->validate(['file' => 'required']);
+        // $request->validate(['file' => 'required']);
         $dir = 'app/public/tasks/';
         $fileName = $taskID . time() . "_" . $request->file->getClientOriginalName();
         // $request->file->storeAs('tasks', $fileName);
 
+        // dd($fileName);
+
+
         $path = Utility::upload_file($request, 'file', $fileName, $dir, []);
+        // dd($path);
         if ($path['flag'] == 1) {
             // Utility::upload_file($request,'file',$fileName,$dir,[]);
             $file = $path['url'];
         } else {
-            return redirect()->back()->with('error', __($path['msg']));
+            
+            // return redirect()->back()->with('error', __($path['msg']));
+            // return redirect()->back()->with('error', __('The file must be a file of type: jpg, jpeg, png, xlsx, xls, csv, pdf.'));
         }
 
         $post['task_id'] = $taskID;
@@ -3578,6 +3612,9 @@ class ProjectController extends Controller
 
                 $permissions = Auth::user()->getPermission($projectID);
 
+                $workspace_permissions = Auth::user()->getPermissionWorkspace($currentWorkspace->id);
+                // $permissions = Auth::user()->getPermissionWorkspace($currentWorkspace->id);
+
                 if ($project && (isset($permissions) && in_array('show task', $permissions)) || (isset($currentWorkspace) && $currentWorkspace->permission == 'Owner')) {
                     $stages = Stage::where('workspace_id', '=', $currentWorkspace->id)->orderBy('order')->get();
 
@@ -3601,7 +3638,7 @@ class ProjectController extends Controller
                     }
                 }
                 // dd('sdsd');
-                return view('vue-ui.pages.project.taskboard', compact('chartData','currentWorkspace', 'project', 'stages', 'statusClass','workspace_type'));
+                return view('vue-ui.pages.project.taskboard', compact('chartData','currentWorkspace', 'project', 'stages', 'statusClass','workspace_type','workspace_permissions'));
             } else {
                 return redirect()->back()->with('error', __('Task Not Found.'));
             }

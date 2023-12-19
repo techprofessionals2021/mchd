@@ -145,12 +145,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
         public function notifications($workspace_id)
         {
-                return Notification::where('user_id', '=', $this->id)->where('workspace_id', '=', $workspace_id)->where('is_read', '=', 0)->orderBy('id', 'desc')->get();
+               // return Notification::where('user_id', '=', $this->id)->where('workspace_id', '=', $workspace_id)->where('is_read', '=', 0)->orderBy('id', 'desc')->get();
+               return Notification::where('user_id', '=', $this->id)->where('is_read', '=', 0)->orderBy('id', 'desc')->get();
         }
 
         public function all_notifications($workspace_id)
         {
-                return Notification::where('user_id', '=', $this->id)->where('workspace_id', '=', $workspace_id)->where('is_read', '=', 0)->orderBy('id', 'desc')->get();
+             //   return Notification::where('user_id', '=', $this->id)->where('workspace_id', '=', $workspace_id)->where('is_read', '=', 0)->orderBy('id', 'desc')->get();
+             return Notification::where('user_id', '=', $this->id)->where('is_read', '=', 0)->orderBy('id', 'desc')->get();
         }
 
         public function getInvoices($workspace_id)
