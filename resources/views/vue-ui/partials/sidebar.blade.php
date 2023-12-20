@@ -52,10 +52,13 @@
 
 
     $userObj = Auth::user();
-       $projects = Project::with('users')->where('created_by',$userObj->id)
-       ->orWhereHas('users',function($query)use($userObj){
-        $query->where('user_id',$userObj->id);
-       })->get();
+    //    $projects = Project::with('users')->where('created_by',$userObj->id)
+    //    ->orWhereHas('users',function($query)use($userObj){
+    //     $query->where('user_id',$userObj->id);
+    //    })->get();
+    $projects = Project::where('created_by',$userObj->id)->where('workspace',$currentWorkspace->id)
+      ->get();
+    //    dd($projects);
 @endphp
 {{-- {{dd(auth()->user()->hasRole(('HOD')))}} --}}
 
@@ -280,6 +283,13 @@ style="border-right: 1px solid ">
                                         @endforeach
 
                                         @if (in_array('create project',$permissions))
+                                        <a class="btn btn-light add-project-btn-sidebar m-t-10" href="#" data-ajax-popup="true" data-size="md" data-title="{{ __('Create New Project') }}" data-url="{{route('projects.create',$currentWorkspace->slug)}}">
+                                            <i class="ti ti-plus"></i>
+                                            <span>Add Project</span>
+                                        </a>
+                                        {{-- @dd($currentWorkspace) --}}
+
+                                        @elseif($currentWorkspace->permission == "Owner" )
                                         <a class="btn btn-light add-project-btn-sidebar m-t-10" href="#" data-ajax-popup="true" data-size="md" data-title="{{ __('Create New Project') }}" data-url="{{route('projects.create',$currentWorkspace->slug)}}">
                                             <i class="ti ti-plus"></i>
                                             <span>Add Project</span>
