@@ -60,7 +60,7 @@
             <ul class="list-unstyled">
                 <li class="dash-h-item mob-hamburger">
                     <a href="#!" class="dash-head-link" id="mobile-collapse">
-                        <div class="hamburger hamburger--arrowturn">
+                        <div class="hamburger hamburger--arrowturn myHamburger ">
                             <div class="hamburger-box">
                                 <div class="hamburger-inner"></div>
                             </div>
@@ -431,6 +431,15 @@
 
 <script>
     $(document).ready(function() {
+
+           // Click event for the hamburger icon
+      $('.myHamburger').on('click', function() {
+        // alert('asd');
+        // Toggle the 'mob-sidebar-active' class
+        $('.myNav').toggleClass('mob-sidebar-active');
+      });
+      
+
       let current_workplace = $('#current-workplace').text();
       $('#selected-item').text(current_workplace)
 
@@ -447,4 +456,13 @@
         $(this).children('span').removeClass('dots');
       });
     });
+
+    // Add event listener to the document body for clicks
+$(document).on('click', function(event) {
+    // Check if the clicked element is not inside the sidebar
+    if (!$(event.target).closest('.myNav').length && !$(event.target).hasClass('myHamburger')) {
+        // Close the sidebar by removing the 'mob-sidebar-active' class
+        $('.myNav').removeClass('mob-sidebar-active');
+    }
+});
 </script>
