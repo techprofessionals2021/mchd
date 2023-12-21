@@ -147,7 +147,7 @@ style="border-right: 1px solid ">
 </nav> --}}
 
 {{-- @else --}}
-    <nav class="dash-sidebar light-sidebar {{ isset($cust_theme_bg) && $cust_theme_bg == 'on' ? 'transprent-bg' : '' }}"
+    <nav class="dash-sidebar light-sidebar myNav  {{ isset($cust_theme_bg) && $cust_theme_bg == 'on' ? 'transprent-bg' : '' }}" 
         style="border-right: 1px solid ">
         <div class="navbar-wrapper">
             <div class="m-header main-logo">
