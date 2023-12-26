@@ -56,7 +56,7 @@
     //    ->orWhereHas('users',function($query)use($userObj){
     //     $query->where('user_id',$userObj->id);
     //    })->get();
-    $projects = Project::where('created_by',$userObj->id)->where('workspace',$currentWorkspace->id)
+    $projects = Project::where('workspace',$currentWorkspace->id)
       ->get();
     //    dd($projects);
 @endphp
