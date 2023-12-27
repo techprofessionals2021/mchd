@@ -56,8 +56,12 @@
     //    ->orWhereHas('users',function($query)use($userObj){
     //     $query->where('user_id',$userObj->id);
     //    })->get();
-    $projects = Project::where('workspace',$currentWorkspace->id)
-      ->get();
+       $projects = Project::with('users')
+       ->orWhereHas('users',function($query)use($userObj){
+        $query->where('user_id',$userObj->id);
+       })->get();
+    // $projects = Project::where('workspace',$currentWorkspace->id)
+    //   ->get();
     //    dd($projects);
 @endphp
 {{-- {{dd(auth()->user()->hasRole(('HOD')))}} --}}
