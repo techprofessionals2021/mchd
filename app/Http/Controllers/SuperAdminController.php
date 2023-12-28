@@ -23,6 +23,8 @@ use App\Models\Project;
 use App\Models\ModelHasRole;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 
 

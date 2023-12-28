@@ -12,12 +12,16 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class User extends Authenticatable implements MustVerifyEmail
 {
 
         use Notifiable, HasApiTokens;
         use HasRoles;
+        use SoftDeletes;
+
 
 
         protected $fillable = [
