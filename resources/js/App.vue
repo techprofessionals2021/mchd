@@ -109,7 +109,7 @@
                 <h5><EditTwoTone style="font-size: 24px;" /></h5>
             </a>
             <a v-else-if="record['workspace_permissions'] === null" href="#">
-                <h5><EditTwoTone style="font-size: 24px;" /></h5>
+                <!-- <h5><EditTwoTone style="font-size: 24px;" /></h5> -->
             </a>
         </template>
 
@@ -118,7 +118,7 @@
                 <h5><DeleteTwoTone  style="font-size: 24px;" /></h5>
             </a>
             <a v-else-if="record['workspace_permissions'] === null" href="#">
-                <h5><DeleteTwoTone  style="font-size: 24px;" /></h5>
+                <!-- <h5><DeleteTwoTone  style="font-size: 24px;" /></h5> -->
             </a>
         </template>
 
