@@ -35,6 +35,8 @@ class TaskResource extends JsonResource
             'project_id' => $this->project_id,
             'old_status' => $this->stage->id,
             'workspace_permissions' => Auth::user()->getPermissionWorkspace(auth()->user()->currentWorkspace->id),
+            'permission' => Auth::user()->getPermissionWorkspaceOwner(auth()->user()->currentWorkspace->id),
+
 
         ];
     }

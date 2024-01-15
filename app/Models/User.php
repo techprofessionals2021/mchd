@@ -13,7 +13,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Auth;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -174,6 +174,14 @@ class User extends Authenticatable implements MustVerifyEmail
         {
                 $data = UserWorkspace::where('user_id', '=', $this->id)->where('workspace_id', '=', $workspace_id)->first();
                 return json_decode($data->workspace_permission ?? '', true);
+        }
+
+        public function getPermissionWorkspaceOwner($workspace_id)
+        {
+                $data = UserWorkspace::where('user_id', '=', $this->id)->where('workspace_id', '=', $workspace_id)->pluck('permission');
+                // dd($data->permission);
+                
+                return json_decode($data ?? '', true);
         }
 
 

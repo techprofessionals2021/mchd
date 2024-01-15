@@ -105,7 +105,11 @@
 
 
             <template v-else-if="column.dataIndex === 'edittask'">
-        <a v-if="record['modal_url_edit'] && record['workspace_permissions'] && record['workspace_permissions'].includes('edit task')" href="#" data-size="lg" :data-url="record['modal_url_edit']" data-ajax-popup="true" data-title="Task Edit" class="h6 task-title">
+            <a v-if="record['modal_url_edit'] && record['workspace_permissions'] && record['workspace_permissions'].includes('edit task')" href="#" data-size="lg" :data-url="record['modal_url_edit']" data-ajax-popup="true" data-title="Task Edit" class="h6 task-title">
+                <h5><EditTwoTone style="font-size: 24px;" /></h5>
+            </a>
+
+            <a v-else-if="record['permission'].includes('Owner')" href="#" data-size="lg" :data-url="record['modal_url_edit']" data-ajax-popup="true" data-title="Task Edit" class="h6 task-title">
                 <h5><EditTwoTone style="font-size: 24px;" /></h5>
             </a>
             <a v-else-if="record['workspace_permissions'] === null" href="#">
@@ -117,6 +121,9 @@
             <a v-if="record['workspace_permissions'] && record['workspace_permissions'].includes('delete task')" :href="record['modal_url_destory']" class="h6">
                 <h5><DeleteTwoTone  style="font-size: 24px;" /></h5>
             </a>
+            <a v-else-if="record['permission'].includes('Owner')"  :href="record['modal_url_destory']" class="h6">
+                <h5><DeleteTwoTone  style="font-size: 24px;" /></h5>
+           </a>
             <a v-else-if="record['workspace_permissions'] === null" href="#">
                 <!-- <h5><DeleteTwoTone  style="font-size: 24px;" /></h5> -->
             </a>
