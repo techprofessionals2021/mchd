@@ -4,9 +4,13 @@ namespace App\Models;
 
 use App\Http\Resources\UserResource;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Workspace extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'name',
         'slug',
