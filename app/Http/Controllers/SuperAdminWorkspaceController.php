@@ -7,6 +7,7 @@ use App\Models\UserWorkspace;
 use App\Models\Workspace;
 use App\Models\Project;
 use App\Models\Task;
+use DB;
 
 class SuperAdminWorkspaceController extends Controller
 {
@@ -55,24 +56,21 @@ class SuperAdminWorkspaceController extends Controller
     public function delete_workspace($id)
     {
         // dd($id);
+        // dd($id);
         try {
             DB::beginTransaction();
 
             $workspace = Workspace::find($id);
-            if (!$workspace) {
-                // Handle the case where the workspace is not found.
-                // You might want to throw an exception or return a response.
-            }
+    
+            $workspace->delete();
 
-            $workspace->is_active = 0;
-            $workspace->save();
 
-            $user_workspace = UserWorkspace::where('workspace_id', $workspace->id)->get();
+            // $user_workspace = UserWorkspace::where('workspace_id', $workspace->id)->get();
 
-            foreach ($user_workspace as $key => $value) {
-                $value->is_active = 0;
-                $value->save();
-            }
+            // foreach ($user_workspace as $key => $value) {
+            //     $value->is_active = 0;
+            //     $value->save();
+            // }
 
             DB::commit(); // Commit the transaction if all operations were successful.
         } catch (\Exception $e) {

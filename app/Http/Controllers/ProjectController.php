@@ -533,6 +533,7 @@ class ProjectController extends Controller
 
                 $permissions_workspace = Auth::user()->getPermissionWorkspace($currentWorkspace->id);
                 
+           
                 // dd($currentWorkspace->permission == "Owner");
                 
                 if (is_null($permissions_workspace)) {
@@ -677,6 +678,19 @@ class ProjectController extends Controller
         $currentWorkspace = Utility::getWorkspaceBySlug($slug);
         $workspace_type = WorkspaceType::get();
 
+        
+        $permissions_workspace = Auth::user()->getPermissionWorkspace($currentWorkspace->id);
+                
+           
+        // dd($currentWorkspace->permission == "Owner");
+        
+        if (is_null($permissions_workspace)) {
+            // Set default permissions
+            $default_permissions = [];
+            $permissions_workspace = $default_permissions;
+        }
+
+
         if($objUser->id != $currentWorkspace->id){
             // $objUser->currant_workspace = $currentWorkspace->id;
             // $objUser->save();
@@ -733,7 +747,7 @@ class ProjectController extends Controller
 
                $taskResource = TaskResource::collection($tasks);
                $taskStatus = ['All','Todo','In Progress','Review','Done'];
-                return view('vue-ui.pages.project.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type','taskResource','taskStatus','currentStatus'));
+                return view('vue-ui.pages.project.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type','taskResource','taskStatus','currentStatus','permissions_workspace'));
                 // return view('projects.show', compact('currentWorkspace', 'project', 'chartData', 'daysleft', 'permissions','tags','workspace_type'));
             } else {
                 return redirect()->back()->with('error', __("Project Not Found."));
