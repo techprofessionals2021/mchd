@@ -77,7 +77,7 @@
                 </a-select>
             </div>
             </template> -->
-
+<!-- 
             <template v-else-if="column.dataIndex === 'status'">
             <div>
                 <a-select v-model:value="record.selectedStatus" style="width: 120px" @change="updateStatus(record,$event)">
@@ -86,7 +86,7 @@
                 </a-select-option>
                 </a-select>
             </div>
-            </template>
+            </template> -->
 
             <template v-else-if="column.dataIndex === 'due_date'">
                 {{ dateFormatter(text) }}
