@@ -56,10 +56,25 @@
     //    ->orWhereHas('users',function($query)use($userObj){
     //     $query->where('user_id',$userObj->id);
     //    })->get();
+    // dd($currentWorkspace);
+
+  
+     if ($currentWorkspace->permission == "TeamLead") {
+        // dd($currentWorkspace);
+        $projects = Project::with('users')
+        ->where('workspace',$currentWorkspace->id)->get();
+     }
+
+     else{
+     
+
        $projects = Project::with('users')
        ->orWhereHas('users',function($query)use($userObj){
         $query->where('user_id',$userObj->id);
        })->where('workspace',$currentWorkspace->id)->get();
+
+    }
+    //    dd($projects);
     // $projects = Project::where('workspace',$currentWorkspace->id)
     //   ->get();
     //    dd($projects);
