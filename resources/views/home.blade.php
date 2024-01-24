@@ -13,10 +13,10 @@
         <input type='text' class=" form-control form-control-light" id="duration" name="duration" required autocomplete="off"
                      placeholder="Select date range" style="display: none" />
     </div>
-    <div class="filterMonthlyTaskBtn cursor-pointer col-auto">
+    {{-- <div class="filterMonthlyTaskBtn cursor-pointer col-auto">
         <img src='{{ asset('custom-ui/images/filter.svg') }}' class="m-r-5" />
         <span class="p-text">Filter</span>
-    </div>
+    </div> --}}
 </div>
 {{-- <div class="d-flex"> --}}
 
