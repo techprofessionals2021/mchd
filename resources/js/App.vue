@@ -80,7 +80,7 @@
 
             <template v-else-if="column.dataIndex === 'status'">
             <div>
-                <a-select v-if="record['workspace_permissions']" v-model:value="record.selectedStatus" style="width: 120px" @change="updateStatus(record,$event)">
+                <a-select v-model:value="record.selectedStatus" style="width: 120px" @change="updateStatus(record,$event)">
                 <a-select-option v-for="status in record['all_status']" :key="status.id" :value="status.id">
                     <a-tag :color="status.color">{{ status.name }}</a-tag>
                 </a-select-option>
