@@ -82,7 +82,7 @@
             <div>
                 <a-select v-if="record.status"  v-model:value="record.selectedStatus" style="width: 120px" @change="updateStatus(record,$event)">
                 <a-select-option v-for="status in record['all_status']" :key="status.id" :value="status.id">
-                    <a-tag :color="status.color">{{ status.name }}</a-tag>
+                    <a-tag :color="status.color"> {{ status.name }} </a-tag>
                 </a-select-option>
                 </a-select>
             </div>
