@@ -15,7 +15,8 @@
         <li class="breadcrumb-item"><a
                 href="{{ route('client.projects.index', $currentWorkspace->slug) }}">{{ __('Project') }}</a></li>
     @else
-        <li class="breadcrumb-item"><a href="{{ route('projects.index', $currentWorkspace->slug) }}">{{ __('Project') }}</a>
+        {{-- <li class="breadcrumb-item"><a href="{{ route('projects.index', $currentWorkspace->slug) }}">{{ __('Project') }}</a> --}}
+            <li class="breadcrumb-item"><a href="#">{{ __('Project') }}</a>
         </li>
     @endif
     <li class="breadcrumb-item">{{ $project->name }}</li>

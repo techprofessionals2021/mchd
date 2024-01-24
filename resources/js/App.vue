@@ -80,7 +80,7 @@
 
             <template v-else-if="column.dataIndex === 'status'">
             <div>
-                <a-select v-model:value="record.selectedStatus" style="width: 120px" @change="updateStatus(record,$event)">
+                <a-select v-if="record['workspace_permissions']" v-model:value="record.selectedStatus" style="width: 120px" @change="updateStatus(record,$event)">
                 <a-select-option v-for="status in record['all_status']" :key="status.id" :value="status.id">
                     <a-tag :color="status.color">{{ status.name }}</a-tag>
                 </a-select-option>
@@ -105,23 +105,29 @@
 
 
             <template v-else-if="column.dataIndex === 'edittask'">
-                <a v-if="record['modal_url_edit']" href="#" data-size="lg" :data-url="record['modal_url_edit']" data-ajax-popup="true"
-                    data-title="Task Edit" class="h6 task-title">
-                    <h5>      <EditTwoTone style="font-size: 24px;" /></h5>
-                                </a>
-                                <!-- <a v-else>{{ 'Edit' }}</a> -->
+            <a v-if="record['modal_url_edit'] && record['workspace_permissions'] && record['workspace_permissions'].includes('edit task')" href="#" data-size="lg" :data-url="record['modal_url_edit']" data-ajax-popup="true" data-title="Task Edit" class="h6 task-title">
+                <h5><EditTwoTone style="font-size: 24px;" /></h5>
+            </a>
 
-            </template>
+            <a v-else-if="record['permission'].includes('Owner')" href="#" data-size="lg" :data-url="record['modal_url_edit']" data-ajax-popup="true" data-title="Task Edit" class="h6 task-title">
+                <h5><EditTwoTone style="font-size: 24px;" /></h5>
+            </a>
+            <a v-else-if="record['workspace_permissions'] === null" href="#">
+                <!-- <h5><EditTwoTone style="font-size: 24px;" /></h5> -->
+            </a>
+        </template>
 
-
-            <template v-else-if="column.dataIndex === 'deletetask'">
-                <a :href="record['modal_url_destory']"
-                    class="h6">
-                    <h5>      <DeleteTwoTone  style="font-size: 24px;" /></h5>
-                                </a>
-
-
-            </template>
+        <template v-else-if="column.dataIndex === 'deletetask'">
+            <a v-if="record['workspace_permissions'] && record['workspace_permissions'].includes('delete task')" :href="record['modal_url_destory']" class="h6">
+                <h5><DeleteTwoTone  style="font-size: 24px;" /></h5>
+            </a>
+            <a v-else-if="record['permission'].includes('Owner')"  :href="record['modal_url_destory']" class="h6">
+                <h5><DeleteTwoTone  style="font-size: 24px;" /></h5>
+           </a>
+            <a v-else-if="record['workspace_permissions'] === null" href="#">
+                <!-- <h5><DeleteTwoTone  style="font-size: 24px;" /></h5> -->
+            </a>
+        </template>
 
         </template>
 
@@ -256,6 +262,8 @@ import { message } from 'ant-design-vue';
 export default {
     props: ['tasks'],
     setup(props) {
+
+        console.log(props.tasks);
 
 
         const selectedStatus = ref(null);

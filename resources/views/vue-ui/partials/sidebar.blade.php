@@ -52,10 +52,32 @@
 
 
     $userObj = Auth::user();
-       $projects = Project::with('users')->where('created_by',$userObj->id)
+    //    $projects = Project::with('users')->where('created_by',$userObj->id)
+    //    ->orWhereHas('users',function($query)use($userObj){
+    //     $query->where('user_id',$userObj->id);
+    //    })->get();
+    // dd($currentWorkspace);
+
+  
+     if ($currentWorkspace->permission == "TeamLead") {
+        // dd($currentWorkspace);
+        $projects = Project::with('users')
+        ->where('workspace',$currentWorkspace->id)->get();
+     }
+
+     else{
+     
+
+       $projects = Project::with('users')
        ->orWhereHas('users',function($query)use($userObj){
         $query->where('user_id',$userObj->id);
-       })->get();
+       })->where('workspace',$currentWorkspace->id)->get();
+
+    }
+    //    dd($projects);
+    // $projects = Project::where('workspace',$currentWorkspace->id)
+    //   ->get();
+    //    dd($projects);
 @endphp
 {{-- {{dd(auth()->user()->hasRole(('HOD')))}} --}}
 
@@ -144,7 +166,7 @@ style="border-right: 1px solid ">
 </nav> --}}
 
 {{-- @else --}}
-    <nav class="dash-sidebar light-sidebar {{ isset($cust_theme_bg) && $cust_theme_bg == 'on' ? 'transprent-bg' : '' }}"
+    <nav class="dash-sidebar light-sidebar myNav  {{ isset($cust_theme_bg) && $cust_theme_bg == 'on' ? 'transprent-bg' : '' }}" 
         style="border-right: 1px solid ">
         <div class="navbar-wrapper">
             <div class="m-header main-logo">
@@ -278,10 +300,21 @@ style="border-right: 1px solid ">
                                         @foreach ($projects as $project)
                                         <li ><a href="{{route('projects.show',[$workspace->slug,$project->id])}}" class="side-nav-project-text">{{$project->name}} </a></li>
                                         @endforeach
+
+                                        @if (in_array('create project',$permissions))
                                         <a class="btn btn-light add-project-btn-sidebar m-t-10" href="#" data-ajax-popup="true" data-size="md" data-title="{{ __('Create New Project') }}" data-url="{{route('projects.create',$currentWorkspace->slug)}}">
                                             <i class="ti ti-plus"></i>
                                             <span>Add Project</span>
                                         </a>
+                                        {{-- @dd($currentWorkspace) --}}
+
+                                        @elseif($currentWorkspace->permission == "Owner" )
+                                        <a class="btn btn-light add-project-btn-sidebar m-t-10" href="#" data-ajax-popup="true" data-size="md" data-title="{{ __('Create New Project') }}" data-url="{{route('projects.create',$currentWorkspace->slug)}}">
+                                            <i class="ti ti-plus"></i>
+                                            <span>Add Project</span>
+                                        </a>
+                                        @endif
+                                   
                                     </ul>
                                 </div>
                             </div>
@@ -310,13 +343,27 @@ style="border-right: 1px solid ">
 
                     </li>
 
-                     <li class="dash-item dash-hasmenu">
+                  
+
+                    @if (in_array('show calendar',$permissions))
+                    <li class="dash-item dash-hasmenu">
                         <a href="{{ route('custom.calender',[$currentWorkspace->slug]) }}"
                             class="dash-link{{ Request::route()->getName() == 'custom.calender' ? ' active' : '' }} side-item"><span
                                 class="dash-micon mr-3"> <img
                                     src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
                                 class="dash-mtext side-nav-text">{{ __('Calendar') }}</span></a>
                     </li>
+
+
+                    @elseif($currentWorkspace->permission == "Owner" )
+                    <li class="dash-item dash-hasmenu">
+                        <a href="{{ route('custom.calender',[$currentWorkspace->slug]) }}"
+                            class="dash-link{{ Request::route()->getName() == 'custom.calender' ? ' active' : '' }} side-item"><span
+                                class="dash-micon mr-3"> <img
+                                    src="{{ asset('custom-ui/images/calendar.png') }}" class="icon-image" /></span><span
+                                class="dash-mtext side-nav-text">{{ __('Calendar') }}</span></a>
+                    </li>
+                    @endif
                      <li class="dash-item dash-hasmenu">
                         <a href="{{ route('custom.huddles',[$currentWorkspace->slug]) }}"
                             class="dash-link{{ Request::route()->getName() == 'custom.huddles' ? ' active' : '' }} side-item"><span

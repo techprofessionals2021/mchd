@@ -12,12 +12,16 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Auth;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
 
         use Notifiable, HasApiTokens;
         use HasRoles;
+        use SoftDeletes;
+
 
 
         protected $fillable = [
@@ -163,13 +167,21 @@ class User extends Authenticatable implements MustVerifyEmail
         public function getPermission($project_id)
         {
                 $data = UserProject::where('user_id', '=', $this->id)->where('project_id', '=', $project_id)->first();
-                return json_decode($data->permission, true);
+                return json_decode($data->permission ?? '', true);
         }
 
         public function getPermissionWorkspace($workspace_id)
         {
                 $data = UserWorkspace::where('user_id', '=', $this->id)->where('workspace_id', '=', $workspace_id)->first();
                 return json_decode($data->workspace_permission ?? '', true);
+        }
+
+        public function getPermissionWorkspaceOwner($workspace_id)
+        {
+                $data = UserWorkspace::where('user_id', '=', $this->id)->where('workspace_id', '=', $workspace_id)->pluck('permission');
+                // dd($data->permission);
+                
+                return json_decode($data ?? '', true);
         }
 
 

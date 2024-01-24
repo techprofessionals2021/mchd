@@ -98,43 +98,39 @@
 
     });
 
-
     $('.btn-delete').click(function () {
+    var workspace_id = $(this).data('record-id');
 
-        var workspace_id = $(this).data('record-id');
+    Swal.fire({
+        title: 'Confirmation',
+        text: 'Are you sure you want to delete this item?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ url("superadmin/workspace/delete/") }}/' + workspace_id,
 
-            Swal.fire({
-                title: 'Confirmation',
-                text: 'Are you sure you want to delete this item?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                    type: 'POST',
-                    url: '{{ route('superadmin.delete-workspace-superadmin', ['id' => 'workspace_id']) }}'.replace('workspace_id', workspace_id), // Replace 'permissionId' with the actual permission ID
-
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        id: workspace_id
-
-                    },
-                    success: function(response) {
-                        // Handle success response if needed
-                        show_toastr('{{ __('Success') }}', '{{ __('Workspace Deleted Successfully!') }}',
-                                    'success');
-                                    location.reload();
-                    },
-                    error: function(error) {
-                        // Handle error if needed
-                        console.error('AJAX request error', error);
-                    }
-                });
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: workspace_id
+                },
+                success: function(response) {
+                    // Handle success response if needed
+                    show_toastr('{{ __('Success') }}', '{{ __('Workspace Deleted Successfully!') }}', 'success');
+                    location.reload();
+                },
+                error: function(error) {
+                    // Handle error if needed
+                    console.error('AJAX request error', error);
                 }
             });
-        });
+        }
+    });
+});
 
   </script>
 
